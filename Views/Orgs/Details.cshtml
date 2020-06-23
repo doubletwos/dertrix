@@ -1,0 +1,66 @@
+﻿@model Zeus.Models.Org
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Org</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Domain.DomainName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Domain.DomainName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgBrand.OrgBrandName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgBrand.OrgBrandName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgType.OrgTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgType.OrgTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrgId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

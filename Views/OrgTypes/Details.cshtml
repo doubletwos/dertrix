@@ -1,0 +1,26 @@
+﻿@model Zeus.Models.OrgType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>OrgType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgTypeName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrgTypeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Zeus.Models.Org>
+
+@{
+    ViewBag.Title = "SystemAdminIndex";
+}
+
+<h2>SystemAdminIndex</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Domain.DomainName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgBrand.OrgBrandName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgType.OrgTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Domain.DomainName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrgBrand.OrgBrandName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrgName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrgAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.OrgId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.OrgId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.OrgId })
+        </td>
+    </tr>
+}
+
+</table>

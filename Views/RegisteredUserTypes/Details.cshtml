@@ -1,0 +1,26 @@
+﻿@model Zeus.Models.RegisteredUserType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RegisteredUserType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RegisteredUserTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegisteredUserTypeName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RegisteredUserTypeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
