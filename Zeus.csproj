@@ -378,6 +378,7 @@
     <Content Include="Views\RegisteredUsers\Index.cshtml" />
     <Content Include="Views\Shared\_Secure.cshtml" />
     <Content Include="Views\Orgs\SystemAdminIndex.cshtml" />
+    <Content Include="Views\Shared\_Nav.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

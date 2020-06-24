@@ -20,29 +20,39 @@
 				@Html.ActionLink("Zeus", "Index", "Access", new { area = "" }, new { @class = "navbar-brand" })
 			</div>
 			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					@*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
-					@*<li>@Html.ActionLink("About", "About", "Home")</li>*@
-					@*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-					@*<li>@Html.ActionLink("Register", "Create", "RegisteredUsers")</li>*@
+				<ul class="nav navbar-nav navbar-right">
+					@{
+						Html.RenderAction("Regs", "RegisteredUsers");
+					}
 				</ul>
-				@{
-					Html.RenderAction("Regs", "RegisteredUsers");
-				}
-				@*@Html.Partial("_LoginPartial")*@
 			</div>
 		</div>
 	</div>
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<p>&copy; @DateTime.Now.Year - Zeus</p>
-		</footer>
+
+
+	<div class="navbar ">
+			@{
+				Html.RenderAction("Nav", "RegisteredUsers");
+			}
 	</div>
 
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/bootstrap")
-	@RenderSection("scripts", required: false)
+
+
+
+
+
+
+
+		<div class="container body-content">
+			@RenderBody()
+			<hr />
+			<footer>
+				<p>&copy; @DateTime.Now.Year - Zeus</p>
+			</footer>
+		</div>
+
+		@Scripts.Render("~/bundles/jquery")
+		@Scripts.Render("~/bundles/bootstrap")
+		@RenderSection("scripts", required: false)
 </body>
 </html>

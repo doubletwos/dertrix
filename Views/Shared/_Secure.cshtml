@@ -8,21 +8,35 @@
 		<li>@Html.ActionLink("Sign in", "Index", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
 		<li>@Html.ActionLink("Register", "Create", "RegisteredUsers", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
 
-
 	}
 
 </ul>
+
+
+
+
 
 <ul class="nav navbar-nav navbar-right">
 	@if (Session["RegisteredUserId"] != null)
 	{
-		@*<li>
-				<i class="fas fa-user-circle">  @Session["BusinessName"].ToString()</i>
-			</li>*@
-
 
 		<li>@Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
 
-		@*@Html.ActionLink("Profile", "Details1", "Home", new { id = Model.FirstOrDefault()?.VendorId  ?? 0 /* Null case*/}, new { @class = "btn btn-default" })*@
 	}
+
 </ul>
+
+<ul class="nav navbar-nav navbar-left">
+	@if (Session["RegisteredUserId"] != null)
+	{
+
+
+
+	}
+
+</ul>
+
+
+
+
+

@@ -30,6 +30,12 @@ namespace Zeus.Controllers
         }
 
 
+        [ChildActionOnly]
+        public ActionResult Nav()
+        {
+            return PartialView("_Nav");
+        }
+
         // GET: RegisteredUsers/Details/5
         public ActionResult Details(int? id)
         {
