@@ -15,8 +15,11 @@ namespace Zeus.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: RegisteredUsers
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
+
+           
+
             var registeredUsers = db.RegisteredUsers.Include(r => r.RegisteredUserType);
             return View(registeredUsers.ToList());
         }
@@ -66,6 +69,18 @@ namespace Zeus.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+                var test = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
+                int i = Convert.ToInt32(test);
+           
+                registeredUser.SelectedOrg = i;
+
+
+
+
+
+
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
 

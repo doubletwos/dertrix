@@ -29,6 +29,16 @@ namespace Zeus.Controllers
                 return HttpNotFound();
             }
 
+
+            //var org1 = db.RegisteredUserOrganisations.Where(o => o.RegisteredUserOrganisationId == id).Select(x => x.RegisteredUserId).FirstOrDefault();
+
+            //var users = db.RegisteredUsers
+
+            //    .Where(i => i.RegisteredUserId == org1)
+            //    .ToList();
+            //return View(users);
+
+
             var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
             return View(orgs.ToList());
         }

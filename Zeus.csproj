@@ -175,6 +175,7 @@
     <Compile Include="Controllers\OrgBrandsController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
+    <Compile Include="Controllers\RegisteredUserOrganisationsController.cs" />
     <Compile Include="Controllers\RegisteredUsersController.cs" />
     <Compile Include="Controllers\RegisteredUserTypesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -267,6 +268,10 @@
     <Compile Include="Migrations\202006200555038_0654.cs" />
     <Compile Include="Migrations\202006200555038_0654.Designer.cs">
       <DependentUpon>202006200555038_0654.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006261132481_1232.cs" />
+    <Compile Include="Migrations\202006261132481_1232.Designer.cs">
+      <DependentUpon>202006261132481_1232.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -379,6 +384,11 @@
     <Content Include="Views\Shared\_Secure.cshtml" />
     <Content Include="Views\Orgs\SystemAdminIndex.cshtml" />
     <Content Include="Views\Shared\_Nav.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\Create.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\Delete.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\Details.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\Edit.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -462,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006200555038_0654.resx">
       <DependentUpon>202006200555038_0654.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006261132481_1232.resx">
+      <DependentUpon>202006261132481_1232.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

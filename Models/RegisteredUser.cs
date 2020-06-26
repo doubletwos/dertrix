@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Web;
 using System.Web.WebPages.Html;
 using System.Xml.Linq;
@@ -58,7 +59,9 @@ namespace Zeus.Models
         public RegisteredUserType RegisteredUserType { get; set; }
 
 
-        public Org Org { get; set; }    
+        public Org Org { get; set; }
+
+        public int SelectedOrg { get; set; }     
 
         public ICollection<int> SelectedOrgList { get; set; }
         public ICollection<RegisteredUserOrganisation> RegisteredUserOrganisations { get; set; }
