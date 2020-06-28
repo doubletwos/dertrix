@@ -4,10 +4,21 @@
 	ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+
 
 <p>
-	@Html.ActionLink("Create New", "Create")
+	<div class="btn-group">
+		<button type="button" class="btn btn-default">
+			@Html.ActionLink("Add New User", "Create", "RegisteredUsers")
+		</button>
+		<button type="button" class="btn btn-default">
+			@Html.ActionLink("Filter", "", "")
+		</button>
+
+	</div>
+
+
+
 </p>
 <table class="table table-bordered table-striped">
 	<tr>
@@ -15,29 +26,38 @@
 			@Html.DisplayNameFor(model => model.RegisteredUserId)
 		</th>
 		<th>
+			@Html.DisplayNameFor(model => model.ContactFullName)
+		</th>
+		<th>
 			@Html.DisplayNameFor(model => model.Email)
 		</th>
-		
-	
+
+
 		<th></th>
 	</tr>
 
 @foreach (var item in Model) {
-	<tr>
-		<td>
-			@Html.DisplayFor(modelItem => item.RegisteredUserId)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.Email)
-		</td>
-	
+<tr>
+	<td>
+		@Html.DisplayFor(modelItem => item.RegisteredUserId)
+	</td>
+	<td>
+		@Html.DisplayFor(modelItem => item.ContactFullName)
+	</td>
+	<td>
+		@Html.DisplayFor(modelItem => item.Email)
+	</td>
 
-		<td>
-			@Html.ActionLink("Edit", "Edit", new { id=item.RegisteredUserOrganisationId }) |
-			@Html.ActionLink("Details", "Details", new { id=item.RegisteredUserOrganisationId }) |
-			@Html.ActionLink("Delete", "Delete", new { id=item.RegisteredUserOrganisationId })
-		</td>
-	</tr>
+
+	<td>
+		@Html.ActionLink("Edit", "Edit", new { id = item.RegisteredUserOrganisationId }) |
+		@Html.ActionLink("Details", "Details", new { id = item.RegisteredUserOrganisationId }) |
+		@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUserOrganisationId })
+	</td>
+</tr>
 }
 
 </table>
+
+
+

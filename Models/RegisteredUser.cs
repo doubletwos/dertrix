@@ -16,11 +16,11 @@ namespace Zeus.Models
 
         public int RegisteredUserId { get; set; }
 
-        [Display(Name = "Contact First Name")]
+        [Display(Name = "User's First Name")]
         [Required(ErrorMessage = "Your first name is required")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Contact Last Name")]
+        [Display(Name = "User's Last Name")]
         [Required(ErrorMessage = "Your last name is required")]
         public string LastName { get; set; }
 
@@ -52,10 +52,13 @@ namespace Zeus.Models
 
 
 
-        [Display(Name = "Telephone Number ")]
+        [Display(Name = "Mobile Telephone Number ")]
         public string Telephone { get; set; }
 
+
+      
         public int RegisteredUserTypeId{ get; set; }
+        [Display(Name = "User Type ")]
         public RegisteredUserType RegisteredUserType { get; set; }
 
 

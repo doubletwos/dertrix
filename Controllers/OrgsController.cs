@@ -30,38 +30,49 @@ namespace Zeus.Controllers
             }
 
 
-            //var org1 = db.RegisteredUserOrganisations.Where(o => o.RegisteredUserOrganisationId == id).Select(x => x.RegisteredUserId).FirstOrDefault();
-
-            //var users = db.RegisteredUsers
-
-            //    .Where(i => i.RegisteredUserId == org1)
-            //    .ToList();
-            //return View(users);
-
-
             var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
             return View(orgs.ToList());
         }
-
 
 
         // GET: Orgs/SystemAdminIndex
         public ActionResult SystemAdminIndex(int? id)
         {
-            if (id == null)
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+            if ((int)Session["OrgId"] != 3)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Org org = db.Orgs.Find(id);
-            if (org == null)
+         
+            if ((int)Session["OrgId"] == 3)
             {
-                return HttpNotFound();
-            }
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                id = i;
+                var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+                return View(orgs.ToList());
 
-            var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
-            return View(orgs.ToList());
+            }
+            else
+
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
         }
+
+
+
+        [ChildActionOnly]
+        public ActionResult AddOrg()
+        {
+            ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
+            ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
+            ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
+            return PartialView("_AddOrg");
+        }
+
 
 
 

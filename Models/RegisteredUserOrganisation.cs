@@ -12,7 +12,21 @@ namespace Zeus.Models
         public int RegisteredUserId { get; set; }
         public RegisteredUser RegisteredUser { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string ContactFullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public string Email { get; set; }
+
+       
 
         public int OrgId { get; set; }
         public Org Org { get; set; }

@@ -23,8 +23,8 @@ namespace Zeus.Controllers
         public ActionResult Signin(RegisteredUser registeredUser)
         {
             var rud = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
-            var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.OrgId).FirstOrDefault();
-            if (registeredUser == null)
+            var orgredirect = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.SelectedOrg).FirstOrDefault();
+            if (rud == null)
             {
                 registeredUser.LoginErrorMsg = "Invalid Email or Password";
                 return View("Index", registeredUser);

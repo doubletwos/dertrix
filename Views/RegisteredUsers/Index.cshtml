@@ -4,26 +4,41 @@
 	ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
+
+	<div>
+		@{
+			Html.RenderAction("AddUser", "RegisteredUsers");
+		}
+
+		<a href="#" class="btn btn-primary" data-toggle="modal" data-target="">Filter</a>
+	</div>
+
+
+
+
+
+
+
+
+
+@*<p>
 	@Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 <table class="table table-bordered table-striped">
 	<tr>
 		<th>
-			@Html.DisplayNameFor(model => model.RegisteredUserId)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.RegisteredUserType.RegisteredUserTypeName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.ContactFullName)
+			User ID
 		</th>
 
 		<th>
-			@Html.DisplayNameFor(model => model.Email)
+			Full Name
 		</th>
+		<th>
+			
+		</th>
+
+
 
 
 
@@ -36,16 +51,15 @@
 		@Html.DisplayFor(modelItem => item.RegisteredUserId)
 	</td>
 
-	<td>
-		@Html.DisplayFor(modelItem => item.RegisteredUserType.RegisteredUserTypeName)
-	</td>
+
 	<td>
 		@Html.DisplayFor(modelItem => item.ContactFullName)
 	</td>
-
 	<td>
-		@Html.DisplayFor(modelItem => item.Email)
+		@Html.DisplayFor(modelItem => item.RegisteredUserType.RegisteredUserTypeName)
 	</td>
+
+
 
 
 
@@ -59,3 +73,26 @@
 }
 
 </table>
+
+
+@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$("btnSubmit").click(function () {
+			debugger
+		var data = $("#myForm").serialize();
+
+		$.ajax({
+			type: "POST",
+			url: "/RegisteredUsers/Create",
+			data: data,
+			success: function (response) {
+				alert("New user created");
+
+			}
+		})
+		})
+	})
+
+</script>

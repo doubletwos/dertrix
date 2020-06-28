@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using System.Web.UI.WebControls;
 using Zeus.Models;
 
 namespace Zeus.Controllers
@@ -14,15 +16,28 @@ namespace Zeus.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: RegisteredUsers
+        // GET: RegisteredUsers/Index
         public ActionResult Index(int? id)
         {
+            if (Session["Email"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
 
-           
+            if (Session["Email"] != null)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                id = i;
+            }
 
-            var registeredUsers = db.RegisteredUsers.Include(r => r.RegisteredUserType);
-            return View(registeredUsers.ToList());
+            return View(db.RegisteredUsers
+                 .Where(j => j.SelectedOrg == id)
+                 .Include(t => t.RegisteredUserType)
+                 .ToList());
+          
         }
+
 
 
 
@@ -33,11 +48,28 @@ namespace Zeus.Controllers
         }
 
 
+
+
         [ChildActionOnly]
         public ActionResult Nav()
         {
+
+           
+
             return PartialView("_Nav");
         }
+
+
+        [ChildActionOnly]
+        public ActionResult AddUser()
+        {
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+            return PartialView("_AddUser");
+        }
+
+
+
+
 
         // GET: RegisteredUsers/Details/5
         public ActionResult Details(int? id)
@@ -65,46 +97,39 @@ namespace Zeus.Controllers
         // POST: RegisteredUsers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( RegisteredUser registeredUser)
+        public ActionResult Create(RegisteredUser registeredUser)
         {
             if (ModelState.IsValid)
             {
-
-
                 var test = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
                 int i = Convert.ToInt32(test);
-           
                 registeredUser.SelectedOrg = i;
-
-
-
-
-
 
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
 
-               
-
-
                 var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                 {
                     OrgId = registeredUser.SelectedOrgList.SingleOrDefault(),
-                   RegisteredUserId = registeredUser.RegisteredUserId,
-                   Email = registeredUser.Email
+                    RegisteredUserId = registeredUser.RegisteredUserId,
+                    Email = registeredUser.Email
                 };
 
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                 db.SaveChanges();
 
-
                 return RedirectToAction("Index");
             }
-
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
+            
+            
             return View(registeredUser);
         }
+
+
+
+
 
         // GET: RegisteredUsers/Edit/5
         public ActionResult Edit(int? id)
