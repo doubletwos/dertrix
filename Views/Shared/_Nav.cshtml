@@ -61,7 +61,9 @@
 							{
 								<li role="presentation" class="active">@Html.ActionLink("Organisation Management", "SystemAdminIndex", "Orgs")</li>
 							}
-							<li role="separator" class="divider"></li>
+						
+							<li role="presentation" class="active">@Html.ActionLink("Class Management", "", "")</li>
+
 
 							@*<li role="presentation" class="active">
 
@@ -76,6 +78,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
+				
 				</ul>
 			</div>
 		</div>
@@ -85,15 +88,6 @@
 
 
 
-<ul class="nav navbar-nav navbar-left">
-	@if (Session["RegisteredUserId"] != null)
-	{
-
-
-
-	}
-
-</ul>
 
 
 

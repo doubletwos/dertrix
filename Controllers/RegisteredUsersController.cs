@@ -19,11 +19,13 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Index
         public ActionResult Index(int? id)
         {
+            /* Redirect back to Log in Page if session == null*/
             if (Session["Email"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
 
+            /* Populate user list for non superusers if session is not null*/
             if (Session["Email"] != null)
             {
                 var rr = Session["OrgId"].ToString();
@@ -89,6 +91,10 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Create
         public ActionResult Create()
         {
+
+      
+        
+
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             return View();
@@ -99,33 +105,48 @@ namespace Zeus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RegisteredUser registeredUser)
         {
-            if (ModelState.IsValid)
+            /*Accepting all state of model*/
+            if (!(ModelState.IsValid)  || ModelState.IsValid)
             {
-                var test = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
-                int i = Convert.ToInt32(test);
-                registeredUser.SelectedOrg = i;
+                /*When users are added via registration form*/
+                if (registeredUser.SelectedOrgList != null)
+                {
+                    var zeususer = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
+                    int i = Convert.ToInt32(zeususer);
+                    registeredUser.SelectedOrg = i;
+                }
 
+                /*When users are added at school level*/
+                if (registeredUser.SelectedOrgList == null)
+                {
+                    registeredUser.SelectedOrg = (int)Session["OrgId"];
+                    var pwd = "iamanewuser";
+                    registeredUser.Password = pwd;
+                    registeredUser.ConfirmPassword = pwd;
+                }
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
 
+                /*Adding users to the RegUserOrg(Many to Many)*/
                 var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                 {
-                    OrgId = registeredUser.SelectedOrgList.SingleOrDefault(),
+                    OrgId = registeredUser.SelectedOrg,
                     RegisteredUserId = registeredUser.RegisteredUserId,
                     Email = registeredUser.Email
                 };
-
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
-                db.SaveChanges();
 
+                db.SaveChanges();
                 return RedirectToAction("Index");
+
+
             }
-            ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
-            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
+
+                ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
+                ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
+                return View(registeredUser);
             
-            
-            return View(registeredUser);
-        }
+         }
 
 
 

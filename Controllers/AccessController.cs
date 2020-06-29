@@ -20,22 +20,23 @@ namespace Zeus.Controllers
             return View();
         }
 
+
+        
         public ActionResult Signin(RegisteredUser registeredUser)
         {
-            var rud = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
+            var reguserdetails = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
             var orgredirect = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.SelectedOrg).FirstOrDefault();
-            if (rud == null)
+            if (reguserdetails == null)
             {
                 registeredUser.LoginErrorMsg = "Invalid Email or Password";
                 return View("Index", registeredUser);
             }
 
-            
-
             else
             {
-                Session["RegisteredUserId"] = rud.RegisteredUserId.ToString();
-                Session["Email"] = rud.Email.ToString();
+                Session["RegisteredUserId"] = reguserdetails.RegisteredUserId.ToString();
+                Session["Email"] = reguserdetails.Email.ToString();
+                Session["ContactFullName"] = reguserdetails.ContactFullName;
                 Session["OrgId"] = orgredirect;
             }
 

@@ -20,17 +20,17 @@
 	@if (Session["RegisteredUserId"] != null)
 	{
 
-		<li>@Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
-
+		<li> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" }) </li>
+	
 	}
 
 </ul>
 
-<ul class="nav navbar-nav navbar-left">
+<ul class="nav navbar-nav navbar-default">
 	@if (Session["RegisteredUserId"] != null)
 	{
 
-
+	<li> <i>You are logged in as <strong>@Session["ContactFullName"]</strong></i>  </li>
 
 	}
 
