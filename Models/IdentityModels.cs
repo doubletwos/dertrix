@@ -27,6 +27,11 @@ namespace Zeus.Models
         public DbSet<RegisteredUserType> RegisteredUserTypes { get; set; }
         public DbSet<RegisteredUser> RegisteredUsers { get; set; }
         public DbSet<RegisteredUserOrganisation> RegisteredUserOrganisations { get; set; }
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<ClassType> ClassTypes { get; set; }
+        public DbSet<Tribe> Tribes { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+
 
 
 

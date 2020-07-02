@@ -70,8 +70,33 @@ namespace Zeus.Models
         public ICollection<RegisteredUserOrganisation> RegisteredUserOrganisations { get; set; }
 
 
+        public int? ClassId { get; set; }    
+        public virtual Class Class { get; set; }
+
+        public int? GenderId { get; set; }
+        public virtual Gender Gender { get; set; }
 
        
+         
+        public int? TribeId { get; set; }
+        public virtual Tribe Tribe { get; set; }
+
+
+        [Display(Name = "Date Of Birth")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? DateOfBirth { get; set; }
+
+     
+        [Display(Name = "Enrolment Date")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? EnrolmentDate  { get; set; }
+
+
+
+
+
 
 
 

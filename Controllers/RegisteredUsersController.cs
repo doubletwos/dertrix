@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -65,8 +66,43 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult AddUser()
         {
+            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             return PartialView("_AddUser");
+        }
+
+
+
+        public ActionResult Students(int? id, int? ij)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+
+           
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            id = i;
+
+
+          
+            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb ).Select(g => g.ClassId)
+                .FirstOrDefault();
+          
+
+
+            var stds = db.RegisteredUsers
+                .Where(s => s.RegisteredUserTypeId == 13)
+                .Where(p => p.ClassId == j )
+               
+                .Include(c => c.Class)
+                .Include(g => g.Gender);
+                
+
+
+            return View(stds.ToList());
         }
 
 
@@ -92,9 +128,10 @@ namespace Zeus.Controllers
         public ActionResult Create()
         {
 
-      
-        
 
+
+            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
+            ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.ClassId == 17) , "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             return View();
@@ -142,8 +179,9 @@ namespace Zeus.Controllers
 
             }
 
-                ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
-                ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
+            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
+            ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
                 return View(registeredUser);
             
          }

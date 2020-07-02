@@ -18,6 +18,10 @@ namespace Zeus.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
 
             if (id == null)
             {

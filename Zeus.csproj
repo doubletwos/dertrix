@@ -169,6 +169,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccessController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\DomainsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -277,10 +278,60 @@
     <Compile Include="Migrations\202006262145154_2245.Designer.cs">
       <DependentUpon>202006262145154_2245.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006301204502_1304.cs" />
+    <Compile Include="Migrations\202006301204502_1304.Designer.cs">
+      <DependentUpon>202006301204502_1304.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301258264_1358.cs" />
+    <Compile Include="Migrations\202006301258264_1358.Designer.cs">
+      <DependentUpon>202006301258264_1358.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301314220_1414.cs" />
+    <Compile Include="Migrations\202006301314220_1414.Designer.cs">
+      <DependentUpon>202006301314220_1414.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301322587_1422.cs" />
+    <Compile Include="Migrations\202006301322587_1422.Designer.cs">
+      <DependentUpon>202006301322587_1422.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301623527_1723.cs" />
+    <Compile Include="Migrations\202006301623527_1723.Designer.cs">
+      <DependentUpon>202006301623527_1723.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301624359_1724.cs" />
+    <Compile Include="Migrations\202006301624359_1724.Designer.cs">
+      <DependentUpon>202006301624359_1724.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301726373_1826.cs" />
+    <Compile Include="Migrations\202006301726373_1826.Designer.cs">
+      <DependentUpon>202006301726373_1826.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301755116_1855.cs" />
+    <Compile Include="Migrations\202006301755116_1855.Designer.cs">
+      <DependentUpon>202006301755116_1855.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301937189_2037.cs" />
+    <Compile Include="Migrations\202006301937189_2037.Designer.cs">
+      <DependentUpon>202006301937189_2037.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006301946561_2046.cs" />
+    <Compile Include="Migrations\202006301946561_2046.Designer.cs">
+      <DependentUpon>202006301946561_2046.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007012038497_2138.cs" />
+    <Compile Include="Migrations\202007012038497_2138.Designer.cs">
+      <DependentUpon>202007012038497_2138.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007020519533_0619.cs" />
+    <Compile Include="Migrations\202007020519533_0619.Designer.cs">
+      <DependentUpon>202007020519533_0619.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\ClassType.cs" />
     <Compile Include="Models\Domain.cs" />
+    <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Org.cs" />
@@ -289,6 +340,7 @@
     <Compile Include="Models\RegisteredUser.cs" />
     <Compile Include="Models\RegisteredUserOrganisation.cs" />
     <Compile Include="Models\RegisteredUserType.cs" />
+    <Compile Include="Models\Tribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\NewRegisterUserViewModel.cs" />
@@ -396,6 +448,11 @@
     <Content Include="Views\RegisteredUserOrganisations\Index.cshtml" />
     <Content Include="Views\Shared\_AddUser.cshtml" />
     <Content Include="Views\Shared\_AddOrg.cshtml" />
+    <Content Include="Views\Class\Create.cshtml" />
+    <Content Include="Views\Class\SystemAdminIndex.cshtml" />
+    <Content Include="Views\Class\Index.cshtml" />
+    <Content Include="Views\RegisteredUsers\Students.cshtml" />
+    <Content Include="Views\Class\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -485,6 +542,42 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006262145154_2245.resx">
       <DependentUpon>202006262145154_2245.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301204502_1304.resx">
+      <DependentUpon>202006301204502_1304.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301258264_1358.resx">
+      <DependentUpon>202006301258264_1358.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301314220_1414.resx">
+      <DependentUpon>202006301314220_1414.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301322587_1422.resx">
+      <DependentUpon>202006301322587_1422.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301623527_1723.resx">
+      <DependentUpon>202006301623527_1723.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301624359_1724.resx">
+      <DependentUpon>202006301624359_1724.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301726373_1826.resx">
+      <DependentUpon>202006301726373_1826.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301755116_1855.resx">
+      <DependentUpon>202006301755116_1855.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301937189_2037.resx">
+      <DependentUpon>202006301937189_2037.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006301946561_2046.resx">
+      <DependentUpon>202006301946561_2046.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007012038497_2138.resx">
+      <DependentUpon>202007012038497_2138.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007020519533_0619.resx">
+      <DependentUpon>202007020519533_0619.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
