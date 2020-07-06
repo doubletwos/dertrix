@@ -20,6 +20,7 @@ namespace Zeus.Controllers
             return View(db.RegisteredUserTypes.ToList());
         }
 
+
         // GET: RegisteredUserTypes/Details/5
         public ActionResult Details(int? id)
         {

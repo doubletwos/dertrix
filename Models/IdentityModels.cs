@@ -31,7 +31,11 @@ namespace Zeus.Models
         public DbSet<ClassType> ClassTypes { get; set; }
         public DbSet<Tribe> Tribes { get; set; }
         public DbSet<Gender> Genders { get; set; }
-
+        public DbSet<PrimarySchoolUserRole> PrimarySchoolUserRoles { get; set; }
+        public DbSet<Religion> Religions { get; set; }
+        public DbSet<SecondarySchoolUserRole> SecondarySchoolUserRoles { get; set; }
+        public DbSet<StudentRegForm> StudentRegForm { get; set; }
+        
 
 
 

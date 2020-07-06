@@ -21,7 +21,8 @@ namespace Zeus.Controllers
         }
 
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Signin(RegisteredUser registeredUser)
         {
             var reguserdetails = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
@@ -37,6 +38,7 @@ namespace Zeus.Controllers
                 Session["RegisteredUserId"] = reguserdetails.RegisteredUserId.ToString();
                 Session["Email"] = reguserdetails.Email.ToString();
                 Session["ContactFullName"] = reguserdetails.ContactFullName;
+                Session["RegisteredUserTypeId"] = reguserdetails.RegisteredUserTypeId;
                 Session["OrgId"] = orgredirect;
             }
 
@@ -58,7 +60,7 @@ namespace Zeus.Controllers
         {
             Session.Abandon();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Access");
         }
 
 

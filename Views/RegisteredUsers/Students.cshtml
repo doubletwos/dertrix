@@ -2,22 +2,30 @@
 
 
 
-	<ul class="nav nav-pills nav-justified">
-		<li role="presentation" class="">@Html.ActionLink("Primary 1", "Students", "RegisteredUsers", new { ij = 1 }, null)</li>
-		<li role="presentation" class="">@Html.ActionLink("Primary 2", "Students", "RegisteredUsers", new { ij = 2 }, null)</li>
-		<li role="presentation" class="">@Html.ActionLink("Primary 3", "Students", "RegisteredUsers", new { ij = 3 }, null)</li>
-		<li role="presentation" class="">@Html.ActionLink("Primary 4", "Students", "RegisteredUsers", new { ij = 4 }, null)</li>
-		<li role="presentation" class="">@Html.ActionLink("Primary 5", "Students", "RegisteredUsers", new { ij = 5 }, null)</li>
-		<li role="presentation" class="">@Html.ActionLink("Primary 6", "Students", "RegisteredUsers", new { ij = 6 }, null)</li>
-	</ul>
+<ul class="nav nav-pills nav-justified">
+	<li role="presentation" class="">@Html.ActionLink("Primary 1", "Students", "RegisteredUsers", new { ij = 1 }, null)</li>
+	<li role="presentation" class="">@Html.ActionLink("Primary 2", "Students", "RegisteredUsers", new { ij = 2 }, null)</li>
+	<li role="presentation" class="">@Html.ActionLink("Primary 3", "Students", "RegisteredUsers", new { ij = 3 }, null)</li>
+	<li role="presentation" class="">@Html.ActionLink("Primary 4", "Students", "RegisteredUsers", new { ij = 4 }, null)</li>
+	<li role="presentation" class="">@Html.ActionLink("Primary 5", "Students", "RegisteredUsers", new { ij = 5 }, null)</li>
+	<li role="presentation" class="">@Html.ActionLink("Primary 6", "Students", "RegisteredUsers", new { ij = 6 }, null)</li>
+</ul>
+
+
+<div>
+	@{
+		Html.RenderAction("AddStudent", "RegisteredUsers");
+	}
+
+	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="">Filter</a>
+</div>
 
 
 
 
-
-<p>
-	@*@Html.ActionLink("Create New", "Create")*@
-</p>
+@*<p>
+	@Html.ActionLink("Create New", "Create")
+</p>*@
 <table class="table table-striped table-bordered">
 	<tr>
 		<th>

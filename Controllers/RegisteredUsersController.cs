@@ -34,8 +34,14 @@ namespace Zeus.Controllers
                 id = i;
             }
 
+
+         
+
+
+            /*Changes will have to be made to the code below of Parents are given roles*/
             return View(db.RegisteredUsers
                  .Where(j => j.SelectedOrg == id)
+                 .Where(f => f.PrimarySchoolUserRoleId != null || f.SecondarySchoolUserRoleId != null) 
                  .Include(t => t.RegisteredUserType)
                  .ToList());
           
@@ -64,16 +70,7 @@ namespace Zeus.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult AddUser()
-        {
-            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
-            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
-            return PartialView("_AddUser");
-        }
-
-
-
-        public ActionResult Students(int? id, int? ij)
+        public ActionResult AddStaff()
         {
             if (Session["OrgId"] == null)
             {
@@ -81,29 +78,85 @@ namespace Zeus.Controllers
             }
 
 
-           
+            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            return PartialView("_AddStaff");
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult AddStudent()  
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.OrgId == i), "ClassId", "ClassName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+            ViewBag.ReligionId = new SelectList(db.Religions, "ReligionId", "ReligionName");
+            ViewBag.GenderId = new SelectList(db.Genders, "GenderId", "GenderName");
+            ViewBag.StudentRegFormId = new SelectList(db.StudentRegForm, "StudentRegFormId", "Name");
+            ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName");
+
+            return PartialView("_AddStudent");
+        }
+
+
+
+        // GET: RegisteredUsers/Students/
+        public ActionResult Students(int? id, int? ij)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
             id = i;
 
-
-          
-            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb ).Select(g => g.ClassId)
+            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId)
                 .FirstOrDefault();
-          
-
 
             var stds = db.RegisteredUsers
-                .Where(s => s.RegisteredUserTypeId == 13)
-                .Where(p => p.ClassId == j )
-               
+                .Where(s => s.RegisteredUserTypeId == 2)
+                .Where(p => p.ClassId == j)
                 .Include(c => c.Class)
                 .Include(g => g.Gender);
-                
-
-
             return View(stds.ToList());
         }
+
+
+        // GET: RegisteredUsers/Students/
+        public ActionResult Staffs(int? id, int? ij)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            id = i;
+            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId)
+                .FirstOrDefault();
+            var stds = db.RegisteredUsers
+                .Where(s => s.RegisteredUserTypeId == 13)
+                .Where(p => p.ClassId == j)
+                .Include(c => c.Class)
+                .Include(g => g.Gender);
+            return View(stds.ToList());
+        }
+
+
+
+
 
 
 
@@ -133,6 +186,7 @@ namespace Zeus.Controllers
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.ClassId == 17) , "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             return View();
         }
@@ -157,9 +211,12 @@ namespace Zeus.Controllers
                 if (registeredUser.SelectedOrgList == null)
                 {
                     registeredUser.SelectedOrg = (int)Session["OrgId"];
+                    var email = "iamanewuser@thisorg.com";
+                    registeredUser.Email = email; 
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
+                    registeredUser.RegisteredUserTypeId = 2;
                 }
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
@@ -202,6 +259,9 @@ namespace Zeus.Controllers
             {
                 return HttpNotFound();
             }
+            registeredUser.SelectedOrg = (int)Session["OrgId"];
+
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
             return View(registeredUser);
         }
@@ -213,10 +273,12 @@ namespace Zeus.Controllers
         {
             if (ModelState.IsValid)
             {
+                registeredUser.SelectedOrg = (int)Session["OrgId"];
                 db.Entry(registeredUser).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
             return View(registeredUser);
         }

@@ -15,27 +15,27 @@ namespace Zeus.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Class
-        public ActionResult Index(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
+        //public ActionResult Index(int? id)
+        //{
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Index", "Access");
+        //    }
 
-            if (Session["Email"] != null)
-            {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
-                id = i;
-            }
+        //    if (Session["OrgId"] != null)
+        //    {
+        //        var rr = Session["OrgId"].ToString();
+        //        int i = Convert.ToInt32(rr);
+        //        id = i;
+        //    }
 
-            return View(db.Classes
-                .Where(k => k.OrgId == id)
-                .Include(l => l.Org)
-                .Include(f => f.RegisteredUsers)
+        //    return View(db.Classes
+        //        .Where(k => k.OrgId == id)
+        //        .Include(l => l.Org)
+        //        .Include(f => f.RegisteredUsers)
                
-                .ToList());
-        }
+        //        .ToList());
+        //}
 
 
 
@@ -76,30 +76,38 @@ namespace Zeus.Controllers
 
 
         // GET: Class/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            @Class @Class = db.Classes.Find(id);
-            if (@Class == null)
-            {
-                return HttpNotFound();
-            }
-            return View(@Class);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    @Class @Class = db.Classes.Find(id);
+        //    if (@Class == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(@Class);
+        //}
 
         // GET: Class/Create
         public ActionResult Create()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             return View();
         }
 
         // POST: Class/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create( @Class @Class)
@@ -118,6 +126,17 @@ namespace Zeus.Controllers
         // GET: Class/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -132,8 +151,6 @@ namespace Zeus.Controllers
         }
 
         // POST: Class/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(@Class @Class)
@@ -151,6 +168,15 @@ namespace Zeus.Controllers
         // GET: Class/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

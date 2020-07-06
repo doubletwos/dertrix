@@ -171,14 +171,20 @@
     <Compile Include="Controllers\AccessController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\DomainsController.cs" />
+    <Compile Include="Controllers\GendersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrgBrandsController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
+    <Compile Include="Controllers\PrimarySchoolUserRolesController.cs" />
     <Compile Include="Controllers\RegisteredUserOrganisationsController.cs" />
     <Compile Include="Controllers\RegisteredUsersController.cs" />
     <Compile Include="Controllers\RegisteredUserTypesController.cs" />
+    <Compile Include="Controllers\ReligionsController.cs" />
+    <Compile Include="Controllers\SecondarySchoolUserRolesController.cs" />
+    <Compile Include="Controllers\StudentRegFormsController.cs" />
+    <Compile Include="Controllers\TribesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -326,6 +332,30 @@
     <Compile Include="Migrations\202007020519533_0619.Designer.cs">
       <DependentUpon>202007020519533_0619.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007032151507_2251.cs" />
+    <Compile Include="Migrations\202007032151507_2251.Designer.cs">
+      <DependentUpon>202007032151507_2251.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007042116262_2216.cs" />
+    <Compile Include="Migrations\202007042116262_2216.Designer.cs">
+      <DependentUpon>202007042116262_2216.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007042122398_2222.cs" />
+    <Compile Include="Migrations\202007042122398_2222.Designer.cs">
+      <DependentUpon>202007042122398_2222.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007042221044_2321.cs" />
+    <Compile Include="Migrations\202007042221044_2321.Designer.cs">
+      <DependentUpon>202007042221044_2321.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007042311274_0011.cs" />
+    <Compile Include="Migrations\202007042311274_0011.Designer.cs">
+      <DependentUpon>202007042311274_0011.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007042355394_0055.cs" />
+    <Compile Include="Migrations\202007042355394_0055.Designer.cs">
+      <DependentUpon>202007042355394_0055.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -339,7 +369,11 @@
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\RegisteredUser.cs" />
     <Compile Include="Models\RegisteredUserOrganisation.cs" />
+    <Compile Include="Models\PrimarySchoolUserRole.cs" />
     <Compile Include="Models\RegisteredUserType.cs" />
+    <Compile Include="Models\Religion.cs" />
+    <Compile Include="Models\SecondarySchoolUserRole.cs" />
+    <Compile Include="Models\StudentRegForm.cs" />
     <Compile Include="Models\Tribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -446,13 +480,45 @@
     <Content Include="Views\RegisteredUserOrganisations\Details.cshtml" />
     <Content Include="Views\RegisteredUserOrganisations\Edit.cshtml" />
     <Content Include="Views\RegisteredUserOrganisations\Index.cshtml" />
-    <Content Include="Views\Shared\_AddUser.cshtml" />
+    <Content Include="Views\Shared\_AddStaff.cshtml" />
     <Content Include="Views\Shared\_AddOrg.cshtml" />
     <Content Include="Views\Class\Create.cshtml" />
     <Content Include="Views\Class\SystemAdminIndex.cshtml" />
     <Content Include="Views\Class\Index.cshtml" />
     <Content Include="Views\RegisteredUsers\Students.cshtml" />
     <Content Include="Views\Class\Delete.cshtml" />
+    <Content Include="Views\Home\SysAdminSetUp.cshtml" />
+    <Content Include="Views\PrimarySchoolUserRoles\Create.cshtml" />
+    <Content Include="Views\PrimarySchoolUserRoles\Delete.cshtml" />
+    <Content Include="Views\PrimarySchoolUserRoles\Details.cshtml" />
+    <Content Include="Views\PrimarySchoolUserRoles\Edit.cshtml" />
+    <Content Include="Views\PrimarySchoolUserRoles\Index.cshtml" />
+    <Content Include="Views\SecondarySchoolUserRoles\Create.cshtml" />
+    <Content Include="Views\SecondarySchoolUserRoles\Delete.cshtml" />
+    <Content Include="Views\SecondarySchoolUserRoles\Details.cshtml" />
+    <Content Include="Views\SecondarySchoolUserRoles\Edit.cshtml" />
+    <Content Include="Views\SecondarySchoolUserRoles\Index.cshtml" />
+    <Content Include="Views\Tribes\Create.cshtml" />
+    <Content Include="Views\Tribes\Delete.cshtml" />
+    <Content Include="Views\Tribes\Details.cshtml" />
+    <Content Include="Views\Tribes\Edit.cshtml" />
+    <Content Include="Views\Tribes\Index.cshtml" />
+    <Content Include="Views\Religions\Create.cshtml" />
+    <Content Include="Views\Religions\Delete.cshtml" />
+    <Content Include="Views\Religions\Details.cshtml" />
+    <Content Include="Views\Religions\Edit.cshtml" />
+    <Content Include="Views\Religions\Index.cshtml" />
+    <Content Include="Views\Genders\Create.cshtml" />
+    <Content Include="Views\Genders\Delete.cshtml" />
+    <Content Include="Views\Genders\Details.cshtml" />
+    <Content Include="Views\Genders\Edit.cshtml" />
+    <Content Include="Views\Genders\Index.cshtml" />
+    <Content Include="Views\StudentRegForms\Create.cshtml" />
+    <Content Include="Views\StudentRegForms\Delete.cshtml" />
+    <Content Include="Views\StudentRegForms\Details.cshtml" />
+    <Content Include="Views\StudentRegForms\Edit.cshtml" />
+    <Content Include="Views\StudentRegForms\Index.cshtml" />
+    <Content Include="Views\Shared\_AddStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -578,6 +644,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007020519533_0619.resx">
       <DependentUpon>202007020519533_0619.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007032151507_2251.resx">
+      <DependentUpon>202007032151507_2251.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007042116262_2216.resx">
+      <DependentUpon>202007042116262_2216.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007042122398_2222.resx">
+      <DependentUpon>202007042122398_2222.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007042221044_2321.resx">
+      <DependentUpon>202007042221044_2321.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007042311274_0011.resx">
+      <DependentUpon>202007042311274_0011.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007042355394_0055.resx">
+      <DependentUpon>202007042355394_0055.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

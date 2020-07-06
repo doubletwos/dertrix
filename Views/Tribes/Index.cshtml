@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Zeus.Models.Tribe>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TribeName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TribeName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TribeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TribeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TribeId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+</div>

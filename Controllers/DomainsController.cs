@@ -17,6 +17,15 @@ namespace Zeus.Controllers
         // GET: Domains
         public ActionResult Index()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return View(db.Domains.ToList());
         }
 
@@ -38,15 +47,22 @@ namespace Zeus.Controllers
         // GET: Domains/Create
         public ActionResult Create()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return View();
         }
 
         // POST: Domains/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DomainId,DomainName")] Domain domain)
+        public ActionResult Create( Domain domain)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +77,15 @@ namespace Zeus.Controllers
         // GET: Domains/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -74,12 +99,11 @@ namespace Zeus.Controllers
         }
 
         // POST: Domains/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DomainId,DomainName")] Domain domain)
+        public ActionResult Edit( Domain domain)
         {
+       
             if (ModelState.IsValid)
             {
                 db.Entry(domain).State = EntityState.Modified;
@@ -92,6 +116,15 @@ namespace Zeus.Controllers
         // GET: Domains/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

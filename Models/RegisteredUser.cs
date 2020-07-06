@@ -62,6 +62,17 @@ namespace Zeus.Models
         public RegisteredUserType RegisteredUserType { get; set; }
 
 
+
+        public int? PrimarySchoolUserRoleId { get; set; }
+        [Display(Name = "Role ")]
+        public PrimarySchoolUserRole PrimarySchoolUserRole { get; set; }
+
+        public int? SecondarySchoolUserRoleId { get; set; }
+        [Display(Name = "Role ")]
+        public SecondarySchoolUserRole SecondarySchoolUserRole { get; set; } 
+
+
+
         public Org Org { get; set; }
 
         public int SelectedOrg { get; set; }     
@@ -76,8 +87,15 @@ namespace Zeus.Models
         public int? GenderId { get; set; }
         public virtual Gender Gender { get; set; }
 
-       
-         
+        public int? ReligionId { get; set; }
+        public virtual Religion Religion { get; set; }
+
+        public int? StudentRegFormId { get; set; }
+        public StudentRegForm StudentRegForm { get; set; }
+      
+
+
+
         public int? TribeId { get; set; }
         public virtual Tribe Tribe { get; set; }
 

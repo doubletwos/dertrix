@@ -1,0 +1,170 @@
+﻿@model Zeus.Models.RegisteredUser
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Student</a>
+
+<div class="modal fade" id="myModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Add New Student </h3>
+
+			</div>
+			<div class="modal-body">
+
+
+
+				<form id="StudentForm">
+
+					@Html.AntiForgeryToken()
+
+					<div class="form-horizontal">
+						<h4></h4>
+						<hr />
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						<div class="form-group">
+							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+	
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.ClassId, "ClassId", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("ClassId", null,"", htmlAttributes: new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.GenderId, "GenderId", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("GenderId", null, "", htmlAttributes: new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.ReligionId, "ReligionId", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("ReligionId", null,"", htmlAttributes: new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.StudentRegFormId, "StudentRegFormId", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("StudentRegFormId", null,"", htmlAttributes: new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.StudentRegFormId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.TribeId, "TribeId", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("TribeId", null,"", htmlAttributes: new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.TribeId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						@*<div class="form-group">
+							@Html.LabelFor(model => model.EnrolmentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.EnrolmentDate, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.EnrolmentDate, "", new { @class = "text-danger" })
+							</div>
+						</div>*@
+
+					
+					</div>
+
+				</form>
+
+			</div>
+
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<input type="button" value="Add Student" class="btn btn-success" id="btnSubmit" />
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+</div>
+
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		debugger
+
+		//$("#RegisteredUserTypeId").change(function () {
+
+		//	var reg = $("#RegisteredUserTypeId").val();
+		//	if (reg == 13) {
+		//		$("#ClassId").show(function () {
+		//			$("#ClassId").slideDown();
+		//		});
+		//		$("#ClassId0").show(function () {
+		//			$("#ClassId0").slideDown();
+		//		});
+		//	}
+
+		//	else {
+		//		$("#ClassId").hide(function () {
+		//			$("#ClassId").slideUp();
+		//		});
+		//		$("#ClassId0").hide(function () {
+		//			$("#ClassId0").slideUp();
+		//		});
+		//	}
+		//})
+		$("#btnSubmit").click(function () {
+			debugger
+			var data = $("#StudentForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Create",
+				data: data,
+				success: function (response) {
+					alert("New user created");
+					$("#myModal").modal("hide");
+					$("#StudentForm")[0].reset();
+				}
+			})
+		})
+	})
+</script>

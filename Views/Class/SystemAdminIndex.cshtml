@@ -1,45 +1,50 @@
 ﻿@model IEnumerable<Zeus.Models.Class>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+	@Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Org.OrgName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassRefNumb)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassIsActive)
-        </th>
-        <th></th>
-    </tr>
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Org.OrgName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.ClassName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.ClassRefNumb)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.ClassIsActive)
+		</th>
+		<th></th>
+	</tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Org.OrgName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassRefNumb)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassIsActive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClassId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClassId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClassId })
-        </td>
-    </tr>
+	<tr>
+		<td>
+			@Html.DisplayFor(modelItem => item.Org.OrgName)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.ClassName)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.ClassRefNumb)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.ClassIsActive)
+		</td>
+		<td>
+			@Html.ActionLink("Edit", "Edit", new { id=item.ClassId }) |
+			@Html.ActionLink("Details", "Details", new { id=item.ClassId }) |
+			@Html.ActionLink("Delete", "Delete", new { id=item.ClassId })
+		</td>
+	</tr>
 }
 
 </table>
+
+
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+</div>

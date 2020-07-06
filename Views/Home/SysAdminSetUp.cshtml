@@ -1,0 +1,66 @@
+﻿
+@{
+	ViewBag.Title = "SysAdminSetUp";
+}
+
+<h2>System Admin Set Up Page</h2>
+
+
+
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Organisation Classes", "SystemAdminIndex", "Class", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Organisation Types", "Index", "OrgTypes", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Organisation Brands", "Index", "OrgBrands", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Organisation Domains", "Index", "Domains", "", new { @class = "btn btn-primary" })</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+			<p>@Html.ActionLink("System User Types", "Index", "RegisteredUserTypes", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Tribes", "Index", "Tribes", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Religion", "Index", "Religions", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Genders", "Index", "Genders", "", new { @class = "btn btn-primary" })</p>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-3">
+
+			@*<p>@Html.ActionLink("", "", "", "", new { @class = "btn btn-primary" })</p>*@
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Student Type", "Index", "StudentRegForms", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Secondary School Roles", "Index", "SecondarySchoolUserRoles", "", new { @class = "btn btn-primary" })</p>
+		</div>
+		<div class="col-md-3">
+			<p>@Html.ActionLink("Primary School Roles", "Index", "PrimarySchoolUserRoles", "", new { @class = "btn btn-primary" })</p>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+</div>
