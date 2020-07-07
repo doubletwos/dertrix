@@ -17,6 +17,21 @@ namespace Zeus.Controllers
         // GET: RegisteredUserTypes
         public ActionResult Index()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             return View(db.RegisteredUserTypes.ToList());
         }
 
@@ -24,6 +39,21 @@ namespace Zeus.Controllers
         // GET: RegisteredUserTypes/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,15 +69,28 @@ namespace Zeus.Controllers
         // GET: RegisteredUserTypes/Create
         public ActionResult Create()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             return View();
         }
 
         // POST: RegisteredUserTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RegisteredUserTypeId,RegisteredUserTypeName")] RegisteredUserType registeredUserType)
+        public ActionResult Create(RegisteredUserType registeredUserType)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +105,22 @@ namespace Zeus.Controllers
         // GET: RegisteredUserTypes/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -75,11 +134,9 @@ namespace Zeus.Controllers
         }
 
         // POST: RegisteredUserTypes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RegisteredUserTypeId,RegisteredUserTypeName")] RegisteredUserType registeredUserType)
+        public ActionResult Edit(RegisteredUserType registeredUserType)
         {
             if (ModelState.IsValid)
             {
@@ -93,6 +150,20 @@ namespace Zeus.Controllers
         // GET: RegisteredUserTypes/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

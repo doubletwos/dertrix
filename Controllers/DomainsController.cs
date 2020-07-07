@@ -22,16 +22,28 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
+            if ((int)Session["OrgId"] != 3)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+
             return View(db.Domains.ToList());
         }
 
         // GET: Domains/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -52,10 +64,11 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
+            if ((int)Session["OrgId"] != 3)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             return View();
         }
 
@@ -80,6 +93,11 @@ namespace Zeus.Controllers
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if ((int)Session["RegisteredUserTypeId"] != 1)
@@ -119,6 +137,11 @@ namespace Zeus.Controllers
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if ((int)Session["RegisteredUserTypeId"] != 1)

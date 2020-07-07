@@ -17,22 +17,27 @@ namespace Zeus.Controllers
         // GET: RegisteredUserOrganisations
         public ActionResult Index(int? id)
         {
-          
-            var test1  = Session["OrgId"].ToString();
-
-
-            //var registereduser = db.RegisteredUserOrganisations.FirstOrDefault(c => c.OrgId == id);
-
-            if (id == null)
+            if (Session["OrgId"] == null)
             {
-
-                int i = Convert.ToInt32(test1);
-                id = i;
-
-
-
+                return RedirectToAction("Index", "Access");
             }
 
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var test1  = Session["OrgId"].ToString();
+            if (id == null)
+            {
+                int i = Convert.ToInt32(test1);
+                id = i;
+            }
             return View(db.RegisteredUserOrganisations.Where(i => i.OrgId == id).ToList());
 
 
@@ -41,6 +46,20 @@ namespace Zeus.Controllers
         // GET: RegisteredUserOrganisations/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -56,18 +75,46 @@ namespace Zeus.Controllers
         // GET: RegisteredUserOrganisations/Create
         public ActionResult Create()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName");
             return View();
         }
 
         // POST: RegisteredUserOrganisations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RegisteredUserOrganisationId,RegisteredUserId,Email,OrgId")] RegisteredUserOrganisation registeredUserOrganisation)
+        public ActionResult Create(RegisteredUserOrganisation registeredUserOrganisation)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
             if (ModelState.IsValid)
             {
                 db.RegisteredUserOrganisations.Add(registeredUserOrganisation);
@@ -83,6 +130,20 @@ namespace Zeus.Controllers
         // GET: RegisteredUserOrganisations/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -98,11 +159,9 @@ namespace Zeus.Controllers
         }
 
         // POST: RegisteredUserOrganisations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RegisteredUserOrganisationId,RegisteredUserId,Email,OrgId")] RegisteredUserOrganisation registeredUserOrganisation)
+        public ActionResult Edit( RegisteredUserOrganisation registeredUserOrganisation)
         {
             if (ModelState.IsValid)
             {
@@ -118,6 +177,20 @@ namespace Zeus.Controllers
         // GET: RegisteredUserOrganisations/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

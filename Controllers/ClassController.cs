@@ -14,28 +14,7 @@ namespace Zeus.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Class
-        //public ActionResult Index(int? id)
-        //{
-        //    if (Session["OrgId"] == null)
-        //    {
-        //        return RedirectToAction("Index", "Access");
-        //    }
 
-        //    if (Session["OrgId"] != null)
-        //    {
-        //        var rr = Session["OrgId"].ToString();
-        //        int i = Convert.ToInt32(rr);
-        //        id = i;
-        //    }
-
-        //    return View(db.Classes
-        //        .Where(k => k.OrgId == id)
-        //        .Include(l => l.Org)
-        //        .Include(f => f.RegisteredUsers)
-               
-        //        .ToList());
-        //}
 
 
 
@@ -58,37 +37,16 @@ namespace Zeus.Controllers
                 id = i;
                 var classes = db.Classes.Include(j => j.Org);
                 return View(classes.ToList());
-
-
             }
             else
 
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
         }
 
 
 
 
 
-
-
-
-
-        // GET: Class/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    @Class @Class = db.Classes.Find(id);
-        //    if (@Class == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(@Class);
-        //}
 
         // GET: Class/Create
         public ActionResult Create()
@@ -98,14 +56,17 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
+            if ((int)Session["OrgId"] != 3)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             return View();
         }
+
+
 
         // POST: Class/Create
         [HttpPost]
@@ -131,10 +92,16 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             if ((int)Session["RegisteredUserTypeId"] != 1)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
 
 
             if (id == null)
@@ -173,10 +140,17 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             if ((int)Session["RegisteredUserTypeId"] != 1)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -210,3 +184,62 @@ namespace Zeus.Controllers
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// GET: Class
+//public ActionResult Index(int? id)
+//{
+//    if (Session["OrgId"] == null)
+//    {
+//        return RedirectToAction("Index", "Access");
+//    }
+
+//    if (Session["OrgId"] != null)
+//    {
+//        var rr = Session["OrgId"].ToString();
+//        int i = Convert.ToInt32(rr);
+//        id = i;
+//    }
+
+//    return View(db.Classes
+//        .Where(k => k.OrgId == id)
+//        .Include(l => l.Org)
+//        .Include(f => f.RegisteredUsers)
+
+//        .ToList());
+//}
+
+
+
+// GET: Class/Details/5
+//public ActionResult Details(int? id)
+//{
+//    if (id == null)
+//    {
+//        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+//    }
+//    @Class @Class = db.Classes.Find(id);
+//    if (@Class == null)
+//    {
+//        return HttpNotFound();
+//    }
+//    return View(@Class);
+//}

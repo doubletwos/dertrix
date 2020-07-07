@@ -17,12 +17,30 @@ namespace Zeus.Controllers
         // GET: SecondarySchoolUserRoles
         public ActionResult Index()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return View(db.SecondarySchoolUserRoles.ToList());
         }
 
         // GET: SecondarySchoolUserRoles/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,15 +56,22 @@ namespace Zeus.Controllers
         // GET: SecondarySchoolUserRoles/Create
         public ActionResult Create()
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             return View();
         }
 
         // POST: SecondarySchoolUserRoles/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SecondarySchoolUserRoleId,RoleName")] SecondarySchoolUserRole secondarySchoolUserRole)
+        public ActionResult Create(SecondarySchoolUserRole secondarySchoolUserRole)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +86,20 @@ namespace Zeus.Controllers
         // GET: SecondarySchoolUserRoles/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -74,11 +113,9 @@ namespace Zeus.Controllers
         }
 
         // POST: SecondarySchoolUserRoles/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SecondarySchoolUserRoleId,RoleName")] SecondarySchoolUserRole secondarySchoolUserRole)
+        public ActionResult Edit(SecondarySchoolUserRole secondarySchoolUserRole)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +129,20 @@ namespace Zeus.Controllers
         // GET: SecondarySchoolUserRoles/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if ((int)Session["RegisteredUserTypeId"] != 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

@@ -34,10 +34,6 @@ namespace Zeus.Controllers
                 id = i;
             }
 
-
-         
-
-
             /*Changes will have to be made to the code below of Parents are given roles*/
             return View(db.RegisteredUsers
                  .Where(j => j.SelectedOrg == id)
@@ -53,6 +49,7 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult Regs()
         {
+
             return PartialView("_Secure");
         }
 
@@ -62,9 +59,7 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult Nav()
         {
-
-           
-
+          
             return PartialView("_Nav");
         }
 
@@ -72,10 +67,7 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult AddStaff()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
+        
 
 
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
@@ -88,10 +80,6 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult AddStudent()  
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
 
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
@@ -165,6 +153,11 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -180,7 +173,10 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Create
         public ActionResult Create()
         {
-
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
 
 
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
@@ -250,6 +246,11 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -286,6 +287,10 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

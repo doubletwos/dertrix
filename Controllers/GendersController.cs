@@ -22,27 +22,16 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
+            if ((int)Session["OrgId"] != 3)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+
             return View(db.Genders.ToList());
         }
 
-        // GET: Genders/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Gender gender = db.Genders.Find(id);
-        //    if (gender == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(gender);
-        //}
+
 
         // GET: Genders/Create
         public ActionResult Create()
@@ -50,6 +39,11 @@ namespace Zeus.Controllers
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if ((int)Session["RegisteredUserTypeId"] != 1)
@@ -82,6 +76,11 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             if ((int)Session["RegisteredUserTypeId"] != 1)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -101,7 +100,7 @@ namespace Zeus.Controllers
         // POST: Genders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "GenderId,GenderName")] Gender gender)
+        public ActionResult Edit(Gender gender)
         {
             if (ModelState.IsValid)
             {
@@ -118,6 +117,10 @@ namespace Zeus.Controllers
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
+            }
+            if ((int)Session["OrgId"] != 3)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if ((int)Session["RegisteredUserTypeId"] != 1)
@@ -157,3 +160,40 @@ namespace Zeus.Controllers
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// GET: Genders/Details/5
+//public ActionResult Details(int? id)
+//{
+//    if (id == null)
+//    {
+//        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+//    }
+//    Gender gender = db.Genders.Find(id);
+//    if (gender == null)
+//    {
+//        return HttpNotFound();
+//    }
+//    return View(gender);
+//}
