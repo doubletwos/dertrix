@@ -9,7 +9,9 @@ namespace Zeus.Models
     {
         public int OrgTypeId { get; set; }
 
-        public string OrgTypeName { get; set; } 
+        public string OrgTypeName { get; set; }
+
+     
 
 
     }

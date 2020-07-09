@@ -36,7 +36,7 @@ namespace Zeus.Controllers
             }
 
 
-            if ((int)Session["OrgId"] == 3)
+            if ((int)Session["OrgId"] == 23)
             {
                 return View(db.RegisteredUsers
                .Where(j => j.SelectedOrg == id)
@@ -258,9 +258,13 @@ namespace Zeus.Controllers
                 /*Adding users to the RegUserOrg(Many to Many)*/
                 var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                 {
-                    OrgId = registeredUser.SelectedOrg,
                     RegisteredUserId = registeredUser.RegisteredUserId,
-                    Email = registeredUser.Email
+                    OrgId = registeredUser.SelectedOrg,
+                    Email = registeredUser.Email,
+                    FirstName = registeredUser.FirstName,
+                    LastName = registeredUser.LastName
+
+
                 };
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
 

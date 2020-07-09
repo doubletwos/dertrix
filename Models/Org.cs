@@ -21,24 +21,26 @@ namespace Zeus.Models
         public DateTime? CreationDate { get; set; }
 
 
-
-
         [Display(Name = "Domain")]
         public int DomainId { get; set; }
         public Domain Domain { get; set; }  
 
-        [Display(Name = "Organisation Type")]
-        public int OrgTypeId { get; set; }
-        public OrgType OrgType { get; set; }
+
 
         [Display(Name = "Organisation Brand")]
 
         public int OrgBrandId { get; set; }
         public OrgBrand OrgBrand { get; set; }
 
-    
 
-   
+        public int? OrgTypeId { get; set; }
+        public OrgType OrgType { get; set; }
+
+
+
+
+
+
 
 
 

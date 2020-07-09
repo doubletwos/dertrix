@@ -43,7 +43,7 @@ namespace Zeus.Controllers
             }
 
 
-            if (orgredirect == 3)
+            if (orgredirect == 23)
             {
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
             }

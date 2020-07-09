@@ -175,6 +175,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrgBrandsController.cs" />
+    <Compile Include="Controllers\OrgOrgTypesController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
     <Compile Include="Controllers\PrimarySchoolUserRolesController.cs" />
@@ -356,6 +357,30 @@
     <Compile Include="Migrations\202007042355394_0055.Designer.cs">
       <DependentUpon>202007042355394_0055.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007091300565_1400.cs" />
+    <Compile Include="Migrations\202007091300565_1400.Designer.cs">
+      <DependentUpon>202007091300565_1400.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091345318_1445.cs" />
+    <Compile Include="Migrations\202007091345318_1445.Designer.cs">
+      <DependentUpon>202007091345318_1445.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091350134_1450.cs" />
+    <Compile Include="Migrations\202007091350134_1450.Designer.cs">
+      <DependentUpon>202007091350134_1450.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091852042_1951.cs" />
+    <Compile Include="Migrations\202007091852042_1951.Designer.cs">
+      <DependentUpon>202007091852042_1951.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091906489_2006.cs" />
+    <Compile Include="Migrations\202007091906489_2006.Designer.cs">
+      <DependentUpon>202007091906489_2006.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091924415_2024.cs" />
+    <Compile Include="Migrations\202007091924415_2024.Designer.cs">
+      <DependentUpon>202007091924415_2024.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -366,6 +391,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Org.cs" />
     <Compile Include="Models\OrgBrand.cs" />
+    <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\RegisteredUser.cs" />
     <Compile Include="Models\RegisteredUserOrganisation.cs" />
@@ -563,6 +589,11 @@
     <Content Include="Views\StudentRegForms\Index.cshtml" />
     <Content Include="Views\Shared\_AddStudent.cshtml" />
     <Content Include="Views\Shared\_AddSysAdmin.cshtml" />
+    <Content Include="Views\OrgOrgTypes\Create.cshtml" />
+    <Content Include="Views\OrgOrgTypes\Delete.cshtml" />
+    <Content Include="Views\OrgOrgTypes\Details.cshtml" />
+    <Content Include="Views\OrgOrgTypes\Edit.cshtml" />
+    <Content Include="Views\OrgOrgTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -706,6 +737,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007042355394_0055.resx">
       <DependentUpon>202007042355394_0055.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091300565_1400.resx">
+      <DependentUpon>202007091300565_1400.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091345318_1445.resx">
+      <DependentUpon>202007091345318_1445.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091350134_1450.resx">
+      <DependentUpon>202007091350134_1450.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091852042_1951.resx">
+      <DependentUpon>202007091852042_1951.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091906489_2006.resx">
+      <DependentUpon>202007091906489_2006.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091924415_2024.resx">
+      <DependentUpon>202007091924415_2024.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

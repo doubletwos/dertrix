@@ -25,12 +25,12 @@ namespace Zeus.Controllers
             {
                 return RedirectToAction("Index", "Access");
             }
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if ((int)Session["OrgId"] == 3)
+            if ((int)Session["OrgId"] == 23)
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
@@ -56,7 +56,7 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -92,7 +92,7 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -140,7 +140,7 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

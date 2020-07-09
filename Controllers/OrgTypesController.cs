@@ -73,6 +73,11 @@ namespace Zeus.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+
+
+
+
             return View();
         }
 

@@ -12,6 +12,13 @@ namespace Zeus.Models
         public int RegisteredUserId { get; set; }
         public RegisteredUser RegisteredUser { get; set; }
 
+   
+        public int OrgId { get; set; }
+        public Org Org { get; set; }
+
+
+
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -25,11 +32,6 @@ namespace Zeus.Models
         }
 
         public string Email { get; set; }
-
-       
-
-        public int OrgId { get; set; }
-        public Org Org { get; set; }
 
 
 

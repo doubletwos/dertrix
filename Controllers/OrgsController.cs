@@ -15,7 +15,7 @@ namespace Zeus.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Orgs
+       // GET: Orgs
         public ActionResult Index(int? id)
         {
             if (Session["OrgId"] == null)
@@ -46,17 +46,17 @@ namespace Zeus.Controllers
             {
                 return RedirectToAction("Index", "Access");
             }
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-         
-            if ((int)Session["OrgId"] == 3)
+
+            if ((int)Session["OrgId"] == 23)
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 id = i;
-                var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+                var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand);
                 return View(orgs.ToList());
 
             }
@@ -71,6 +71,7 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult AddOrg()
         {
+            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
@@ -112,7 +113,7 @@ namespace Zeus.Controllers
             {
                 return RedirectToAction("Index", "Access");
             }
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -147,7 +148,19 @@ namespace Zeus.Controllers
 
                 db.Orgs.Add(org);
                 db.SaveChanges();
-              
+
+
+                var orgOrgType = new OrgOrgType()
+                {
+                    OrgId = org.OrgId,
+                    OrgName = org.OrgName,
+                    OrgTypeId = (int)org.OrgTypeId
+
+                };
+
+                db.OrgOrgTypes.Add(orgOrgType);
+                db.SaveChanges();
+
                 return RedirectToAction("Index", "Orgs", new { id = orgredirect });
             }
 
@@ -215,7 +228,7 @@ namespace Zeus.Controllers
             {
                 return RedirectToAction("Index", "Access");
             }
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -246,7 +259,7 @@ namespace Zeus.Controllers
             Org org = db.Orgs.Find(id);
             db.Orgs.Remove(org);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("SystemAdminIndex");
         }
 
         protected override void Dispose(bool disposing)

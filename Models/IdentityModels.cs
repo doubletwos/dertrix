@@ -35,7 +35,9 @@ namespace Zeus.Models
         public DbSet<Religion> Religions { get; set; }
         public DbSet<SecondarySchoolUserRole> SecondarySchoolUserRoles { get; set; }
         public DbSet<StudentRegForm> StudentRegForm { get; set; }
-        
+        public DbSet<OrgOrgType> OrgOrgTypes { get; set; }
+
+
 
 
 

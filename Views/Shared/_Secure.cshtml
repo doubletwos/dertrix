@@ -6,7 +6,7 @@
 	@if (Session["RegisteredUserId"] == null)
 	{
 		<li>@Html.ActionLink("Sign in", "Index", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
-		@*<li>@Html.ActionLink("Register", "Create", "RegisteredUsers", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>*@
+		<li>@Html.ActionLink("Register", "Create", "RegisteredUsers", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
 
 	}
 
