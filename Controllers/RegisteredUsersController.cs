@@ -21,26 +21,42 @@ namespace Zeus.Controllers
         public ActionResult Index(int? id)
         {
             /* Redirect back to Log in Page if session == null*/
-            if (Session["Email"] == null)
+            if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
 
             /* Populate user list for non superusers if session is not null*/
-            if (Session["Email"] != null)
+            if (Session["OrgId"] != null)
+
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 id = i;
             }
 
-            /*Changes will have to be made to the code below of Parents are given roles*/
-            return View(db.RegisteredUsers
-                 .Where(j => j.SelectedOrg == id)
-                 .Where(f => f.PrimarySchoolUserRoleId != null || f.SecondarySchoolUserRoleId != null) 
-                 .Include(t => t.RegisteredUserType)
-                 .ToList());
-          
+
+            if ((int)Session["OrgId"] == 3)
+            {
+                return View(db.RegisteredUsers
+               .Where(j => j.SelectedOrg == id)
+               .Include(t => t.RegisteredUserType)
+               .ToList());
+            }
+
+            else
+            {
+
+                /*Changes will have to be made to the code below of Parents are given roles*/
+                return View(db.RegisteredUsers
+                     .Where(j => j.SelectedOrg == id)
+                     .Where(f => f.PrimarySchoolUserRoleId != null || f.SecondarySchoolUserRoleId != null)
+                     .Include(t => t.RegisteredUserType)
+                     .ToList());
+
+            }
+
+           
         }
 
 
@@ -95,6 +111,26 @@ namespace Zeus.Controllers
 
             return PartialView("_AddStudent");
         }
+
+
+        [ChildActionOnly]
+        public ActionResult AddSysAdmin()
+        {
+
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+
+            return PartialView("_AddSysAdmin");
+        }
+
+
+
+
+
+
 
 
 
@@ -173,10 +209,7 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Create
         public ActionResult Create()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
+      
 
 
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
@@ -195,12 +228,16 @@ namespace Zeus.Controllers
             /*Accepting all state of model*/
             if (!(ModelState.IsValid)  || ModelState.IsValid)
             {
-                /*When users are added via registration form*/
+                /*When users are added at Zeus Level*/
                 if (registeredUser.SelectedOrgList != null)
                 {
                     var zeususer = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
                     int i = Convert.ToInt32(zeususer);
+                    var pwd = "iamanewuser";
+                    registeredUser.Password = pwd;
+                    registeredUser.ConfirmPassword = pwd;
                     registeredUser.SelectedOrg = i;
+                    registeredUser.EnrolmentDate = DateTime.Now;
                 }
 
                 /*When users are added at school level*/
@@ -213,6 +250,7 @@ namespace Zeus.Controllers
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.EnrolmentDate = DateTime.Now;
                 }
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();

@@ -7,8 +7,26 @@
 
 
 	<div>
+
+
 		@{
-			Html.RenderAction("AddStaff", "RegisteredUsers");
+			if ((int)Session["RegisteredUserTypeId"] == 1)
+			{
+
+
+				Html.RenderAction("AddSysAdmin", "RegisteredUsers");
+
+			}
+
+			if ((int)Session["OrgId"] != 3)
+			{
+				Html.RenderAction("AddStaff", "RegisteredUsers");
+			}
+
+
+
+		
+
 		}
 
 		<a href="#" class="btn btn-primary" data-toggle="modal" data-target="">Filter</a>
