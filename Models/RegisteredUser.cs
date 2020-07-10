@@ -17,10 +17,12 @@ namespace Zeus.Models
         public int RegisteredUserId { get; set; }
 
         [Display(Name = "User's First Name")]
+        [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
         [Required(ErrorMessage = "Your first name is required")]
         public string FirstName { get; set; }
 
         [Display(Name = "User's Last Name")]
+        [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
         [Required(ErrorMessage = "Your last name is required")]
         public string LastName { get; set; }
 

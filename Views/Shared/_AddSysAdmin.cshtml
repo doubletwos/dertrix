@@ -1,11 +1,9 @@
 ﻿@model Zeus.Models.RegisteredUser
 
 
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Zeus Staff</a>
+
 
 <div class="modal fade" id="myModal">
 	<div class="modal-dialog">
@@ -13,28 +11,20 @@
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
 				<h3 class="modal-title">Add New Zeus Staff</h3>
-
 			</div>
 			<div class="modal-body">
-
-
-
 				<form id="myForm">
-
 					@Html.AntiForgeryToken()
-
 					<div class="form-horizontal">
-
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 						<div class="form-group">
 							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @id = "First_Name", @class = "form-control required" } })
 								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -42,7 +32,6 @@
 								@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -50,19 +39,13 @@
 								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
 								@Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
-
 							</div>
 						</div>
-
-
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.RegisteredUserTypeId, "UserType", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -70,35 +53,21 @@
 								@Html.ValidationMessageFor(model => model.RegisteredUserTypeId, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							<div class="col-md-10">
 								@Html.DropDownList("SelectedOrgList", null, "", htmlAttributes: new { @id = "SelectedOrgList", @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.SelectedOrgList, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 					</div>
-
-
 				</form>
-
 			</div>
-
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<input type="button" value="Add User" class="btn btn-success" id="btnSubmit" />
-
 			</div>
-
-
-
-
 		</div>
-
-
 	</div>
-
 </div>
 
 
@@ -122,11 +91,33 @@
 		debugger
 
 		$('#SelectedOrgList').hide();
-		$('#SelectedOrgList').val("3");
+		$('#SelectedOrgList').val("23");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		$("#btnSubmit").click(function () {
 			debugger
 			var data = $("#myForm").serialize();
+
+			
+
 			$.ajax({
 				type: "POST",
 				url: "/RegisteredUsers/Create",

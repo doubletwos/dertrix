@@ -1,25 +1,20 @@
 ﻿@model Zeus.Models.RegisteredUser
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
 
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Student</a>
-
 <div class="modal fade" id="myModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
 				<h3 class="modal-title">Add New Student </h3>
-
 			</div>
 			<div class="modal-body">
-
-
-
 				<form id="StudentForm">
-
 					@Html.AntiForgeryToken()
-
 					<div class="form-horizontal">
 						<h4></h4>
 						<hr />
@@ -27,11 +22,10 @@
 						<div class="form-group">
 							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control " } })
 								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -39,9 +33,6 @@
 								@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
-
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.ClassId, "ClassId", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -49,7 +40,6 @@
 								@Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.GenderId, "GenderId", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -57,7 +47,6 @@
 								@Html.ValidationMessageFor(model => model.GenderId, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.ReligionId, "ReligionId", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -65,7 +54,6 @@
 								@Html.ValidationMessageFor(model => model.ReligionId, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.StudentRegFormId, "StudentRegFormId", htmlAttributes: new { @id = "StudentRegFormId1", @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -73,7 +61,6 @@
 								@Html.ValidationMessageFor(model => model.StudentRegFormId, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.TribeId, "TribeId", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -81,49 +68,37 @@
 								@Html.ValidationMessageFor(model => model.TribeId, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
-
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.DateOfBirth, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker" } })
+								@Html.EditorFor(model => model.DateOfBirth, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
 								@Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
-
 					</div>
-
 				</form>
-
 			</div>
-
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<input type="button" value="Add Student" class="btn btn-success" id="btnSubmit" />
-
 			</div>
-
 		</div>
-
-
 	</div>
-
 </div>
 
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet"/>
 
-<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 
-
-
-
-@section Scripts {
-
-	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-	@Scripts.Render("~/bundles/jqueryval")
-	<script>
+<script>
+	$(document).ready(function () {
+		debugger
+		$("#StudentRegFormId").hide();
+		$("#StudentRegFormId1").hide();
+		$("#StudentRegFormId").val("1");
+		$.noConflict();
 		$(function () {
 			$(".datepicker").datepicker({
 				dateFormat: "dd-mm-yy",
@@ -131,92 +106,21 @@
 				changeYear: true,
 				yearRange: "-35:+35",
 			});
-
 		})
-  </script>
-}
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<script>
-	
-		$(document).ready(function () {
+		$("#btnSubmit").click(function () {
 			debugger
-
-
-	
-
-
-
-
-
-			$("#StudentRegFormId").hide();
-			$("#StudentRegFormId1").hide();
-			$("#StudentRegFormId").val("1");
-
-
-
-
-
-			$(function () {
-				$(".datepicker").datepicker({
-					dateFormat: "dd-mm-yy",
-					changeMonth: true,
-					changeYear: true,
-					yearRange: "-35:+35",
-				});
-
+			var data = $("#StudentForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Create",
+				data: data,
+				success: function (response) {
+					alert("New user created");
+					$("#myModal").modal("hide");
+					$("#StudentForm")[0].reset();
+				}
 			})
-
-
-
-
-			$("#btnSubmit").click(function () {
-				debugger
-				var data = $("#StudentForm").serialize();
-				$.ajax({
-					type: "POST",
-					url: "/RegisteredUsers/Create",
-					data: data,
-					success: function (response) {
-						alert("New user created");
-						$("#myModal").modal("hide");
-						$("#StudentForm")[0].reset();
-					}
-				})
-			})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		})
+	})
+</script>
 
-
-	</script>
