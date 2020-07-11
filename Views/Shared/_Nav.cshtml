@@ -57,6 +57,12 @@
 
 					@if ((int)Session["OrgId"] == 23)
 					{
+
+						<li>@Html.ActionLink("Home", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
+
+
+
+
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -70,8 +76,20 @@
 
 
 
+
+
+	
+
+
+
+
 					@if ((int)Session["OrgId"] != 23)
 					{
+
+						var session = ((int)Session["OrgId"]).ToString();
+
+						<li>@Html.ActionLink("Home", "Index", "Orgs", new { id = session }, null)</li>
+
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -96,7 +114,7 @@
 
 								<li role="presentation" class="active">@Html.ActionLink("Portal Set Up", "SysAdminSetUp", "Home")</li>
 								<li role="separator" class="divider"></li>
-						    	<li role="presentation" class="active">@Html.ActionLink("Organisation Management", "SystemAdminIndex", "Orgs")</li>
+								<li role="presentation" class="active">@Html.ActionLink("Organisation Management", "SystemAdminIndex", "Orgs")</li>
 								<li role="separator" class="divider"></li>
 								<li role="presentation" class="active">@Html.ActionLink("Class Management", "SystemAdminIndex", "Class")</li>
 							</ul>

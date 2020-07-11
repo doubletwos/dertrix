@@ -56,7 +56,9 @@ namespace Zeus.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 id = i;
-                var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand);
+                var orgs = db.Orgs
+                    .Include(o => o.Domain)
+                    .Include(o => o.OrgBrand);
                 return View(orgs.ToList());
 
             }
@@ -145,7 +147,7 @@ namespace Zeus.Controllers
 
             if (ModelState.IsValid)
             {
-
+                org.CreationDate = DateTime.Now;
                 db.Orgs.Add(org);
                 db.SaveChanges();
 
@@ -181,14 +183,6 @@ namespace Zeus.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -213,11 +207,12 @@ namespace Zeus.Controllers
             {
                 db.Entry(org).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("SystemAdminIndex");
             }
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", org.OrgBrandId);
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", org.OrgTypeId);
+
             return View(org);
         }
 

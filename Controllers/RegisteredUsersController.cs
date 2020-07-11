@@ -70,6 +70,26 @@ namespace Zeus.Controllers
         }
 
 
+        [ChildActionOnly]
+        public ActionResult RegisterUser()
+        {
+
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+            ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.OrgId == i), "ClassId", "ClassName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+
+
+
+
+            return PartialView("_RegisterUser");
+        }
+
+
 
 
         [ChildActionOnly]
@@ -216,6 +236,7 @@ namespace Zeus.Controllers
             ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.ClassId == 17) , "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             return View();
         }
@@ -238,6 +259,12 @@ namespace Zeus.Controllers
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.SelectedOrg = i;
                     registeredUser.EnrolmentDate = DateTime.Now;
+
+                    if (!(registeredUser.PrimarySchoolUserRoleId == null) || !(registeredUser.SecondarySchoolUserRoleId == null))
+                    {
+                        registeredUser.RegisteredUserTypeId = 2;
+                    }
+
                 }
 
                 /*When users are added at school level*/
@@ -251,6 +278,14 @@ namespace Zeus.Controllers
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.RegisteredUserTypeId = 2;
                     registeredUser.EnrolmentDate = DateTime.Now;
+
+
+              
+
+
+
+
+
                 }
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
