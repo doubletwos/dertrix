@@ -112,6 +112,8 @@ namespace Zeus.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EnrolmentDate  { get; set; }
 
+        public string CreatedBy { get; set; }
+
 
 
 

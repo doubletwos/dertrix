@@ -39,6 +39,9 @@ namespace Zeus.Models
         public OrgType OrgType { get; set; }
 
 
+        public string CreatedBy { get; set; }  
+
+
 
 
 

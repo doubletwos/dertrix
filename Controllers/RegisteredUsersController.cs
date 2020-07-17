@@ -83,9 +83,6 @@ namespace Zeus.Controllers
             ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.OrgId == i), "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
 
-
-
-
             return PartialView("_RegisterUser");
         }
 
@@ -103,9 +100,6 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult AddStaff()
         {
-        
-
-
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
@@ -148,14 +142,41 @@ namespace Zeus.Controllers
 
 
 
+        public ActionResult StudentDetails(int Id)
+        {
+
+            //var stud = db.RegisteredUsers.Find(Id);
+
+            var stud = db.RegisteredUsers.Where(x => x.RegisteredUserId == Id);
+           
+
+
+            ViewBag.RegisteredUser = stud;
+
+            //RegisteredUser registeredUser = db.RegisteredUsers.Find(Id);
+            //if (registeredUser == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(registeredUser);
+
+
+            return PartialView("_StudentDetails");
+        }
 
 
 
 
 
 
-        // GET: RegisteredUsers/Students/
-        public ActionResult Students(int? id, int? ij)
+
+
+
+
+
+
+            // GET: RegisteredUsers/Students/
+            public ActionResult Students(int? id, int? ij)
         {
             if (Session["OrgId"] == null)
             {
@@ -247,8 +268,9 @@ namespace Zeus.Controllers
         public ActionResult Create(RegisteredUser registeredUser)
         {
             /*Accepting all state of model*/
-            if (!(ModelState.IsValid)  || ModelState.IsValid)
+            if (!(ModelState.IsValid) || ModelState.IsValid)
             {
+
                 /*When users are added at Zeus Level*/
                 if (registeredUser.SelectedOrgList != null)
                 {
@@ -258,13 +280,12 @@ namespace Zeus.Controllers
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.SelectedOrg = i;
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
-
                     if (!(registeredUser.PrimarySchoolUserRoleId == null) || !(registeredUser.SecondarySchoolUserRoleId == null))
                     {
                         registeredUser.RegisteredUserTypeId = 2;
                     }
-
                 }
 
                 /*When users are added at school level*/
@@ -272,20 +293,13 @@ namespace Zeus.Controllers
                 {
                     registeredUser.SelectedOrg = (int)Session["OrgId"];
                     var email = "iamanewuser@thisorg.com";
-                    registeredUser.Email = email; 
+                    registeredUser.Email = email;
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
-
-
-              
-
-
-
-
-
                 }
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
@@ -298,23 +312,17 @@ namespace Zeus.Controllers
                     Email = registeredUser.Email,
                     FirstName = registeredUser.FirstName,
                     LastName = registeredUser.LastName
-
-
                 };
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
-
                 db.SaveChanges();
                 return RedirectToAction("Index");
-
-
             }
 
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
-                return View(registeredUser);
-            
-         }
+            return View(registeredUser);
+        }
 
 
 
@@ -381,8 +389,8 @@ namespace Zeus.Controllers
         }
 
         // POST: RegisteredUsers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             RegisteredUser registeredUser = db.RegisteredUsers.Find(id);

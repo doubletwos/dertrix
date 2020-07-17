@@ -147,6 +147,7 @@ namespace Zeus.Controllers
 
             if (ModelState.IsValid)
             {
+                org.CreatedBy = Session["RegisteredUserId"].ToString();
                 org.CreationDate = DateTime.Now;
                 db.Orgs.Add(org);
                 db.SaveChanges();
