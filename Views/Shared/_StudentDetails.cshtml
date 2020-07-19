@@ -9,14 +9,83 @@
 	foreach (var item in ViewBag.RegisteredUser)
 	{
 
-		<td>@item.FirstName</td>
+	<table class="table table-bordered table-striped">
+
+		<tr>
+			<td>
+				Full Name
+			</td>
+			<td>
+				@item.ContactFullName
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Class
+			</td>
+			<td>
+				@item.Class.ClassName
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Gender
+			</td>
+			<td>
+				@item.Gender.GenderName
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Religion
+			</td>
+			<td>
+				@item.Religion.ReligionName
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Tribe
+			</td>
+			<td>
+				@item.Tribe.TribeName
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Date Of Birth
+			</td>
+			<td>
+				@item.DateOfBirth
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Enrolment Date
+			</td>
+			<td>
+				@item.EnrolmentDate.ToShortDateString()
+			</td>
+		</tr>
+
+
+
+
+	</table>
+
+
+
+
+
+
+
+
+
 	}
-
-
-
-
-}
-
+ }
 
 
 
@@ -24,72 +93,8 @@
 
 
 
-@*<div>
-		<h4>RegisteredUser</h4>
 
 
 
 
-		<hr />
-		<dl class="dl-horizontal">
-			<dt>
-				@Html.DisplayNameFor(model => model.Class.ClassName)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.Class.ClassName)
-			</dd>
-
-			<dt>
-				@Html.DisplayNameFor(model => model.Gender.GenderName)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.Gender.GenderName)
-			</dd>
-
-			<dt>
-				@Html.DisplayNameFor(model => model.Religion.ReligionName)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.Religion.ReligionName)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.Tribe.TribeName)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.Tribe.TribeName)
-			</dd>
-
-			<dt>
-				@Html.DisplayNameFor(model => model.ContactFullName)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.ContactFullName)
-			</dd>
-
-			<dt>
-				@Html.DisplayNameFor(model => model.DateOfBirth)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.DateOfBirth)
-			</dd>
-
-			<dt>
-				@Html.DisplayNameFor(model => model.EnrolmentDate)
-			</dt>
-
-			<dd>
-				@Html.DisplayFor(model => model.EnrolmentDate)
-			</dd>
-
-		</dl>
-	</div>*@
-<p>
-	@*@Html.ActionLink("Edit", "Edit", new { id = Model.RegisteredUserId }) |*@
-	@Html.ActionLink("Back to List", "Index")
-</p>
+		

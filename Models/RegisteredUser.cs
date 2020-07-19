@@ -109,7 +109,9 @@ namespace Zeus.Models
      
         [Display(Name = "Enrolment Date")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? EnrolmentDate  { get; set; }
 
         public string CreatedBy { get; set; }

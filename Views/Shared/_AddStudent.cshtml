@@ -114,9 +114,10 @@
 				url: "/RegisteredUsers/Create",
 				data: data,
 				success: function (response) {
-					alert("New user created");
+					alert("New Student Added");
 					$("#myModal").modal("hide");
 					$("#StudentForm")[0].reset();
+					window.location.reload();
 				}
 			})
 		})

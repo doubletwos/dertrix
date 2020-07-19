@@ -235,48 +235,11 @@
 					$("#RegisteredUserTypeId0").slideDown();
 				});
 
-
-
-
-
-
-
-
 			}
 
 
 
 		})
-
-
-		//$("#Organisation").change(function () {
-		//	var org1 = $("#Organisation").val();
-		//	if (org1 == 23) {
-		//		$("#RegisteredUserTypeId").show(function () {
-		//			$("#RegisteredUserTypeId").slideDown();
-		//		});
-		//		$("#RegisteredUserTypeId0").show(function () {
-		//			$("#RegisteredUserTypeId0").slideDown();
-		//		});
-
-		//	}
-		//	else {
-		//		$("#RegisteredUserTypeId").hide(function () {
-		//			$("#RegisteredUserTypeId").slideDown();
-		//		});
-		//		$("#RegisteredUserTypeId0").hide(function () {
-		//			$("#RegisteredUserTypeId0").slideDown();
-		//		});
-
-		//	}
-
-
-		//})
-
-
-
-
-
 
 		$("#btnSubmit").click(function () {
 			debugger
@@ -289,6 +252,8 @@
 					alert("New user created");
 					$("#myModal").modal("hide");
 					$("#myForm")[0].reset();
+					window.location.reload();
+
 				}
 			})
 		})

@@ -147,18 +147,19 @@ namespace Zeus.Controllers
 
             //var stud = db.RegisteredUsers.Find(Id);
 
-            var stud = db.RegisteredUsers.Where(x => x.RegisteredUserId == Id);
+            var stud = db.RegisteredUsers
+                .Include(r => r.Religion)
+                .Include(c => c.Class)
+                .Include(g => g.Gender)
+                .Include(t => t.Tribe)
+
+                .Where(x => x.RegisteredUserId == Id);
            
 
 
             ViewBag.RegisteredUser = stud;
 
-            //RegisteredUser registeredUser = db.RegisteredUsers.Find(Id);
-            //if (registeredUser == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(registeredUser);
+      
 
 
             return PartialView("_StudentDetails");
@@ -199,7 +200,7 @@ namespace Zeus.Controllers
         }
 
 
-        // GET: RegisteredUsers/Students/
+        // GET: RegisteredUsers/Staffs/
         public ActionResult Staffs(int? id, int? ij)
         {
             if (Session["OrgId"] == null)
@@ -315,12 +316,15 @@ namespace Zeus.Controllers
                 };
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Students","RegisteredUsers");
+
+                //return RedirectToAction("Index");
             }
 
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
+
             return View(registeredUser);
         }
 

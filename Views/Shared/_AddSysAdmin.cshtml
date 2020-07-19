@@ -93,25 +93,6 @@
 		$('#SelectedOrgList').hide();
 		$('#SelectedOrgList').val("23");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		$("#btnSubmit").click(function () {
 			debugger
 			var data = $("#myForm").serialize();
@@ -126,6 +107,8 @@
 					alert("New user created");
 					$("#myModal").modal("hide");
 					$("#myForm")[0].reset();
+					window.location.reload();
+
 				}
 			})
 		})

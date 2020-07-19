@@ -401,6 +401,14 @@
     <Compile Include="Migrations\202007120703240_0803.Designer.cs">
       <DependentUpon>202007120703240_0803.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007180437541_0537.cs" />
+    <Compile Include="Migrations\202007180437541_0537.Designer.cs">
+      <DependentUpon>202007180437541_0537.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007180442334_0542.cs" />
+    <Compile Include="Migrations\202007180442334_0542.Designer.cs">
+      <DependentUpon>202007180442334_0542.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -792,6 +800,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007120703240_0803.resx">
       <DependentUpon>202007120703240_0803.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007180437541_0537.resx">
+      <DependentUpon>202007180437541_0537.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007180442334_0542.resx">
+      <DependentUpon>202007180442334_0542.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
