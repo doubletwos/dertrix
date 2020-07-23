@@ -16,7 +16,7 @@ namespace Zeus.Models
         public int OrgId { get; set; }
         public Org Org { get; set; }
 
-
+        public string OrgName { get; set; }
 
 
         public string FirstName { get; set; }

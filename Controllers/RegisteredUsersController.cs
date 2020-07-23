@@ -306,13 +306,19 @@ namespace Zeus.Controllers
                 db.SaveChanges();
 
                 /*Adding users to the RegUserOrg(Many to Many)*/
+
+                var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
+
                 var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                 {
+
                     RegisteredUserId = registeredUser.RegisteredUserId,
                     OrgId = registeredUser.SelectedOrg,
                     Email = registeredUser.Email,
                     FirstName = registeredUser.FirstName,
-                    LastName = registeredUser.LastName
+                    LastName = registeredUser.LastName,
+                    OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault()
+                    
                 };
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                 db.SaveChanges();

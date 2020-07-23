@@ -27,6 +27,9 @@ namespace Zeus.Controllers
         {
             var reguserdetails = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
             var orgredirect = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.SelectedOrg).FirstOrDefault();
+            var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
+
+
             if (reguserdetails == null)
             {
                 registeredUser.LoginErrorMsg = "Invalid Email or Password";
@@ -40,6 +43,7 @@ namespace Zeus.Controllers
                 Session["ContactFullName"] = reguserdetails.ContactFullName;
                 Session["RegisteredUserTypeId"] = reguserdetails.RegisteredUserTypeId;
                 Session["OrgId"] = orgredirect;
+                Session["OrgName"] = reguserorg;
             }
 
 

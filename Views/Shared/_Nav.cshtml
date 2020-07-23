@@ -1,26 +1,8 @@
-﻿@*@model IEnumerable<Zeus.Models.RegisteredUser>*@
-@model IEnumerable<Zeus.Models.RegisteredUserOrganisation>
-
-
-<ul class="nav navbar-nav navbar-right">
-
-	@if (Session["RegisteredUserId"] == null)
-	{
-
-
-	}
-
-</ul>
-
-
-
-
-
+﻿@model IEnumerable<Zeus.Models.RegisteredUserOrganisation>
 @if (Session["RegisteredUserId"] != null)
 {
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
@@ -30,66 +12,31 @@
 				</button>
 				<a class="navbar-brand" href="#"></a>
 			</div>
-
-
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					@*<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-		<li><a href="#">Link</a></li>
-		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classes <span class="caret"></span></a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="active"></li>
-				<li><a href="#">Action</a></li>
-				<li><a href="#">Another action</a></li>
-				<li><a href="#">Something else here</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#">Separated link</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#">One more separated link</a></li>
-				<li><a href="#">Link</a></li>
-			</ul>
-		</li>*@
-
-
-
-
+				<ul class="nav navbar-nav navbar-left">
 
 					@if ((int)Session["OrgId"] == 23)
 					{
-
 						<li>@Html.ActionLink("Home", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
-
-
-
-
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Index", "RegisteredUsers")</li>
 								<li role="separator" class="divider"></li>
 								<li role="separator" class="divider"></li>
-
 							</ul>
 						</li>
 					}
-
-
-
-
-
-	
-
-
-
-
 					@if ((int)Session["OrgId"] != 23)
 					{
-
 						var session = ((int)Session["OrgId"]).ToString();
 
-						<li>@Html.ActionLink("Home", "Index", "Orgs", new { id = session }, null)</li>
+						@*<li><a href="#"><strong> @Session["OrgName"] </strong> </a></li>*@
+						<li>@Html.ActionLink( Session["OrgName"].ToString(), "Index", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>
 
+
+
+						<li>@Html.ActionLink("Home", "Index", "Orgs", new { id = session }, null)</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -100,18 +47,11 @@
 							</ul>
 						</li>
 					}
-
-
-
-
-
-
 					@if ((int)Session["OrgId"] == 23)
 					{
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-
 								<li role="presentation" class="active">@Html.ActionLink("Portal Set Up", "SysAdminSetUp", "Home")</li>
 								<li role="separator" class="divider"></li>
 								<li role="presentation" class="active">@Html.ActionLink("Organisation Management", "SystemAdminIndex", "Orgs")</li>
@@ -120,20 +60,10 @@
 							</ul>
 						</li>
 					}
-
 				</ul>
 
 
 			</div>
 		</div>
 	</nav>
-
 }
-
-
-
-
-
-
-
-
