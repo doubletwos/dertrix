@@ -628,6 +628,7 @@
     <Content Include="Views\OrgOrgTypes\Index.cshtml" />
     <Content Include="Views\Shared\_RegisterUser.cshtml" />
     <Content Include="Views\Shared\_StudentDetails.cshtml" />
+    <Content Include="Views\Shared\_EditStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,16 +1,21 @@
 ﻿@model IEnumerable<Zeus.Models.RegisteredUser>
+	<div>
+		@{
+			Html.RenderAction("AddStudent", "RegisteredUsers");
+		}
 
-<div>
-	@{
-		Html.RenderAction("AddStudent", "RegisteredUsers");
-	}
-	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="">Filter</a>
-</div>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+		@*@{
+			Html.RenderAction("EditStudent", "RegisteredUsers", new { Id = "Id" });
+
+
+		}*@
+
+
+		<a href="#" class="btn btn-primary" data-toggle="modal" data-target="">Filter</a>
+	</div>
 <br />
-
-
-
 <div class="panel panel-default">
 	<div class="panel-heading">Classes</div>
 	<div class="panel-body">
@@ -23,8 +28,6 @@
 			<li role="presentation" class="">@Html.ActionLink("Primary 6", "Students", "RegisteredUsers", new { ij = 6 }, null)</li>
 		</ul>
 	</div>
-
-
 	<table class="table table-striped table-bordered">
 		<tr>
 			<th>
@@ -37,10 +40,8 @@
 				Class
 			</th>
 			<th>
-
 			</th>
 			<th>
-
 			</th>
 			<th></th>
 		</tr>
@@ -62,18 +63,14 @@
 					@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUserId })|
 					<a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a>
 					<a href="#" class="btn btn-info" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a>
+					<a href="#" class="btn btn-info" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a>
 
 				</td>
 			</tr>
 		}
 	</table>
-
 	<input type="hidden" id="hiddenRegisterUserId" />
 </div>
-
-
-
-
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
 	<div class="modal-dialog">
@@ -92,7 +89,6 @@
 		</div>
 	</div>
 </div>
-
 @*View Student Details Modal*@
 <div class="modal fade" id="myModalll">
 	<div class="modal-dialog">
@@ -102,11 +98,29 @@
 				<h3 class="modal-title">Student Details</h3>
 			</div>
 			<div class="modal-body" id="myModalBodyDiv">
-		
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@*Edit Student Details Modal*@
+<div class="modal fade" id="myModallll">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit Student Details</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDiv1">
 
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<input type="button" value="Update" class="btn btn-success" id="edtSubmit" />
 			</div>
 		</div>
 	</div>
@@ -117,7 +131,6 @@
 
 
 <script>
-
 	var ConfirmDelete = function (RegisteredUserId) {
 		$("#hiddenRegisterUserId").val(RegisteredUserId);
 		$("#myModall").modal('show');
@@ -133,31 +146,62 @@
 				$("#myModall").modal("hide");
 				$("#StudentForm")[0].reset();
 				window.location.reload();
-
 			}
 		})
 	}
 </script>
 
-<script >
 
+<script>
 	var ShowStudent = function (Id) {
-
 		$.ajax({
 			type: "GET",
 			url: "/RegisteredUsers/StudentDetails",
-			data: { Id : Id },
+			data: { Id: Id },
 			success: function (response) {
 				$("#myModalBodyDiv").html(response);
 				$("#myModalll").modal("show");
 			}
 		})
-
 	}
-
-
-
-
 </script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script>
+	var EditStudent = function (Id) {
+		$.ajax({
+			type: "GET",
+			url : "/RegisteredUsers/EditStudent",
+			data: { Id: Id },
+			success: function (response) {
+				$("#myModalBodyDiv1").html(response);
+				$("#myModallll").modal("show");
+			}
+		})
+	}
+</script>
+
+
+<script>
+
+		$("#edtSubmit").click(function () {
+			debugger
+
+			var data = $("#myForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Edit",
+				data: data,
+				success: function (response) {
+					alert("New user Updated");
+					$("#myModal").modal("hide");
+					$("#myForm")[0].reset();
+					window.location.reload();
+
+				}
+			})
+		})
+
+	
+</script>

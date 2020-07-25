@@ -144,25 +144,74 @@ namespace Zeus.Controllers
 
         public ActionResult StudentDetails(int Id)
         {
-
-            //var stud = db.RegisteredUsers.Find(Id);
-
             var stud = db.RegisteredUsers
                 .Include(r => r.Religion)
                 .Include(c => c.Class)
                 .Include(g => g.Gender)
                 .Include(t => t.Tribe)
-
                 .Where(x => x.RegisteredUserId == Id);
-           
+                ViewBag.RegisteredUser = stud;
+
+                return PartialView("_StudentDetails");
+        }
 
 
-            ViewBag.RegisteredUser = stud;
+        public ActionResult EditStudent(int Id)
+        {
 
-      
+
+            if (Id != 0)
+            {
 
 
-            return PartialView("_StudentDetails");
+
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+
+
+
+                var stud1 = db.RegisteredUsers
+                    .Include(r => r.Religion)
+                    .Include(c => c.Class)
+                    .Include(g => g.Gender)
+                    .Include(t => t.Tribe)
+                    .Where(x => x.RegisteredUserId == Id)
+                    .FirstOrDefault();
+
+
+                ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
+                ViewBag.ReligionId = new SelectList(db.Religions, "ReligionId", "ReligionName", stud1.ReligionId);
+                ViewBag.GenderId = new SelectList(db.Genders, "GenderId", "GenderName", stud1.GenderId);
+                ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName", stud1.TribeId);
+
+
+
+
+
+                var stud = new RegisteredUser
+                {
+                    RegisteredUserId = stud1.RegisteredUserId,
+                    RegisteredUserTypeId = stud1.RegisteredUserTypeId,
+                    FirstName = stud1.FirstName,
+                    LastName = stud1.LastName,
+                    ClassId = stud1.ClassId,
+                    GenderId = stud1.Gender.GenderId,
+                    ReligionId = stud1.Religion.ReligionId,
+                    StudentRegFormId = stud1.StudentRegFormId,
+                    TribeId = stud1.TribeId,
+                    DateOfBirth = stud1.DateOfBirth,
+
+
+                };
+
+                return PartialView("_EditStudent", stud);
+
+            }
+
+                return PartialView("_EditStudent");
+
+            
         }
 
 
@@ -176,8 +225,8 @@ namespace Zeus.Controllers
 
 
 
-            // GET: RegisteredUsers/Students/
-            public ActionResult Students(int? id, int? ij)
+        // GET: RegisteredUsers/Students/
+        public ActionResult Students(int? id, int? ij)
         {
             if (Session["OrgId"] == null)
             {
@@ -367,8 +416,18 @@ namespace Zeus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit( RegisteredUser registeredUser)
         {
-            if (ModelState.IsValid)
+
+            if(registeredUser.StudentRegFormId == 1)
             {
+                registeredUser.Email  = "iamanewuser@thisorg.com";
+
+            }
+
+
+
+            if (!(ModelState.IsValid) || ModelState.IsValid)
+            {
+                
                 registeredUser.SelectedOrg = (int)Session["OrgId"];
                 db.Entry(registeredUser).State = EntityState.Modified;
                 db.SaveChanges();

@@ -148,6 +148,9 @@ namespace Zeus.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+
+
             RegisteredUserOrganisation registeredUserOrganisation = db.RegisteredUserOrganisations.Find(id);
             if (registeredUserOrganisation == null)
             {
