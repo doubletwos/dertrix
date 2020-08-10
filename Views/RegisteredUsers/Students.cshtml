@@ -58,12 +58,12 @@
 					@Html.DisplayFor(modelItem => item.Class.ClassName)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.RegisteredUserId }) |
+					@*@Html.ActionLink("Edit", "Edit", new { id = item.RegisteredUserId }) |
 					@Html.ActionLink("Details", "Details", new { id = item.RegisteredUserId }) |
-					@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUserId })|
-					<a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a>
-					<a href="#" class="btn btn-info" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a>
-					<a href="#" class="btn btn-info" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a>
+					@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUserId })|*@
+					<a href="#" class="btn btn-primary" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a>
+					<a href="#" class="btn btn-primary" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a>
+					<a href="#" class="btn btn-primary" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a>
 
 				</td>
 			</tr>
@@ -154,8 +154,9 @@
 
 <script>
 	var ShowStudent = function (Id) {
+		debugger
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: "/RegisteredUsers/StudentDetails",
 			data: { Id: Id },
 			success: function (response) {
@@ -170,6 +171,7 @@
 
 <script>
 	var EditStudent = function (Id) {
+		debugger
 		$.ajax({
 			type: "GET",
 			url : "/RegisteredUsers/EditStudent",

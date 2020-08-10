@@ -200,6 +200,7 @@ namespace Zeus.Controllers
                     ReligionId = stud1.Religion.ReligionId,
                     StudentRegFormId = stud1.StudentRegFormId,
                     TribeId = stud1.TribeId,
+                    EnrolmentDate = stud1.EnrolmentDate,
                     DateOfBirth = stud1.DateOfBirth,
 
 
