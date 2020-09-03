@@ -443,6 +443,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\ZeusLogo.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -629,6 +630,7 @@
     <Content Include="Views\Shared\_RegisterUser.cshtml" />
     <Content Include="Views\Shared\_StudentDetails.cshtml" />
     <Content Include="Views\Shared\_EditStudent.cshtml" />
+    <Content Include="Views\Access\Welcome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

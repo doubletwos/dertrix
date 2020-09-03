@@ -14,6 +14,15 @@ namespace Zeus.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+
+        // GET: Access/Welcome
+        public ActionResult Welcome()
+        {
+            return View();
+        }
+
+
+
         // GET: Access/Index
         public ActionResult Index()
         {

@@ -35,13 +35,19 @@
 					@Html.ActionLink(Session["OrgName"].ToString(), "Index", "Orgs", new { id = session }, new { @class = "navbar-brand" })
 
 				}
-
 				else
 				{
-
-				@Html.ActionLink("Zeus", "Index", "Access", new { area = "" }, new { @class = "navbar-brand" })
-
+					<div class="logo-image">
+						<img src="~/Content/Images/ZeusLogo.png" alt="logo" width="190" />
+					</div>
+					@*@Html.ActionLink("LOGO", "Index", "Access", new { area = "" }, new { @class = "navbar-brand" })*@
 				}
+
+
+
+
+
+
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
