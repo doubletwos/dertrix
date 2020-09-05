@@ -158,19 +158,10 @@ namespace Zeus.Controllers
 
         public ActionResult EditStudent(int Id)
         {
-
-
             if (Id != 0)
             {
-
-
-
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
-
-
-
-
                 var stud1 = db.RegisteredUsers
                     .Include(r => r.Religion)
                     .Include(c => c.Class)
@@ -178,17 +169,10 @@ namespace Zeus.Controllers
                     .Include(t => t.Tribe)
                     .Where(x => x.RegisteredUserId == Id)
                     .FirstOrDefault();
-
-
                 ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
                 ViewBag.ReligionId = new SelectList(db.Religions, "ReligionId", "ReligionName", stud1.ReligionId);
                 ViewBag.GenderId = new SelectList(db.Genders, "GenderId", "GenderName", stud1.GenderId);
                 ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName", stud1.TribeId);
-
-
-
-
-
                 var stud = new RegisteredUser
                 {
                     RegisteredUserId = stud1.RegisteredUserId,
@@ -202,19 +186,11 @@ namespace Zeus.Controllers
                     TribeId = stud1.TribeId,
                     EnrolmentDate = stud1.EnrolmentDate,
                     DateOfBirth = stud1.DateOfBirth,
-
-
                 };
-
                 return PartialView("_EditStudent", stud);
-
             }
-
-                return PartialView("_EditStudent");
-
-            
+            return PartialView("_EditStudent");
         }
-
 
 
 
@@ -273,11 +249,6 @@ namespace Zeus.Controllers
 
 
 
-
-
-
-
-
         // GET: RegisteredUsers/Details/5
         public ActionResult Details(int? id)
         {
@@ -301,9 +272,6 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Create
         public ActionResult Create()
         {
-      
-
-
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.ClassId == 17) , "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
@@ -313,6 +281,7 @@ namespace Zeus.Controllers
             return View();
         }
 
+
         // POST: RegisteredUsers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -321,16 +290,18 @@ namespace Zeus.Controllers
             /*Accepting all state of model*/
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
-
                 /*When users are added at Zeus Level*/
                 if (registeredUser.SelectedOrgList != null)
                 {
                     var zeususer = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
                     int i = Convert.ToInt32(zeususer);
+                    registeredUser.SelectedOrg = i;
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
-                    registeredUser.SelectedOrg = i;
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgBrandId).FirstOrDefault();
+                    int j = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.RegUserOrgBrand = j;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
                     if (!(registeredUser.PrimarySchoolUserRoleId == null) || !(registeredUser.SecondarySchoolUserRoleId == null))
@@ -356,35 +327,26 @@ namespace Zeus.Controllers
                 db.SaveChanges();
 
                 /*Adding users to the RegUserOrg(Many to Many)*/
-
-                var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
-
                 var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                 {
-
                     RegisteredUserId = registeredUser.RegisteredUserId,
                     OrgId = registeredUser.SelectedOrg,
                     Email = registeredUser.Email,
                     FirstName = registeredUser.FirstName,
                     LastName = registeredUser.LastName,
-                    OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault()
-                    
+                    OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault(),
+                    RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                 
                 };
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                 db.SaveChanges();
-                return RedirectToAction("Students","RegisteredUsers");
-
-                //return RedirectToAction("Index");
+                return RedirectToAction("Students", "RegisteredUsers");
             }
-
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
-
             return View(registeredUser);
         }
-
-
 
 
 

@@ -18,7 +18,6 @@ namespace Zeus.Models
 
         public string OrgName { get; set; }
 
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -32,6 +31,11 @@ namespace Zeus.Models
         }
 
         public string Email { get; set; }
+
+        public int? RegUserOrgBrand { get; set; }
+
+    
+
 
 
 

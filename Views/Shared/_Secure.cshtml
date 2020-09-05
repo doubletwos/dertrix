@@ -1,42 +1,49 @@
 ﻿
 @model IEnumerable<Zeus.Models.RegisteredUser>
 
-<ul class="nav navbar-nav navbar-right">
 
-	@if (Session["RegisteredUserId"] == null)
-	{
+
+@if (Session["OrgId"] == null && Session["regUserOrgBrand"] == null)
+{
+	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
+	<ul class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
+
 		<li>@Html.ActionLink("Sign in", "Index", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
 		<li>@Html.ActionLink("Register", "Create", "RegisteredUsers", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
-
-	}
-
-</ul>
+	</ul>
+}
 
 
 
 
 
-<ul class="nav navbar-nav navbar-right">
-	@if (Session["RegisteredUserId"] != null)
-	{
+@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
+{
+	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
+	<ul class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
+
 
 		<li> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" }) </li>
-	
-	}
-
-</ul>
-
-<ul class="nav navbar-nav navbar-default">
-	@if (Session["RegisteredUserId"] != null)
-	{
-
-	<li> <i>You are logged in as <strong>@Session["ContactFullName"]</strong></i>  </li>
-
-	}
-
-</ul>
 
 
+
+	</ul>
+}
+
+
+@if (Session["RegisteredUserId"] != null)
+{
+	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
+	<ul class="nav navbar-nav navbar-default" style="background-color:@sessionNavbar">
+
+
+		<li> <i>You are logged in as <strong>@Session["ContactFullName"]</strong></i>  </li>
+
+		
+
+	</ul>
+
+}
 
 
 

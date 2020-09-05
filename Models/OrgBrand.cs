@@ -10,5 +10,11 @@ namespace Zeus.Models
         public int OrgBrandId { get; set; } 
 
         public string OrgBrandName { get; set; }
+
+        public string OrgBrandBar { get; set; }
+
+        public string OrgNavigationBar { get; set; }
+
+
     }
 }

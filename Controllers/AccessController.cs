@@ -37,14 +37,12 @@ namespace Zeus.Controllers
             var reguserdetails = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
             var orgredirect = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.SelectedOrg).FirstOrDefault();
             var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
-
-
+            var regUserOrgBrand = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.RegUserOrgBrand).FirstOrDefault();
             if (reguserdetails == null)
             {
                 registeredUser.LoginErrorMsg = "Invalid Email or Password";
                 return View("Index", registeredUser);
             }
-
             else
             {
                 Session["RegisteredUserId"] = reguserdetails.RegisteredUserId.ToString();
@@ -53,9 +51,10 @@ namespace Zeus.Controllers
                 Session["RegisteredUserTypeId"] = reguserdetails.RegisteredUserTypeId;
                 Session["OrgId"] = orgredirect;
                 Session["OrgName"] = reguserorg;
+                Session["regUserOrgBrand"] = regUserOrgBrand;
+                Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgBrandBar).FirstOrDefault();
+                Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
             }
-
-
             if (orgredirect == 23)
             {
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
@@ -65,7 +64,6 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Orgs", new { id = orgredirect });
             }
         }
-
 
 
 

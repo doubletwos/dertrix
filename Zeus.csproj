@@ -413,6 +413,34 @@
     <Compile Include="Migrations\202007231731089_1830.Designer.cs">
       <DependentUpon>202007231731089_1830.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009050918378_1018.cs" />
+    <Compile Include="Migrations\202009050918378_1018.Designer.cs">
+      <DependentUpon>202009050918378_1018.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009051108374_1208.cs" />
+    <Compile Include="Migrations\202009051108374_1208.Designer.cs">
+      <DependentUpon>202009051108374_1208.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009051113568_1213.cs" />
+    <Compile Include="Migrations\202009051113568_1213.Designer.cs">
+      <DependentUpon>202009051113568_1213.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009051124556_1224.cs" />
+    <Compile Include="Migrations\202009051124556_1224.Designer.cs">
+      <DependentUpon>202009051124556_1224.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009051226151_1326.cs" />
+    <Compile Include="Migrations\202009051226151_1326.Designer.cs">
+      <DependentUpon>202009051226151_1326.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009051253043_1352.cs" />
+    <Compile Include="Migrations\202009051253043_1352.Designer.cs">
+      <DependentUpon>202009051253043_1352.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009052019462_2119.cs" />
+    <Compile Include="Migrations\202009052019462_2119.Designer.cs">
+      <DependentUpon>202009052019462_2119.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -489,8 +517,72 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Main\contactform\contactform.js" />
+    <Content Include="Main\contactform\readme.txt" />
+    <Content Include="Main\css\scss-files.txt" />
+    <Content Include="Main\css\style.css" />
+    <Content Include="Main\img\about-img.png" />
+    <Content Include="Main\img\client-1.png" />
+    <Content Include="Main\img\client-2.png" />
+    <Content Include="Main\img\hero-bg.png" />
+    <Content Include="Main\img\logo.png" />
+    <Content Include="Main\img\portfolio-1.png" />
+    <Content Include="Main\img\portfolio-2.png" />
+    <Content Include="Main\img\portfolio-3.png" />
+    <Content Include="Main\img\portfolio-4.png" />
+    <Content Include="Main\img\portfolio-5.png" />
+    <Content Include="Main\img\portfolio-6.png" />
+    <Content Include="Main\img\portfolio-7.png" />
+    <Content Include="Main\img\portfolio-8.png" />
+    <Content Include="Main\img\preloader.svg" />
+    <Content Include="Main\img\quote_sign_left.png" />
+    <Content Include="Main\img\quote_sign_right.png" />
+    <Content Include="Main\img\services-bg.jpg" />
+    <Content Include="Main\img\subscribe-bg.jpg" />
+    <Content Include="Main\img\team-1.png" />
+    <Content Include="Main\img\team-2.png" />
+    <Content Include="Main\img\team-3.png" />
+    <Content Include="Main\img\team-4.png" />
+    <Content Include="Main\img\ZeusLogoBig.png" />
+    <Content Include="Main\js\custom.js" />
+    <Content Include="Main\lib\animate-css\animate.min.css" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap.css" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Main\lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Main\lib\bootstrap\js\bootstrap.js" />
+    <Content Include="Main\lib\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Main\lib\bootstrap\js\npm.js" />
+    <Content Include="Main\lib\easing\easing.js" />
+    <Content Include="Main\lib\easing\easing.min.js" />
+    <Content Include="Main\lib\font-awesome\css\font-awesome.css" />
+    <Content Include="Main\lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Main\lib\jquery\jquery.min.js" />
+    <Content Include="Main\lib\morphext\morphext.js" />
+    <Content Include="Main\lib\morphext\morphext.min.js" />
+    <Content Include="Main\lib\stickyjs\sticky.js" />
+    <Content Include="Main\lib\superfish\hoverIntent.js" />
+    <Content Include="Main\lib\superfish\superfish.js" />
+    <Content Include="Main\lib\superfish\superfish.min.js" />
+    <Content Include="Main\lib\wow\wow.js" />
+    <Content Include="Main\lib\wow\wow.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap-theme.min.css.map" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Main\lib\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Main\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Main\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Main\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Main\lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Main\lib\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -816,6 +908,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007231731089_1830.resx">
       <DependentUpon>202007231731089_1830.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009050918378_1018.resx">
+      <DependentUpon>202009050918378_1018.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009051108374_1208.resx">
+      <DependentUpon>202009051108374_1208.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009051113568_1213.resx">
+      <DependentUpon>202009051113568_1213.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009051124556_1224.resx">
+      <DependentUpon>202009051124556_1224.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009051226151_1326.resx">
+      <DependentUpon>202009051226151_1326.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009051253043_1352.resx">
+      <DependentUpon>202009051253043_1352.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009052019462_2119.resx">
+      <DependentUpon>202009052019462_2119.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -11,13 +11,14 @@
 	}
 
 	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="">Filter</a>
+
+	<a href="#" class="myButton">Test button</a>
+
 </div>
 
 
 
-@*<p>
-		@Html.ActionLink("Create New", "Create")
-	</p>*@
+
 <table class="table table-bordered table-striped table-hover table-responsive ">
 	<tr>
 		<th>
@@ -41,30 +42,31 @@
 
 	@foreach (var item in Model)
 	{
-<tr>
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgId)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgName)
-	</td>
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgId)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgName)
+			</td>
 
-	<td>
-		@*@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)*@
-	</td>
+			<td>
+				@*@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)*@
+			</td>
 
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgAddress)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.CreationDate)
-	</td>
-	<td>
-		@Html.ActionLink("Edit", "Edit", new { id = item.OrgId }) |
-		@Html.ActionLink("Details", "Details", new { id = item.OrgId }) |
-		@Html.ActionLink("Delete", "Delete", new { id = item.OrgId })
-	</td>
-</tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgAddress)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.CreationDate)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.OrgId }) |
+				@Html.ActionLink("Details", "Details", new { id = item.OrgId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.OrgId })
+			</td>
+		</tr>
 	}
 
 </table>
+

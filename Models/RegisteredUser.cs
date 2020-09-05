@@ -117,6 +117,9 @@ namespace Zeus.Models
         public string CreatedBy { get; set; }
 
 
+        public int? RegUserOrgBrand { get; set; }    
+
+
 
 
 
