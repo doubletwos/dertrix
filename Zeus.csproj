@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AccessController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\DomainsController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GendersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -441,11 +442,25 @@
     <Compile Include="Migrations\202009052019462_2119.Designer.cs">
       <DependentUpon>202009052019462_2119.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009052051478_2151.cs" />
+    <Compile Include="Migrations\202009052051478_2151.Designer.cs">
+      <DependentUpon>202009052051478_2151.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009052120155_2220.cs" />
+    <Compile Include="Migrations\202009052120155_2220.Designer.cs">
+      <DependentUpon>202009052120155_2220.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009072027133_2127.cs" />
+    <Compile Include="Migrations\202009072027133_2127.Designer.cs">
+      <DependentUpon>202009072027133_2127.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassType.cs" />
     <Compile Include="Models\Domain.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\FileType.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -471,7 +486,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Images\ZeusLogo.png" />
+    <Content Include="Content\Images\ZeusHorizontal.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -726,6 +741,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -929,6 +945,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009052019462_2119.resx">
       <DependentUpon>202009052019462_2119.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009052051478_2151.resx">
+      <DependentUpon>202009052051478_2151.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009052120155_2220.resx">
+      <DependentUpon>202009052120155_2220.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009072027133_2127.resx">
+      <DependentUpon>202009072027133_2127.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

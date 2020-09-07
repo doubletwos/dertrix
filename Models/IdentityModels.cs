@@ -36,6 +36,7 @@ namespace Zeus.Models
         public DbSet<SecondarySchoolUserRole> SecondarySchoolUserRoles { get; set; }
         public DbSet<StudentRegForm> StudentRegForm { get; set; }
         public DbSet<OrgOrgType> OrgOrgTypes { get; set; }
+        public DbSet<File> Files { get; set; }
 
 
 

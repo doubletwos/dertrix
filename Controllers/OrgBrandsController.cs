@@ -76,10 +76,28 @@ namespace Zeus.Controllers
         // POST: OrgBrands/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( OrgBrand orgBrand)
+        public ActionResult Create( OrgBrand orgBrand, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    var avatar = new File
+                    {
+                        FileName = System.IO.Path.GetFileName(upload.FileName),
+                        FileType = FileType.Logo,
+                        ContentType = upload.ContentType
+                    };
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    {
+                        avatar.Content = reader.ReadBytes(upload.ContentLength);
+                    }
+                    orgBrand.Files = new List<File> { avatar };
+                }
+
+
+
                 db.OrgBrands.Add(orgBrand);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -91,6 +109,8 @@ namespace Zeus.Controllers
         // GET: OrgBrands/Edit/5
         public ActionResult Edit(int? id)
         {
+            OrgBrand orgbrand = db.OrgBrands.Include(s => s.Files).SingleOrDefault(s => s.OrgBrandId == id);
+
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
@@ -118,19 +138,49 @@ namespace Zeus.Controllers
             {
                 return HttpNotFound();
             }
+
+         
+
+
             return View(orgBrand);
         }
 
         // POST: OrgBrands/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(OrgBrand orgBrand)
+        public ActionResult Edit(OrgBrand orgBrand, HttpPostedFileBase upload)
         {
            
 
             if (ModelState.IsValid)
             {
-                db.Entry(orgBrand).State = EntityState.Modified;
+                var orgBrandInDb = db.OrgBrands.Include(f => f.Files).Single(c => c.OrgBrandId == orgBrand.OrgBrandId);
+                orgBrandInDb.OrgBrandName = orgBrand.OrgBrandName;
+                orgBrandInDb.OrgBrandBar = orgBrand.OrgBrandBar;
+                orgBrandInDb.OrgNavigationBar = orgBrand.OrgNavigationBar;
+                orgBrandInDb.OrgNavBarTextColour = orgBrand.OrgNavBarTextColour;
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    if (orgBrandInDb.Files.Any(f => f.FileType == FileType.Logo))
+                    {
+                        db.Files.Remove(orgBrandInDb.Files.First(f => f.FileType == FileType.Logo));
+                    }
+                    var logo = new File
+                    {
+                        FileName = System.IO.Path.GetFileName(upload.FileName),
+                        FileType = FileType.Logo,
+                        ContentType = upload.ContentType
+                    };
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    {
+                        logo.Content = reader.ReadBytes(upload.ContentLength);
+                    }
+                    orgBrandInDb.Files = new List<File> {logo};
+                }
+
+
+                db.Entry(orgBrandInDb).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

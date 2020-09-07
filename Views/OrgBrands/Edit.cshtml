@@ -7,10 +7,10 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "OrgBrands", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	@Html.AntiForgeryToken()
-	
+
 <div class="form-horizontal">
 	<h4>OrgBrand</h4>
 	<hr />
@@ -40,6 +40,41 @@
 			@Html.ValidationMessageFor(model => model.OrgNavigationBar, "", new { @class = "text-danger" })
 		</div>
 	</div>
+
+
+	<div class="form-group">
+		@Html.LabelFor(model => model.OrgNavBarTextColour, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.EditorFor(model => model.OrgNavBarTextColour, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.OrgNavBarTextColour, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+
+
+
+	@if (Model.Files.Any(f => f.FileType == Zeus.Models.FileType.Logo))
+	{
+		<div class="form-group">
+			<span class="control-label col-md-2"><strong>Current Logo</strong></span>
+			<div class="col-md-10">
+
+
+				<img src="~/File?id=@Model.Files.First(f => f.FileType == Zeus.Models.FileType.Logo).FileId" alt="Logo" />
+			</div>
+		</div>
+	}
+
+
+
+
+	<div class="form-group">
+		@Html.Label("Logo", new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			<input type="file" id="Logo" name="upload" />
+		</div>
+	</div>
+
 
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-10">

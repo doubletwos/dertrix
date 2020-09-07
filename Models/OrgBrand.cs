@@ -15,6 +15,10 @@ namespace Zeus.Models
 
         public string OrgNavigationBar { get; set; }
 
+        public string OrgNavBarTextColour { get; set; }
+
+        public virtual ICollection<File> Files { get; set; }
+
 
     }
 }

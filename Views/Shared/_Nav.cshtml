@@ -1,9 +1,38 @@
 ﻿@model IEnumerable<Zeus.Models.RegisteredUserOrganisation>
 @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
-{
-	var sessionNavbar2 = Session["regUserOrgNavBar"].ToString();
+	{
+		var sessionNavbar2 = Session["regUserOrgNavBar"].ToString();
+		var sessionNavbarTextColor = Session["regUserOrgNavTextColor"].ToString();
 
-	<nav class="navbar navbar-default" style="background-color:@sessionNavbar2">
+	<head>
+		<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+
+
+
+
+		<style>
+
+			.navbar-default .navbar-nav > li > a {
+				color: @sessionNavbarTextColor;
+				font-family: 'Nanum Gothic', sans-serif;
+			}
+
+			.navbar .navbar-default {
+			background-color: @sessionNavbar2
+			}
+		</style>
+	</head>
+
+
+
+
+
+
+
+
+
+
+	<nav class="navbar navbar-default" @*style="background-color:@sessionNavbar2;"*@>
 		<div class="container-fluid">
 			<div class="navbar-header">
 				@*<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -19,6 +48,12 @@
 
 					@if ((int)Session["OrgId"] == 23)
 					{
+						var session = ((int)Session["OrgId"]).ToString();
+
+
+						<li>@Html.ActionLink(Session["OrgName"].ToString(), "Index", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>
+
+
 						<li>@Html.ActionLink("Home", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>

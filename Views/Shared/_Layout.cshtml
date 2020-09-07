@@ -7,14 +7,10 @@
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
 </head>
-
 <body>
-
 	@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 	{
 		var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
-
-
 		<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:@sessionNavbar">
 			<div class="container">
 				<div class="navbar-header">
@@ -23,17 +19,18 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					@if (Session["OrgId"] != null)
+					@if (Session["OrgId"] != null && Session["OrgLogo"] == null)
 					{
-						var session = ((int)Session["OrgId"]).ToString();
-						@Html.ActionLink(Session["OrgName"].ToString(), "Index", "Orgs", new { id = session }, new { @class = "navbar-brand" })
+						<img src="~/Content/Images/ZeusHorizontal.png" alt="logo" width="190" />
+					
 					}
 					else
 					{
-						<div class="logo-image">
-							<img src="~/Content/Images/ZeusLogo.png" alt="logo" width="190" />
-						</div>
-						@Html.ActionLink("LOGO", "Index", "Access", new { area = "" }, new { @class = "navbar-brand" })
+						var sessionLogo = Session["OrgLogo"];
+						byte[] bfoo = (byte[])sessionLogo;
+						var base64 = Convert.ToBase64String(bfoo);
+						var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+						<img src="@imgsrc" style="max-width:100px;max-height:100px" />
 					}
 				</div>
 				<div class="navbar-collapse collapse">
@@ -45,28 +42,19 @@
 				</div>
 			</div>
 		</div>
-
-	 }
-		<div class="navbar ">
-			@{
-				Html.RenderAction("Nav", "RegisteredUsers");
-			}
-		</div>
-
-
-	
+	}
+	<div class="navbar ">
+		@{
+			Html.RenderAction("Nav", "RegisteredUsers");
+		}
+	</div>
 	<div class="container body-content">
 		@RenderBody()
-
-
-
 		<hr />
 		<footer>
 			<p>&copy; @DateTime.Now.Year - Zeus</p>
 		</footer>
 	</div>
-
-
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@RenderSection("scripts", required: false)
