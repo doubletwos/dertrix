@@ -4837,7 +4837,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 
 .navbar-default {
 	background-color: #ffffff;
-	border-color: #e7e7e7;
+	/*border-color: #e7e7e7;*/
 	/*color: white;*/
 }
 
@@ -4937,7 +4937,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 
 .navbar-inverse {
 	background-color: #ffffff;
-	border-color: #e6e6e6
+	/*border-color: #e6e6e6*/
 }
 
 	.navbar-inverse .navbar-brand {

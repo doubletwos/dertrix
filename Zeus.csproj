@@ -738,6 +738,7 @@
     <Content Include="Views\Shared\_StudentDetails.cshtml" />
     <Content Include="Views\Shared\_EditStudent.cshtml" />
     <Content Include="Views\Access\Welcome.cshtml" />
+    <Content Include="Views\Shared\_StudentCount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

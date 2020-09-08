@@ -7,7 +7,7 @@
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body style="background-color:#e2e2e2">
 	@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 	{
 		var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
@@ -22,7 +22,7 @@
 					@if (Session["OrgId"] != null && Session["OrgLogo"] == null)
 					{
 						<img src="~/Content/Images/ZeusHorizontal.png" alt="logo" width="190" />
-					
+
 					}
 					else
 					{
@@ -30,7 +30,7 @@
 						byte[] bfoo = (byte[])sessionLogo;
 						var base64 = Convert.ToBase64String(bfoo);
 						var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
-						<img src="@imgsrc" style="max-width:100px;max-height:100px" />
+						<img src="@imgsrc" />
 					}
 				</div>
 				<div class="navbar-collapse collapse">
@@ -43,6 +43,9 @@
 			</div>
 		</div>
 	}
+
+	<br />
+	<br />
 	<div class="navbar ">
 		@{
 			Html.RenderAction("Nav", "RegisteredUsers");

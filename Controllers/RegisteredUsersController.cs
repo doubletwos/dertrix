@@ -65,7 +65,6 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult Regs()
         {
-
             return PartialView("_Secure");
         }
 
@@ -91,9 +90,8 @@ namespace Zeus.Controllers
 
         [ChildActionOnly]
         public ActionResult Nav()
-        {
-          
-            return PartialView("_Nav");
+        {       
+         return PartialView("_Nav");
         }
 
 
@@ -130,7 +128,6 @@ namespace Zeus.Controllers
         [ChildActionOnly]
         public ActionResult AddSysAdmin()
         {
-
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
@@ -138,6 +135,23 @@ namespace Zeus.Controllers
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
 
             return PartialView("_AddSysAdmin");
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult StudentCount()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+          
+            var studentCount =  db.RegisteredUsers
+                .Where(x => x.SelectedOrg == i)
+                .Where(j => j.StudentRegFormId != null)
+                .Where(c => c.ClassId != null)
+                .ToList();
+
+            return PartialView("_StudentCount" , studentCount);
         }
 
 
