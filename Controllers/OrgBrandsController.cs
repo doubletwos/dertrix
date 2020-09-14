@@ -159,6 +159,7 @@ namespace Zeus.Controllers
                 orgBrandInDb.OrgBrandBar = orgBrand.OrgBrandBar;
                 orgBrandInDb.OrgNavigationBar = orgBrand.OrgNavigationBar;
                 orgBrandInDb.OrgNavBarTextColour = orgBrand.OrgNavBarTextColour;
+                orgBrandInDb.OrgBrandButtonColour = orgBrand.OrgBrandButtonColour;
 
                 if (upload != null && upload.ContentLength > 0)
                 {

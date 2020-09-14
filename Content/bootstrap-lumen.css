@@ -245,7 +245,8 @@ td, th {
 	}
 
 	.navbar {
-		display: none
+		display: none;
+		
 	}
 
 	.btn > .caret, .dropup > .btn > .caret {
@@ -4450,20 +4451,26 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 	margin-top: -1px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0
+
 }
 
 .navbar {
 	position: relative;
 	min-height: 50px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	background-color: white;
+	margin-bottom: 50px;
+	/*border: 1px solid transparent;*/
+	background-color: #e2e2e2;
 }
 
 
 
 
-
+.menu {
+	width: 100%;
+	background-color: blue;
+	
+	
+}
 
 
 
@@ -4836,13 +4843,15 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 }
 
 .navbar-default {
-	background-color: #ffffff;
+	/*background-color: #ffffff;*/
+	
 	/*border-color: #e7e7e7;*/
 	/*color: white;*/
 }
 
 	.navbar-default .navbar-brand {
-		color: #333333
+		color: #333333;
+	
 	}
 
 		.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
@@ -4859,12 +4868,12 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 	}
 
 		.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-			color: #333333;
+			color: #e2e2e2;
 			background-color: transparent
 		}
 
 	.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
-		color: #333333;
+		color: #FFFFFF;
 		background-color: transparent
 	}
 
@@ -4874,7 +4883,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 	}
 
 	.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-		color: #333333;
+		color: #FFFFFF;
 		background-color: transparent
 	}
 

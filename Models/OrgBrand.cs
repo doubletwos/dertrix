@@ -17,6 +17,8 @@ namespace Zeus.Models
 
         public string OrgNavBarTextColour { get; set; }
 
+        public string OrgBrandButtonColour { get; set; } 
+
         public virtual ICollection<File> Files { get; set; }
 
 

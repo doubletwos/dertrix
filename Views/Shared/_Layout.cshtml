@@ -1,17 +1,35 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	@*<title>@ViewBag.Title - @Session["OrgName"].ToString()</title>*@
+	@*
+		<title>@ViewBag.Title - @Session["OrgName"].ToString()</title>
+	*@
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
+	@if (Session["OrgId"] != null)
+	{
+		var regOrgBrandButtonColour = Session["regOrgBrandButtonColour"].ToString();
+		<style>
+			.RegUserOrgButtonColour {
+				background-color: @regOrgBrandButtonColour;
+				
+			}
+		</style>
+	}
 </head>
-<body style="background-color:#e2e2e2">
+
+
+<body style="background-color: #e2e2e2">
+
 	@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 	{
-		var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
-		<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:@sessionNavbar">
+		var regUserOrgBrandBar = Session["regUserOrgBrandBar"].ToString();
+
+
+		<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:@regUserOrgBrandBar">
 			<div class="container">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -19,14 +37,13 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					@if (Session["OrgId"] != null && Session["OrgLogo"] == null)
+					@if (Session["OrgId"] != null && Session["regOrgLogo"] == null)
 					{
 						<img src="~/Content/Images/ZeusHorizontal.png" alt="logo" width="190" />
-
 					}
 					else
 					{
-						var sessionLogo = Session["OrgLogo"];
+						var sessionLogo = Session["regOrgLogo"];
 						byte[] bfoo = (byte[])sessionLogo;
 						var base64 = Convert.ToBase64String(bfoo);
 						var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
@@ -34,7 +51,7 @@
 					}
 				</div>
 				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
+					<ul class="nav navbar-nav navbar-right" style="background-color:@regUserOrgBrandBar">
 						@{
 							Html.RenderAction("Regs", "RegisteredUsers");
 						}
@@ -42,15 +59,20 @@
 				</div>
 			</div>
 		</div>
+
+
+		<br />
+		<br />
+		<div class="navbar">
+			<div class="menu" style="background-color:@regUserOrgBrandBar">
+				@{
+					Html.RenderAction("Nav", "RegisteredUsers");
+				}
+			</div>
+		</div>
 	}
 
-	<br />
-	<br />
-	<div class="navbar ">
-		@{
-			Html.RenderAction("Nav", "RegisteredUsers");
-		}
-	</div>
+
 	<div class="container body-content">
 		@RenderBody()
 		<hr />
@@ -61,5 +83,8 @@
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@RenderSection("scripts", required: false)
+
+
 </body>
+					
 </html>

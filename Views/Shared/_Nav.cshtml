@@ -1,43 +1,31 @@
 ﻿@model IEnumerable<Zeus.Models.RegisteredUserOrganisation>
 @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
-	{
-		var sessionNavbar2 = Session["regUserOrgNavBar"].ToString();
-		var sessionNavbarTextColor = Session["regUserOrgNavTextColor"].ToString();
+{
+
+	var sessionNavbarTextColor = Session["regUserOrgNavTextColor"].ToString();
+	var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
 
 	<head>
-		<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+	
 
 		<style>
-
 			.navbar-default .navbar-nav > li > a {
 				color: @sessionNavbarTextColor;
-				font-family: 'Nanum Gothic', sans-serif;
+				font-family: Arial;
+				font-weight: bold;
 			}
-
 			.navbar .navbar-default {
-			background-color: @sessionNavbar2
+			background-color: @regUserOrgNavBar
 			}
 		</style>
 	</head>
 
 
 
-
-
-
-
-
-
-
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				@*<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>*@
+
 				<a class="navbar-brand" href="#"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -51,9 +39,9 @@
 						<li>@Html.ActionLink(Session["OrgName"].ToString(), "Index", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>
 
 
-						<li>@Html.ActionLink("Home", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
+						<li>@Html.ActionLink("HOME", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Index", "RegisteredUsers")</li>
 								<li role="separator" class="divider"></li>
@@ -72,7 +60,7 @@
 
 						<li>@Html.ActionLink("Home", "Index", "Orgs", new { id = session }, null)</li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Index", "RegisteredUsers")</li>
 								<li role="separator" class="divider"></li>
@@ -84,7 +72,7 @@
 					@if ((int)Session["OrgId"] == 23)
 					{
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETTINGS<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("Portal Set Up", "SysAdminSetUp", "Home")</li>
 								<li role="separator" class="divider"></li>
@@ -99,5 +87,12 @@
 
 			</div>
 		</div>
+
+
+
+
+
 	</nav>
+
+
 }

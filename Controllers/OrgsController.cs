@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using Zeus.Models;
@@ -15,7 +16,7 @@ namespace Zeus.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-       // GET: Orgs
+        // GET: Orgs
         public ActionResult Index(int? id)
         {
             if (Session["OrgId"] == null)
@@ -40,33 +41,33 @@ namespace Zeus.Controllers
 
 
         // GET: Orgs/SystemAdminIndex
-        public ActionResult SystemAdminIndex(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //public ActionResult SystemAdminIndex(int? id)
+        //{
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Index", "Access");
+        //    }
+        //    if ((int)Session["OrgId"] != 23)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            if ((int)Session["OrgId"] == 23)
-            {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
-                id = i;
-                var orgs = db.Orgs
-                    .Include(o => o.Domain)
-                    .Include(o => o.OrgBrand);
-                return View(orgs.ToList());
+        //    if ((int)Session["OrgId"] == 23)
+        //    {
+        //        var rr = Session["OrgId"].ToString();
+        //        int i = Convert.ToInt32(rr);
+        //        id = i;
+        //        var orgs = db.Orgs
+        //            .Include(o => o.Domain)
+        //            .Include(o => o.OrgBrand);
+        //        return View(orgs.ToList());
 
-            }
-            else
+        //    }
+        //    else
 
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-        }
+        //}
 
 
 
@@ -257,6 +258,56 @@ namespace Zeus.Controllers
             db.SaveChanges();
             return RedirectToAction("SystemAdminIndex");
         }
+
+
+        public JsonResult AutoCompleteSchool(string prefix)
+        {
+            var schoollist = (from org in db.Orgs
+                              where org.OrgName.StartsWith(prefix)
+                              select new
+                              {
+                                  label = org.OrgName,
+                                  Val = org.OrgId
+                              }).ToList();
+
+            return Json(schoollist);
+        }
+
+
+
+
+
+
+        public ActionResult SystemAdminIndex(string searchname, string searchid)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+            if ((int)Session["OrgId"] != 23)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var org = db.Orgs.Include(t => t.OrgType).ToList();
+            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
+            {
+                return View(org);
+            }
+            // returns org if id is selected & searchname is null
+            else if (string.IsNullOrWhiteSpace(searchname) && !(string.IsNullOrWhiteSpace(searchid)))
+            {
+                return View(db.Orgs.Where(i => i.OrgId.ToString() == searchid).ToList());
+            }
+            // returns org if searchname is selected & id is null
+            else if (!(string.IsNullOrWhiteSpace(searchname) && (string.IsNullOrWhiteSpace(searchid))))
+            {
+                return View(db.Orgs.Where(n => n.OrgName == searchname).ToList());
+            }
+            return View();
+        }
+
+
+
 
         protected override void Dispose(bool disposing)
         {
