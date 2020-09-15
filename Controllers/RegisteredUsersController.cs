@@ -35,28 +35,19 @@ namespace Zeus.Controllers
                 id = i;
             }
 
-
             if ((int)Session["OrgId"] == 23)
             {
-                return View(db.RegisteredUsers
-               .Where(j => j.SelectedOrg == id)
-               .Include(t => t.RegisteredUserType)
-               .ToList());
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Include(t => t.RegisteredUserType).ToList());
             }
 
             else
             {
 
                 /*Changes will have to be made to the code below of Parents are given roles*/
-                return View(db.RegisteredUsers
-                     .Where(j => j.SelectedOrg == id)
-                     .Where(f => f.PrimarySchoolUserRoleId != null || f.SecondarySchoolUserRoleId != null)
-                     .Include(t => t.RegisteredUserType)
-                     .ToList());
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.PrimarySchoolUserRoleId != null || f.SecondarySchoolUserRoleId != null).Include(t => t.RegisteredUserType).ToList());
 
             }
 
-           
         }
 
 
@@ -242,7 +233,7 @@ namespace Zeus.Controllers
             // returns students of org if fullname is provided
             if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
             {
-                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).ToList());
+                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
 
             }
 
@@ -250,7 +241,7 @@ namespace Zeus.Controllers
             if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
             {
                 int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).ToList());
+                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
 
             }
 
@@ -260,10 +251,15 @@ namespace Zeus.Controllers
 
 
 
-        public JsonResult AutoCompleteStudentFullname(string prefix)
+        public JsonResult AutoCompleteStudentFullname(string prefix, int? id)
         {
-            var studentsfullname = (from stu in db.RegisteredUsers
-                              where stu.FullName.StartsWith(prefix)
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            id = i;
+
+
+            var studentsfullname = (from stu in db.RegisteredUsers.Where(p => p.StudentRegFormId != null).Where(j => j.SelectedOrg == id)
+                                    where stu.FullName.StartsWith(prefix)
                               select new
                               {
                                   label = stu.FullName,
@@ -281,24 +277,86 @@ namespace Zeus.Controllers
 
 
         // GET: RegisteredUsers/Staffs/
-        public ActionResult Staffs(int? id, int? ij)
+        public ActionResult Staffs(int? id, string searchname, string searchid)
         {
+            /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
+
+            /* Populate user list for non superusers if session is not null*/
+            if (Session["OrgId"] != null)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                id = i;
+            }
+
+            /*Returns Zeus staff*/
+            if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
+            {
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Include(t => t.RegisteredUserType).ToList());
+
+            }
+
+            if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid))
+            {
+                int reguserid = Convert.ToInt32(searchid);
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(g => g.RegisteredUserId == reguserid).Include(t => t.RegisteredUserType).ToList());
+            }
+
+
+            /*Returns non Zeus staff*/
+            if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchname))
+            {
+
+                /*Changes will have to be made to the code below of Parents are given roles*/
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+
+            }
+
+            if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchid))
+            {
+
+                /*Changes will have to be made to the code below of Parents are given roles*/
+                int reguserid = Convert.ToInt32(searchid);
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.RegisteredUserId == reguserid).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+
+            }
+
+            return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
+
+        }
+
+
+
+        public JsonResult AutoCompleteStaffFullname(string prefix, int? id)
+        {
+
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
             id = i;
-            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId)
-                .FirstOrDefault();
-            var stds = db.RegisteredUsers
-                .Where(s => s.RegisteredUserTypeId == 13)
-                .Where(p => p.ClassId == j)
-                .Include(c => c.Class)
-                .Include(g => g.Gender);
-            return View(stds.ToList());
+
+
+            var stafffullname = (from staf in db.RegisteredUsers.Where(p => p.StudentRegFormId == null).Where(j => j.SelectedOrg == id)
+                                    where staf.FullName.StartsWith(prefix)
+                                    select new
+                                    {
+                                        label = staf.FullName,
+                                        Val = staf.RegisteredUserId
+                                    }).ToList();
+
+            return Json(stafffullname);
         }
+
+
+
+
+
+
+
+
 
 
 

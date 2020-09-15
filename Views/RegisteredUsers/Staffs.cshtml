@@ -1,0 +1,292 @@
+﻿@model IEnumerable<Zeus.Models.RegisteredUser>
+<div>
+
+
+
+
+
+	<div class="row">
+		<div class="col-lg-12">
+			<p><b>Staff management</b></p>
+			<p>
+				@using (Html.BeginForm("Staffs", "RegisteredUsers", FormMethod.Get))
+				{
+					<div class="form-inline">
+						id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
+						<input type="hidden" id="hfId" name="searchid" />
+
+						Staff Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
+						<input type="hidden" id="hfName" name="searchname" />&nbsp;&nbsp;
+
+
+						@*Class: &nbsp;&nbsp;
+							<select class="" id="classid" name="ij">
+								<option>Select Class</option>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+								<option>6</option>
+							</select>*@
+
+						&nbsp;&nbsp;
+						<button class="RegUserOrgButtonColour">Filter</button>
+
+					</div>
+				}
+			</p>
+		</div>
+	</div>
+
+	<br />
+	<br />
+	<hr />
+
+
+	<div>
+		@{
+			Html.RenderAction("AddStaff", "RegisteredUsers");
+		}
+
+
+	</div>
+
+	<br />
+
+
+
+
+</div>
+<br />
+<div class="panel panel-default">
+
+
+	<table class="table table-bordered table-striped table-hover table-responsive ">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+			<th>
+				Zeus User ID
+			</th>
+			<th>
+				Full Name
+			</th>
+			<th>
+				Class
+			</th>
+			<th>
+			</th>
+			<th>
+			</th>
+			<th></th>
+		</tr>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.RegisteredUserId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ContactFullName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Class.ClassName)
+				</td>
+				<td>
+					@*@Html.ActionLink("Edit", "Edit", new { id = item.RegisteredUserId }) |
+						@Html.ActionLink("Details", "Details", new { id = item.RegisteredUserId }) |
+						@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUserId })|*@
+					<a href="#" class="RegUserOrgButtonColour" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Staff</a>
+					<a href="#" class="RegUserOrgButtonColour" onclick="ShowStudent(@item.RegisteredUserId)">View Staff Details</a>
+					<a href="#" class="RegUserOrgButtonColour" onclick="EditStudent(@item.RegisteredUserId)">Edit Staff Details</a>
+
+				</td>
+			</tr>
+		}
+	</table>
+
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<input type="hidden" id="hiddenRegisterUserId" />
+</div>
+
+
+
+@*Delete confirmation Modal*@
+@*<div class="modal fade" id="myModall">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Remove Student</h3>
+				</div>
+				<div class="modal-body">
+					<h3>Are you sure you want to remove this staff?</h3>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+					<a href="#" class="btn btn-success" onclick="DeleteRegisteredUser()">Confirm</a>
+				</div>
+			</div>
+		</div>
+	</div>*@
+@*View Student Details Modal*@
+@*<div class="modal fade" id="myModalll">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Student Details</h3>
+				</div>
+				<div class="modal-body" id="myModalBodyDiv">
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>*@
+
+
+@*Edit Student Details Modal*@
+@*<div class="modal fade" id="myModallll">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Edit Student Details</h3>
+				</div>
+				<div class="modal-body" id="myModalBodyDiv1">
+
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+					<input type="button" value="Update" class="btn btn-success" id="edtSubmit" />
+				</div>
+			</div>
+		</div>
+	</div>*@
+
+
+
+
+
+@*<script>
+		var ConfirmDelete = function (RegisteredUserId) {
+			$("#hiddenRegisterUserId").val(RegisteredUserId);
+			$("#myModall").modal('show');
+		}
+		var DeleteRegisteredUser = function () {
+			var registeredUserId = $("#hiddenRegisterUserId").val();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/DeleteConfirmed/",
+				data: { id: registeredUserId },
+				success: function (response) {
+					alert("Student Deleted");
+					$("#myModall").modal("hide");
+					$("#StudentForm")[0].reset();
+					window.location.reload();
+				}
+			})
+		}
+	</script>*@
+
+
+@*<script>
+		var ShowStudent = function (Id) {
+
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/StudentDetails",
+				data: { Id: Id },
+				success: function (response) {
+					$("#myModalBodyDiv").html(response);
+					$("#myModalll").modal("show");
+				}
+			})
+		}
+	</script>*@
+
+
+
+@*<script>
+		var EditStudent = function (Id) {
+
+			$.ajax({
+				type: "GET",
+				url: "/RegisteredUsers/EditStudent",
+				data: { Id: Id },
+				success: function (response) {
+					$("#myModalBodyDiv1").html(response);
+					$("#myModallll").modal("show");
+				}
+			})
+		}
+	</script>*@
+
+
+@*<script>
+
+		$("#edtSubmit").click(function () {
+
+
+			var data = $("#myForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Edit",
+				data: data,
+				success: function (response) {
+					alert("New user Updated");
+					$("#myModal").modal("hide");
+					$("#myForm")[0].reset();
+					window.location.reload();
+
+				}
+			})
+		})
+
+
+	</script>*@
+
+
+
+
+@section scripts{
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+	<script type="text/javascript">
+		$(function () {
+			$("#searchname").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '/RegisteredUsers/AutoCompleteStaffFullname/',
+						data: " {'prefix' : '" + request.term + "'}",
+						dataType: "json",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+						success: function (data) {
+							response($.map(data, function (item) {
+								return item;
+							}))
+						},
+						error: function (response) {
+							alert(response.responseText);
+						},
+						failure: function (response) {
+							alert(response.responseText);
+						}
+					});
+				},
+				select: function (e, i) {
+					$("#hfName").val(i.item.val);
+				},
+				minLength: 0
+			});
+		});
+
+
+
+
+	</script>
+}
