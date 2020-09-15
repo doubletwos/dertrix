@@ -260,6 +260,41 @@ namespace Zeus.Controllers
         }
 
 
+        public ActionResult SystemAdminIndex(string searchname, string searchid)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+            if ((int)Session["OrgId"] != 23)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var org = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
+
+            // returns null at page load
+            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
+            {
+                return View(org);
+            }
+
+            // returns org if id is selected & searchname is null
+            else if (string.IsNullOrWhiteSpace(searchname) && !(string.IsNullOrWhiteSpace(searchid)))
+            {
+                return View(db.Orgs.Where(i => i.OrgId.ToString() == searchid).Include(t => t.OrgType).ToList());
+            }
+
+            // returns org if searchname is selected & id is null
+            else if (!(string.IsNullOrWhiteSpace(searchname) && (string.IsNullOrWhiteSpace(searchid))))
+            {
+                return View(db.Orgs.Where(n => n.OrgName == searchname).Include(t => t.OrgType).ToList());
+            }
+
+            return View(org);
+        }
+
+
         public JsonResult AutoCompleteSchool(string prefix)
         {
             var schoollist = (from org in db.Orgs
@@ -278,33 +313,7 @@ namespace Zeus.Controllers
 
 
 
-        public ActionResult SystemAdminIndex(string searchname, string searchid)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var org = db.Orgs.Include(t => t.OrgType).ToList();
-            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
-            {
-                return View(org);
-            }
-            // returns org if id is selected & searchname is null
-            else if (string.IsNullOrWhiteSpace(searchname) && !(string.IsNullOrWhiteSpace(searchid)))
-            {
-                return View(db.Orgs.Where(i => i.OrgId.ToString() == searchid).ToList());
-            }
-            // returns org if searchname is selected & id is null
-            else if (!(string.IsNullOrWhiteSpace(searchname) && (string.IsNullOrWhiteSpace(searchid))))
-            {
-                return View(db.Orgs.Where(n => n.OrgName == searchname).ToList());
-            }
-            return View();
-        }
+
 
 
 

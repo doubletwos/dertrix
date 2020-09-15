@@ -34,6 +34,9 @@ namespace Zeus.Models
             }
         }
 
+
+        public string FullName { get; set; }
+
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "Please provide your email address")]
         public string Email { get; set; }

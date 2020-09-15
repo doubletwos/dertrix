@@ -217,27 +217,65 @@ namespace Zeus.Controllers
 
 
         // GET: RegisteredUsers/Students/
-        public ActionResult Students(int? id, int? ij)
+        public ActionResult Students(int? id, int? ij, string searchname, string searchid)
         {
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
-
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
             id = i;
 
-            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId)
-                .FirstOrDefault();
+            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
 
-            var stds = db.RegisteredUsers
-                .Where(s => s.RegisteredUserTypeId == 2)
-                .Where(p => p.ClassId == j)
-                .Include(c => c.Class)
-                .Include(g => g.Gender);
-            return View(stds.ToList());
+            var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).ToList();
+
+            string classid = ij.ToString();
+
+            // returns students of org if class is selected
+            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(classid)))
+            {
+                return View(db.RegisteredUsers.Where(p => p.ClassId == j).Where(s => s.RegisteredUserTypeId == 2).Include(c => c.Class).Include(g => g.Gender).ToList());
+            }
+
+            // returns students of org if fullname is provided
+            if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
+            {
+                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).ToList());
+
+            }
+
+            // returns students of org if studentid is provided
+            if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
+            {
+                int reguserid = Convert.ToInt32(searchid);
+                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).ToList());
+
+            }
+
+            return View(stds);
         }
+
+
+
+
+        public JsonResult AutoCompleteStudentFullname(string prefix)
+        {
+            var studentsfullname = (from stu in db.RegisteredUsers
+                              where stu.FullName.StartsWith(prefix)
+                              select new
+                              {
+                                  label = stu.FullName,
+                                  Val = stu.RegisteredUserId
+                              }).ToList();
+
+            return Json(studentsfullname);
+        }
+
+
+
+
 
 
 
@@ -315,6 +353,8 @@ namespace Zeus.Controllers
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
+                    registeredUser.FullName = registeredUser.ContactFullName;
+
                     var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgBrandId).FirstOrDefault();
                     int j = Convert.ToInt32(regUserOrgBrand);
                     registeredUser.RegUserOrgBrand = j;
@@ -335,6 +375,7 @@ namespace Zeus.Controllers
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
+                    registeredUser.FullName = registeredUser.ContactFullName;
                     registeredUser.RegisteredUserTypeId = 2;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
@@ -352,7 +393,7 @@ namespace Zeus.Controllers
                     LastName = registeredUser.LastName,
                     OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault(),
                     RegUserOrgBrand = registeredUser.RegUserOrgBrand,
-                 
+
                 };
                 db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                 db.SaveChanges();
