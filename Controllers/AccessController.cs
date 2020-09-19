@@ -47,7 +47,7 @@ namespace Zeus.Controllers
             {
                 Session["RegisteredUserId"] = reguserdetails.RegisteredUserId.ToString();
                 Session["Email"] = reguserdetails.Email.ToString();
-                Session["ContactFullName"] = reguserdetails.ContactFullName;
+                Session["FullName"] = reguserdetails.FullName;
                 Session["RegisteredUserTypeId"] = reguserdetails.RegisteredUserTypeId;
                 Session["OrgId"] = orgredirect;
                 Session["OrgName"] = reguserorg;
@@ -57,6 +57,9 @@ namespace Zeus.Controllers
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.Content).FirstOrDefault();
+                Session["IsTester"] = reguserdetails.IsTester;
+           
+
             }
             if (orgredirect == 23)
             {
@@ -73,6 +76,8 @@ namespace Zeus.Controllers
         public ActionResult LogOut()
         {
             Session.Abandon();
+            
+            
 
             return RedirectToAction("Index", "Access");
         }

@@ -19,11 +19,30 @@ namespace Zeus.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
+            if ((int)Session["RegisteredUserTypeId"] == 1)
+            {
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                Session.Clear();
+                Session["RegisteredUserId"] = RegisteredUserId;
+                Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
+                Session["OrgId"] = id;
+                Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
+                Session["RegisteredUserTypeId"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
+                Session["IsTester"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
+                Session["regUserOrgBrand"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.RegUserOrgBrand).FirstOrDefault();
+                var orgbrand = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault();
+                Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandBar).FirstOrDefault();
+                Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
+                Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
+                Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
+                Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
+                var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+                return View(orgs1.ToList());
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -33,42 +52,42 @@ namespace Zeus.Controllers
             {
                 return HttpNotFound();
             }
-
-
             var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
             return View(orgs.ToList());
         }
 
 
-        // GET: Orgs/SystemAdminIndex
-        //public ActionResult SystemAdminIndex(int? id)
-        //{
-        //    if (Session["OrgId"] == null)
-        //    {
-        //        return RedirectToAction("Index", "Access");
-        //    }
-        //    if ((int)Session["OrgId"] != 23)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
 
-        //    if ((int)Session["OrgId"] == 23)
-        //    {
-        //        var rr = Session["OrgId"].ToString();
-        //        int i = Convert.ToInt32(rr);
-        //        id = i;
-        //        var orgs = db.Orgs
-        //            .Include(o => o.Domain)
-        //            .Include(o => o.OrgBrand);
-        //        return View(orgs.ToList());
 
-        //    }
-        //    else
 
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-        //}
 
+        public ActionResult JumpToOrg(int id)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+            if ((int)Session["OrgId"] != 23)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+        
+
+           var orgName = Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName.FirstOrDefault());
+           var brandId = Session["brandId"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault().ToString();
+            var logo = Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.Content).FirstOrDefault();
+            var orgBrand = Session["regUserOrgBrand"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgBrandBar).FirstOrDefault();
+            var regUserOrgNavBar = Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgNavigationBar).FirstOrDefault();
+            var IsTesterOrgId = Session["IsTesterOrgId"] = id;
+            var IsTester = Session["IsTester"] = true; 
+
+
+            return RedirectToAction("Index", "Orgs", new { id  });
+
+
+        }
 
 
         [ChildActionOnly]
@@ -262,10 +281,45 @@ namespace Zeus.Controllers
 
         public ActionResult SystemAdminIndex(string searchname, string searchid)
         {
+            var isTester = Convert.ToInt32(Session["IsTester"]);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+
+            if (isTester == 1 && ((int)Session["OrgId"] != 23))
+            {
+                Session.Clear();
+                Session["OrgId"] = 23;
+                Session["RegisteredUserId"] = RegisteredUserId;
+                Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Select(x => x.OrgName).FirstOrDefault();
+
+                Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
+                Session["RegisteredUserTypeId"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
+                Session["IsTester"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
+                Session["regUserOrgBrand"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Select(x => x.RegUserOrgBrand).FirstOrDefault();
+                var orgbrand = db.Orgs.Where(x => x.OrgId == 23).Select(x => x.OrgBrandId).FirstOrDefault();
+                Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandBar).FirstOrDefault();
+                Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
+                Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
+                Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
+                Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
+
+                var org1 = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
+                return View(org1);
+
+
+
+
+
+
+            }
+
+
+
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
+
             if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

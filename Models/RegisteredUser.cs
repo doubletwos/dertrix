@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -96,8 +97,10 @@ namespace Zeus.Models
 
         public int? StudentRegFormId { get; set; }
         public StudentRegForm StudentRegForm { get; set; }
-      
 
+
+     
+        public bool? IsTester { get; set; }
 
 
         public int? TribeId { get; set; }

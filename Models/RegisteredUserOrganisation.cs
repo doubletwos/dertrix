@@ -34,7 +34,13 @@ namespace Zeus.Models
 
         public int? RegUserOrgBrand { get; set; }
 
-    
+        public bool? IsTester { get; set; }
+
+        public int? RegisteredUserTypeId { get; set; }
+
+
+
+
 
 
 

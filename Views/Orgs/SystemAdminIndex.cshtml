@@ -63,6 +63,10 @@
 	</tr>
 
 	
+
+	@{ 
+		var orgid = Session["OrgId"].ToString();
+	}
 	
 
 
@@ -87,7 +91,29 @@
 		<td>
 			@Html.ActionLink("Edit", "Edit", new { id = item.OrgId }) |
 			@Html.ActionLink("Details", "Details", new { id = item.OrgId }) |
-			@Html.ActionLink("Delete", "Delete", new { id = item.OrgId })
+			@Html.ActionLink("Delete", "Delete", new { id = item.OrgId }) |
+
+
+
+			@{
+				var isTester = Convert.ToInt32(Session["IsTester"]);
+
+
+				if (isTester == 1)
+				{
+					@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+
+				}
+
+
+			}
+
+
+
+
+
+
+
 		</td>
 </tr>
 	}

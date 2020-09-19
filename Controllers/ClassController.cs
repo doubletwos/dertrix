@@ -77,7 +77,7 @@ namespace Zeus.Controllers
             {
                 db.Classes.Add(@Class);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("SystemAdminIndex");
             }
 
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);

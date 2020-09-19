@@ -20,6 +20,7 @@ namespace Zeus.Controllers
         // GET: RegisteredUsers/Index
         public ActionResult Index(int? id)
         {
+            
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
@@ -402,6 +403,72 @@ namespace Zeus.Controllers
             /*Accepting all state of model*/
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
+                //Add existing user to another organsation 
+                var checkemail = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.Email).FirstOrDefault();
+                var firstname = db.RegisteredUsers.Where(x => x.FirstName == registeredUser.FirstName).Select(x => x.FirstName).FirstOrDefault();
+                var lastname = db.RegisteredUsers.Where(x => x.LastName == registeredUser.LastName).Select(x => x.LastName).FirstOrDefault();
+
+
+
+                if (checkemail.ToString() == registeredUser.Email && firstname.ToString() == registeredUser.FirstName && lastname.ToString() == registeredUser.LastName)
+                {
+                    registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.RegisteredUserId).FirstOrDefault();
+                    registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.FirstName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.FirstName).FirstOrDefault();
+                    registeredUser.LastName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.LastName).FirstOrDefault();
+                    registeredUser.Email = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Email).FirstOrDefault();
+                    registeredUser.Password = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Password).FirstOrDefault();
+                    registeredUser.ConfirmPassword = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.ConfirmPassword).FirstOrDefault();
+                    registeredUser.Telephone = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Telephone).FirstOrDefault();
+                    var zeususer = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
+                    int k = Convert.ToInt32(zeususer);
+                    registeredUser.SelectedOrg = k;
+                    registeredUser.PrimarySchoolUserRoleId = 3;
+                    registeredUser.SecondarySchoolUserRoleId = 4;
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
+                    registeredUser.FullName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.FullName).FirstOrDefault();
+                    registeredUser.RegUserOrgBrand = db.Orgs.Where(x => x.OrgId == k).Select(i => i.OrgBrandId).FirstOrDefault();
+
+
+                    /*Adding users to the RegUserOrg(Many to Many)*/
+                    var onetomany = new RegisteredUserOrganisation()
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgId = registeredUser.SelectedOrg,
+                        Email = registeredUser.Email,
+                        FirstName = registeredUser.FirstName,
+                        LastName = registeredUser.LastName,
+                        OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault(),
+                        RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                        RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
+                        IsTester = registeredUser.IsTester
+
+                    };
+                    db.RegisteredUserOrganisations.Add(onetomany);
+                    db.SaveChanges();
+                    return RedirectToAction("Students", "RegisteredUsers");
+
+
+
+                }
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 /*When users are added at Zeus Level*/
                 if (registeredUser.SelectedOrgList != null)
                 {
@@ -438,8 +505,14 @@ namespace Zeus.Controllers
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
                 }
+
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
+
+
+
+
+
 
                 /*Adding users to the RegUserOrg(Many to Many)*/
                 var objRegisteredUserOrganisations = new RegisteredUserOrganisation()

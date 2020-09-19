@@ -17,31 +17,119 @@
 
 
 
+@*@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
+	{
+		var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
+		<ul class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
+
+
+			<li> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" }) </li>
+
+
+
+
+		</ul>
+	}
+
+
+
+	@if (Session["RegisteredUserId"] != null)
+	{
+		var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
+		<ul class="nav navbar-nav navbar-default" style="background-color:@sessionNavbar">
+
+
+			<li> <i>You are logged in as <strong>@Session["ContactFullName"]</strong></i>  </li>
+
+
+
+
+
+		</ul>*@
+
+
+
 @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 {
 	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
-	<ul class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
-
-
-		<li> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" }) </li>
+<div class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
 
 
 
-	</ul>
+	<div class="row">
+		<div class="col-md-12">
+			@{
+				var isTester = Convert.ToInt32(Session["IsTester"]);
+
+
+				if (isTester == 1 && ((int)Session["OrgId"] != 23))
+				{
+					<div> @Html.ActionLink("Back to Zeus", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "RegUserOrgButtonColour" }) </div>
+
+					@*@Html.ActionLink("Upload students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })*@
+
+
+				}
+				else
+				{
+					<div> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "RegUserOrgButtonColour" }) </div>
+
+				}
+
+
+			}
+		</div>
+
+	
+
+
+
+
+	</div>
+
+
+
+
+
+
+
+
+</div>
 }
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 @if (Session["RegisteredUserId"] != null)
 {
 	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
-	<ul class="nav navbar-nav navbar-default" style="background-color:@sessionNavbar">
+	<div class="nav navbar-nav navbar-default" style="background-color:@sessionNavbar">
 
 
-		<li> <i>You are logged in as <strong>@Session["ContactFullName"]</strong></i>  </li>
+		<div> <i>You are logged in as <strong>@Session["FullName"]</strong></i>  </div>
 
-		
 
-	</ul>
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
