@@ -19,12 +19,12 @@ namespace Zeus.Models
 
         [Display(Name = "User's First Name")]
         [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
-        [Required(ErrorMessage = "Your first name is required")]
+        [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
 
         [Display(Name = "User's Last Name")]
         [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
-        [Required(ErrorMessage = "Your last name is required")]
+        [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
 
         public string ContactFullName
@@ -39,7 +39,7 @@ namespace Zeus.Models
         public string FullName { get; set; }
 
         [Display(Name = "Email Address")]
-        [Required(ErrorMessage = "Please provide your email address")]
+        [Required(ErrorMessage = "email address is required")]
         public string Email { get; set; }
 
         public string LoginErrorMsg { get; set; }
@@ -80,9 +80,9 @@ namespace Zeus.Models
 
         public Org Org { get; set; }
 
-        public int SelectedOrg { get; set; }     
-
+        public int SelectedOrg { get; set; }
         public ICollection<int> SelectedOrgList { get; set; }
+
         public ICollection<RegisteredUserOrganisation> RegisteredUserOrganisations { get; set; }
 
 

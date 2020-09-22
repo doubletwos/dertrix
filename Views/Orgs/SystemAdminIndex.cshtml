@@ -8,19 +8,19 @@
 		<p>
 			@using (Html.BeginForm("SystemAdminIndex", "Orgs", FormMethod.Get))
 			{
-			<div class="form-inline">
-				id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
-				<input type="hidden" id="hfId" name="searchid" />
+				<div class="form-inline">
+					id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
+					<input type="hidden" id="hfId" name="searchid" />
 
-				School Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
-				<input type="hidden" id="hfName" name="searchname" />
+					School Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
+					<input type="hidden" id="hfName" name="searchname" />
 
-				&nbsp;&nbsp;
-				<button class="RegUserOrgButtonColour">Filter</button>
+					&nbsp;&nbsp;
+					<button class="RegUserOrgButtonColour">Filter</button>
 
 
 
-			</div>
+				</div>
 			}
 		</p>
 	</div>
@@ -28,7 +28,7 @@
 
 <br />
 <br />
-<hr/>
+<hr />
 <div>
 
 	@{
@@ -40,7 +40,7 @@
 <br />
 
 <table class="table table-bordered table-striped table-hover table-responsive ">
-	<tr  style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
 		<th>
 			Id
 		</th>
@@ -48,79 +48,80 @@
 			Name
 		</th>
 		<th>
-		Type
+			Type
 		</th>
 		<th>
-		Address
+			Address
 		</th>
 		<th>
-		Creation Date
+			Creation Date
 		</th>
 		<th>
 			Select Action
 		</th>
-		
+
 	</tr>
 
-	
 
-	@{ 
+
+	@{
 		var orgid = Session["OrgId"].ToString();
 	}
-	
+
 
 
 	@foreach (var item in Model)
 	{
-<tr>
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgId)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgName)
-	</td>
-	<td>
-			@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.OrgAddress)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.CreationDate)
-		</td>
-		<td>
-			@Html.ActionLink("Edit", "Edit", new { id = item.OrgId }) |
-			@Html.ActionLink("Details", "Details", new { id = item.OrgId }) |
-			@Html.ActionLink("Delete", "Delete", new { id = item.OrgId }) |
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgId)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgAddress)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.CreationDate)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.OrgId }) |
+				@Html.ActionLink("Details", "Details", new { id = item.OrgId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.OrgId }) |
 
 
 
-			@{
-				var isTester = Convert.ToInt32(Session["IsTester"]);
+				@{
+					var isTester = Convert.ToInt32(Session["IsTester"]);
 
 
-				if (isTester == 1)
-				{
-					@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+					if (isTester == 1)
+					{
+						@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+
+					}
+
 
 				}
 
 
-			}
 
 
 
 
 
-
-
-		</td>
-</tr>
+			</td>
+		</tr>
 	}
 </table>
 
 
 @section scripts{
+	@Scripts.Render("~/bundles/jqueryval")
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
 	<script type="text/javascript">
@@ -158,3 +159,6 @@
 
 	</script>
 }
+
+
+

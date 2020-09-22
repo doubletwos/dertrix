@@ -1,5 +1,8 @@
 ﻿@model Zeus.Models.RegisteredUser
 
+
+
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 
@@ -50,48 +53,49 @@
 						<div class="form-group">
 							@Html.LabelFor(model => model.PrimarySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.DropDownList("PrimarySchoolUserRoleId", null, "", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
+								@Html.DropDownList("PrimarySchoolUserRoleId", null, "Please Select", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.PrimarySchoolUserRoleId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 					</div>
+
+					<div class="modal-footer">
+						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+						<input type="submit" value="Add User" class="RegUserOrgButtonColour" id="btnSubmit" />
+					</div>
+
+
+
 				</form>
 			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<input type="button" value="Add User" class="RegUserOrgButtonColour" id="btnSubmit" />
-			</div>
+		
 		</div>
 	</div>
 </div>
+
+
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
 		debugger
 		$("#ClassId").hide();
 		$("#ClassId0").hide();
-		$("#RegisteredUserTypeId").change(function () {
-			var reg = $("#RegisteredUserTypeId").val();
-			if (reg == 13) {
-				$("#ClassId").show(function () {
-					$("#ClassId").slideDown();
-				});
-				$("#ClassId0").show(function () {
-					$("#ClassId0").slideDown();
-				});
-			}
-			else {
-				$("#ClassId").hide(function () {
-					$("#ClassId").slideUp();
-				});
-				$("#ClassId0").hide(function () {
-					$("#ClassId0").slideUp();
-				});
-			}
-		})
+
+
+
+
+
+
+
+
+
+
+
+
 		$("#btnSubmit").click(function () {
 			debugger
 			var data = $("#myForm").serialize();

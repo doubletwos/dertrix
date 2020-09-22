@@ -19,10 +19,13 @@ namespace Zeus.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
-            if ((int)Session["RegisteredUserTypeId"] == 1)
+            var isTester = Convert.ToInt32(Session["IsTester"]);
+
+            if (isTester == 1)
             {
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
                 Session.Clear();
+                Session["IsTester"] = isTester;
                 Session["RegisteredUserId"] = RegisteredUserId;
                 Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
                 Session["OrgId"] = id;
@@ -325,7 +328,7 @@ namespace Zeus.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var org = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
+            var org = db.Orgs.Where(x => x.OrgTypeId != 5).Include(t => t.OrgType).ToList();
 
             // returns null at page load
             if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))

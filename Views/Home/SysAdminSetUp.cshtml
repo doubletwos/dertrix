@@ -42,22 +42,23 @@
 	<div class="row">
 		<div class="col-md-3">
 			@*<p>@Html.ActionLink("Add User", "Create", "RegisteredUsers", "", new { @class = "btn btn-primary" })</p>*@
-			<p>@{ 
-				Html.RenderAction("RegisterUser", "RegisteredUsers");
-			  }
-			</p>
+			<p>
+				@{
+					Html.RenderAction("RegisterUser", "RegisteredUsers");
+			}
+		</p>
 
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Student Type", "Index", "StudentRegForms", "", new { @class = "btn btn-primary" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Secondary School Roles", "Index", "SecondarySchoolUserRoles", "", new { @class = "btn btn-primary" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Primary School Roles", "Index", "PrimarySchoolUserRoles", "", new { @class = "btn btn-primary" })</p>
-		</div>
 	</div>
+	<div class="col-md-3">
+		<p>@Html.ActionLink("Student Type", "Index", "StudentRegForms", "", new { @class = "btn btn-primary" })</p>
+	</div>
+	<div class="col-md-3">
+		<p>@Html.ActionLink("Secondary School Roles", "Index", "SecondarySchoolUserRoles", "", new { @class = "btn btn-primary" })</p>
+	</div>
+	<div class="col-md-3">
+		<p>@Html.ActionLink("Primary School Roles", "Index", "PrimarySchoolUserRoles", "", new { @class = "btn btn-primary" })</p>
+	</div>
+</div>
 
 
 
@@ -68,3 +69,8 @@
 
 
 </div>
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

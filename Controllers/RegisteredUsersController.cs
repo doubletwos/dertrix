@@ -219,11 +219,18 @@ namespace Zeus.Controllers
             int i = Convert.ToInt32(rr);
             id = i;
 
+            if (ij == null)
+            {
+                ij = 1;
+            }
+
             var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
 
             var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).ToList();
 
             string classid = ij.ToString();
+
+         
 
             // returns students of org if class is selected
             if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(classid)))
@@ -294,14 +301,31 @@ namespace Zeus.Controllers
                 id = i;
             }
 
-            /*Returns Zeus staff*/
+            /*Returns Zeus staff - if & when name is provided*/
             if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
             {
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Include(t => t.RegisteredUserType).ToList());
 
             }
 
+            /*Returns Zeus staff - if & when id is provided*/
             if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid))
+            {
+                int reguserid = Convert.ToInt32(searchid);
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(r => r.RegisteredUserId == reguserid).Include(t => t.RegisteredUserType).ToList());
+
+            }
+
+
+            /*Returns Zeus staff - upon page load*/
+            if ((int)Session["OrgId"] == 23 && string.IsNullOrWhiteSpace(searchname))
+            {
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Include(t => t.RegisteredUserType).ToList());
+
+            }
+
+
+            if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid) && string.IsNullOrWhiteSpace(searchname))
             {
                 int reguserid = Convert.ToInt32(searchid);
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(g => g.RegisteredUserId == reguserid).Include(t => t.RegisteredUserType).ToList());
@@ -410,7 +434,7 @@ namespace Zeus.Controllers
 
 
 
-                if (checkemail.ToString() == registeredUser.Email && firstname.ToString() == registeredUser.FirstName && lastname.ToString() == registeredUser.LastName)
+                if (checkemail != null && checkemail == registeredUser.Email && firstname == registeredUser.FirstName && lastname == registeredUser.LastName)
                 {
                     registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.RegisteredUserId).FirstOrDefault();
                     registeredUser.RegisteredUserTypeId = 2;
@@ -428,6 +452,7 @@ namespace Zeus.Controllers
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.FullName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.FullName).FirstOrDefault();
                     registeredUser.RegUserOrgBrand = db.Orgs.Where(x => x.OrgId == k).Select(i => i.OrgBrandId).FirstOrDefault();
+                    registeredUser.IsTester = true;
 
 
                     /*Adding users to the RegUserOrg(Many to Many)*/
@@ -453,19 +478,6 @@ namespace Zeus.Controllers
                 }
 
           
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -504,6 +516,13 @@ namespace Zeus.Controllers
                     registeredUser.RegisteredUserTypeId = 2;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgBrandId).FirstOrDefault();
+                    int j = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.RegUserOrgBrand = j;
+
+
+
+
                 }
 
                 db.RegisteredUsers.Add(registeredUser);

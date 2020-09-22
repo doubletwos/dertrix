@@ -11,11 +11,13 @@ namespace Zeus.Models
         public int OrgId { get; set; }
 
 
-        [StringLength(20, ErrorMessage = "Only 20 characters allowed")]
+        [Required(ErrorMessage = "Please Provide Org Name")]
+        [StringLength(30, ErrorMessage = "Only 30 characters allowed")]
         [Display(Name = "Organisation Name")]
         public string OrgName { get; set; }
 
-        [StringLength(20, ErrorMessage = "Only 20 characters allowed")]
+        [Required(ErrorMessage = "Please Provide Org Address")]
+        [StringLength(30, ErrorMessage = "Only 30 characters allowed")]
         [Display(Name = "Organisation Address")]
         public string OrgAddress { get; set; }
 
@@ -34,7 +36,6 @@ namespace Zeus.Models
         public int OrgBrandId { get; set; }
         public OrgBrand OrgBrand { get; set; }
 
-        [Required(ErrorMessage = "Please select Organisation Type")]
         public int? OrgTypeId { get; set; }
         public OrgType OrgType { get; set; }
 

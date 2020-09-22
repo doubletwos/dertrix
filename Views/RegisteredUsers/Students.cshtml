@@ -59,7 +59,7 @@
 			@Html.ActionLink("Upload students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })
 		</div>
 	</div>
-	
+
 </div>
 <br />
 <div class="panel panel-default">
@@ -220,8 +220,8 @@
 	})
 </script>
 @section scripts{
-	@*undefined<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
-	
+	@Scripts.Render("~/bundles/jqueryval")
+
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
 	<script type="text/javascript">
 		$(function () {
@@ -254,4 +254,5 @@
 		});
 	</script>
 }
+
 
