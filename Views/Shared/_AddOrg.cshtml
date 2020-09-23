@@ -67,8 +67,8 @@
 
 <script>
 
-	$(document).ready(function() {
-		$("#btnSubmit").on("click", (function () {
+	$(document).ready(function (){
+		$("#btnSubmit").on("click", function () {
 			var data = $("#myForm").serialize();
 			$.ajax({
 				type: "POST",
@@ -84,7 +84,7 @@
 
 			})
 		})
-	})
+	});
 
 
 </script>

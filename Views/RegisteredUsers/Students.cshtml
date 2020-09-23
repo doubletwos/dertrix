@@ -92,9 +92,7 @@
 					@Html.DisplayFor(modelItem => item.Class.ClassName)
 				</td>
 				<td>
-					@*@Html.ActionLink("Edit", "Edit", new { id = item.RegisteredUserId }) |
-						@Html.ActionLink("Details", "Details", new { id = item.RegisteredUserId }) |
-						@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUserId })|*@
+				
 
 					<a href="#" class="RegUserOrgButtonColour" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a>
 					<a href="#" class="RegUserOrgButtonColour" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a>
@@ -108,6 +106,11 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<input type="hidden" id="hiddenRegisterUserId" />
 </div>
+
+
+
+
+
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
 	<div class="modal-dialog">
@@ -126,6 +129,10 @@
 		</div>
 	</div>
 </div>
+
+
+
+
 @*View Student Details Modal*@
 <div class="modal fade" id="myModalll">
 	<div class="modal-dialog">
@@ -136,11 +143,15 @@
 			</div>
 			<div class="modal-body" id="myModalBodyDiv"></div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
 			</div>
 		</div>
 	</div>
 </div>
+
+
+
+
 @*Edit Student Details Modal*@
 <div class="modal fade" id="myModallll">
 	<div class="modal-dialog">
@@ -151,12 +162,16 @@
 			</div>
 			<div class="modal-body" id="myModalBodyDiv1"></div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
-				<input type="button" value="Update" class="btn btn-success" id="edtSubmit" />
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
 			</div>
 		</div>
 	</div>
 </div>
+
+
+
+
 <script>
 	var ConfirmDelete = function (RegisteredUserId) {
 		$("#hiddenRegisterUserId").val(RegisteredUserId);

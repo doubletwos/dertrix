@@ -162,6 +162,19 @@ namespace Zeus.Controllers
         }
 
 
+
+        public ActionResult StaffDetails(int Id)
+        {
+            var stud = db.RegisteredUsers
+                .Where(x => x.RegisteredUserId == Id);
+
+            ViewBag.RegisteredUser = stud;
+
+            return PartialView("_StaffDetails");
+        }
+
+
+
         public ActionResult EditStudent(int Id)
         {
             if (Id != 0)
@@ -196,6 +209,30 @@ namespace Zeus.Controllers
                 return PartialView("_EditStudent", stud);
             }
             return PartialView("_EditStudent");
+        }
+
+
+
+
+        public ActionResult EditStaff(int Id)
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var stud1 = db.RegisteredUsers
+                    .Where(x => x.RegisteredUserId == Id)
+                    .FirstOrDefault();
+                ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
+                var stud = new RegisteredUser
+                {
+                    RegisteredUserTypeId = stud1.RegisteredUserTypeId,
+                    FirstName = stud1.FirstName,
+                    LastName = stud1.LastName,
+                };
+                return PartialView("_EditStaff", stud);
+            }
+            return PartialView("_EditStaff");
         }
 
 
@@ -301,6 +338,10 @@ namespace Zeus.Controllers
                 id = i;
             }
 
+
+
+
+
             /*Returns Zeus staff - if & when name is provided*/
             if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
             {
@@ -325,30 +366,33 @@ namespace Zeus.Controllers
             }
 
 
-            if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid) && string.IsNullOrWhiteSpace(searchname))
-            {
-                int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(g => g.RegisteredUserId == reguserid).Include(t => t.RegisteredUserType).ToList());
-            }
 
 
-            /*Returns non Zeus staff*/
+            /*Returns NON Zeus staff - if & when name is provided*/
             if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchname))
             {
-
-                /*Changes will have to be made to the code below of Parents are given roles*/
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
 
             }
 
+
+            /*Returns NON Zeus staff - if & when id is provided*/
             if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchid))
             {
-
-                /*Changes will have to be made to the code below of Parents are given roles*/
                 int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.RegisteredUserId == reguserid).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(r => r.RegisteredUserId == reguserid).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
 
             }
+
+
+            /*Returns NON Zeus staff - upon page load*/
+            if ((int)Session["OrgId"] != 23 && string.IsNullOrWhiteSpace(searchname))
+            {
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+
+            }
+
+
 
             return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
 
