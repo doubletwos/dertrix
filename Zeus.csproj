@@ -790,6 +790,8 @@
     <Content Include="Views\RegisteredUsers\Staffs.cshtml" />
     <Content Include="Views\Shared\_StaffDetails.cshtml" />
     <Content Include="Views\Shared\_EditStaff.cshtml" />
+    <Content Include="Views\Shared\_OrgDetails.cshtml" />
+    <Content Include="Views\Shared\_EditOrg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

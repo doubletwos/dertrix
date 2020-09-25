@@ -2,6 +2,20 @@
 @{
 	ViewBag.Title = "SystemAdminIndex";
 }
+
+<head>
+
+
+	<style>
+
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+
+
+
 <div class="row">
 	<div class="col-lg-12">
 		<p><b>Organisation management</b></p>
@@ -56,6 +70,9 @@
 		<th>
 			Creation Date
 		</th>
+		@*<th>
+			Select Action
+		</th>*@
 		<th>
 			Select Action
 		</th>
@@ -88,7 +105,7 @@
 			<td>
 				@Html.DisplayFor(modelItem => item.CreationDate)
 			</td>
-			<td>
+			@*<td>
 				@Html.ActionLink("Edit", "Edit", new { id = item.OrgId }) |
 				@Html.ActionLink("Details", "Details", new { id = item.OrgId }) |
 				@Html.ActionLink("Delete", "Delete", new { id = item.OrgId }) |
@@ -114,9 +131,39 @@
 
 
 
+			</td>*@
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
+						<li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
+
+						@{
+							var isTester = Convert.ToInt32(Session["IsTester"]);
+
+							if (isTester == 1)
+							{
+								<li>
+									@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+								</li>
+							}
+
+
+
+
+						}
+						@*<li><a href="#">Something else here</a></li>
+		<li role="separator" class="divider"></li>
+		<li><a href="#">Separated link</a></li>*@
+					</ul>
+				</div>
 			</td>
 		</tr>
-	}
+}
 </table>
 
 
@@ -124,6 +171,138 @@
 	@Scripts.Render("~/bundles/jqueryval")
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+	@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+	<input type="hidden" id="hiddenOrgId" />
+
+
+
+	@*Delete confirmation Modal*@
+	<div class="modal fade" id="myModall">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Remove Org</h3>
+				</div>
+				<div class="modal-body">
+					<h3>Are you sure you want to remove this org?</h3>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteOrg()">Confirm</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	@*View Org Details Modal*@
+	<div class="modal fade" id="myModalll">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Org Details</h3>
+				</div>
+				<div class="modal-body" id="myModalBodyDiv"></div>
+				<div class="modal-footer">
+					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	@*Edit Org Details Modal*@
+	<div class="modal fade" id="myModallll">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Edit Org Details</h3>
+				</div>
+				<div class="modal-body" id="myModalBodyDiv1"></div>
+				<div class="modal-footer">
+					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+					<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<script>
+		var ConfirmDelete = function (OrgId) {
+			$("#hiddenOrgId").val(OrgId);
+			$("#myModall").modal('show');
+		}
+		var DeleteRegisteredUser = function () {
+			var OrgId = $("#hiddenOrgId").val();
+			$.ajax({
+				type: "POST",
+				url: "/Orgs/DeleteConfirmed/",
+				data: { id: OrgId },
+				success: function (response) {
+					alert("Org Deleted");
+					$("#myModall").modal("hide");
+					window.location.reload();
+				}
+			})
+		}
+	</script>
+	<script>
+		var ShowOrg = function (Id) {
+			$.ajax({
+				type: "POST",
+				url: "/Orgs/OrgDetails",
+				data: { Id: Id },
+				success: function (response) {
+					$("#myModalBodyDiv").html(response);
+					$("#myModalll").modal("show");
+				}
+			})
+		}
+	</script>
+	<script>
+		var EditOrg = function (Id) {
+			$.ajax({
+				type: "GET",
+				url: "/Orgs/EditOrg",
+				data: { Id: Id },
+				success: function (response) {
+					$("#myModalBodyDiv1").html(response);
+					$("#myModallll").modal("show");
+				}
+			})
+		}
+	</script>
+	<script>
+		$("#edtSubmit").click(function () {
+			var data = $("#myFormm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/Orgs/Edit",
+				data: data,
+				success: function (response) {
+					alert("Org Updated");
+					$("#myModal").modal("hide");
+					$("#myFormm")[0].reset();
+					window.location.reload();
+				}
+			})
+		})
+	</script>
+
+
+
+
+
+
+
 	<script type="text/javascript">
 		$(function () {
 			$("#searchname").autocomplete({

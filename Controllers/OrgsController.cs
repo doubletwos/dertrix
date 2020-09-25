@@ -131,6 +131,57 @@ namespace Zeus.Controllers
             return View(org);
         }
 
+
+
+
+        public ActionResult OrgDetails(int Id)
+        {
+            var stud = db.Orgs.Where(x => x.OrgId == Id);
+
+            ViewBag.Org = stud;
+
+            return PartialView("_OrgDetails");
+        }
+
+
+        public ActionResult EditOrg(int Id)
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var edtorg = db.Orgs
+                    .Include(d => d.Domain)
+                    .Include(o => o.OrgBrand)
+                    .Include(k => k.OrgType)
+                    .Where(x => x.OrgId == Id)
+                    .FirstOrDefault();
+                ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", edtorg.DomainId);
+                ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", edtorg.OrgTypeId);
+                ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", edtorg.OrgBrandId);
+
+
+                var edtorg1 = new Org
+                {
+                    OrgId = edtorg.OrgId,
+                    OrgName = edtorg.OrgName,
+                    OrgAddress = edtorg.OrgAddress,
+                    CreationDate = edtorg.CreationDate,
+                    DomainId = edtorg.DomainId,
+                    OrgTypeId = edtorg.OrgTypeId,
+                    OrgBrandId = edtorg.OrgBrandId,
+                    
+
+                };
+                return PartialView("_EditOrg", edtorg1);
+            }
+            return PartialView("_EditOrg");
+        }
+
+
+
+
+
         // GET: Orgs/Create
         public ActionResult Create()
         {
@@ -221,6 +272,10 @@ namespace Zeus.Controllers
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", org.OrgTypeId);
             return View(org);
         }
+
+
+
+
 
         // POST: Orgs/Edit/5
         [HttpPost]

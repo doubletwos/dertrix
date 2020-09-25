@@ -1,0 +1,50 @@
+﻿@model Zeus.Models.Org
+
+
+
+@if (ViewBag.Org != null)
+{
+
+
+	foreach (var item in ViewBag.Org)
+	{
+
+		<table class="table table-bordered table-striped">
+
+			<tr>
+				<td>
+					Org Name
+				</td>
+				<td>
+					@item.OrgName
+				</td>
+			</tr>
+
+
+
+
+
+
+		</table>
+
+
+
+
+
+
+
+
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
