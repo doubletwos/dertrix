@@ -502,9 +502,30 @@
     <Compile Include="Migrations\202009221640405_1740.Designer.cs">
       <DependentUpon>202009221640405_1740.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010030725321_0825.cs" />
+    <Compile Include="Migrations\202010030725321_0825.Designer.cs">
+      <DependentUpon>202010030725321_0825.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010030730181_0830.cs" />
+    <Compile Include="Migrations\202010030730181_0830.Designer.cs">
+      <DependentUpon>202010030730181_0830.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010030832268_0932.cs" />
+    <Compile Include="Migrations\202010030832268_0932.Designer.cs">
+      <DependentUpon>202010030832268_0932.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010031653331_1753.cs" />
+    <Compile Include="Migrations\202010031653331_1753.Designer.cs">
+      <DependentUpon>202010031653331_1753.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010031926578_2026.cs" />
+    <Compile Include="Migrations\202010031926578_2026.Designer.cs">
+      <DependentUpon>202010031926578_2026.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\ClassTeacher.cs" />
     <Compile Include="Models\ClassType.cs" />
     <Compile Include="Models\Domain.cs" />
     <Compile Include="Models\File.cs" />
@@ -792,6 +813,7 @@
     <Content Include="Views\Shared\_EditStaff.cshtml" />
     <Content Include="Views\Shared\_OrgDetails.cshtml" />
     <Content Include="Views\Shared\_EditOrg.cshtml" />
+    <Content Include="Views\Class\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1044,6 +1066,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009221640405_1740.resx">
       <DependentUpon>202009221640405_1740.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010030725321_0825.resx">
+      <DependentUpon>202010030725321_0825.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010030730181_0830.resx">
+      <DependentUpon>202010030730181_0830.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010030832268_0932.resx">
+      <DependentUpon>202010030832268_0932.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010031653331_1753.resx">
+      <DependentUpon>202010031653331_1753.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010031926578_2026.resx">
+      <DependentUpon>202010031926578_2026.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

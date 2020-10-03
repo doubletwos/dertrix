@@ -58,7 +58,8 @@ namespace Zeus.Controllers
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.Content).FirstOrDefault();
                 Session["IsTester"] = reguserdetails.IsTester;
-           
+                Session["OrgType"] = db.Orgs.Where(x => x.OrgId == orgredirect).Select(x => x.OrgTypeId).FirstOrDefault();
+
 
             }
             if (orgredirect == 23)

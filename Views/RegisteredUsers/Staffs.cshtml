@@ -58,6 +58,9 @@
 				Email Address
 			</th>
 			<th>
+			Role
+			</th>
+			<th>
 				Registration Date
 			</th>
 			<th>
@@ -75,6 +78,10 @@
 		</td>
 		<td>
 			@Html.DisplayFor(modelItem => item.Email)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
+			@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
 		</td>
 		<td>
 			@Html.DisplayFor(modelItem => item.EnrolmentDate)
@@ -96,8 +103,8 @@
 					<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Staff</a></li>
 
 					@*<li><a href="#">Something else here</a></li>
-		<li role="separator" class="divider"></li>
-		<li><a href="#">Separated link</a></li>*@
+					<li role="separator" class="divider"></li>
+					<li><a href="#">Separated link</a></li>*@
 				</ul>
 			</div>
 		</td>
@@ -157,7 +164,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit Student Details</h3>
+				<h3 class="modal-title">Edit Staff Details</h3>
 			</div>
 			<div class="modal-body" id="myModalBodyDiv1"></div>
 			<div class="modal-footer">
@@ -218,15 +225,15 @@
 </script>
 <script>
 	$("#edtSubmit").click(function () {
-		var data = $("#myForm").serialize();
+		var data = $("#StaffEditForm").serialize();
 		$.ajax({
 			type: "POST",
 			url: "/RegisteredUsers/Edit",
 			data: data,
 			success: function (response) {
-				alert("New user Updated");
+				alert("Staff Updated");
 				$("#myModal").modal("hide");
-				$("#myForm")[0].reset();
+				$("#StaffEditForm")[0].reset();
 				window.location.reload();
 			}
 		})

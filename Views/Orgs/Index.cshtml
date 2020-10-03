@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Zeus.Models.Org>
 
+
 @{
 	ViewBag.Title = "Index";
 }
@@ -9,15 +10,20 @@
 			<ul class="nav nav-pills" role="tablist">
 				<li role="presentation" class="active">
 					<a href="#">
-						Registered Students<span class="badge">
+						Date <span class="badge">
+						@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
+						</span>
+					</a>
+				</li>
+				<li role="presentation" class="active">
+					<a href="#">
+						Registered Students </i><span class="badge">
 							@{
 								Html.RenderAction("StudentCount", "RegisteredUsers");
 							}
 						</span>
 					</a>
 				</li>
-				@*<li role="presentation"><a href="#">Profile</a></li>
-				<li role="presentation"><a href="#">Messages <span class="badge">3</span></a></li>*@
 			</ul>
 		</div>
 	</div>

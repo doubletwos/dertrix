@@ -93,6 +93,8 @@ namespace Zeus.Controllers
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+
             return PartialView("_AddStaff");
         }
 
@@ -205,6 +207,7 @@ namespace Zeus.Controllers
                     TribeId = stud1.TribeId,
                     EnrolmentDate = stud1.EnrolmentDate,
                     DateOfBirth = stud1.DateOfBirth,
+                    FullName = stud1.FullName
                 };
                 return PartialView("_EditStudent", stud);
             }
@@ -226,9 +229,24 @@ namespace Zeus.Controllers
                 ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
                 var stud = new RegisteredUser
                 {
+                    RegisteredUserId = stud1.RegisteredUserId,
                     RegisteredUserTypeId = stud1.RegisteredUserTypeId,
                     FirstName = stud1.FirstName,
                     LastName = stud1.LastName,
+                    Email = stud1.Email,
+                    Password = stud1.Password,
+                    ConfirmPassword = stud1.ConfirmPassword,
+                    Telephone =stud1.Telephone,
+                    SelectedOrg = stud1.SelectedOrg,
+                    ClassId = stud1.ClassId,
+                    EnrolmentDate = stud1.EnrolmentDate,
+                    CreatedBy = stud1.CreatedBy,
+                    PrimarySchoolUserRoleId = stud1.PrimarySchoolUserRoleId,
+                    SecondarySchoolUserRoleId = stud1.SecondarySchoolUserRoleId,
+                    FullName = stud1.FullName,
+                    RegUserOrgBrand = stud1.RegUserOrgBrand
+                    
+
                 };
                 return PartialView("_EditStaff", stud);
             }
@@ -263,7 +281,7 @@ namespace Zeus.Controllers
 
             var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
 
-            var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).ToList();
+            var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).Include(n => n.Class).ToList();
 
             string classid = ij.ToString();
 
@@ -388,7 +406,8 @@ namespace Zeus.Controllers
             /*Returns NON Zeus staff - upon page load*/
             if ((int)Session["OrgId"] != 23 && string.IsNullOrWhiteSpace(searchname))
             {
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).Include(s => s.SecondarySchoolUserRole).Include(s => s.PrimarySchoolUserRole)
+                    .ToList());
 
             }
 
@@ -541,10 +560,9 @@ namespace Zeus.Controllers
                     registeredUser.RegUserOrgBrand = j;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
-                    if (!(registeredUser.PrimarySchoolUserRoleId == null) || !(registeredUser.SecondarySchoolUserRoleId == null))
-                    {
-                        registeredUser.RegisteredUserTypeId = 2;
-                    }
+                    registeredUser.RegisteredUserTypeId = registeredUser.RegisteredUserTypeId;
+
+                   
                 }
 
                 /*When users are added at school level*/

@@ -50,13 +50,36 @@
 								@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
 							</div>
 						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.PrimarySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("PrimarySchoolUserRoleId", null, "Please Select", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.PrimarySchoolUserRoleId, "", new { @class = "text-danger" })
-							</div>
-						</div>
+
+						@{
+							if ((int)Session["OrgType"] == 3 || (int)Session["OrgType"] == 5)
+							{
+								<div class="form-group">
+									@Html.LabelFor(model => model.PrimarySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
+									<div class="col-md-10">
+										@Html.DropDownList("PrimarySchoolUserRoleId", null, "Please Select", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.PrimarySchoolUserRoleId, "", new { @class = "text-danger" })
+									</div>
+								</div>
+							}
+						}
+
+
+						@{
+							if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
+							{
+
+								<div class="form-group">
+									@Html.LabelFor(model => model.SecondarySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
+									<div class="col-md-10">
+										@Html.DropDownList("SecondarySchoolUserRoleId", null, "Please Select", new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
+										@Html.ValidationMessageFor(model => model.SecondarySchoolUserRoleId, "", new { @class = "text-danger" })
+									</div>
+								</div>
+							}
+						}
+
+
 					</div>
 
 					<div class="modal-footer">

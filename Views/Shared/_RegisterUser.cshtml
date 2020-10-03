@@ -18,21 +18,30 @@
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 						<div class="form-group">
-							@Html.LabelFor(model => model.SelectedOrgList, "Organisation", htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.SelectedOrgList, "Organisation", htmlAttributes: new { @id = "Organisation1", @class = "control-label col-md-2" })
 							<div class="col-md-10">
 								@Html.DropDownListFor(model => model.SelectedOrgList, null, "Please select", htmlAttributes: new { @id = "Organisation", @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.SelectedOrgList, "", new { @class = "text-danger" })
 							</div>
 						</div>
 						<div class="form-group">
-							@Html.LabelFor(model => model.RegisteredUserTypeId, "User Type", htmlAttributes: new { @id= "RegisteredUserTypeId0", @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.RegisteredUserTypeId, "User Type", htmlAttributes: new { @id = "RegisteredUserTypeId0", @class = "control-label col-md-2" })
 							<div class="col-md-10">
 								@Html.DropDownList("RegisteredUserTypeId", null, "Please select", new { @id = "RegisteredUserTypeId", @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.RegisteredUserTypeId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 						<div class="form-group">
-							@Html.LabelFor(model => model.FirstName, htmlAttributes: new {  @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.IsTester, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								<div class="checkbox">
+									@Html.EditorFor(model => model.IsTester, new { htmlAttributes = new { @class = "form-control"} })
+									@Html.ValidationMessageFor(model => model.IsTester, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
 								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
 								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger", @id = "FirstName0" })
@@ -59,20 +68,20 @@
 								@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
 							</div>
 						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.PrimarySchoolUserRoleId, "Primary School User Role", htmlAttributes: new { @id = "PrimarySchoolUserRoleId0", @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("PrimarySchoolUserRoleId", null, "", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.PrimarySchoolUserRoleId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.SecondarySchoolUserRoleId, "Secondary School User Role", htmlAttributes: new { @id = "SecondarySchoolUserRoleId0", @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("SecondarySchoolUserRoleId", null, "", htmlAttributes: new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.SecondarySchoolUserRoleId, "", new { @class = "text-danger" })
-							</div>
-						</div>
+						@*<div class="form-group">
+			@Html.LabelFor(model => model.PrimarySchoolUserRoleId, "Primary School User Role", htmlAttributes: new { @id = "PrimarySchoolUserRoleId0", @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("PrimarySchoolUserRoleId", null, "", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.PrimarySchoolUserRoleId, "", new { @class = "text-danger" })
+			</div>
+		</div>*@
+						@*<div class="form-group">
+			@Html.LabelFor(model => model.SecondarySchoolUserRoleId, "Secondary School User Role", htmlAttributes: new { @id = "SecondarySchoolUserRoleId0", @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("SecondarySchoolUserRoleId", null, "", htmlAttributes: new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.SecondarySchoolUserRoleId, "", new { @class = "text-danger" })
+			</div>
+		</div>*@
 					</div>
 
 
@@ -101,70 +110,77 @@
 
 <script>
 	$(document).ready(function () {
+		$("#Organisation").hide();
+		$("#Organisation1").hide();
+		$("#Organisation").val("23");
 		
-		$("#PrimarySchoolUserRoleId").hide();
-		$("#PrimarySchoolUserRoleId0").hide();
-		$("#SecondarySchoolUserRoleId").hide();
-		$("#SecondarySchoolUserRoleId0").hide();
-		$("#RegisteredUserTypeId").hide();
-		$("#RegisteredUserTypeId0").hide();
+
+		//$("#PrimarySchoolUserRoleId").hide();
+		//$("#PrimarySchoolUserRoleId0").hide();
+		//$("#SecondarySchoolUserRoleId").hide();
+		//$("#SecondarySchoolUserRoleId0").hide();
+		//$("#RegisteredUserTypeId").hide();
+		//$("#RegisteredUserTypeId0").hide();
 	
-		$("#Organisation").change(function () {
-			var org = $("#Organisation").val();
-			if (org != 23) {
-				$("#PrimarySchoolUserRoleId").show(function () {
-					$("#PrimarySchoolUserRoleId").slideDown();
-				});
-				$("#PrimarySchoolUserRoleId0").show(function () {
-					$("#PrimarySchoolUserRoleId0").slideDown();
-				});
-				$("#SecondarySchoolUserRoleId").show(function () {
-					$("#SecondarySchoolUserRoleId").slideDown();
-				});
-				$("#SecondarySchoolUserRoleId0").show(function () {
-					$("#SecondarySchoolUserRoleId0").slideDown();
-				});
-				$("#RegisteredUserTypeId").hide(function () {
-					$("#RegisteredUserTypeId").slideUp();
-				});
-				$("#RegisteredUserTypeId0").hide(function () {
-					$("#RegisteredUserTypeId0").slideUp();
-				});
-			}
-			else {
-				$("#PrimarySchoolUserRoleId").hide(function () {
-					$("#PrimarySchoolUserRoleId").slideUp();
-				});
-				$("#PrimarySchoolUserRoleId0").hide(function () {
-					$("#PrimarySchoolUserRoleId0").slideUp();
-				});
-				$("#SecondarySchoolUserRoleId").hide(function () {
-					$("#SecondarySchoolUserRoleId").slideUp();
-				});
-				$("#SecondarySchoolUserRoleId0").hide(function () {
-					$("#SecondarySchoolUserRoleId0").slideUp();
-				});
-				$("#RegisteredUserTypeId").show(function () {
-					$("#RegisteredUserTypeId").slideDown();
-				});
-				$("#RegisteredUserTypeId0").show(function () {
-					$("#RegisteredUserTypeId0").slideDown();
-				});
-			}
-			$("#btnSubmit").on("click", function () {
-				var data = $("#myForm").serialize();
-				$.ajax({
-					type: "POST",
-					url: "/RegisteredUsers/Create",
-					data: data,
-					success: function (response) {
-						alert("New user created");
-						$("#myModalRegUser").modal("hide");
-						$("#myForm")[0].reset();
-						window.location.reload();
-					}
-				})
+		//$("#Organisation").change(function () {
+		//	var org = $("#Organisation").val();
+		//	if (org != 23) {
+		//		$("#PrimarySchoolUserRoleId").show(function () {
+		//			$("#PrimarySchoolUserRoleId").slideDown();
+		//		});
+		//		$("#PrimarySchoolUserRoleId0").show(function () {
+		//			$("#PrimarySchoolUserRoleId0").slideDown();
+		//		});
+		//		$("#SecondarySchoolUserRoleId").show(function () {
+		//			$("#SecondarySchoolUserRoleId").slideDown();
+		//		});
+		//		$("#SecondarySchoolUserRoleId0").show(function () {
+		//			$("#SecondarySchoolUserRoleId0").slideDown();
+		//		});
+		//		$("#RegisteredUserTypeId").hide(function () {
+		//			$("#RegisteredUserTypeId").slideUp();
+		//		});
+		//		$("#RegisteredUserTypeId0").hide(function () {
+		//			$("#RegisteredUserTypeId0").slideUp();
+		//		});
+		//	}
+		//	else {
+		//		$("#PrimarySchoolUserRoleId").hide(function () {
+		//			$("#PrimarySchoolUserRoleId").slideUp();
+		//		});
+		//		$("#PrimarySchoolUserRoleId0").hide(function () {
+		//			$("#PrimarySchoolUserRoleId0").slideUp();
+		//		});
+		//		$("#SecondarySchoolUserRoleId").hide(function () {
+		//			$("#SecondarySchoolUserRoleId").slideUp();
+		//		});
+		//		$("#SecondarySchoolUserRoleId0").hide(function () {
+		//			$("#SecondarySchoolUserRoleId0").slideUp();
+		//		});
+		//		$("#RegisteredUserTypeId").show(function () {
+		//			$("#RegisteredUserTypeId").slideDown();
+		//		});
+		//		$("#RegisteredUserTypeId0").show(function () {
+		//			$("#RegisteredUserTypeId0").slideDown();
+		//		});
+		//	}
+
+
+		$("#btnSubmit").on("click", function () {
+			var data = $("#myForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Create",
+				data: data,
+				success: function (response) {
+					alert("New user created");
+					$("#myModalRegUser").modal("hide");
+					$("#myForm")[0].reset();
+					window.location.reload();
+				}
 			})
 		})
+
+		
 	})
 </script>

@@ -1,33 +1,47 @@
 ﻿@model IEnumerable<Zeus.Models.Class>
 
+	<div class="panel panel-default">
+		<table class="table  table-bordered table-striped table-hover table-responsive">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px;">
 
-<table class="table">
-    <tr>
-       
-        <th>
-            @Html.DisplayNameFor(model => model.ClassName)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.ClassIsActive)
-        </th>
-        <th></th>
-    </tr>
+				<th>
+					Class
+				</th>
+				<th>
+					Student Count
+				</th>
+				<th>
+					Class Teacher
+				</th>
+				<th>
+					Select Action
+				</th>
+			</tr>
 
-@foreach (var item in Model) {
-    <tr>
-      
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassName)
-        </td>
-       
-      
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClassId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClassId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClassId })
-        </td>
-    </tr>
-}
+			@foreach (var item in Model)
+			{
+				<tr>
 
-</table>
+					<td>
+						@Html.DisplayFor(modelItem => item.ClassName)
+					</td>
+
+					<td>
+						@Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+
+					</td>
+
+
+					<td>
+						@Html.ActionLink("Edit", "Edit", new { id = item.ClassId })
+						@*@Html.ActionLink("Details", "Details", new { id = item.ClassId }) |*@
+						@*@Html.ActionLink("Delete", "Delete", new { id = item.ClassId })*@
+					</td>
+				</tr>
+			}
+
+		</table>
+		</div>

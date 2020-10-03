@@ -27,19 +27,40 @@ namespace Zeus.Controllers
                 Session.Clear();
                 Session["IsTester"] = isTester;
                 Session["RegisteredUserId"] = RegisteredUserId;
-                Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
                 Session["OrgId"] = id;
+
+                Session["OrgType"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgTypeId).FirstOrDefault();
+
+
+
+                Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
+                ////Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
+                ///
                 Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
-                Session["RegisteredUserTypeId"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
-                Session["IsTester"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
-                Session["regUserOrgBrand"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.RegUserOrgBrand).FirstOrDefault();
+
+
+                Session["RegisteredUserTypeId"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
+                //Session["RegisteredUserTypeId"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
+
+
+
+                Session["IsTester"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
+                //Session["IsTester"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
+
+                Session["regUserOrgBrand"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault();
+                //Session["regUserOrgBrand"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.RegUserOrgBrand).FirstOrDefault();
+
+
+
                 var orgbrand = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault();
                 Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandBar).FirstOrDefault();
                 Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
+
                 var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+
                 return View(orgs1.ToList());
             }
             if (Session["OrgId"] == null)

@@ -163,7 +163,7 @@
 
 
 @*View Student Details Modal*@
-<div class="modal fade" id="myModalll">
+<div class="modal fade" id="myModalll4">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -229,7 +229,7 @@
 			data: { Id: Id },
 			success: function (response) {
 				$("#myModalBodyDiv").html(response);
-				$("#myModalll").modal("show");
+				$("#myModalll4").modal("show");
 			}
 		})
 	}
@@ -249,15 +249,15 @@
 </script>
 <script>
 	$("#edtSubmit").click(function () {
-		var data = $("#myForm").serialize();
+		var data = $("#StudentEditForm").serialize();
 		$.ajax({
 			type: "POST",
 			url: "/RegisteredUsers/Edit",
 			data: data,
 			success: function (response) {
-				alert("New user Updated");
+				alert("Student Updated");
 				$("#myModal").modal("hide");
-				$("#myForm")[0].reset();
+				$("#StudentEditForm")[0].reset();
 				window.location.reload();
 			}
 		})
