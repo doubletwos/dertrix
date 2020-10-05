@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -179,6 +181,8 @@
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Controllers\PostTopicsController.cs" />
     <Compile Include="Controllers\PrimarySchoolUserRolesController.cs" />
     <Compile Include="Controllers\RegisteredUserOrganisationsController.cs" />
     <Compile Include="Controllers\RegisteredUsersController.cs" />
@@ -522,6 +526,18 @@
     <Compile Include="Migrations\202010031926578_2026.Designer.cs">
       <DependentUpon>202010031926578_2026.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010041821042_1920.cs" />
+    <Compile Include="Migrations\202010041821042_1920.Designer.cs">
+      <DependentUpon>202010041821042_1920.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010042205384_2305.cs" />
+    <Compile Include="Migrations\202010042205384_2305.Designer.cs">
+      <DependentUpon>202010042205384_2305.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010051837537_1937.cs" />
+    <Compile Include="Migrations\202010051837537_1937.Designer.cs">
+      <DependentUpon>202010051837537_1937.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -537,6 +553,8 @@
     <Compile Include="Models\OrgBrand.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgType.cs" />
+    <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\PostTopic.cs" />
     <Compile Include="Models\RegisteredUser.cs" />
     <Compile Include="Models\RegisteredUserOrganisation.cs" />
     <Compile Include="Models\PrimarySchoolUserRole.cs" />
@@ -556,6 +574,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\ZeusHorizontal.png" />
+    <Content Include="Content\summernote\summernote-bs4.css" />
+    <Content Include="Content\summernote\summernote-lite.css" />
+    <Content Include="Content\summernote\summernote.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -667,6 +688,9 @@
     <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Main\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Main\lib\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\summernote\font\summernote.woff" />
+    <Content Include="Content\summernote\font\summernote.ttf" />
+    <Content Include="Content\summernote\font\summernote.eot" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -680,6 +704,57 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ar-AR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-bg-BG.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ca-ES.js" />
+    <Content Include="Scripts\summernote\lang\summernote-cs-CZ.js" />
+    <Content Include="Scripts\summernote\lang\summernote-da-DK.js" />
+    <Content Include="Scripts\summernote\lang\summernote-de-DE.js" />
+    <Content Include="Scripts\summernote\lang\summernote-el-GR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-es-ES.js" />
+    <Content Include="Scripts\summernote\lang\summernote-es-EU.js" />
+    <Content Include="Scripts\summernote\lang\summernote-fa-IR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-fi-FI.js" />
+    <Content Include="Scripts\summernote\lang\summernote-fr-FR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-gl-ES.js" />
+    <Content Include="Scripts\summernote\lang\summernote-he-IL.js" />
+    <Content Include="Scripts\summernote\lang\summernote-hr-HR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-hu-HU.js" />
+    <Content Include="Scripts\summernote\lang\summernote-id-ID.js" />
+    <Content Include="Scripts\summernote\lang\summernote-it-IT.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ja-JP.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ko-KR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-lt-LT.js" />
+    <Content Include="Scripts\summernote\lang\summernote-lt-LV.js" />
+    <Content Include="Scripts\summernote\lang\summernote-mn-MN.js" />
+    <Content Include="Scripts\summernote\lang\summernote-nb-NO.js" />
+    <Content Include="Scripts\summernote\lang\summernote-nl-NL.js" />
+    <Content Include="Scripts\summernote\lang\summernote-pl-PL.js" />
+    <Content Include="Scripts\summernote\lang\summernote-pt-BR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-pt-PT.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ro-RO.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ru-RU.js" />
+    <Content Include="Scripts\summernote\lang\summernote-sk-SK.js" />
+    <Content Include="Scripts\summernote\lang\summernote-sl-SI.js" />
+    <Content Include="Scripts\summernote\lang\summernote-sr-RS-Latin.js" />
+    <Content Include="Scripts\summernote\lang\summernote-sr-RS.js" />
+    <Content Include="Scripts\summernote\lang\summernote-sv-SE.js" />
+    <Content Include="Scripts\summernote\lang\summernote-ta-IN.js" />
+    <Content Include="Scripts\summernote\lang\summernote-th-TH.js" />
+    <Content Include="Scripts\summernote\lang\summernote-tr-TR.js" />
+    <Content Include="Scripts\summernote\lang\summernote-uk-UA.js" />
+    <Content Include="Scripts\summernote\lang\summernote-vi-VN.js" />
+    <Content Include="Scripts\summernote\lang\summernote-zh-CN.js" />
+    <Content Include="Scripts\summernote\lang\summernote-zh-TW.js" />
+    <Content Include="Scripts\summernote\plugin\databasic\summernote-ext-databasic.css" />
+    <Content Include="Scripts\summernote\plugin\databasic\summernote-ext-databasic.js" />
+    <Content Include="Scripts\summernote\plugin\hello\summernote-ext-hello.js" />
+    <Content Include="Scripts\summernote\plugin\specialchars\summernote-ext-specialchars.js" />
+    <Content Include="Scripts\summernote\summernote-bs4.js" />
+    <Content Include="Scripts\summernote\summernote-bs4.min.js" />
+    <Content Include="Scripts\summernote\summernote-lite.js" />
+    <Content Include="Scripts\summernote\summernote.js" />
+    <Content Include="Scripts\summernote\summernote.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -814,6 +889,17 @@
     <Content Include="Views\Shared\_OrgDetails.cshtml" />
     <Content Include="Views\Shared\_EditOrg.cshtml" />
     <Content Include="Views\Class\Edit.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\PostTopics\Create.cshtml" />
+    <Content Include="Views\PostTopics\Delete.cshtml" />
+    <Content Include="Views\PostTopics\Details.cshtml" />
+    <Content Include="Views\PostTopics\Edit.cshtml" />
+    <Content Include="Views\PostTopics\Index.cshtml" />
+    <Content Include="Views\Shared\_CreatePost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1082,12 +1168,25 @@
     <EmbeddedResource Include="Migrations\202010031926578_2026.resx">
       <DependentUpon>202010031926578_2026.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010041821042_1920.resx">
+      <DependentUpon>202010041821042_1920.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010042205384_2305.resx">
+      <DependentUpon>202010042205384_2305.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010051837537_1937.resx">
+      <DependentUpon>202010051837537_1937.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

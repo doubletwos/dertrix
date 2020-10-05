@@ -5,7 +5,7 @@
 	ViewBag.Title = "Index";
 }
 
-	<div class="jumbotron">
+	<div class="jumbotron" style="height:100vh;">
 		<div class="container">
 			<ul class="nav nav-pills" role="tablist">
 				<li role="presentation" class="active">
@@ -17,7 +17,7 @@
 				</li>
 				<li role="presentation" class="active">
 					<a href="#">
-						Registered Students </i><span class="badge">
+						Registered Students <span class="badge">
 							@{
 								Html.RenderAction("StudentCount", "RegisteredUsers");
 							}

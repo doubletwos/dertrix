@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Zeus.Models.Post>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+@{
+	ViewBag.Title = "Index";
+}
+
+
+
+
+
+<p>
+	<button class="RegUserOrgButtonColour" onclick="CreatePost()">Create Post</button>
+</p>
+
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Org.OrgName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.PostTopic.PostTopicName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.PostSubject)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.PostCreatorId)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.CreatorFullName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.PostCreationDate)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.PostExpirtyDate)
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Org.OrgName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.PostSubject)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.PostCreatorId)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.CreatorFullName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.PostCreationDate)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.PostExpirtyDate)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
+				@Html.ActionLink("Details", "Details", new { id = item.PostId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.PostId })
+			</td>
+		</tr>
+	}
+
+</table>
+
+
+
+
+
+
+@*Create Post Modal*@
+<div class="modal fade" id="myPost">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Create Post</h3>
+			</div>
+			<div class="modal-body" id="myModalPost"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+
+	var CreatePost = function () {
+			
+			$.ajax({
+				type:  "GET",
+				url: '@Url.Action("CreatePost","Posts")',
+				success: function (response) {
+					$("#myModalPost").html(response);
+					$("#myPost").modal("show");
+
+				}
+
+			})
+
+	}
+
+	</script>
+
+
+
+@*<script>
+		var CreatePost = function () {
+			$.ajax({
+				type:  "GET",
+				url: '@Url.Action("CreatePost","Posts")',
+				success: function (response) {
+					$("#myModalPost").html(response);
+					$("#myPost").on('shown.bs.modal', function () {
+						$('#PostContent').summernote();
+
+					})
+
+				}
+
+			})
+
+		}
+
+</script>*@
+
+
+
+
+
+
+

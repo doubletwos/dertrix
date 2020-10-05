@@ -38,6 +38,10 @@ namespace Zeus.Models
         public DbSet<OrgOrgType> OrgOrgTypes { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<ClassTeacher> ClassTeachers { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostTopic> PostTopics { get; set; }
+
+
 
 
 

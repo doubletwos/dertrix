@@ -71,6 +71,7 @@
 
 
 						<li>@Html.ActionLink("HOME", "Index", "Orgs", new { id = session }, null)</li>
+						<li>@Html.ActionLink("CLASSES", "Index", "Class", new { id = session }, null)</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS <span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -81,7 +82,21 @@
 							</ul>
 						</li>
 
-						<li>@Html.ActionLink("CLASSES", "Index", "Class", new { id = session }, null)</li>
+
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">POSTINGS <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li role="presentation" class="active">@Html.ActionLink("All postings", "Index", "Posts")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="">@Html.ActionLink("Under Dev", "Under Dev", "Under Dev")</li>
+								<li role="separator" class="divider"></li>
+							</ul>
+						</li>
+
+
+
+
+
 
 					}
 					@if ((int)Session["OrgId"] == 23)
