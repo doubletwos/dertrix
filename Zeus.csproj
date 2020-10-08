@@ -538,6 +538,10 @@
     <Compile Include="Migrations\202010051837537_1937.Designer.cs">
       <DependentUpon>202010051837537_1937.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010070433468_0533.cs" />
+    <Compile Include="Migrations\202010070433468_0533.Designer.cs">
+      <DependentUpon>202010070433468_0533.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -1176,6 +1180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010051837537_1937.resx">
       <DependentUpon>202010051837537_1937.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010070433468_0533.resx">
+      <DependentUpon>202010070433468_0533.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

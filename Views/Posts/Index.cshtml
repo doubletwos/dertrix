@@ -1,21 +1,29 @@
 ﻿@model IEnumerable<Zeus.Models.Post>
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 
 @{
 	ViewBag.Title = "Index";
 }
 
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/summernote/summernote.min.js"></script>
 
 
+<div>
+	<div>
 
-<p>
-	<button class="RegUserOrgButtonColour" onclick="CreatePost()">Create Post</button>
-</p>
+		@{
+			Html.RenderAction("CreatePost", "Posts");
+		}
+	</div>
+
+
+</div>
+
+
 
 
 <table class="table">
@@ -83,63 +91,11 @@
 
 
 
-@*Create Post Modal*@
-<div class="modal fade" id="myPost">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Create Post</h3>
-			</div>
-			<div class="modal-body" id="myModalPost"></div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script>
-
-
-	var CreatePost = function () {
-			
-			$.ajax({
-				type:  "GET",
-				url: '@Url.Action("CreatePost","Posts")',
-				success: function (response) {
-					$("#myModalPost").html(response);
-					$("#myPost").modal("show");
-
-				}
-
-			})
-
-	}
-
-	</script>
 
 
 
-@*<script>
-		var CreatePost = function () {
-			$.ajax({
-				type:  "GET",
-				url: '@Url.Action("CreatePost","Posts")',
-				success: function (response) {
-					$("#myModalPost").html(response);
-					$("#myPost").on('shown.bs.modal', function () {
-						$('#PostContent').summernote();
 
-					})
 
-				}
-
-			})
-
-		}
-
-</script>*@
 
 
 

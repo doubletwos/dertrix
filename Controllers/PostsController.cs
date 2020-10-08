@@ -52,7 +52,8 @@ namespace Zeus.Controllers
 
 
 
-        // GET: Posts/CreatePost
+        //  GET: Posts/CreatePost
+        [ChildActionOnly]
         public ActionResult CreatePost()
         {
             if (Session["OrgId"] == null)
@@ -74,11 +75,25 @@ namespace Zeus.Controllers
 
         // POST: Posts/Create
         [HttpPost]
+        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Post post)
         {
-            if (ModelState.IsValid)
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+            var OrgId = Convert.ToInt32(Session["OrgId"]);
+
+
+            post.PostCreatorId = RegisteredUserId;
+            post.OrgId = OrgId;
+            post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
+            post.PostCreationDate = DateTime.Now;
+
+
+
+
+            if (!(ModelState.IsValid) || ModelState.IsValid)
             {
+               
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");

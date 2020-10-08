@@ -82,20 +82,19 @@
 					</div>
 				</form>
 			</div>
-		
+
 		</div>
 	</div>
 </div>
 
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet"/>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 
 
 <script>
 	$(document).ready(function () {
-		
+
 		$("#StudentRegFormId").hide();
 		$("#StudentRegFormId1").hide();
 		$("#StudentRegFormId").val("1");
@@ -109,7 +108,7 @@
 			});
 		})
 		$("#btnSubmit").click(function () {
-		
+
 			var data = $("#StudentForm").serialize();
 			$.ajax({
 				type: "POST",

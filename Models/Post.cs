@@ -28,10 +28,11 @@ namespace Zeus.Models
         [Display(Name = "Content")]
         public string  PostContent { get; set; }
 
-
+        [Display(Name = "Created")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? PostCreationDate { get; set; }
 
+        [Display(Name = "Expires")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? PostExpirtyDate { get; set; }
 
