@@ -11,7 +11,7 @@
 				<li role="presentation" class="active">
 					<a href="#">
 						Date <span class="badge">
-						@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
+							@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
 						</span>
 					</a>
 				</li>
@@ -26,6 +26,35 @@
 				</li>
 			</ul>
 		</div>
+
+		<br />
+		<br />
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					@{
+						Html.RenderAction("PostDisplayPanel", "Posts");
+					}
+
+
+
+				</div>
+				<div class="col-lg-6">
+
+
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+
+
+
+
 	</div>
 
 

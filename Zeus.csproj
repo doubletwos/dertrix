@@ -904,6 +904,7 @@
     <Content Include="Views\PostTopics\Edit.cshtml" />
     <Content Include="Views\PostTopics\Index.cshtml" />
     <Content Include="Views\Shared\_CreatePost.cshtml" />
+    <Content Include="Views\Posts\_PostDisplayPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -71,6 +71,25 @@ namespace Zeus.Controllers
         }
 
 
+        //  GET: Posts/DisplayPanel
+        [ChildActionOnly]
+        public ActionResult PostDisplayPanel()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            var posts = db.Posts.Include(p => p.Org).Include(p => p.PostTopic);
+
+
+            return PartialView("_PostDisplayPanel" , posts);
+        }
+
+
+
+
+
+
+
 
 
         // POST: Posts/Create
