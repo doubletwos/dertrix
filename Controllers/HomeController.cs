@@ -23,10 +23,28 @@ namespace Zeus.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
          
+            return View();
+        }
 
+
+
+
+        public ActionResult SysSetUp()
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+            if ((int)Session["OrgId"] == 23)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             return View();
         }
+
+
+
     }
 }
 
@@ -53,22 +71,3 @@ namespace Zeus.Controllers
 
 
 
-
-//public ActionResult Index()
-//{
-//    return View();
-//}
-
-//public ActionResult About()
-//{
-//    ViewBag.Message = "Your application description page.";
-
-//    return View();
-//}
-
-//public ActionResult Contact()
-//{
-//    ViewBag.Message = "Your contact page.";
-
-//    return View();
-//}

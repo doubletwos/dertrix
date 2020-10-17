@@ -40,9 +40,9 @@ namespace Zeus.Models
         public DbSet<ClassTeacher> ClassTeachers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostTopic> PostTopics { get; set; }
-
-
-
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<StudentSubject> StudentSubject { get; set; }
+        public DbSet<Job> Jobs { get; set; }    
 
 
 

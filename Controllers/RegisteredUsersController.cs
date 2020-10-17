@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -95,12 +96,15 @@ namespace Zeus.Controllers
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
 
+
+
+
             return PartialView("_AddStaff");
         }
 
 
         [ChildActionOnly]
-        public ActionResult AddStudent()  
+        public ActionResult AddStudent(int? SubjectId)  
         {
 
             var rr = Session["OrgId"].ToString();
@@ -114,6 +118,11 @@ namespace Zeus.Controllers
             ViewBag.GenderId = new SelectList(db.Genders, "GenderId", "GenderName");
             ViewBag.StudentRegFormId = new SelectList(db.StudentRegForm, "StudentRegFormId", "Name");
             ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName");
+            ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
+
+
+           
+
 
             return PartialView("_AddStudent");
         }
@@ -589,9 +598,6 @@ namespace Zeus.Controllers
 
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();
-
-
-
 
 
 

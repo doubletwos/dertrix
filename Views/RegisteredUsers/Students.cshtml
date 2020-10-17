@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Zeus.Models.RegisteredUser>
-	<head>
+<head>
 
 
-		<style>
+	<style>
 
-			.btn-group:hover .dropdown-menu {
-				display: block;
-			}
-		</style>
-	</head>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
 
 
 <div>
@@ -68,7 +68,7 @@
 			@Html.ActionLink("Get upload file template", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })
 		</div>
 		<div class="col-md-3">
-			@Html.ActionLink("Upload students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })
+			@Html.ActionLink("Update subjects", "StudentSubjectJob", "StudentSubjects", "", new { @class = "RegUserOrgButtonColour" })
 		</div>
 	</div>
 
@@ -131,6 +131,7 @@
 		}
 
 	</table>
+	<script src="~/Scripts/jquery-3.4.1.js"></script>
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -159,6 +160,31 @@
 		</div>
 	</div>
 </div>
+
+
+
+@*Student Added, add subject now or later*@
+<div class="modal fade" id="studentadded">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Successfully added studednt</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Student Added, Add subject now?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteRegisteredUser">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 
 
 
@@ -200,8 +226,6 @@
 </div>
 
 
-
-
 <script>
 	var ConfirmDelete = function (RegisteredUserId) {
 		$("#hiddenRegisterUserId").val(RegisteredUserId);
@@ -222,6 +246,7 @@
 		})
 	}
 </script>
+
 <script>
 	var ShowStudent = function (Id) {
 		$.ajax({
@@ -235,6 +260,7 @@
 		})
 	}
 </script>
+
 <script>
 	var EditStudent = function (Id) {
 		$.ajax({
@@ -248,6 +274,8 @@
 		})
 	}
 </script>
+
+
 <script>
 	$("#edtSubmit").click(function () {
 		var data = $("#StudentEditForm").serialize();
@@ -264,6 +292,118 @@
 		})
 	})
 </script>
+
+
+
+
+
+
+
+
+
+
+
+@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+
+<script>
+	$(document).ready(function () {
+
+
+
+
+
+		$("#StudentRegFormId").hide();
+		$("#StudentRegFormId1").hide();
+		$("#StudentRegFormId").val("1");
+		$.noConflict();
+		$(function () {
+			$(".datepicker").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-35:+35",
+			});
+		})
+		$("#btnSubmit").click(function () {
+
+			var data = $("#StudentForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Create",
+				data: data,
+				success: function (response) {
+
+					alert("New Student Added");
+					$("#myModal").modal("hide");
+					$("#StudentForm")[0].reset();
+					//window.location.reload();
+					//$("#studentadded").show();
+					$("#studentadded").modal("show");
+
+					
+					
+
+				}
+			})
+		})
+
+
+
+	})
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
 
@@ -299,5 +439,17 @@
 		});
 	</script>
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 

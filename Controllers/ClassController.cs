@@ -133,15 +133,7 @@ namespace Zeus.Controllers
                 return RedirectToAction("Index", "Access");
             }
 
-            //if ((int)Session["OrgId"] != 23)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-
-            //if ((int)Session["RegisteredUserTypeId"] != 1)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
+ 
 
             if (id == null)
             {
