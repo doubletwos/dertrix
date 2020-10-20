@@ -1030,7 +1030,7 @@
     <Content Include="Views\PostTopics\Edit.cshtml" />
     <Content Include="Views\PostTopics\Index.cshtml" />
     <Content Include="Views\Shared\_CreatePost.cshtml" />
-    <Content Include="Views\Posts\_PostDisplayPanel.cshtml" />
+    <Content Include="Views\Shared\_PostDisplayPanel.cshtml" />
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Delete.cshtml" />
     <Content Include="Views\Subjects\Details.cshtml" />

@@ -75,8 +75,6 @@ namespace Zeus.Controllers
             int i = Convert.ToInt32(rr);
 
 
-      
-
             return PartialView("_StudentUpdateSubject");
         }
 
@@ -146,91 +144,7 @@ namespace Zeus.Controllers
 
 
 
-        public ActionResult StudentSubjectJob()
-        {
-            var jobname = "Student_Subjects_Update";
-            var reguser = Convert.ToInt32(Session["RegisteredUserId"]);
-            var orgid = Convert.ToInt32(Session["OrgId"]);
-            var statusqueued = "queued";
-            //var statusInprogress = "InProgress";
-            //var statusFinish = "Finished";
-            var job = new Job()
-            {
-                JobName = jobname,
-                JobCreatorId = reguser,
-                JobStatus = statusqueued,
-                StartTime = DateTime.Now,
-                OrgId = orgid
-            };
-            db.Jobs.Add(job);
-            db.SaveChanges();
-
-
-
-
-
-
-            var studentregid = db.RegisteredUsers.Where(s => s.StudentRegFormId != null).Where(o => o.SelectedOrg == orgid).Select(r => r.RegisteredUserId).FirstOrDefault();
-            var studentclassid = db.RegisteredUsers.Where(r => r.RegisteredUserId == studentregid).Select(c => c.ClassId).FirstOrDefault();
-            var studentcount = db.RegisteredUsers.Where(s => s.StudentRegFormId == 1).Where(o => o.SelectedOrg == orgid).Where(p => p.ClassId == studentclassid).Count();
-            var subjectid = db.Subjects.Where(s => s.ClassId == studentclassid).Select(c => c.SubjectId).FirstOrDefault();
-            var subjectcount = db.Subjects.Where(s => s.ClassId == studentclassid).Count();
-
-
-
-
-
-
-
-
-
-            while (studentcount > 0)
-            {
-                var subjectname = db.Subjects.Where(s => s.ClassId == studentclassid).Where(x => x.SubjectId == subjectid).Select(c => c.SubjectName).FirstOrDefault();
-                var subjectcheck = db.Subjects.Where(x => x.ClassId == studentclassid && x.SubjectId == subjectid).FirstOrDefault();
-                var studentcheck0 = db.RegisteredUsers.Where(x => x.RegisteredUserId == studentregid && x.SelectedOrg == orgid && x.StudentRegFormId == 1).FirstOrDefault();
-                if (studentcheck0 == null)
-                {
-                    studentregid++;
-                    subjectcheck = null;
-                }
-                if (subjectcheck != null)
-                {
-                    var studentsubjects = new StudentSubject()
-                    {
-                        RegisteredUserId = studentregid,
-                        ClassId = studentclassid,
-                        SubjectId = subjectid,
-                        SubjectName = subjectname
-                    };
-                    db.StudentSubject.Add(studentsubjects);
-                    db.SaveChanges();
-                    subjectid++;
-                    subjectcount--;
-                }
-                else
-                {
-                    subjectid++;
-                }
-                if (subjectcount <= 0)
-                {
-                    studentregid++;
-                    studentcount--;
-                    subjectid = 0;
-                    subjectname = "";
-                    var newstudentclassid = db.RegisteredUsers.Where(r => r.RegisteredUserId == studentregid).Select(c => c.ClassId).FirstOrDefault();
-                    var newsubjectcount = db.Subjects.Where(s => s.ClassId == studentclassid).Count();
-                    subjectcount = newsubjectcount;
-                    var studentcheck = db.RegisteredUsers.Where(x => x.RegisteredUserId == studentregid && x.SelectedOrg == orgid).FirstOrDefault();
-                    if (studentcheck == null)
-                    {
-                        studentregid++;
-                    }
-                }
-            }
-
-            return View();
-        }
+        
 
 
 

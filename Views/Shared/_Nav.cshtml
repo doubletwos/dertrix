@@ -71,16 +71,11 @@
 
 
 						<li>@Html.ActionLink("HOME", "Index", "Orgs", new { id = session }, null)</li>
-						<li>@Html.ActionLink("CLASSES", "Index", "Class", new { id = session }, null)</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Staffs", "RegisteredUsers")</li>
-								<li role="separator" class="divider"></li>
-								<li role="presentation" class="">@Html.ActionLink("Students", "Students", "RegisteredUsers")</li>
-								<li role="separator" class="divider"></li>
-							</ul>
-						</li>
+
+
+
+
+					
 
 
 						<li class="dropdown">
@@ -88,30 +83,25 @@
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("All postings", "Index", "Posts")</li>
 								<li role="separator" class="divider"></li>
-								<li role="presentation" class="">@Html.ActionLink("Under Dev", "Under Dev", "Under Dev")</li>
-								<li role="separator" class="divider"></li>
+							
 							</ul>
 						</li>
 
-
-
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SUBJECTS <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETUP<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li role="presentation" class="active">@Html.ActionLink("All Subjects", "Index", "Subjects")</li>
-								<li role="separator" class="divider"></li>
-								<li role="presentation" class="">@Html.ActionLink("Student Subjects", "Index", "StudentSubjects")</li>
-								<li role="separator" class="divider"></li>
-							</ul>
-						</li>
-
-
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETTINGS<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li role="presentation" class="active">@Html.ActionLink("Set Up", "SysSetUp", "Home")</li>
 								<li role="separator" class="divider"></li>
 								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Staffs", "RegisteredUsers")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Students", "Students", "RegisteredUsers")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Subjects", "Index", "Subjects")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Student Subjects", "Index", "StudentSubjects")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Classes", "Index", "Class", new { id = session }, null)</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Config", "SysSetUp", "Home")</li>
 							</ul>
 						</li>
 
@@ -125,7 +115,7 @@
 					{
 
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETTINGS<span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETUP<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("Portal Set Up", "SysAdminSetUp", "Home")</li>
 								<li role="separator" class="divider"></li>
