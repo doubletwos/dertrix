@@ -660,6 +660,10 @@
     <Compile Include="Migrations\202010151506182_1606.Designer.cs">
       <DependentUpon>202010151506182_1606.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010261732066_1731.cs" />
+    <Compile Include="Migrations\202010261732066_1731.Designer.cs">
+      <DependentUpon>202010261732066_1731.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -1043,6 +1047,7 @@
     <Content Include="Views\StudentSubjects\Index.cshtml" />
     <Content Include="Views\Home\SysSetUp.cshtml" />
     <Content Include="Views\Shared\_StudentUpdateSubject.cshtml" />
+    <Content Include="Views\Shared\_CreateSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1409,6 +1414,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010151506182_1606.resx">
       <DependentUpon>202010151506182_1606.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010261732066_1731.resx">
+      <DependentUpon>202010261732066_1731.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

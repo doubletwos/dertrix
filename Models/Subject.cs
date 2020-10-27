@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -9,11 +10,11 @@ namespace Zeus.Models
     {
         public int SubjectId { get; set; }
 
+        [Required(ErrorMessage = "Subject Name Is Required")]
         public string SubjectName { get; set; }
 
-    
+        [Required(ErrorMessage = "Please Select A Class ")]
         public int ClassId { get; set; }
-
         public @Class @Class { get; set; }
 
 

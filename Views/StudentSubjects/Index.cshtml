@@ -4,7 +4,16 @@
 	ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+	<head>
+
+
+		<style>
+
+			.btn-group:hover .dropdown-menu {
+				display: block;
+			}
+		</style>
+	</head>
 
 <p>
 	@Html.ActionLink("Create New", "Create")
@@ -54,10 +63,15 @@
 
 
 
-	<table class="table">
-		<tr>
+	<table class="table table-bordered table-striped table-hover table-responsive ">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+
 			<th>
-				@Html.DisplayNameFor(model => model.RegisteredUser.FirstName)
+				@Html.DisplayNameFor(model => model.RegisteredUser.RegisteredUserId)
+			</th>
+
+			<th>
+				@Html.DisplayNameFor(model => model.RegisteredUser.FullName)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Subject.SubjectName)
@@ -69,18 +83,86 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.RegisteredUser.FirstName)
+					@Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Subject.SubjectName)
 				</td>
+
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.StudentSubjectId }) |
-					@Html.ActionLink("Details", "Details", new { id = item.StudentSubjectId }) |
-					@Html.ActionLink("Delete", "Delete", new { id = item.StudentSubjectId })
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="ShowStudent(@item.StudentSubjectId)">View Subject Details</a></li>
+							<li><a href="#" onclick="EditStudent(@item.StudentSubjectId)">Enter Student Score</a></li>
+							<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>
+
+
+						</ul>
+					</div>
+
+
+
 				</td>
 			</tr>
 		}
 
 	</table>
+	<script src="~/Scripts/jquery-3.4.1.js"></script>
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+	<input type="hidden" id="hiddenStudentSubjectId" />
+
 </div>
+
+
+
+@*Delete Subject confirmation Modal*@
+<div class="modal fade" id="myModalsubject">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove Subject</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this subject?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteStudentSubject()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+	var ConfirmDeleteSubject = function (StudentSubjectId) {
+		$("#hiddenStudentSubjectId").val(StudentSubjectId);
+		$("#myModalsubject").modal('show');
+	}
+	var DeleteStudentSubject = function () {
+		debugger
+
+		var studentSubjectId = $("#hiddenStudentSubjectId").val();
+		$.ajax({
+			type: "POST",
+			url: "/StudentSubjects/DeleteConfirmed/",
+			data: { id: studentSubjectId },
+			success: function (response) {
+				alert("Subject Deleted");
+				$("#myModalsubject").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>

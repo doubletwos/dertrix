@@ -4,13 +4,20 @@
 	ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+
+
 
 <p>
 	@Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-	<tr>
+<p>
+	@{
+		Html.RenderAction("CreateSubject", "Subjects");
+	}
+</p>
+
+<table class="table table-bordered table-striped table-hover table-responsive ">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
 		<th>
 			@Html.DisplayNameFor(model => model.Class.ClassName)
 		</th>
@@ -24,23 +31,70 @@
 		<th></th>
 	</tr>
 
-@foreach (var item in Model) {
-<tr>
-	<td>
-		@Html.DisplayFor(modelItem => item.Class.ClassName)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.SubjectName)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.TaughtBy)
-	</td>
-	<td>
-		@Html.ActionLink("Edit", "Edit", new { id = item.SubjectId }) |
-		@Html.ActionLink("Details", "Details", new { id = item.SubjectId }) |
-		@Html.ActionLink("Delete", "Delete", new { id = item.SubjectId })
-	</td>
-</tr>
-}
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Class.ClassName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.SubjectName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.TaughtBy)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.SubjectId }) |
+				@Html.ActionLink("Details", "Details", new { id = item.SubjectId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.SubjectId })
+			</td>
+		</tr>
+	}
 
 </table>
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+
+	<script>
+
+		$(document).ready(function () {
+
+			//$("#btnSubmit5").on("click", function () {
+
+			$("#btnSubmit5").click(function () {
+
+
+				var data = $("#mySubjectForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/Subjects/Create",
+					data: data,
+					success: function (response) {
+						alert("New Subject created");
+						$("#myModalAddSubject").modal("hide");
+						$("#mySubjectForm")[0].reset();
+						window.location.reload();
+					}
+
+
+				})
+			})
+
+
+
+		})
+
+
+	</script>
+
+}

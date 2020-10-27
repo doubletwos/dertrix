@@ -226,8 +226,8 @@ namespace Zeus.Controllers
         }
 
         // POST: StudentSubjects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             StudentSubject studentSubject = db.StudentSubject.Find(id);

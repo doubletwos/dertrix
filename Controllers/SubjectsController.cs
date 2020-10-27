@@ -65,6 +65,24 @@ namespace Zeus.Controllers
             return View(subject);
         }
 
+
+        [ChildActionOnly]
+        public ActionResult CreateSubject()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+
+            ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
+
+            return PartialView("_CreateSubject");
+        }
+
+
+
+
+
         // GET: Subjects/Create
         public ActionResult Create()
         {
@@ -84,7 +102,6 @@ namespace Zeus.Controllers
         }
 
         // POST: Subjects/Create
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Subject subject)

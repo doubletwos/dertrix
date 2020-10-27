@@ -61,14 +61,14 @@
 		</div>
 
 		<div class="col-md-3">
-			@Html.ActionLink("Download all students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })
+			@*@Html.ActionLink("Download all students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })*@
 		</div>
 
 		<div class="col-md-3">
-			@Html.ActionLink("Get upload file template", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })
+			@*@Html.ActionLink("Get upload file template", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })*@
 		</div>
 		<div class="col-md-3">
-			@Html.ActionLink("Update subjects", "StudentSubjectJob", "StudentSubjects", "", new { @class = "RegUserOrgButtonColour" })
+			@*@Html.ActionLink("Update subjects", "StudentSubjectJob", "StudentSubjects", "", new { @class = "RegUserOrgButtonColour" })*@
 		</div>
 	</div>
 
@@ -232,6 +232,8 @@
 		$("#myModall").modal('show');
 	}
 	var DeleteRegisteredUser = function () {
+		debugger
+
 		var registeredUserId = $("#hiddenRegisterUserId").val();
 		$.ajax({
 			type: "POST",
@@ -303,7 +305,6 @@
 
 
 
-@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 
@@ -339,9 +340,8 @@
 					alert("New Student Added");
 					$("#myModal").modal("hide");
 					$("#StudentForm")[0].reset();
-					//window.location.reload();
-					//$("#studentadded").show();
-					$("#studentadded").modal("show");
+					window.location.reload();
+					
 
 					
 					

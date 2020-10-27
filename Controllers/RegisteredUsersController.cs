@@ -299,7 +299,7 @@ namespace Zeus.Controllers
             // returns students of org if class is selected
             if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(classid)))
             {
-                return View(db.RegisteredUsers.Where(p => p.ClassId == j).Where(s => s.RegisteredUserTypeId == 2).Include(c => c.Class).Include(g => g.Gender).ToList());
+                return View(db.RegisteredUsers.Where(p => p.ClassId == j).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Include(c => c.Class).Include(g => g.Gender).ToList());
             }
 
             // returns students of org if fullname is provided

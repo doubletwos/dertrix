@@ -104,12 +104,10 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
-		debugger
 		$("#ClassId").hide();
 		$("#ClassId0").hide();
 
 		$("#btnSubmit").on("click", function () {
-			debugger
 			var data = $("#myForm").serialize();
 			$.ajax({
 				type: "POST",
