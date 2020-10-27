@@ -104,13 +104,13 @@ namespace Zeus.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult AddStudent(int? SubjectId)  
+        public ActionResult AddStudent()  
         {
 
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
-            ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.OrgId == i), "ClassId", "ClassName");
+            ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
@@ -264,14 +264,6 @@ namespace Zeus.Controllers
 
 
 
-
-
-
-
-
-
-
-
         // GET: RegisteredUsers/Students/
         public ActionResult Students(int? id, int? ij, string searchname, string searchid)
         {
@@ -279,6 +271,7 @@ namespace Zeus.Controllers
             {
                 return RedirectToAction("Index", "Access");
             }
+
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
             id = i;

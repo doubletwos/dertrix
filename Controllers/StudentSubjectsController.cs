@@ -14,13 +14,46 @@ namespace Zeus.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: StudentSubjects
-        public ActionResult Index()
+        // GET: StudentSubjects/Grades
+        public ActionResult Grades(int? id, int? ij, string searchname, string searchid)
         {
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Index", "Access");
             }
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            id = i;
+
+            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
+
+            var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).Include(n => n.Class).ToList();
+
+            string classid = ij.ToString();
+
+            // returns students of org if class is selected
+            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(classid)))
+            {
+                return View(db.StudentSubject.Where(p => p.ClassId == j).ToList());
+            }
+
+            // returns students of org if fullname is provided
+            if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
+            {
+                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
+
+            }
+
+            // returns students of org if studentid is provided
+            if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
+            {
+                int reguserid = Convert.ToInt32(searchid);
+                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
+
+            }
+
+
+
             var studentSubject = db.StudentSubject.Include(s => s.RegisteredUser).Include(s => s.Subject);
             return View(studentSubject.ToList());
         }
@@ -123,7 +156,10 @@ namespace Zeus.Controllers
                             RegisteredUserId = stu,
                             ClassId = classref,
                             SubjectId = sb,
-                            SubjectName = subjectname
+                            SubjectName = subjectname,
+                            FirstTermStudentGrade = 00.0m,
+                            SecondTermStudentGrade = 00.0m,
+                            ThirdTermStudentGrade = 00.0m
                         };
                         db.StudentSubject.Add(studentsubjects);
                         db.SaveChanges();
@@ -141,10 +177,36 @@ namespace Zeus.Controllers
 
 
 
+        public ActionResult UpdateStudentGrade(int Id)
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var stud1 = db.StudentSubject
+                    .Include(s => s.Subject)
+                    .Include(r => r.RegisteredUser)
+                    .Where(x => x.StudentSubjectId == Id)
+                    .FirstOrDefault();
+
+                var stud = new StudentSubject
+                {
+                    StudentSubjectId = stud1.StudentSubjectId,
+                    RegisteredUserId = stud1.RegisteredUserId,
+                    SubjectId = stud1.SubjectId,
+                    SubjectName = stud1.SubjectName,
+                    ClassId = stud1.ClassId,
+                    FirstTermStudentGrade = stud1.FirstTermStudentGrade,
+                    SecondTermStudentGrade = stud1.SecondTermStudentGrade,
+                    ThirdTermStudentGrade = stud1.ThirdTermStudentGrade
+                                   
+              };
+                return PartialView("UpdateStudentGrade", stud);
+            }
+            return PartialView("_UpdateStudentGrade");
+        }
 
 
-
-        
 
 
 
@@ -158,10 +220,6 @@ namespace Zeus.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
-
-    
 
                 db.StudentSubject.Add(studentSubject);
                 db.SaveChanges();
@@ -193,11 +251,10 @@ namespace Zeus.Controllers
         }
 
         // POST: StudentSubjects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentSubjectId,RegisteredUserId,SubjectId")] StudentSubject studentSubject)
+        public ActionResult Edit(StudentSubject studentSubject)
         {
             if (ModelState.IsValid)
             {

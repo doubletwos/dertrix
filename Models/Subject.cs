@@ -24,8 +24,11 @@ namespace Zeus.Models
         public string TaughtBy { get; set; }
 
 
+        public decimal? FirstTermSubjectGrade { get; set; }
 
+        public decimal? SecondTermSubjectGrade { get; set; }
 
+        public decimal? ThirdTermSubjectGrade { get; set; }
 
 
     }

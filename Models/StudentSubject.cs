@@ -23,17 +23,11 @@ namespace Zeus.Models
         public int? ClassId { get; set; }
 
 
+        public decimal? FirstTermStudentGrade { get; set; }
 
-        public string[] SelectedSubjects { get; set; }
+        public decimal? SecondTermStudentGrade { get; set; }
 
-        //public string StudentSelectedSubject { get; set; }
-
-
-
-
-
-
-
+        public decimal? ThirdTermStudentGrade { get; set; }
 
 
     }
