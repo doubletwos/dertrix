@@ -96,9 +96,6 @@ namespace Zeus.Controllers
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
 
-
-
-
             return PartialView("_AddStaff");
         }
 

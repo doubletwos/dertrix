@@ -20,6 +20,10 @@ namespace Zeus.Models
 
 
         public string SubjectName { get; set; }
+
+        public string StudentFullName { get; set; }
+
+
         public int? ClassId { get; set; }
 
 

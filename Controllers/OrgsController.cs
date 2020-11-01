@@ -259,6 +259,34 @@ namespace Zeus.Controllers
                 db.OrgOrgTypes.Add(orgOrgType);
                 db.SaveChanges();
 
+
+                //list of groups 
+                var groups = db.GroupTypes.Where(x => (x.GroupOrgTypeId == org.OrgTypeId) || x.GroupOrgTypeId == null).Select(g => g.GroupTypeId).ToList();
+                var grouptypeid = new List<int>(groups);
+
+
+                foreach (var newgrp in groups)
+                {
+                    var groupname = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupTypeName).FirstOrDefault();
+                    var grouporgtypeid = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupOrgTypeId).FirstOrDefault();
+                    var grouprefnumb = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupRefNumb).FirstOrDefault();
+
+
+                    var orggroup = new OrgGroup()
+                    {
+                        OrgId = org.OrgId,
+                        GroupName = groupname,
+                        CreationDate = DateTime.Now,
+                        GroupTypeId = newgrp,
+                        GroupOrgTypeId = grouporgtypeid,
+                        GroupRefNumb = grouprefnumb
+
+                    };
+                    db.OrgGroups.Add(orggroup);
+                    db.SaveChanges();
+
+                }
+
                 return RedirectToAction("Index", "Orgs", new { id = orgredirect });
             }
 

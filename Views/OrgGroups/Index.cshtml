@@ -1,0 +1,180 @@
+﻿@model IEnumerable<Zeus.Models.OrgGroup>
+
+@{
+	ViewBag.Title = "Index";
+}
+
+<head>
+
+
+	<style>
+
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+
+
+<p>
+	@Html.ActionLink("Create New", "Create")
+</p>
+
+
+<div class="panel panel-default">
+	<table class="table table-bordered table-striped table-hover table-responsive ">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+
+
+	
+		
+			<th>
+				@Html.DisplayNameFor(model => model.GroupName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CreationDate)
+			</th>
+			<th>
+				Select Action
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in Model)
+		{
+			<tr>
+		
+
+		
+			
+				<td>
+					@Html.DisplayFor(modelItem => item.GroupName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CreationDate)
+				</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
+							<li><a href="#" onclick="UsersToGroup(@item.OrgGroupId)">Add Users</a></li>
+							@*<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Remove Staff</a></li>*@
+
+							@*<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>*@
+						</ul>
+					</div>
+				</td>
+				@*<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.OrgGroupId }) |
+					@Html.ActionLink("Details", "Details", new { id = item.OrgGroupId }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.OrgGroupId })
+				</td>*@
+			</tr>
+		}
+
+	</table>
+	<input type="hidden" id="hiddenOrgGroupId" />
+
+</div>
+
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+
+
+@*View GroupMembers Modal*@
+<div class="modal fade" id="Grpmembersmodal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Members</h3>
+
+			</div>
+			<div class="modal-body" id="Grpmembersmodalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var GrpMembersCount = function (Id) {
+		$.ajax({
+			type: "POST",
+			url: "/RegisteredUsersGroups/RegisteredUsersGroupMembers",
+			data: { Id: Id },
+			success: function (response) {
+				$("#Grpmembersmodalbody").html(response);
+				$("#Grpmembersmodal").modal("show");
+			}
+		})
+	}
+</script>
+
+
+
+
+
+@*Load Add users to group Form*@
+<div class="modal fade" id="AddUsersToGrpsmodal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Add Users</h3>
+
+			</div>
+			<div class="modal-body" id="AddGrpuserssmodalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Add User" class="RegUserOrgButtonColour" id="adduser" />
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var UsersToGroup = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/RegisteredUsersGroups/AddMemberToGroup",
+			data: { Id: Id },
+			success: function (response) {
+				$("#AddGrpuserssmodalbody").html(response);
+				$("#AddUsersToGrpsmodal").modal("show");
+			}
+		})
+	}
+</script>
+
+<script>
+	$("#adduser").click(function () {
+		var data = $("#AddusersToGrpForm").serialize();
+
+		$.ajax({
+			type: "POST",
+			url: "/RegisteredUsersGroups/Create",
+			data: data,
+			success: function (response) {
+				alert("User Added To Group");
+				$("#AddUsersToGrpsmodal").modal("hide");
+				$("#AddusersToGrpForm")[0].reset();
+				window.location.reload();
+			}
+		})
+
+	})
+</script>

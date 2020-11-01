@@ -27,8 +27,6 @@ namespace Zeus.Controllers
 
             var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
 
-            var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).Include(n => n.Class).ToList();
-
             string classid = ij.ToString();
 
             // returns students of org if class is selected
@@ -40,7 +38,7 @@ namespace Zeus.Controllers
             // returns students of org if fullname is provided
             if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
             {
-                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
+                return View(db.StudentSubject.Where(n => n.StudentFullName == searchname).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
 
             }
 
@@ -48,7 +46,7 @@ namespace Zeus.Controllers
             if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
             {
                 int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
+                return View(db.StudentSubject.Where(n => n.RegisteredUserId == reguserid).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
 
             }
 
@@ -149,6 +147,7 @@ namespace Zeus.Controllers
                     if(subjectexistcheck == null)
                     {
                         var subjectname = db.Subjects.Where(s => s.ClassId == classref).Where(x => x.SubjectId == sb).Select(c => c.SubjectName).FirstOrDefault();
+                        var fullname = db.RegisteredUsers.Where(s => s.RegisteredUserId == stu).Select(f => f.FullName).FirstOrDefault();
 
 
                         var studentsubjects = new StudentSubject()
@@ -157,6 +156,7 @@ namespace Zeus.Controllers
                             ClassId = classref,
                             SubjectId = sb,
                             SubjectName = subjectname,
+                            StudentFullName = fullname,
                             FirstTermStudentGrade = 00.0m,
                             SecondTermStudentGrade = 00.0m,
                             ThirdTermStudentGrade = 00.0m
@@ -251,7 +251,6 @@ namespace Zeus.Controllers
         }
 
         // POST: StudentSubjects/Edit/5
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentSubject studentSubject)

@@ -42,7 +42,15 @@ namespace Zeus.Models
         public DbSet<PostTopic> PostTopics { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<StudentSubject> StudentSubject { get; set; }
-        public DbSet<Job> Jobs { get; set; }    
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<GroupType> GroupTypes { get; set; }
+        public DbSet<OrgGroup> OrgGroups { get; set; }
+        public DbSet<RegisteredUsersGroups> RegisteredUsersGroups { get; set; }
+
+
+
+
+
 
 
 

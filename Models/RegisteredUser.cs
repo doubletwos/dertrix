@@ -123,7 +123,7 @@ namespace Zeus.Models
 
         public int? RegUserOrgBrand { get; set; }
 
-        public string[] SelectedSubjects { get; set; }
+
 
 
 
