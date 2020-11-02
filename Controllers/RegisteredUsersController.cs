@@ -564,8 +564,27 @@ namespace Zeus.Controllers
                    
                 }
 
-                /*When users are added at school level*/
-                if (registeredUser.SelectedOrgList == null)
+                /*When staffs are added at school level*/
+                if (registeredUser.SelectedOrgList == null && registeredUser.StudentRegFormId == null)
+                {
+                    registeredUser.SelectedOrg = (int)Session["OrgId"];
+                    registeredUser.Email = registeredUser.Email;
+                    var pwd = "iamanewuser";
+                    registeredUser.Password = pwd;
+                    registeredUser.ConfirmPassword = pwd;
+                    registeredUser.FullName = registeredUser.ContactFullName;
+                    registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
+                    registeredUser.EnrolmentDate = DateTime.Now;
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgBrandId).FirstOrDefault();
+                    int j = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.RegUserOrgBrand = j;
+
+                }
+
+
+                /*When students are added at school level*/
+                if (registeredUser.SelectedOrgList == null && registeredUser.StudentRegFormId != null)
                 {
                     registeredUser.SelectedOrg = (int)Session["OrgId"];
                     var email = "iamanewuser@thisorg.com";
@@ -581,10 +600,10 @@ namespace Zeus.Controllers
                     int j = Convert.ToInt32(regUserOrgBrand);
                     registeredUser.RegUserOrgBrand = j;
 
-
-
-
                 }
+
+
+
 
                 db.RegisteredUsers.Add(registeredUser);
                 db.SaveChanges();

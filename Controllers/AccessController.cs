@@ -38,6 +38,7 @@ namespace Zeus.Controllers
             var orgredirect = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.SelectedOrg).FirstOrDefault();
             var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
             var regUserOrgBrand = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.RegUserOrgBrand).FirstOrDefault();
+            //var isadmin = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
             if (reguserdetails == null)
             {
                 registeredUser.LoginErrorMsg = "Invalid Email or Password";
@@ -59,8 +60,8 @@ namespace Zeus.Controllers
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.Content).FirstOrDefault();
                 Session["IsTester"] = reguserdetails.IsTester;
                 Session["OrgType"] = db.Orgs.Where(x => x.OrgId == orgredirect).Select(x => x.OrgTypeId).FirstOrDefault();
-
-
+                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();            
+            
             }
             if (orgredirect == 23)
             {

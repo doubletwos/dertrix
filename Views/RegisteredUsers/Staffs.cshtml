@@ -38,10 +38,12 @@
 	<br />
 	<hr />
 	<div>
-		@{
+		@if (Session["IsAdmin"] != null)
+		{
 			Html.RenderAction("AddStaff", "RegisteredUsers");
 		}
 	</div>
+
 	<br />
 </div>
 <br />

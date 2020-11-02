@@ -32,8 +32,10 @@ namespace Zeus.Controllers
                 var grp1 = db.OrgGroups
                     .Where(x => x.OrgGroupId == Id)
                     .FirstOrDefault();
+
+                var checkcurrentusers = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId != 0 && x.OrgGroupId == Id).FirstOrDefault();
                     
-                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i), "RegisteredUserId", "FullName");
+                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(k => k.StudentRegFormId == null), "RegisteredUserId", "FullName");
                 ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
 
                 var grp = new RegisteredUsersGroups

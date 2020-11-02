@@ -54,11 +54,15 @@
 	<hr />
 
 	<div class="row">
-		<div class="col-md-3">
-			@{
-				Html.RenderAction("AddStudent", "RegisteredUsers");
-			}
-		</div>
+		
+		@if (Session["IsAdmin"] != null)
+		{
+			<div class="col-md-3">
+				@{
+					Html.RenderAction("AddStudent", "RegisteredUsers");
+				}
+			</div>
+		 }
 
 		<div class="col-md-3">
 			@*@Html.ActionLink("Download all students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })*@
