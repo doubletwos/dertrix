@@ -75,7 +75,7 @@
 
 
 
-					
+
 
 
 						<li class="dropdown">
@@ -83,7 +83,21 @@
 							<ul class="dropdown-menu">
 								<li role="presentation" class="active">@Html.ActionLink("All postings", "Index", "Posts")</li>
 								<li role="separator" class="divider"></li>
-							
+
+							</ul>
+						</li>
+
+
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Staffs", "RegisteredUsers")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Students", "Students", "RegisteredUsers")</li>
+								<li role="separator" class="divider"></li>
+								<li role="presentation" class="active">@Html.ActionLink("Guardians", "Guardians", "RegisteredUsers")</li>
+
 							</ul>
 						</li>
 
@@ -91,9 +105,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETUP<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li role="separator" class="divider"></li>
-								<li role="presentation" class="active">@Html.ActionLink("Staffs", "Staffs", "RegisteredUsers")</li>
-								<li role="separator" class="divider"></li>
-								<li role="presentation" class="active">@Html.ActionLink("Students", "Students", "RegisteredUsers")</li>
+								<li role="presentation" class="active">@Html.ActionLink("Stats", "Staffs", "RegisteredUsers")</li>
 								<li role="separator" class="divider"></li>
 								<li role="presentation" class="active">@Html.ActionLink("Subjects", "Index", "Subjects")</li>
 								<li role="separator" class="divider"></li>

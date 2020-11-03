@@ -7,14 +7,18 @@
 
 
 
-<p>
-	@Html.ActionLink("Create New", "Create")
-</p>
+@*<p>
+		@Html.ActionLink("Create New", "Create")
+	</p>*@
 <p>
 	@{
 		Html.RenderAction("CreateSubject", "Subjects");
 	}
 </p>
+
+<br />
+<br />
+
 
 <table class="table table-bordered table-striped table-hover table-responsive ">
 	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">

@@ -88,16 +88,7 @@ namespace Zeus.Controllers
         }
 
 
-        [ChildActionOnly]
-        public ActionResult AddStaff()
-        {
-            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
-            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
-            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
-            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
 
-            return PartialView("_AddStaff");
-        }
 
 
         [ChildActionOnly]
@@ -122,6 +113,31 @@ namespace Zeus.Controllers
 
 
             return PartialView("_AddStudent");
+        }
+
+
+
+        [ChildActionOnly]
+        public ActionResult AddStaff()
+        {
+            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+
+            return PartialView("_AddStaff");
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult AddGuardian() 
+        {
+            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
+            ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+
+            return PartialView("_AddGuardian");
         }
 
 
@@ -439,6 +455,88 @@ namespace Zeus.Controllers
 
 
 
+
+        // GET: RegisteredUsers/Staffs/
+        public ActionResult Guardians(int? id, string searchname, string searchid)
+        {
+            /* Redirect back to Log in Page if session == null*/
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Index", "Access");
+            }
+
+            if (Session["OrgId"] != null)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                id = i;
+            }
+
+
+
+
+
+            /*Returns Zeus staff - if & when name is provided*/
+            //if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
+            //{
+            //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Include(t => t.RegisteredUserType).ToList());
+
+            //}
+
+            /*Returns Zeus staff - if & when id is provided*/
+            //if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid))
+            //{
+            //    int reguserid = Convert.ToInt32(searchid);
+            //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(r => r.RegisteredUserId == reguserid).Include(t => t.RegisteredUserType).ToList());
+
+            //}
+
+
+            /*Returns Zeus staff - upon page load*/
+            //if ((int)Session["OrgId"] == 23 && string.IsNullOrWhiteSpace(searchname))
+            //{
+            //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Include(t => t.RegisteredUserType).ToList());
+
+            //}
+
+
+
+
+            /*Returns NON Zeus staff - if & when name is provided*/
+            //if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchname))
+            //{
+            //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+
+            //}
+
+
+            /*Returns NON Zeus staff - if & when id is provided*/
+            //if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchid))
+            //{
+            //    int reguserid = Convert.ToInt32(searchid);
+            //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(r => r.RegisteredUserId == reguserid).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
+
+            //}
+
+
+            /*Returns all Guardians  - upon page load*/
+            if (Session["OrgId"] != null )
+            {
+
+
+
+                return View(db.RegisteredUsers.Where(j => j.SecondarySchoolUserRoleId == 5 && j.PrimarySchoolUserRoleId == 5).Where(x => x.SelectedOrg == id).Include(g => g.SecondarySchoolUserRole).Include(o => o.PrimarySchoolUserRole).ToList());
+                    
+                    //.Include(t => t.RegisteredUserType).Include(s => s.SecondarySchoolUserRole).Include(s => s.PrimarySchoolUserRole)
+                    //.ToList());
+
+            }
+
+
+
+            return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
+
+        }
 
 
 

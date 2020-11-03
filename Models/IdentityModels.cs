@@ -46,6 +46,9 @@ namespace Zeus.Models
         public DbSet<GroupType> GroupTypes { get; set; }
         public DbSet<OrgGroup> OrgGroups { get; set; }
         public DbSet<RegisteredUsersGroups> RegisteredUsersGroups { get; set; }
+        public DbSet<Guardian> Guardians { get; set; }
+        public DbSet<StudentGuardian> StudentGuardians { get; set; }
+
 
 
 

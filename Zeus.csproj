@@ -727,6 +727,18 @@
     <Compile Include="Migrations\202010290010080_0010.Designer.cs">
       <DependentUpon>202010290010080_0010.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011030601295_0601.cs" />
+    <Compile Include="Migrations\202011030601295_0601.Designer.cs">
+      <DependentUpon>202011030601295_0601.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011030612492_0612.cs" />
+    <Compile Include="Migrations\202011030612492_0612.Designer.cs">
+      <DependentUpon>202011030612492_0612.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011031532349_1532.cs" />
+    <Compile Include="Migrations\202011031532349_1532.Designer.cs">
+      <DependentUpon>202011031532349_1532.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -737,6 +749,7 @@
     <Compile Include="Models\FileType.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\GroupType.cs" />
+    <Compile Include="Models\Guardian.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -754,6 +767,7 @@
     <Compile Include="Models\RegisteredUserType.cs" />
     <Compile Include="Models\Religion.cs" />
     <Compile Include="Models\SecondarySchoolUserRole.cs" />
+    <Compile Include="Models\StudentGuardian.cs" />
     <Compile Include="Models\StudentRegForm.cs" />
     <Compile Include="Models\StudentSubject.cs" />
     <Compile Include="Models\Subject.cs" />
@@ -1132,6 +1146,8 @@
     <Content Include="Views\RegisteredUsersGroups\Index.cshtml" />
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
     <Content Include="Views\Shared\_AddMemberToGroup.cshtml" />
+    <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
+    <Content Include="Views\Shared\_AddGuardian.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1546,6 +1562,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010290010080_0010.resx">
       <DependentUpon>202010290010080_0010.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011030601295_0601.resx">
+      <DependentUpon>202011030601295_0601.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011030612492_0612.resx">
+      <DependentUpon>202011030612492_0612.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011031532349_1532.resx">
+      <DependentUpon>202011031532349_1532.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
