@@ -192,6 +192,7 @@
     <Compile Include="Controllers\RegisteredUserTypesController.cs" />
     <Compile Include="Controllers\ReligionsController.cs" />
     <Compile Include="Controllers\SecondarySchoolUserRolesController.cs" />
+    <Compile Include="Controllers\StudentGuardiansController.cs" />
     <Compile Include="Controllers\StudentRegFormsController.cs" />
     <Compile Include="Controllers\StudentSubjectsController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
@@ -1148,6 +1149,12 @@
     <Content Include="Views\Shared\_AddMemberToGroup.cshtml" />
     <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
     <Content Include="Views\Shared\_AddGuardian.cshtml" />
+    <Content Include="Views\StudentGuardians\Create.cshtml" />
+    <Content Include="Views\StudentGuardians\Delete.cshtml" />
+    <Content Include="Views\StudentGuardians\Details.cshtml" />
+    <Content Include="Views\StudentGuardians\Edit.cshtml" />
+    <Content Include="Views\StudentGuardians\Index.cshtml" />
+    <Content Include="Views\Shared\_LinkGuardianStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

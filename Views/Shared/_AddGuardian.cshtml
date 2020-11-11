@@ -1,10 +1,6 @@
 ﻿@model Zeus.Models.RegisteredUser
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myModal">Add New Guardian</a>
-
-
 <div class="modal fade" id="myModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -18,27 +14,17 @@
 					<div class="form-horizontal">
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
 						@{ if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
 							{
 								@Html.HiddenFor(model => model.SecondarySchoolUserRoleId, new { @id = "SecondarySchoolUserRoleId" })
 							}
 						}
-
-
 						@{
 							if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
 							{
-
 								@Html.HiddenFor(model => model.PrimarySchoolUserRoleId, new { @id = "PrimarySchoolUserRoleId" })
 							}
-						 }
-
-
-
-
-
+						}
 						<div class="form-group">
 							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -46,7 +32,6 @@
 								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -54,9 +39,6 @@
 								@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
-
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -64,13 +46,6 @@
 								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
-
-
-
-
-
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -78,26 +53,13 @@
 								@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
 							<input type="submit" value="Add Guardian" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
-
-
-
-
-
-
 					</div>
-
 				</form>
 			</div>
-
 		</div>
 	</div>
 </div>
-
-
-
-

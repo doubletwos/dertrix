@@ -1,98 +1,62 @@
 ﻿@model Zeus.Models.RegisteredUser
-
-
-
 @if (ViewBag.RegisteredUser != null)
 {
-
-
 	foreach (var item in ViewBag.RegisteredUser)
 	{
-
-	  <table class="table table-bordered table-striped">
-
-		<tr>
-			<td>
-				Full Name
-			</td>
-			<td>
-				@item.ContactFullName
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				Class
-			</td>
-			<td>
-				@item.Class.ClassName
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Gender
-			</td>
-			<td>
-				@item.Gender.GenderName
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				Religion
-			</td>
-			<td>
-				@item.Religion.ReligionName
-			</td>
-		</tr>
-
-		<tr>
-			<td>
-				Tribe
-			</td>
-			<td>
-				@item.Tribe.TribeName
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Date Of Birth
-			</td>
-			<td>
-				@item.DateOfBirth
-			</td>
-		</tr>
-		<tr>
-			<td>
-				Enrolment Date
-			</td>
-		
-		</tr>
-
-
-
-
-	</table>
-
-
-
-
-
-
-
-
-
+		<table class="table table-bordered table-striped">
+			<tr>
+				<td>
+					Full Name
+				</td>
+				<td>
+					@item.ContactFullName
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Class
+				</td>
+				<td>
+					@item.Class.ClassName
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Gender
+				</td>
+				<td>
+					@item.Gender.GenderName
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Religion
+				</td>
+				<td>
+					@item.Religion.ReligionName
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Tribe
+				</td>
+				<td>
+					@item.Tribe.TribeName
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Date Of Birth
+				</td>
+				<td>
+					@item.DateOfBirth
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Enrolment Date
+				</td>
+			</tr>
+		</table>
 	}
- }
-
-
-
-
-
-
-
-
-
-
-
-		
+}

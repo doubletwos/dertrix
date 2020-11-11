@@ -1,10 +1,6 @@
 ﻿@model Zeus.Models.RegisteredUser
-
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Zeus Staff</a>
-
-
 <div class="modal fade" id="myModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -69,36 +65,18 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }
-
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
 <script>
 	$(document).ready(function () {
 		debugger
-
 		$('#SelectedOrgList').hide();
 		$('#SelectedOrgList').val("23");
-
 		$("#btnSubmit").click(function () {
 			debugger
 			var data = $("#myForm").serialize();
-
-			
-
 			$.ajax({
 				type: "POST",
 				url: "/RegisteredUsers/Create",
@@ -108,7 +86,6 @@
 					$("#myModal").modal("hide");
 					$("#myForm")[0].reset();
 					window.location.reload();
-
 				}
 			})
 		})

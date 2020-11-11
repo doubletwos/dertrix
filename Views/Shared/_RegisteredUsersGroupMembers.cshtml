@@ -1,54 +1,34 @@
 ﻿@model IEnumerable<Zeus.Models.RegisteredUsersGroups>
-
-
-
 <br />
 <br />
-
-
-
 <div class="panel panel-default">
-
 	<table class="table">
 		<tr>
-
 			<th>
 				Full Name
 			</th>
 			<th>
 				Role
 			</th>
-
 			<th></th>
 		</tr>
-
 		@foreach (var item in Model)
 		{
 			<tr>
-
 				<td>
 					@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.RegisteredUser.SecondarySchoolUserRole.RoleName)
 				</td>
-
 				<td>
-					@*@Html.ActionLink("Edit", "Edit", new { id = item.RegisteredUsersGroupsId }) |*@
-					@*@Html.ActionLink("Details", "Details", new { id = item.RegisteredUsersGroupsId }) |*@
-					@*@Html.ActionLink("Delete", "Delete", new { id = item.RegisteredUsersGroupsId })*@
 					<p><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Staff</a></p>
-
 				</td>
 			</tr>
 		}
-
 	</table>
 	<input type="hidden" id="hiddenRegisterUserId" />
 </div>
-
-
-
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
 	<div class="modal-dialog">
@@ -67,9 +47,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 <script>
 	var ConfirmDelete = function (RegisteredUserId) {
 		$("#hiddenRegisterUserId").val(RegisteredUserId);
@@ -89,9 +66,3 @@
 		})
 	}
 </script>
-
-
-
-
-
-

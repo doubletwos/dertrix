@@ -1,10 +1,6 @@
 ﻿@model Zeus.Models.StudentSubject
-
-
 <form id="UpdateStudentGradeForm">
-
 	@Html.AntiForgeryToken()
-
 	<div class="form-horizontal">
 		<h4> </h4>
 		<hr />
@@ -14,10 +10,6 @@
 		@Html.HiddenFor(model => model.SubjectId)
 		@Html.HiddenFor(model => model.SubjectName)
 		@Html.HiddenFor(model => model.ClassId)
-
-
-
-
 		<div class="form-group">
 			@Html.LabelFor(model => model.FirstTermStudentGrade, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
@@ -25,7 +17,6 @@
 				@Html.ValidationMessageFor(model => model.FirstTermStudentGrade, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
 		<div class="form-group">
 			@Html.LabelFor(model => model.SecondTermStudentGrade, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
@@ -33,7 +24,6 @@
 				@Html.ValidationMessageFor(model => model.SecondTermStudentGrade, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
 		<div class="form-group">
 			@Html.LabelFor(model => model.ThirdTermStudentGrade, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
@@ -41,11 +31,5 @@
 				@Html.ValidationMessageFor(model => model.ThirdTermStudentGrade, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
-
 	</div>
-	
-
-
-
- </form>
+</form>

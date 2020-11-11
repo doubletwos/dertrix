@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Zeus.Models.StudentGuardian>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Guardian.GuardianFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegisteredUser.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianFullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuardianEmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Guardian.GuardianFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegisteredUser.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianFullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateAdded)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.StudentGuardianId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.StudentGuardianId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.StudentGuardianId })
+        </td>
+    </tr>
+}
+
+</table>

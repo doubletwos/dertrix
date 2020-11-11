@@ -1,7 +1,4 @@
 ﻿@model Zeus.Models.RegisteredUser
-
-
-
 <form id="StaffEditForm">
 	@Html.AntiForgeryToken()
 	<div class="form-horizontal">
@@ -19,15 +16,6 @@
 		@Html.HiddenFor(model => model.PrimarySchoolUserRoleId)
 		@Html.HiddenFor(model => model.FullName)
 		@Html.HiddenFor(model => model.RegUserOrgBrand)
-
-
-
-
-
-
-
-
-
 		<div class="form-group">
 			@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
@@ -63,15 +51,5 @@
 				@Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
-
-
 	</div>
-
-
-
-
 </form>
-
-
-

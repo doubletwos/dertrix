@@ -238,6 +238,30 @@ namespace Zeus.Controllers
 
 
 
+        public ActionResult LinkGuardianStudent(int Id)
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var stud1 = db.RegisteredUsers
+                    .Include(c => c.Class)
+                    .Where(x => x.RegisteredUserId == Id)
+                    .FirstOrDefault();
+                ViewBag.GuardianId = new SelectList(db.Guardians, "GuardianId", "GuardianFirstName");
+
+                var stud = new RegisteredUser 
+                {
+                    RegisteredUserId = stud1.RegisteredUserId,
+                  
+                };
+                return PartialView("_LinkGuardianStudent", stud);
+            }
+            return PartialView("_LinkGuardianStudent");
+        }
+
+
+
 
         public ActionResult EditStaff(int Id)
         {
@@ -581,7 +605,7 @@ namespace Zeus.Controllers
 
         // POST: RegisteredUsers/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Create(RegisteredUser registeredUser)
         {
             /*Accepting all state of model*/
@@ -700,6 +724,8 @@ namespace Zeus.Controllers
 
                 }
 
+
+                /*When parents are added at school level*/
 
 
 

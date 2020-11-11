@@ -54,7 +54,7 @@
 	<hr />
 
 	<div class="row">
-		
+
 		@if (Session["IsAdmin"] != null)
 		{
 			<div class="col-md-3">
@@ -62,7 +62,7 @@
 					Html.RenderAction("AddStudent", "RegisteredUsers");
 				}
 			</div>
-		 }
+		}
 
 		<div class="col-md-3">
 			@*@Html.ActionLink("Download all students", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })*@
@@ -124,12 +124,12 @@
 							<li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
 							<li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
 							<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
-							<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Link Guardian to Student</a></li>
+							<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>
 
 
 							@*<li><a href="#">Something else here</a></li>
-		<li role="separator" class="divider"></li>
-		<li><a href="#">Separated link</a></li>*@
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>*@
 						</ul>
 					</div>
 				</td>
@@ -170,14 +170,6 @@
 
 
 
-
-
-
-
-
-
-
-
 @*View Student Details Modal*@
 <div class="modal fade" id="myModalll4">
 	<div class="modal-dialog">
@@ -213,6 +205,33 @@
 		</div>
 	</div>
 </div>
+
+
+
+
+
+@*Link Student to Guardian*@
+<div class="modal fade" id="myModalls">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Link Student to Guardian</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDivls"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<input type="button" value="Add" class="RegUserOrgButtonColour" id="addGurdian" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
 
 
 <script>
@@ -266,6 +285,20 @@
 	}
 </script>
 
+<script>
+	var LinkGuardian = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/RegisteredUsers/LinkGuardianStudent",
+			data: { Id: Id },
+			success: function (response) {
+				$("#myModalBodyDivls").html(response);
+				$("#myModalls").modal("show");
+			}
+		})
+	}
+</script>
+
 
 <script>
 	$("#edtSubmit").click(function () {
@@ -293,17 +326,19 @@
 
 
 
-
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 
 
+
+
+
+
+
+
+
 <script>
 	$(document).ready(function () {
-
-
-
-
 
 		$("#StudentRegFormId").hide();
 		$("#StudentRegFormId1").hide();
@@ -318,7 +353,6 @@
 			});
 		})
 		$("#btnSubmit").click(function () {
-
 			var data = $("#StudentForm").serialize();
 			$.ajax({
 				type: "POST",
@@ -330,19 +364,52 @@
 					$("#myModal").modal("hide");
 					$("#StudentForm")[0].reset();
 					window.location.reload();
-					
+				}
+			})
+		})
 
-					
-					
 
+		$("#addGurdian").click(function () {
+
+			//debugger
+			//$("#addGurdian").validate({
+			//	rules: {
+			//		firstname1 : "required"
+			//	},
+
+			//	messages: {
+			//		firstname1 : "Please enter firstname"
+			//	}
+
+			//})
+
+			var data = $("#GuardianForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/Create",
+				data: data,
+				success: function (response) {
+
+					alert("New Guardian Added");
+					$("#myModal").modal("hide");
+					$("#GuardianForm")[0].reset();
+					window.location.reload();
 				}
 			})
 		})
 
 
 
+
+
+
+
+
+
 	})
 </script>
+
+
 
 
 
