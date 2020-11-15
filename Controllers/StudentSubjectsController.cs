@@ -105,8 +105,7 @@ namespace Zeus.Controllers
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
-
-            return PartialView("_StudentUpdateSubject");
+            return PartialView("~/Views/Shared/PartialViewsForms/_StudentUpdateSubject.cshtml");
         }
 
 
@@ -122,7 +121,6 @@ namespace Zeus.Controllers
             var orgid = Convert.ToInt32(Session["OrgId"]);
             var classref = db.Classes.Where(x => x.ClassRefNumb == classid).Where(o => o.OrgId == orgid).Select(p => p.ClassId).FirstOrDefault();
             var subjectid = db.Subjects.Where(s => s.ClassId == classref).Select(c => c.SubjectId).FirstOrDefault();
-            //var subjectname = db.Subjects.Where(s => s.ClassId == classref).Where(x => x.SubjectId == subjectid).Select(c => c.SubjectName).FirstOrDefault();
 
 
 
@@ -201,7 +199,7 @@ namespace Zeus.Controllers
                     ThirdTermStudentGrade = stud1.ThirdTermStudentGrade
                                    
               };
-                return PartialView("UpdateStudentGrade", stud);
+                return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrade.cshtml", stud);
             }
             return PartialView("_UpdateStudentGrade");
         }

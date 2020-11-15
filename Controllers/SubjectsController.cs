@@ -67,7 +67,7 @@ namespace Zeus.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult CreateSubject()
+        public ActionResult AddSubject()
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
@@ -76,7 +76,8 @@ namespace Zeus.Controllers
 
             ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
 
-            return PartialView("_CreateSubject");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddSubject.cshtml");
+
         }
 
 

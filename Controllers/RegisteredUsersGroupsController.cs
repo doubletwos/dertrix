@@ -22,6 +22,7 @@ namespace Zeus.Controllers
         }
 
 
+        
         public ActionResult AddMemberToGroup(int Id)
         {
             if (Id != 0)
@@ -44,7 +45,7 @@ namespace Zeus.Controllers
 
                 };
 
-                return PartialView("_AddMemberToGroup", grp);
+                return PartialView("~/Views/Shared/PartialViews/_AddMemberToGroup.cshtml", grp);
 
 
             }

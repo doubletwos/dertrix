@@ -75,7 +75,7 @@ namespace Zeus.Controllers
             ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.OrgId == i), "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
 
-            return PartialView("_RegisterUser");
+            return PartialView("~/Views/Shared/PartialViewsForms/_RegisterUser.cshtml");
         }
 
 
@@ -109,10 +109,10 @@ namespace Zeus.Controllers
             ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
 
 
-           
 
 
-            return PartialView("_AddStudent");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddStudent.cshtml");
+
         }
 
 
@@ -125,7 +125,7 @@ namespace Zeus.Controllers
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
 
-            return PartialView("_AddStaff");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddStaff.cshtml");
         }
 
 
@@ -137,7 +137,8 @@ namespace Zeus.Controllers
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
 
-            return PartialView("_AddGuardian");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddGuardian.cshtml");
+
         }
 
 
@@ -150,7 +151,7 @@ namespace Zeus.Controllers
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
 
-            return PartialView("_AddSysAdmin");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddSysAdmin.cshtml");
         }
 
 
@@ -231,7 +232,8 @@ namespace Zeus.Controllers
                     DateOfBirth = stud1.DateOfBirth,
                     FullName = stud1.FullName
                 };
-                return PartialView("_EditStudent", stud);
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditStudent.cshtml", stud);
+
             }
             return PartialView("_EditStudent");
         }
@@ -255,7 +257,7 @@ namespace Zeus.Controllers
                     RegisteredUserId = stud1.RegisteredUserId,
                   
                 };
-                return PartialView("_LinkGuardianStudent", stud);
+                return PartialView("~/Views/Shared/PartialViewsForms/_LinkGuardianStudent.cshtml", stud);
             }
             return PartialView("_LinkGuardianStudent");
         }
@@ -294,9 +296,10 @@ namespace Zeus.Controllers
                     
 
                 };
-                return PartialView("_EditStaff", stud);
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditStaff.cshtml", stud);
+
             }
-            return PartialView("_EditStaff");
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditStaff.cshtml");
         }
 
 

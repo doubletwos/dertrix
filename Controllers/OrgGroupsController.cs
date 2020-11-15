@@ -52,7 +52,7 @@ namespace Zeus.Controllers
         // POST: OrgGroups/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrgGroupId,OrgId,GroupTypeId,GroupOrgTypeId,GroupRefNumb,GroupName,CreationDate")] OrgGroup orgGroup)
+        public ActionResult Create(OrgGroup orgGroup)
         {
             if (ModelState.IsValid)
             {

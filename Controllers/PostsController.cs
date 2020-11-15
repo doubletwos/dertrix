@@ -54,7 +54,7 @@ namespace Zeus.Controllers
 
         //  GET: Posts/CreatePost
         [ChildActionOnly]
-        public ActionResult CreatePost()
+        public ActionResult AddPost()
         {
             if (Session["OrgId"] == null)
             {
@@ -66,7 +66,7 @@ namespace Zeus.Controllers
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName");
 
-            return PartialView("_CreatePost");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddPost.cshtml");
 
         }
 
@@ -145,7 +145,7 @@ namespace Zeus.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostId,PostTopicId,OrgId,PostSubject,PostCreatorId,CreatorFullName,PostCreationDate,PostExpirtyDate")] Post post)
+        public ActionResult Edit(Post post)
         {
             if (ModelState.IsValid)
             {

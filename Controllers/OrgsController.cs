@@ -121,7 +121,7 @@ namespace Zeus.Controllers
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
-            return PartialView("_AddOrg");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddOrg.cshtml");
         }
 
 
@@ -194,9 +194,9 @@ namespace Zeus.Controllers
                     
 
                 };
-                return PartialView("_EditOrg", edtorg1);
+                return PartialView("~/Views/Shared/PartialViews/_EditOrg.cshtml");
             }
-            return PartialView("_EditOrg");
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditOrg.cshtml");
         }
 
 
