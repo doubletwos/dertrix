@@ -114,16 +114,6 @@ namespace Zeus.Controllers
         }
 
 
-        [ChildActionOnly]
-        public ActionResult AddOrg()
-        {
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-            ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
-            ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
-            ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddOrg.cshtml");
-        }
-
 
 
 
@@ -222,6 +212,23 @@ namespace Zeus.Controllers
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
             return View();
         }
+
+
+
+
+        [ChildActionOnly]
+        public ActionResult AddOrg()
+        {
+            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+            ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
+            ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
+            ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
+
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddOrg.cshtml");
+        }
+
+
+
 
         // POST: Orgs/Create
         [HttpPost]

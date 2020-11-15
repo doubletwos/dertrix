@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<Zeus.Models.RegisteredUser>
+
+
+
 <head>
-
-
 	<style>
 
 		.btn-group:hover .dropdown-menu {
@@ -90,7 +91,6 @@
 			<th>
 				Class
 			</th>
-			@*<th>Select Action</th>*@
 			<th>Select Action</th>
 
 
@@ -108,13 +108,7 @@
 				<td>
 					@Html.DisplayFor(modelItem => item.Class.ClassName)
 				</td>
-				@*<td>
 
-
-						<a href="#" class="RegUserOrgButtonColour" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a>
-						<a href="#" class="RegUserOrgButtonColour" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a>
-						<a href="#" class="RegUserOrgButtonColour" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a>
-					</td>*@
 				<td>
 					<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -127,9 +121,7 @@
 							<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>
 
 
-							@*<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>*@
+
 						</ul>
 					</div>
 				</td>
@@ -137,10 +129,8 @@
 		}
 
 	</table>
-	<script src="~/Scripts/jquery-3.4.1.js"></script>
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
 	<input type="hidden" id="hiddenRegisterUserId" />
 </div>
 
@@ -230,10 +220,6 @@
 
 
 
-
-
-
-
 <script>
 	var ConfirmDelete = function (RegisteredUserId) {
 		$("#hiddenRegisterUserId").val(RegisteredUserId);
@@ -319,15 +305,7 @@
 
 
 
-
-
-
-
-
-
-
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@*<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />*@
 
 
 
@@ -340,48 +318,7 @@
 <script>
 	$(document).ready(function () {
 
-		$("#StudentRegFormId").hide();
-		$("#StudentRegFormId1").hide();
-		$("#StudentRegFormId").val("1");
-		$.noConflict();
-		$(function () {
-			$(".datepicker").datepicker({
-				dateFormat: "dd-mm-yy",
-				changeMonth: true,
-				changeYear: true,
-				yearRange: "-35:+35",
-			});
-		})
-		$("#btnSubmit").click(function () {
-			var data = $("#StudentForm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/RegisteredUsers/Create",
-				data: data,
-				success: function (response) {
-
-					alert("New Student Added");
-					$("#myModal").modal("hide");
-					$("#StudentForm")[0].reset();
-					window.location.reload();
-				}
-			})
-		})
-
-
 		$("#addGurdian").click(function () {
-
-			//debugger
-			//$("#addGurdian").validate({
-			//	rules: {
-			//		firstname1 : "required"
-			//	},
-
-			//	messages: {
-			//		firstname1 : "Please enter firstname"
-			//	}
-
-			//})
 
 			var data = $("#GuardianForm").serialize();
 			$.ajax({
@@ -398,65 +335,61 @@
 			})
 		})
 
-
-
-
-
-
-
-
-
 	})
 </script>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
 @section scripts{
-	@Scripts.Render("~/bundles/jqueryval")
+		@Scripts.Render("~/bundles/jqueryval")
+		@Scripts.Render("~/bundles/custom-validator")
 
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
-	<script type="text/javascript">
-		$(function () {
-			$("#searchname").autocomplete({
-				source: function (request, response) {
-					$.ajax({
-						url: '/RegisteredUsers/AutoCompleteStudentFullname/',
-						data: " {'prefix' : '" + request.term + "'}",
-						dataType: "json",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						success: function (data) {
-							response($.map(data, function (item) {
-								return item;
-							}))
-						},
-						error: function (response) {
-							alert(response.responseText);
-						},
-						failure: function (response) {
-							alert(response.responseText);
-						}
-					});
-				},
-				select: function (e, i) {
-					$("#hfName").val(i.item.val);
-				},
-				minLength: 0
+
+		<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+		<script type="text/javascript">
+			$(function () {
+				$("#searchname").autocomplete({
+					source: function (request, response) {
+						$.ajax({
+							url: '/RegisteredUsers/AutoCompleteStudentFullname/',
+							data: " {'prefix' : '" + request.term + "'}",
+							dataType: "json",
+							type: "POST",
+							contentType: "application/json; charset=utf-8",
+							success: function (data) {
+								response($.map(data, function (item) {
+									return item;
+								}))
+							},
+							error: function (response) {
+								alert(response.responseText);
+							},
+							failure: function (response) {
+								alert(response.responseText);
+							}
+						});
+					},
+					select: function (e, i) {
+						$("#hfName").val(i.item.val);
+					},
+					minLength: 0
+				});
 			});
-		});
-	</script>
-}
+		</script>
+	}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

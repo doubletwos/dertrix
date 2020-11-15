@@ -919,6 +919,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\script-custom-validator.js" />
     <Content Include="Scripts\summernote\lang\summernote-ar-AR.js" />
     <Content Include="Scripts\summernote\lang\summernote-bg-BG.js" />
     <Content Include="Scripts\summernote\lang\summernote-ca-ES.js" />
