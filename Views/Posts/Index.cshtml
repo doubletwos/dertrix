@@ -1,11 +1,6 @@
 ﻿@model IEnumerable<Zeus.Models.Post>
 <head>
 	<style>
-	
-
-
-
-
 		.note-btn-group.btn-group.note-style,
 		.note-btn-group.btn-group.note-view,
 		.note-btn-group.btn-group.note-table,
@@ -15,7 +10,6 @@
 		.note-btn.btn.btn-default.btn-sm.note-current-color-button {
 			display: none;
 		}
-
 	</style>
 
 
@@ -24,101 +18,102 @@
 
 
 
-@{
-	ViewBag.Title = "Index";
-}
 
+@section scripts{
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-<script src="~/Scripts/summernote/summernote.min.js"></script>
+	@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+	<script src="~/Scripts/summernote/summernote.min.js"></script>
+	}
 
-
-<div>
 	<div>
+		<div>
 
-		@{
-			Html.RenderAction("AddPost", "Posts");
-		}
+			@{
+				Html.RenderAction("AddPost", "Posts");
+			}
+		</div>
+
+
 	</div>
 
 
-</div>
+
+
+	<table class="table">
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Org.OrgName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PostTopic.PostTopicName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PostSubject)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PostCreatorId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CreatorFullName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PostCreationDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PostExpirtyDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PostContent)
 
 
 
+			</th>
+			<th></th>
+		</tr>
 
-<table class="table">
-	<tr>
-		<th>
-			@Html.DisplayNameFor(model => model.Org.OrgName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.PostTopic.PostTopicName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.PostSubject)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.PostCreatorId)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.CreatorFullName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.PostCreationDate)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.PostExpirtyDate)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.PostContent)
-		
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Org.OrgName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PostSubject)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PostCreatorId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CreatorFullName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PostCreationDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PostExpirtyDate)
+				</td>
+				<td>
+					@*@Html.DisplayFor(modelItem => item.PostContent)*@
+					@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
 
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
+					@Html.ActionLink("Details", "Details", new { id = item.PostId }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.PostId })
+				</td>
+			</tr>
+		}
 
-		</th>
-		<th></th>
-	</tr>
+	</table>
 
-	@foreach (var item in Model)
-	{
-<tr>
-	<td>
-		@Html.DisplayFor(modelItem => item.Org.OrgName)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.PostSubject)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.PostCreatorId)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.CreatorFullName)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.PostCreationDate)
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.PostExpirtyDate)
-	</td>
-	<td>
-		@*@Html.DisplayFor(modelItem => item.PostContent)*@
-		@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-
-	</td>
-	<td>
-		@Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
-		@Html.ActionLink("Details", "Details", new { id = item.PostId }) |
-		@Html.ActionLink("Delete", "Delete", new { id = item.PostId })
-	</td>
-</tr>
-	}
-
-</table>
 
 
 

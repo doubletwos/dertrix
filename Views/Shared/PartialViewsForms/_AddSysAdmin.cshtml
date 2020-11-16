@@ -9,7 +9,7 @@
 				<h3 class="modal-title">Add New Zeus Staff</h3>
 			</div>
 			<div class="modal-body">
-				<form id="myForm">
+				<form id="AddSysAdminForm">
 					@Html.AntiForgeryToken()
 					<div class="form-horizontal">
 						<hr />
@@ -71,12 +71,10 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
-		debugger
 		$('#SelectedOrgList').hide();
 		$('#SelectedOrgList').val("23");
 		$("#btnSubmit").click(function () {
-			debugger
-			var data = $("#myForm").serialize();
+			var data = $("#AddSysAdminForm").serialize();
 			$.ajax({
 				type: "POST",
 				url: "/RegisteredUsers/Create",
@@ -84,7 +82,7 @@
 				success: function (response) {
 					alert("New user created");
 					$("#myModal").modal("hide");
-					$("#myForm")[0].reset();
+					$("#AddSysAdminForm")[0].reset();
 					window.location.reload();
 				}
 			})

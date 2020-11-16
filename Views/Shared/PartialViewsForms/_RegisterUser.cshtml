@@ -6,11 +6,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add A New Zeus User</h3>
+				<h3 class="modal-title">Add a new zeus user</h3>
 			</div>
 			<div class="modal-body">
-				<form id="myForm">
+				<form id="AddNewZeusUserForm">
 					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
 					<div class="form-horizontal">
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -75,27 +78,33 @@
 		</div>
 	</div>
 </div>
+
+
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$("#Organisation").hide();
 		$("#Organisation1").hide();
 		$("#Organisation").val("23");
 		$("#btnSubmit").on("click", function () {
-			var data = $("#myForm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/RegisteredUsers/Create",
-				data: data,
-				success: function (response) {
-					alert("New user created");
-					$("#myModalRegUser").modal("hide");
-					$("#myForm")[0].reset();
-					window.location.reload();
-				}
-			})
+			if ($("#AddNewZeusUserForm").valid()) {
+
+				var data = $("#AddNewZeusUserForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/RegisteredUsers/Create",
+					data: data,
+					success: function (response) {
+						alert("New user created");
+						$("#myModalRegUser").modal("hide");
+						$("#AddNewZeusUserForm")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
 		})
 	})
 </script>

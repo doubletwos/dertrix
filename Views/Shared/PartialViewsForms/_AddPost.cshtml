@@ -1,4 +1,5 @@
 ﻿@model Zeus.Models.Post
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="~/Scripts/summernote/summernote-bs4.js"></script>
 <script src="~/Scripts/summernote/summernote.js"></script>
@@ -13,6 +14,9 @@
 			<div class="modal-body">
 				<form id="myCreatePostForm">
 					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
 					<div class="form-horizontal">
 						<h4></h4>
 						<hr />
@@ -59,6 +63,12 @@
 		</div>
 	</div>
 </div>
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$(function () {
@@ -69,7 +79,6 @@
 				yearRange: "-35:+35",
 			});
 		})
-		$.noConflict();
 		$(function () {
 			$('#PostContent').summernote({
 				height: '300px',
@@ -81,21 +90,21 @@
 				window.location.reload();
 			})
 		})
-		$(function () {
-			$("#btnSubmit").on("click", function () {
-				var data = $("#myCreatePostForm").serialize();
-				$.ajax({
-					type: "POST",
-					url: '@Url.Action("Create", "Posts")',
-					data: data,
-					success: function (response) {
-						alert("New Post created");
-						$("#mycreatepost").modal("hide");
-						$("#myCreatePostForm")[0].reset();
-						window.location.reload();
-					}
-				})
-			})
-		})
-	});
+	   $("#btnSubmit").on("click", function () {
+		   if ($("#myCreatePostForm").valid()) {
+			   var data = $("#myCreatePostForm").serialize();
+			   $.ajax({
+				   type: "POST",
+				   url: '@Url.Action("Create", "Posts")',
+				   data: data,
+				   success: function (response) {
+					   alert("New Post created");
+					   $("#mycreatepost").modal("hide");
+					   $("#myCreatePostForm")[0].reset();
+					   window.location.reload();
+				   }
+			   })
+		   }
+	   })
+	})
 </script>

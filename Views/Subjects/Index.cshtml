@@ -7,9 +7,6 @@
 
 
 
-@*<p>
-		@Html.ActionLink("Create New", "Create")
-	</p>*@
 <p>
 	@{
 		Html.RenderAction("AddSubject", "Subjects");
@@ -60,45 +57,14 @@
 
 
 
-
-
-
-
-
-
-@section Scripts {
+@section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
-
-	<script>
-
-		$(document).ready(function () {
-
-			//$("#btnSubmit5").on("click", function () {
-
-			$("#btnSubmit5").click(function () {
-
-
-				var data = $("#mySubjectForm").serialize();
-				$.ajax({
-					type: "POST",
-					url: "/Subjects/Create",
-					data: data,
-					success: function (response) {
-						alert("New Subject created");
-						$("#myModalAddSubject").modal("hide");
-						$("#mySubjectForm")[0].reset();
-						window.location.reload();
-					}
-
-
-				})
-			})
-
-
-
-		})
-
-
-	</script>
-
+	@Scripts.Render("~/bundles/custom-validator")
 }
+
+
+
+
+
+
+
