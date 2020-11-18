@@ -138,6 +138,7 @@
 
 
 
+
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
 	<div class="modal-dialog">
@@ -209,10 +210,10 @@
 				<h3 class="modal-title">Link Student to Guardian</h3>
 			</div>
 			<div class="modal-body" id="myModalBodyDivls"></div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<input type="button" value="Add" class="RegUserOrgButtonColour" id="addGurdian" />
-			</div>
+			@*<div class="modal-footer">
+					<input type="submit" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
+					<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+				</div>*@
 		</div>
 	</div>
 </div>
@@ -305,7 +306,6 @@
 
 
 
-@*<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />*@
 
 
 
@@ -314,76 +314,48 @@
 
 
 
-
-<script>
-	$(document).ready(function () {
-
-		$("#addGurdian").click(function () {
-
-			var data = $("#GuardianForm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/RegisteredUsers/Create",
-				data: data,
-				success: function (response) {
-
-					alert("New Guardian Added");
-					$("#myModal").modal("hide");
-					$("#GuardianForm")[0].reset();
-					window.location.reload();
-				}
-			})
-		})
-
-	})
-</script>
 
 
 
 
 @section scripts{
-		@Scripts.Render("~/bundles/jqueryval")
-		@Scripts.Render("~/bundles/custom-validator")
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
 
 
-		<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
-		<script type="text/javascript">
-			$(function () {
-				$("#searchname").autocomplete({
-					source: function (request, response) {
-						$.ajax({
-							url: '/RegisteredUsers/AutoCompleteStudentFullname/',
-							data: " {'prefix' : '" + request.term + "'}",
-							dataType: "json",
-							type: "POST",
-							contentType: "application/json; charset=utf-8",
-							success: function (data) {
-								response($.map(data, function (item) {
-									return item;
-								}))
-							},
-							error: function (response) {
-								alert(response.responseText);
-							},
-							failure: function (response) {
-								alert(response.responseText);
-							}
-						});
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+<script type="text/javascript">
+	$(function () {
+		$("#searchname").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: '/RegisteredUsers/AutoCompleteStudentFullname/',
+					data: " {'prefix' : '" + request.term + "'}",
+					dataType: "json",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					success: function (data) {
+						response($.map(data, function (item) {
+							return item;
+						}))
 					},
-					select: function (e, i) {
-						$("#hfName").val(i.item.val);
+					error: function (response) {
+						alert(response.responseText);
 					},
-					minLength: 0
+					failure: function (response) {
+						alert(response.responseText);
+					}
 				});
-			});
-		</script>
-	}
-
-
-
-
-
+			},
+			select: function (e, i) {
+				$("#hfName").val(i.item.val);
+			},
+			minLength: 0
+		});
+	});
+</script>
+}
 
 
 

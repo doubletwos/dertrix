@@ -1,6 +1,9 @@
 ﻿@model Zeus.Models.RegisteredUser
 <form id="GuardianForm">
 	@Html.AntiForgeryToken()
+	@{
+		HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+	}
 	<div class="form-horizontal">
 		<h4>Parent / Guardian</h4>
 		<hr />
@@ -9,7 +12,7 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new {@id = "firstname1", @class = "form-control" } })
+				@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
 				@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -27,5 +30,68 @@
 				@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 			</div>
 		</div>
+		<div class="modal-footer">
+			<input type="submit" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
+			<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+		</div>
 	</div>
 </form>
+
+<script>
+	$(document).ready(function () {
+		$('#GuardianForm').validate({
+			errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+			errorElement: 'div',
+			errorPlacement: function (error, e) {
+				e.parents('.form-group > div').append(error);
+			},
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+				$(e).closest('.help-block').remove();
+			},
+			success: function (e) {
+				e.closest('.form-group').removeClass('has-success has-error');
+				e.closest('.help-block').remove();
+			},
+			rules: {
+				'FirstName': {
+					required: true,
+				},
+				'LastName': {
+					required: true,
+				},
+				'Email': {
+					required: true,
+				}
+			},
+			messages: {
+				'FirstName': 'First name is required',
+				'LastName': 'Last name is required',
+				'Email': 'Please enter email address',
+			}
+		});
+		$("#addGuardian").on("click", function () {
+			if ($("#GuardianForm").valid()) {
+				debugger
+				var data = $("#GuardianForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/RegisteredUsers/Create",
+					data: data,
+					success: function (response) {
+						alert("New Guardian Added");
+						$("#myModal").modal("hide");
+						$("#GuardianForm")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+		})
+	})
+</script>
+
+
+
+
+
+
