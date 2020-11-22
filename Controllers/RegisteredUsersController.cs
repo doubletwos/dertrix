@@ -10,9 +10,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI.WebControls;
-using Zeus.Models;
+using Dertrix.Models;
 
-namespace Zeus.Controllers
+namespace Dertrix.Controllers
 {
     public class RegisteredUsersController : Controller
     {
@@ -402,14 +402,14 @@ namespace Zeus.Controllers
 
 
 
-            /*Returns Zeus staff - if & when name is provided*/
+            /*Returns Dertrix staff - if & when name is provided*/
             if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
             {
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Include(t => t.RegisteredUserType).ToList());
 
             }
 
-            /*Returns Zeus staff - if & when id is provided*/
+            /*Returns Dertrix staff - if & when id is provided*/
             if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid))
             {
                 int reguserid = Convert.ToInt32(searchid);
@@ -418,7 +418,7 @@ namespace Zeus.Controllers
             }
 
 
-            /*Returns Zeus staff - upon page load*/
+            /*Returns Dertrix staff - upon page load*/
             if ((int)Session["OrgId"] == 23 && string.IsNullOrWhiteSpace(searchname))
             {
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Include(t => t.RegisteredUserType).ToList());
@@ -428,7 +428,7 @@ namespace Zeus.Controllers
 
 
 
-            /*Returns NON Zeus staff - if & when name is provided*/
+            /*Returns NON Dertrix staff - if & when name is provided*/
             if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchname))
             {
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
@@ -436,7 +436,7 @@ namespace Zeus.Controllers
             }
 
 
-            /*Returns NON Zeus staff - if & when id is provided*/
+            /*Returns NON Dertrix staff - if & when id is provided*/
             if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchid))
             {
                 int reguserid = Convert.ToInt32(searchid);
@@ -445,7 +445,7 @@ namespace Zeus.Controllers
             }
 
 
-            /*Returns NON Zeus staff - upon page load*/
+            /*Returns NON Dertrix staff - upon page load*/
             if ((int)Session["OrgId"] != 23 && string.IsNullOrWhiteSpace(searchname))
             {
                 return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).Include(s => s.SecondarySchoolUserRole).Include(s => s.PrimarySchoolUserRole)
@@ -503,14 +503,14 @@ namespace Zeus.Controllers
 
 
 
-            /*Returns Zeus staff - if & when name is provided*/
+            /*Returns Dertrix staff - if & when name is provided*/
             //if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
             //{
             //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Include(t => t.RegisteredUserType).ToList());
 
             //}
 
-            /*Returns Zeus staff - if & when id is provided*/
+            /*Returns Dertrix staff - if & when id is provided*/
             //if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid))
             //{
             //    int reguserid = Convert.ToInt32(searchid);
@@ -519,7 +519,7 @@ namespace Zeus.Controllers
             //}
 
 
-            /*Returns Zeus staff - upon page load*/
+            /*Returns Dertrix staff - upon page load*/
             //if ((int)Session["OrgId"] == 23 && string.IsNullOrWhiteSpace(searchname))
             //{
             //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Include(t => t.RegisteredUserType).ToList());
@@ -529,7 +529,7 @@ namespace Zeus.Controllers
 
 
 
-            /*Returns NON Zeus staff - if & when name is provided*/
+            /*Returns NON Dertrix staff - if & when name is provided*/
             //if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchname))
             //{
             //    return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
@@ -537,7 +537,7 @@ namespace Zeus.Controllers
             //}
 
 
-            /*Returns NON Zeus staff - if & when id is provided*/
+            /*Returns NON Dertrix staff - if & when id is provided*/
             //if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchid))
             //{
             //    int reguserid = Convert.ToInt32(searchid);
@@ -631,8 +631,8 @@ namespace Zeus.Controllers
                     registeredUser.Password = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Password).FirstOrDefault();
                     registeredUser.ConfirmPassword = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.ConfirmPassword).FirstOrDefault();
                     registeredUser.Telephone = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Telephone).FirstOrDefault();
-                    var zeususer = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
-                    int k = Convert.ToInt32(zeususer);
+                    var Dertrixuser = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
+                    int k = Convert.ToInt32(Dertrixuser);
                     registeredUser.SelectedOrg = k;
                     registeredUser.PrimarySchoolUserRoleId = 3;
                     registeredUser.SecondarySchoolUserRoleId = 4;
@@ -668,11 +668,11 @@ namespace Zeus.Controllers
 
 
 
-                /*When users are added at Zeus Level*/
+                /*When users are added at Dertrix Level*/
                 if (registeredUser.SelectedOrgList != null)
                 {
-                    var zeususer = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
-                    int i = Convert.ToInt32(zeususer);
+                    var Dertrixuser = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
+                    int i = Convert.ToInt32(Dertrixuser);
                     registeredUser.SelectedOrg = i;
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;

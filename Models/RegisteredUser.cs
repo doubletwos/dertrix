@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.WebPages.Html;
 using System.Xml.Linq;
 
-namespace Zeus.Models
+namespace Dertrix.Models
 {
     public class RegisteredUser
     {

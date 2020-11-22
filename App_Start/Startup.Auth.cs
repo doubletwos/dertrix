@@ -5,9 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using Zeus.Models;
+using Dertrix.Models;
 
-namespace Zeus
+namespace Dertrix
 {
     public partial class Startup
     {

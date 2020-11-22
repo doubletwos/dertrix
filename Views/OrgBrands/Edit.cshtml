@@ -1,4 +1,4 @@
-﻿@model Zeus.Models.OrgBrand
+﻿@model Dertrix.Models.OrgBrand
 
 @{
 	ViewBag.Title = "Edit";
@@ -61,14 +61,14 @@
 
 
 
-	@if (Model.Files.Any(f => f.FileType == Zeus.Models.FileType.Logo))
+	@if (Model.Files.Any(f => f.FileType == Dertrix.Models.FileType.Logo))
 	{
 		<div class="form-group">
 			<span class="control-label col-md-2"><strong>Current Logo</strong></span>
 			<div class="col-md-10">
 
 
-				<img src="~/File?id=@Model.Files.First(f => f.FileType == Zeus.Models.FileType.Logo).FileId" alt="Logo" />
+				<img src="~/File?id=@Model.Files.First(f => f.FileType == Dertrix.Models.FileType.Logo).FileId" alt="Logo" />
 			</div>
 		</div>
 	}

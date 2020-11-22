@@ -235,7 +235,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-	$('#AddNewZeusUserForm').validate({
+	$('#AddNewDertrixUserForm').validate({
 		errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
 		errorElement: 'div',
 		errorPlacement: function (error, e) {

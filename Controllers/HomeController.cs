@@ -5,7 +5,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Zeus.Controllers
+namespace Dertrix.Controllers
 {
     public class HomeController : Controller
     {

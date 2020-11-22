@@ -6,9 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Zeus.Models;
+using Dertrix.Models;
 
-namespace Zeus.Controllers
+namespace Dertrix.Controllers
 {
     public class OrgOrgTypesController : Controller
     {

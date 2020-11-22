@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace Zeus.Models
+namespace Dertrix.Models
 {
     public class Tribe
     {

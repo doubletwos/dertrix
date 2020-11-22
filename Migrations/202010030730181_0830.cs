@@ -1,4 +1,4 @@
-namespace Zeus.Migrations
+namespace Dertrix.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

@@ -8,9 +8,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.WebParts;
-using Zeus.Models;
+using Dertrix.Models;
 
-namespace Zeus.Controllers
+namespace Dertrix.Controllers
 {
     public class AccessController : Controller
     {

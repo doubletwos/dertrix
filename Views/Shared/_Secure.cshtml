@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Zeus.Models.RegisteredUser>
+﻿@model IEnumerable<Dertrix.Models.RegisteredUser>
 @if (Session["OrgId"] == null && Session["regUserOrgBrand"] == null)
 {
 	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
@@ -17,7 +17,7 @@
 					var isTester = Convert.ToInt32(Session["IsTester"]);
 					if (isTester == 1 && ((int)Session["OrgId"] != 23))
 					{
-						<div> @Html.ActionLink("Back to Zeus", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "RegUserOrgButtonColour" }) </div>
+						<div> @Html.ActionLink("Back to Dertrix", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "RegUserOrgButtonColour" }) </div>
 					}
 					else
 					{

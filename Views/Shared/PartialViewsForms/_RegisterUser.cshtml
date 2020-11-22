@@ -1,4 +1,4 @@
-﻿@model Zeus.Models.RegisteredUser
+﻿@model Dertrix.Models.RegisteredUser
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myModalRegUser">Register A New User</a>
 <div class="modal fade" id="myModalRegUser">
@@ -6,10 +6,10 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add a new zeus user</h3>
+				<h3 class="modal-title">Add a new Dertrix user</h3>
 			</div>
 			<div class="modal-body">
-				<form id="AddNewZeusUserForm">
+				<form id="AddNewDertrixUserForm">
 					@Html.AntiForgeryToken()
 					@{
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
@@ -90,9 +90,9 @@
 		$("#Organisation1").hide();
 		$("#Organisation").val("23");
 		$("#btnSubmit").on("click", function () {
-			if ($("#AddNewZeusUserForm").valid()) {
+			if ($("#AddNewDertrixUserForm").valid()) {
 
-				var data = $("#AddNewZeusUserForm").serialize();
+				var data = $("#AddNewDertrixUserForm").serialize();
 				$.ajax({
 					type: "POST",
 					url: "/RegisteredUsers/Create",
@@ -100,7 +100,7 @@
 					success: function (response) {
 						alert("New user created");
 						$("#myModalRegUser").modal("hide");
-						$("#AddNewZeusUserForm")[0].reset();
+						$("#AddNewDertrixUserForm")[0].reset();
 						window.location.reload();
 					}
 				})

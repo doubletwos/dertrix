@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Zeus.Models;
+using Dertrix.Models;
 
-namespace Zeus.Controllers
+namespace Dertrix.Controllers
 {
     [Authorize]
     public class ManageController : Controller

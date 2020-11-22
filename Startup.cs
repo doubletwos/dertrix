@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Zeus.Startup))]
-namespace Zeus
+[assembly: OwinStartupAttribute(typeof(Dertrix.Startup))]
+namespace Dertrix
 {
     public partial class Startup
     {
