@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.MappingViews;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
 using Zeus.Models;
 
 namespace Zeus.Controllers
@@ -22,9 +24,11 @@ namespace Zeus.Controllers
         }
 
 
+      
 
-        // GET: Access/Index
-        public ActionResult Index()
+
+        // GET: Access/Signin
+        public ActionResult Signin()
         {
             return View();
         }
@@ -60,11 +64,15 @@ namespace Zeus.Controllers
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.Content).FirstOrDefault();
                 Session["IsTester"] = reguserdetails.IsTester;
                 Session["OrgType"] = db.Orgs.Where(x => x.OrgId == orgredirect).Select(x => x.OrgTypeId).FirstOrDefault();
-                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();            
-            
+                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
+                Session["IsParent/Guardian"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
+
+
+
             }
             if (orgredirect == 23)
             {
+                
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
             }
             else
@@ -81,7 +89,7 @@ namespace Zeus.Controllers
             
             
 
-            return RedirectToAction("Index", "Access");
+            return RedirectToAction("Welcome", "Access");
         }
 
 

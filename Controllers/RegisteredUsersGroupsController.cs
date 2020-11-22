@@ -45,12 +45,12 @@ namespace Zeus.Controllers
 
                 };
 
-                return PartialView("~/Views/Shared/PartialViews/_AddMemberToGroup.cshtml", grp);
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup.cshtml", grp);
 
 
             }
 
-            return PartialView("_AddMemberToGroup");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup.cshtml");
         }
 
 

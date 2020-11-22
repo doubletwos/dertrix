@@ -19,7 +19,7 @@ namespace Zeus.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
 
             var orgGroups = db.OrgGroups.Include(o => o.GroupType).Include(o => o.Org);

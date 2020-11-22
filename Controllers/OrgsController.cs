@@ -65,7 +65,7 @@ namespace Zeus.Controllers
             }
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
             if (id == null)
             {
@@ -90,7 +90,7 @@ namespace Zeus.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
             if ((int)Session["OrgId"] != 23)
             {
@@ -122,7 +122,7 @@ namespace Zeus.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
             if ((int)Session["OrgId"] != 23)
             {
@@ -198,7 +198,7 @@ namespace Zeus.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
             if ((int)Session["OrgId"] != 23)
             {
@@ -308,7 +308,7 @@ namespace Zeus.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("welcome", "Access");
             }
             if ((int)Session["OrgId"] != 23)
             {
@@ -356,7 +356,7 @@ namespace Zeus.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
             if ((int)Session["OrgId"] != 23)
             {
@@ -431,7 +431,7 @@ namespace Zeus.Controllers
 
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Welcome", "Access");
             }
 
             if ((int)Session["OrgId"] != 23)
