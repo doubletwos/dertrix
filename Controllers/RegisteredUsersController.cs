@@ -594,7 +594,7 @@ namespace Dertrix.Controllers
         }
 
         // GET: RegisteredUsers/Create
-        public ActionResult Create()
+        public ActionResult Create1()
         {
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.ClassId = new SelectList(db.Classes.Where(o => o.ClassId == 17) , "ClassId", "ClassName");

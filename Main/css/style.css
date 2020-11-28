@@ -86,7 +86,7 @@ h1, h2, h3, h4, h5, h6 {
   display: table;
   width: 100%;
   height: 100vh;
-  background: url(../img/hero-bg.png) top center fixed;
+  /*background: url(../img/hero-bg.png) top center fixed;*/
   background-size: cover;
 }
 
@@ -99,7 +99,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #hero .hero-container {
-  background: rgba(0, 0, 0, 0.8);
+  /*background: rgba(0, 0, 0, 0.8);*/
+  background-color: white;
   display: table-cell;
   margin: 0;
   padding: 0;
@@ -123,7 +124,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #hero h2 {
-  color: white;
+  color: black;
   margin-bottom: 50px;
 }
 
@@ -161,7 +162,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .Log-in {
     border: 2px solid #CC0033;
-    color: #fff;
+    color: #000;
     border-radius: 10px;
     position: fixed; right: 60px; top: 10px;
 }
@@ -178,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
 #hero .btn-get-started {
   
   border: 2px solid #CC0033;
-  color: #fff;
+  color: #000;
     border-radius:10px;
 }
 
@@ -191,7 +192,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .btn-services {
   border: 2px solid #CC0033;
-  color: #fff;
+  color: #000;
   border-radius:10px;
 }
 

@@ -17,20 +17,20 @@ namespace Dertrix.Controllers
         // GET: RegisteredUserTypes
         public ActionResult Index()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
+            //if (Session["OrgId"] == null)
+            //{
+            //    return RedirectToAction("Index", "Access");
+            //}
 
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if ((int)Session["OrgId"] != 3)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if ((int)Session["RegisteredUserTypeId"] != 1)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
             return View(db.RegisteredUserTypes.ToList());
         }
@@ -69,20 +69,20 @@ namespace Dertrix.Controllers
         // GET: RegisteredUserTypes/Create
         public ActionResult Create()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
+            //if (Session["OrgId"] == null)
+            //{
+            //    return RedirectToAction("Index", "Access");
+            //}
 
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if ((int)Session["OrgId"] != 3)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if ((int)Session["RegisteredUserTypeId"] != 1)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
             return View();
         }

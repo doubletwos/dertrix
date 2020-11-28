@@ -8,11 +8,23 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Dertrix-Beta|Any CPU = Dertrix-Beta|Any CPU
+		Dertrix-Demo|Any CPU = Dertrix-Demo|Any CPU
+		Dertrix-Hotfix|Any CPU = Dertrix-Hotfix|Any CPU
+		Dertrix-NewFeatures|Any CPU = Dertrix-NewFeatures|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-Beta|Any CPU.ActiveCfg = Dertrix-Beta|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-Beta|Any CPU.Build.0 = Dertrix-Beta|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-Demo|Any CPU.ActiveCfg = Dertrix-Demo|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-Demo|Any CPU.Build.0 = Dertrix-Demo|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-Hotfix|Any CPU.ActiveCfg = Dertrix-Hotfix|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-Hotfix|Any CPU.Build.0 = Dertrix-Hotfix|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-NewFeatures|Any CPU.ActiveCfg = Dertrix-NewFeatures|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Dertrix-NewFeatures|Any CPU.Build.0 = Dertrix-NewFeatures|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
