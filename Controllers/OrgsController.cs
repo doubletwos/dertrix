@@ -196,14 +196,14 @@ namespace Dertrix.Controllers
         // GET: Orgs/Create
         public ActionResult Create()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Welcome", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (Session["OrgId"] == null)
+            //{
+            //    return RedirectToAction("Welcome", "Access");
+            //}
+            //if ((int)Session["OrgId"] != 23)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
 
 
@@ -235,66 +235,67 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Org org)
         {
-            var rud = Session["Email"].ToString();
-            var loggedinuser = db.RegisteredUsers.Where(x => x.Email ==  rud).Select(x => x.Email).SingleOrDefault();
-            var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == rud).Select(x => x.OrgId).FirstOrDefault();
+            //var rud = Session["Email"].ToString();
+            //var loggedinuser = db.RegisteredUsers.Where(x => x.Email ==  rud).Select(x => x.Email).SingleOrDefault();
+            //var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == rud).Select(x => x.OrgId).FirstOrDefault();
 
 
-            if ( rud != loggedinuser)
+            //if ( rud != loggedinuser)
             
-            {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //{
+            //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
             
 
             if (ModelState.IsValid)
             {
-                org.CreatedBy = Session["RegisteredUserId"].ToString();
-                org.CreationDate = DateTime.Now;
+                //org.CreatedBy = Session["RegisteredUserId"].ToString();
+                //org.CreationDate = DateTime.Now;
                 db.Orgs.Add(org);
                 db.SaveChanges();
 
 
-                var orgOrgType = new OrgOrgType()
-                {
-                    OrgId = org.OrgId,
-                    OrgName = org.OrgName,
-                    OrgTypeId = (int)org.OrgTypeId
+                //var orgOrgType = new OrgOrgType()
+                //{
+                //    OrgId = org.OrgId,
+                //    OrgName = org.OrgName,
+                //    OrgTypeId = (int)org.OrgTypeId
 
-                };
+                //};
 
-                db.OrgOrgTypes.Add(orgOrgType);
-                db.SaveChanges();
+                //db.OrgOrgTypes.Add(orgOrgType);
+                //db.SaveChanges();
 
 
                 //list of groups 
-                var groups = db.GroupTypes.Where(x => (x.GroupOrgTypeId == org.OrgTypeId) || x.GroupOrgTypeId == null).Select(g => g.GroupTypeId).ToList();
-                var grouptypeid = new List<int>(groups);
+                //var groups = db.GroupTypes.Where(x => (x.GroupOrgTypeId == org.OrgTypeId) || x.GroupOrgTypeId == null).Select(g => g.GroupTypeId).ToList();
+                //var grouptypeid = new List<int>(groups);
 
 
-                foreach (var newgrp in groups)
-                {
-                    var groupname = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupTypeName).FirstOrDefault();
-                    var grouporgtypeid = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupOrgTypeId).FirstOrDefault();
-                    var grouprefnumb = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupRefNumb).FirstOrDefault();
+                //foreach (var newgrp in groups)
+                //{
+                //    var groupname = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupTypeName).FirstOrDefault();
+                //    var grouporgtypeid = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupOrgTypeId).FirstOrDefault();
+                //    var grouprefnumb = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupRefNumb).FirstOrDefault();
 
 
-                    var orggroup = new OrgGroup()
-                    {
-                        OrgId = org.OrgId,
-                        GroupName = groupname,
-                        CreationDate = DateTime.Now,
-                        GroupTypeId = newgrp,
-                        GroupOrgTypeId = grouporgtypeid,
-                        GroupRefNumb = grouprefnumb
+                //    var orggroup = new OrgGroup()
+                //    {
+                //        OrgId = org.OrgId,
+                //        GroupName = groupname,
+                //        CreationDate = DateTime.Now,
+                //        GroupTypeId = newgrp,
+                //        GroupOrgTypeId = grouporgtypeid,
+                //        GroupRefNumb = grouprefnumb
 
-                    };
-                    db.OrgGroups.Add(orggroup);
-                    db.SaveChanges();
+                //    };
+                //    db.OrgGroups.Add(orggroup);
+                //    db.SaveChanges();
 
-                }
+                //}
 
-                return RedirectToAction("Index", "Orgs", new { id = orgredirect });
+                //return RedirectToAction("Index", "Orgs", new { id = orgredirect });
+                return View(org);
             }
 
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);

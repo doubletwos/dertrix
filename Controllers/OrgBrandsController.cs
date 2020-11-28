@@ -59,15 +59,15 @@ namespace Dertrix.Controllers
         // GET: OrgBrands/Create
         public ActionResult Create()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Index", "Access");
-            }
+            //if (Session["OrgId"] == null)
+            //{
+            //    return RedirectToAction("Index", "Access");
+            //}
 
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if ((int)Session["OrgId"] != 23)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
 
             return View();

@@ -906,6 +906,7 @@
     <Content Include="Content\summernote\font\summernote.ttf" />
     <Content Include="Content\summernote\font\summernote.eot" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
+    <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -1191,7 +1192,6 @@
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\themify.woff" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\themifyd41d.eot" />
     <Content Include="Views\Shared\_BespokeLayout1.cshtml" />
-    <Content Include="Views\RegisteredUsers\Create1.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
