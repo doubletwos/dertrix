@@ -1,0 +1,53 @@
+﻿@model Dertrix.Models.Org
+@if (ViewBag.OrgBrand != null)
+{
+
+
+
+
+	foreach (var item in ViewBag.OrgBrand)
+	{
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Org Brand Name</th>
+				<th>Org Brand Bar</th>
+				<th>Org Brand Navigation Bar</th>
+				<th>Org NavBarTextColour</th>
+				<th>Org Brand Button Colour</th>
+
+			</tr>
+
+
+
+
+			<tr>
+		
+				<td>
+					@item.OrgBrandName
+				</td>
+
+			
+				<td>
+					@item.OrgBrandBar
+				</td>
+
+			
+				<td>
+					@item.OrgNavigationBar
+				</td>
+
+		
+				<td>
+					@item.OrgNavBarTextColour
+				</td>
+
+			
+				<td>
+					@item.OrgBrandButtonColour
+				</td>
+
+
+			</tr>
+		</table>
+	}
+}

@@ -1,37 +1,166 @@
 ﻿@model IEnumerable<Dertrix.Models.OrgBrand>
-
 @{
-	ViewBag.Title = "Index";
+	ViewBag.Title = "OrgBrands";
 }
-
-<h2>Index</h2>
-
-<p>
-	@Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-	<tr>
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<div>
+	@{
+		Html.RenderAction("AddOrgBrand", "OrgBrands");
+	}
+</div>
+<br />
+<br />
+<hr />
+<table class="table table-bordered table-hover table-responsive ">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
 		<th>
-			@Html.DisplayNameFor(model => model.OrgBrandName)
+			Organisation Brand Name
 		</th>
 		<th></th>
 	</tr>
-
-@foreach (var item in Model) {
-	<tr>
-		<td>
-			@Html.DisplayFor(modelItem => item.OrgBrandName)
-		</td>
-		<td>
-			@Html.ActionLink("Edit", "Edit", new { id=item.OrgBrandId }) |
-			@Html.ActionLink("Details", "Details", new { id=item.OrgBrandId }) |
-			@Html.ActionLink("Delete", "Delete", new { id=item.OrgBrandId })
-		</td>
-	</tr>
-}
-
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgBrandName)
+			</td>
+			@*<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.OrgBrandId }) |
+				@Html.ActionLink("Details", "Details", new { id = item.OrgBrandId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.OrgBrandId })
+			</td>*@
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="ShowOrgBrand(@item.OrgBrandId)">Org brand details</a></li>
+						<li><a href="#" onclick="EditOrgBrand(@item.OrgBrandId)">Edit org branding</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.OrgBrandId)">Remove org branding</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	}
 </table>
-
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenOrgId" />
+@*Delete confirmation Modal*@
+<div class="modal fade" id="OrgbrandDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove branding</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this branding?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteBrand()">Confirm</a>
+			</div>
+		</div>
+	</div>
 </div>
+@*View Org Details Modal*@
+<div class="modal fade" id="OrgbrandDetailsModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Org brand details</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDiv"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit Org Details Modal*@
+<div class="modal fade" id="OrgbrandEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit org branding</h3>
+			</div>
+			<div class="modal-body" id="myOrgBrandEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var ConfirmDelete = function (OrgId) {
+		$("#hiddenOrgId").val(OrgId);
+		$("#OrgbrandDeleteModal").modal('show');
+	}
+	var DeleteOrgBrand = function () {
+		var OrgBrandId = $("#hiddenOrgId").val();
+		$.ajax({
+			type: "POST",
+			url: "/OrgBrands/DeleteConfirmed/",
+			data: { id: OrgBrandId },
+			success: function (response) {
+				alert("Org brand deleted");
+				$("#OrgbrandDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var ShowOrgBrand = function (Id) {
+		$.ajax({
+			type: "POST",
+			url: "/OrgBrands/OrgBrandDetails",
+			data: { Id: Id },
+			success: function (response) {
+				$("#myModalBodyDiv").html(response);
+				$("#OrgbrandDetailsModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	var EditOrgBrand = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/OrgBrands/EditOrgBrand",
+			data: { Id: Id },
+			success: function (response) {
+				$("#myOrgBrandEditBody").html(response);
+				$("#OrgbrandEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var formData = new FormData($('#OrgBrandEditForm').get(0));;
+	  $.ajax({
+		  type: "POST",
+		  url: "@(Url.Action("Edit", "OrgBrands"))",
+		  data: formData,
+		  processData: false,
+		  contentType: false,
+		  success: function (response) {
+			  alert("Org brand updated");
+			  $("#myModal").modal("hide");
+			  $("#OrgBrandEditForm")[0].reset();
+			  window.location.reload();
+		  }
+	   });
+	})
+</script>

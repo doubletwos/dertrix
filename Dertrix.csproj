@@ -1192,6 +1192,9 @@
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\themify.woff" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\themifyd41d.eot" />
     <Content Include="Views\Shared\_BespokeLayout1.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddOrgBrand.cshtml" />
+    <Content Include="Views\Shared\_OrgBrandDetails.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditOrgBrand.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

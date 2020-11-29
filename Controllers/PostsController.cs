@@ -19,7 +19,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
 
@@ -58,7 +58,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
 

@@ -19,7 +19,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
@@ -61,7 +61,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
             if (id == null)
             {
@@ -80,7 +80,7 @@ namespace Dertrix.Controllers
 
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             var rr = Session["OrgId"].ToString();
@@ -116,7 +116,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
             var orgid = Convert.ToInt32(Session["OrgId"]);
             var classref = db.Classes.Where(x => x.ClassRefNumb == classid).Where(o => o.OrgId == orgid).Select(p => p.ClassId).FirstOrDefault();

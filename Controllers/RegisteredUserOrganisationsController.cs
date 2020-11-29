@@ -19,7 +19,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if ((int)Session["OrgId"] != 3)
@@ -48,7 +48,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if ((int)Session["OrgId"] != 3)
@@ -77,7 +77,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if ((int)Session["OrgId"] != 23)
@@ -101,7 +101,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if ((int)Session["OrgId"] != 23)
@@ -132,7 +132,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if ((int)Session["OrgId"] != 3)
@@ -182,7 +182,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if ((int)Session["OrgId"] != 23)

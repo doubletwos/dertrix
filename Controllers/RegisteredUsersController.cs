@@ -25,7 +25,7 @@ namespace Dertrix.Controllers
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             /* Populate user list for non superusers if session is not null*/
@@ -309,7 +309,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             var rr = Session["OrgId"].ToString();
@@ -387,7 +387,7 @@ namespace Dertrix.Controllers
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             /* Populate user list for non superusers if session is not null*/
@@ -489,7 +489,7 @@ namespace Dertrix.Controllers
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if (Session["OrgId"] != null)
@@ -578,7 +578,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if (id == null)
@@ -766,7 +766,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
 
             if (id == null)
@@ -817,7 +817,7 @@ namespace Dertrix.Controllers
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Index", "Access");
+                return RedirectToAction("Signin", "Access");
             }
             if (id == null)
             {
