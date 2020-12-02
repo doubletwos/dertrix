@@ -10,6 +10,7 @@
 @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 {
 	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
+	var currentsession = HttpContext.Current.Session.SessionID.ToString();
 	<div class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
 		<div class="row">
 			<div class="col-md-12">
@@ -21,7 +22,9 @@
 					}
 					else
 					{
-						<div> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "RegUserOrgButtonColour" }) </div>
+						@*<div> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "RegUserOrgButtonColour" }) </div>*@
+						<div> @Html.ActionLink("Log off", "LogOut", "Access",  new { id = @currentsession }, htmlAttributes: new { id = "loginLink", @class = "RegUserOrgButtonColour" }) </div>
+
 					}
 				}
 			</div>
