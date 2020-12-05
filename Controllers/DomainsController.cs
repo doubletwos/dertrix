@@ -31,6 +31,39 @@ namespace Dertrix.Controllers
             return View(db.Domains.ToList());
         }
 
+
+
+
+        [ChildActionOnly]
+        public ActionResult AddDomain()
+        {
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddDomain.cshtml");
+        }
+
+
+        public ActionResult EditDomain(int Id)
+        {
+            if (Id != 0)
+            {
+
+                var edtdomain = db.Domains
+                    .Where(x => x.DomainId == Id)
+                    .FirstOrDefault();
+
+                var edtdomain1 = new Domain
+                {
+                   DomainId = edtdomain.DomainId,
+                   DomainName = edtdomain.DomainName
+
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditDomain.cshtml", edtdomain1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditDomain.cshtml");
+        }
+
+
+
+
         // GET: Domains/Details/5
         public ActionResult Details(int? id)
         {
@@ -161,8 +194,8 @@ namespace Dertrix.Controllers
         }
 
         // POST: Domains/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Domain domain = db.Domains.Find(id);

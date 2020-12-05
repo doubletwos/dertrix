@@ -81,6 +81,36 @@ namespace Dertrix.Controllers
             return View();
         }
 
+
+        [ChildActionOnly]
+        public ActionResult AddOrgType()
+        {
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgType.cshtml");
+        }
+
+
+
+        public ActionResult EditOrgType(int Id)
+        {
+            if (Id != 0)
+            {
+              
+                var edtorgtype = db.OrgTypes
+                    .Where(x => x.OrgTypeId == Id)
+                    .FirstOrDefault();
+
+                var edtorgtype1 = new OrgType
+                {
+                    OrgTypeId = edtorgtype.OrgTypeId,
+                    OrgTypeName = edtorgtype.OrgTypeName
+                
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml", edtorgtype1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml");
+        }
+
+
         // POST: OrgTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -171,8 +201,8 @@ namespace Dertrix.Controllers
         }
 
         // POST: OrgTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             OrgType orgType = db.OrgTypes.Find(id);

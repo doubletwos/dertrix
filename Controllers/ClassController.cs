@@ -16,8 +16,6 @@ namespace Dertrix.Controllers
 
 
 
-
-
         // GET: Class/SystemAdminIndex
         public ActionResult SystemAdminIndex(int? id)
         {
@@ -71,11 +69,23 @@ namespace Dertrix.Controllers
             }
             else
 
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("SystemAdminIndex");
+
+
+            //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
 
+        public ActionResult ClassDetails(int Id)
+        {
+            var cla = db.Classes.Where(x => x.ClassId == Id);
 
+            ViewBag.Class = cla;
+
+
+            return PartialView("_ClassDetails");
+
+        }
 
 
 
@@ -103,6 +113,28 @@ namespace Dertrix.Controllers
         }
 
 
+        [ChildActionOnly]
+        public ActionResult AddOrgClass()
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
+            if ((int)Session["OrgId"] != 23)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgClass.cshtml");
+        }
+
+
 
         // POST: Class/Create
         [HttpPost]
@@ -124,6 +156,38 @@ namespace Dertrix.Controllers
 
             return View(@Class);
         }
+
+
+
+        public ActionResult EditClass(int Id)
+        {
+            if (Id != 0)
+            {
+             
+                var edtcla = db.Classes.Where(x => x.ClassId == Id).FirstOrDefault();
+                @Class @Class = db.Classes.Find(Id);
+
+
+
+                var edt1 = new Class
+                {
+                    ClassId = edtcla.ClassId,
+                    ClassIsActive = edtcla.ClassIsActive,
+                     ClassName = edtcla.ClassName,
+                     ClassRefNumb = edtcla.ClassRefNumb,
+                     ClassTeacherId = edtcla.ClassTeacherId,
+                     ClassTeacherFullName = edtcla.ClassTeacherFullName,
+                     OrgId = edtcla.OrgId
+                };
+
+                ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditClass.cshtml" , edt1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditClass.cshtml");
+
+        }
+
+
 
         // GET: Class/Edit/5
         public ActionResult Edit(int? id)
@@ -170,6 +234,9 @@ namespace Dertrix.Controllers
             return View(@Class);
         }
 
+
+
+        // This action is used at school level to assign teachers to class
         // POST: Class/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -224,8 +291,8 @@ namespace Dertrix.Controllers
         }
 
         // POST: Class/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             @Class @Class = db.Classes.Find(id);
@@ -264,42 +331,3 @@ namespace Dertrix.Controllers
 
 
 
-// GET: Class
-//public ActionResult Index(int? id)
-//{
-//    if (Session["OrgId"] == null)
-//    {
-//        return RedirectToAction("Signin", "Access");
-//    }
-
-//    if (Session["OrgId"] != null)
-//    {
-//        var rr = Session["OrgId"].ToString();
-//        int i = Convert.ToInt32(rr);
-//        id = i;
-//    }
-
-//    return View(db.Classes
-//        .Where(k => k.OrgId == id)
-//        .Include(l => l.Org)
-//        .Include(f => f.RegisteredUsers)
-
-//        .ToList());
-//}
-
-
-
-// GET: Class/Details/5
-//public ActionResult Details(int? id)
-//{
-//    if (id == null)
-//    {
-//        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-//    }
-//    @Class @Class = db.Classes.Find(id);
-//    if (@Class == null)
-//    {
-//        return HttpNotFound();
-//    }
-//    return View(@Class);
-//}

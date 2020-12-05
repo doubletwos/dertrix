@@ -30,20 +30,16 @@
 			<td>
 				@Html.DisplayFor(modelItem => item.OrgBrandName)
 			</td>
-			@*<td>
-				@Html.ActionLink("Edit", "Edit", new { id = item.OrgBrandId }) |
-				@Html.ActionLink("Details", "Details", new { id = item.OrgBrandId }) |
-				@Html.ActionLink("Delete", "Delete", new { id = item.OrgBrandId })
-			</td>*@
+		
 			<td>
 				<div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Action <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="ShowOrgBrand(@item.OrgBrandId)">Org brand details</a></li>
-						<li><a href="#" onclick="EditOrgBrand(@item.OrgBrandId)">Edit org branding</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.OrgBrandId)">Remove org branding</a></li>
+						<li><a href="#" onclick="ShowOrgBrand(@item.OrgBrandId)">Brand details</a></li>
+						<li><a href="#" onclick="EditOrgBrand(@item.OrgBrandId)">Edit branding</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.OrgBrandId)">Remove branding</a></li>
 					</ul>
 				</div>
 			</td>

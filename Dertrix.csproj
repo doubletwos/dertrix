@@ -669,6 +669,15 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddOrgBrand.cshtml" />
     <Content Include="Views\Shared\_OrgBrandDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrgBrand.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddOrgClass.cshtml" />
+    <Content Include="Views\Class\_ClassDetails.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditClass.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddOrgType.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditOrgType.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditDomain.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddDomain.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddRegisteredUserType.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditRegUserType.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

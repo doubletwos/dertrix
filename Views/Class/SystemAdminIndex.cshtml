@@ -1,10 +1,26 @@
 ﻿@model IEnumerable<Dertrix.Models.Class>
+@{
+	ViewBag.Title = "OrgBrands";
+}
 
-<p>
-	@Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-	<tr>
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<div>
+	@{
+		Html.RenderAction("AddOrgClass", "Class");
+	}
+</div>
+<br />
+<hr />
+
+
+<table class="table table-bordered table-hover table-responsive ">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
 		<th>
 			@Html.DisplayNameFor(model => model.Org.OrgName)
 		</th>
@@ -20,31 +36,161 @@
 		<th></th>
 	</tr>
 
-@foreach (var item in Model) {
-	<tr>
-		<td>
-			@Html.DisplayFor(modelItem => item.Org.OrgName)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.ClassName)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.ClassRefNumb)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.ClassIsActive)
-		</td>
-		<td>
-			@Html.ActionLink("Edit", "Edit", new { id=item.ClassId }) |
-			@Html.ActionLink("Details", "Details", new { id=item.ClassId }) |
-			@Html.ActionLink("Delete", "Delete", new { id=item.ClassId })
-		</td>
-	</tr>
-}
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Org.OrgName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ClassName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ClassRefNumb)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ClassIsActive)
+			</td>
+
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="ShowClass(@item.ClassId)">Class details</a></li>
+						<li><a href="#" onclick="EditClass(@item.ClassId)">Edit class</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">Remove class</a></li>
+					</ul>
+				</div>
+			</td>
+
+
+
+
+
+		</tr>
+	}
 
 </table>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenClassId" />
 
 
 <div>
 	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
 </div>
+
+
+
+@*Delete confirmation Modal*@
+<div class="modal fade" id="classDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove class</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this class?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteClass()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*View Class Details Modal*@
+<div class="modal fade" id="ClassDetailsModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Class details</h3>
+			</div>
+			<div class="modal-body" id="classDetailsBodyDiv"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit Class Details Modal*@
+<div class="modal fade" id="ClassEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit class</h3>
+			</div>
+			<div class="modal-body" id="classEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var ConfirmDelete = function (ClassId) {
+		$("#hiddenClassId").val(ClassId);
+		$("#classDeleteModal").modal('show');
+	}
+	var DeleteClass = function () {
+		var Class = $("#hiddenClassId").val();
+		$.ajax({
+			type: "POST",
+			url: "/Class/DeleteConfirmed/",
+			data: { id: Class },
+			success: function (response) {
+				alert("Class deleted");
+				$("#classDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var ShowClass = function (Id) {
+		$.ajax({
+			type: "POST",
+			url: "/Class/ClassDetails",
+			data: { Id: Id },
+			success: function (response) {
+				$("#classDetailsBodyDiv").html(response);
+				$("#ClassDetailsModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	var EditClass = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Class/EditClass",
+			data: { Id: Id },
+			success: function (response) {
+				$("#classEditBody").html(response);
+				$("#ClassEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#ClassEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/Class/Edit",
+			data: data,
+			success: function (response) {
+				alert("Class updated");
+				$("#ClassEditModal").modal("hide");
+				$("#ClassEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>

@@ -1,0 +1,24 @@
+﻿@model Dertrix.Models.RegisteredUserType
+
+
+<form id="RegUsrEditForm">
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>RegisteredUserType</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.RegisteredUserTypeId)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.RegisteredUserTypeName, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.RegisteredUserTypeName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.RegisteredUserTypeName, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+
+	</div>
+
+</form>

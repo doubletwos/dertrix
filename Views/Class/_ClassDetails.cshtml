@@ -1,0 +1,38 @@
+﻿@model Dertrix.Models.Class
+<table class="table table-bordered table-striped">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+		<th>
+			Class Name
+		</th>
+		<th>
+			Class reference
+		</th>
+		<th>
+			Is active?
+		</th>
+
+
+		@if (ViewBag.Class != null)
+		{
+
+			foreach (var item in ViewBag.Class)
+			{
+
+<tr>
+				<td> @item.ClassName</td>
+
+				<td> @item.ClassRefNumb</td>
+
+				<td> @item.ClassIsActive</td>
+
+			</tr>
+
+
+		}
+
+
+
+	}
+
+	</table>
+

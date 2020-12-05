@@ -121,7 +121,6 @@ namespace Dertrix.Controllers
         public ActionResult AddOrgBrand()
         {
      
-
           return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgBrand.cshtml");
         }
 

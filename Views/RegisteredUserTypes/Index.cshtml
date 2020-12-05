@@ -1,37 +1,141 @@
 ﻿@model IEnumerable<Dertrix.Models.RegisteredUserType>
 
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "User Types";
 }
 
-<h2>User Types</h2>
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<div>
+	@{
+		Html.RenderAction("AddRegisteredUserType", "RegisteredUserTypes");
+	}
+</div>
+<br />
+<hr />
+<table class="table table-bordered table-hover table-responsive ">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+		<th>
+			@Html.DisplayNameFor(model => model.RegisteredUserTypeName)
+		</th>
+		<th></th>
+	</tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-striped table-bordered table-hover">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.RegisteredUserTypeName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RegisteredUserTypeName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.RegisteredUserTypeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.RegisteredUserTypeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.RegisteredUserTypeId })
-        </td>
-    </tr>
-}
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.RegisteredUserTypeName)
+			</td>
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="EditRegUsrType(@item.RegisteredUserTypeId)">Edit registered user type</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserTypeId)">Remove registered user type</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	}
 
 </table>
 
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenRegUsrTypeId" />
+
+
+@*Delete confirmation Modal*@
+<div class="modal fade" id="RegUsrTypeDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove registered user type</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this domain?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteRegUsrType()">Confirm</a>
+			</div>
+		</div>
+	</div>
 </div>
+
+@*Edit domain modal*@
+<div class="modal fade" id="RegUsrTypeEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit domain</h3>
+			</div>
+			<div class="modal-body" id="RegUsrEditModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var ConfirmDelete = function (DomainId) {
+		$("#hiddenRegUsrTypeId").val(DomainId);
+		$("#RegUsrTypeDeleteModal").modal('show');
+	}
+	var DeleteRegUsrType = function () {
+		var RegUsrTyp = $("#hiddenRegUsrTypeId").val();
+		$.ajax({
+			type: "POST",
+			url: "/RegisteredUserTypes/DeleteConfirmed/",
+			data: { id: RegUsrTyp },
+			success: function (response) {
+				alert("Registered user type deleted");
+				$("#RegUsrTypeDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+
+<script>
+	var EditRegUsrType = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/RegisteredUserTypes/EditRegUserType",
+			data: { Id: Id },
+			success: function (response) {
+				$("#RegUsrEditModalbody").html(response);
+				$("#RegUsrTypeEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#RegUsrEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/RegisteredUserTypes/Edit",
+			data: data,
+			success: function (response) {
+				alert("Registered user type updated");
+				$("#RegUsrTypeEditModal").modal("hide");
+				$("#RegUsrEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>
+
+
