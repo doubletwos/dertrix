@@ -7,13 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class PrimarySchoolUserRolesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: PrimarySchoolUserRoles
         public ActionResult Index()
         {
@@ -21,7 +19,6 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
             if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -29,87 +26,37 @@ namespace Dertrix.Controllers
             return View(db.PrimarySchoolUserRoles.ToList());
         }
 
-        // GET: PrimarySchoolUserRoles/Details/5
-        public ActionResult Details(int? id)
+        [ChildActionOnly]
+        public ActionResult AddPriSchRole()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PrimarySchoolUserRole primarySchoolUserRole = db.PrimarySchoolUserRoles.Find(id);
-            if (primarySchoolUserRole == null)
-            {
-                return HttpNotFound();
-            }
-            return View(primarySchoolUserRole);
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddPriSchRole.cshtml");
         }
 
-        // GET: PrimarySchoolUserRoles/Create
-        public ActionResult Create()
+        public ActionResult EditPriSchRole(int Id)
         {
-            if (Session["OrgId"] == null)
+            if (Id != 0)
             {
-                return RedirectToAction("Signin", "Access");
+                var edtprischrl = db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID == Id).FirstOrDefault();
+                var edtprischrl1 = new PrimarySchoolUserRole
+                {
+                    PrimarySchoolUserRoleID = edtprischrl.PrimarySchoolUserRoleID,
+                    RoleName = edtprischrl.RoleName
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditPriSchRole.cshtml", edtprischrl1);
             }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View();
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditPriSchRole.cshtml");
         }
 
         // POST: PrimarySchoolUserRoles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( PrimarySchoolUserRole primarySchoolUserRole)
+        public ActionResult Create(PrimarySchoolUserRole primarySchoolUserRole)
         {
             if (ModelState.IsValid)
             {
                 db.PrimarySchoolUserRoles.Add(primarySchoolUserRole);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
-
-            return View(primarySchoolUserRole);
-        }
-
-        // GET: PrimarySchoolUserRoles/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PrimarySchoolUserRole primarySchoolUserRole = db.PrimarySchoolUserRoles.Find(id);
-            if (primarySchoolUserRole == null)
-            {
-                return HttpNotFound();
             }
             return View(primarySchoolUserRole);
         }
@@ -128,38 +75,7 @@ namespace Dertrix.Controllers
             return View(primarySchoolUserRole);
         }
 
-        // GET: PrimarySchoolUserRoles/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PrimarySchoolUserRole primarySchoolUserRole = db.PrimarySchoolUserRoles.Find(id);
-            if (primarySchoolUserRole == null)
-            {
-                return HttpNotFound();
-            }
-            return View(primarySchoolUserRole);
-        }
-
         // POST: PrimarySchoolUserRoles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             PrimarySchoolUserRole primarySchoolUserRole = db.PrimarySchoolUserRoles.Find(id);

@@ -7,13 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class RegisteredUserTypesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: RegisteredUserTypes
         public ActionResult Index()
         {
@@ -21,100 +19,37 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
             if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             if ((int)Session["RegisteredUserTypeId"] != 1)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
             return View(db.RegisteredUserTypes.ToList());
         }
-
-
         [ChildActionOnly]
         public ActionResult AddRegisteredUserType()
         {
             return PartialView("~/Views/Shared/PartialViewsForms/_AddRegisteredUserType.cshtml");
         }
-
         public ActionResult EditRegUserType(int Id)
         {
             if (Id != 0)
             {
-
                 var edtregusetype = db.RegisteredUserTypes
                     .Where(x => x.RegisteredUserTypeId == Id)
                     .FirstOrDefault();
-
                 var regusrtype1 = new RegisteredUserType
                 {
-                   RegisteredUserTypeId = edtregusetype.RegisteredUserTypeId,
-                   RegisteredUserTypeName = edtregusetype.RegisteredUserTypeName
-
+                    RegisteredUserTypeId = edtregusetype.RegisteredUserTypeId,
+                    RegisteredUserTypeName = edtregusetype.RegisteredUserTypeName
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditRegUserType.cshtml", regusrtype1);
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditRegUserType.cshtml");
         }
-
-
-        // GET: RegisteredUserTypes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RegisteredUserType registeredUserType = db.RegisteredUserTypes.Find(id);
-            if (registeredUserType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(registeredUserType);
-        }
-
-        // GET: RegisteredUserTypes/Create
-        public ActionResult Create()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            return View();
-        }
-
         // POST: RegisteredUserTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -126,41 +61,8 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(registeredUserType);
         }
-
-        // GET: RegisteredUserTypes/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RegisteredUserType registeredUserType = db.RegisteredUserTypes.Find(id);
-            if (registeredUserType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(registeredUserType);
-        }
-
         // POST: RegisteredUserTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -174,39 +76,7 @@ namespace Dertrix.Controllers
             }
             return View(registeredUserType);
         }
-
-        // GET: RegisteredUserTypes/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RegisteredUserType registeredUserType = db.RegisteredUserTypes.Find(id);
-            if (registeredUserType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(registeredUserType);
-        }
-
         // POST: RegisteredUserTypes/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             RegisteredUserType registeredUserType = db.RegisteredUserTypes.Find(id);
@@ -214,7 +84,6 @@ namespace Dertrix.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

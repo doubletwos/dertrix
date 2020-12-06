@@ -1,38 +1,136 @@
 ﻿@model IEnumerable<Dertrix.Models.Religion>
-
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Religions";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ReligionName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReligionName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ReligionId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ReligionId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ReligionId })
-        </td>
-    </tr>
-}
-
-</table>
-
-
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<br />
+<br />
+<hr />
 <div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+	@{
+		Html.RenderAction("AddReligion", "Religions");
+	}
 </div>
+<hr />
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+		<th>
+			@Html.DisplayNameFor(model => model.ReligionName)
+		</th>
+		<th></th>
+	</tr>
+	@foreach (var item in Model)
+	{
+		<tr style="border-style: groove;">
+			<td>
+				@Html.DisplayFor(modelItem => item.ReligionName)
+			</td>
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="EditReligion(@item.ReligionId)">Edit religion</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.ReligionId)">Remove religion</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	}
+</table>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenReligionId" />
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
+@*Delete confirmation Modal*@
+<div class="modal fade" id="ReligionDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove religion</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this religion?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteReligion()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit religion Modal*@
+<div class="modal fade" id="ReligionEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit religion</h3>
+			</div>
+			<div class="modal-body" id="religionEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var ConfirmDelete = function (ClassId) {
+		$("#hiddenReligionId").val(ClassId);
+		$("#ReligionDeleteModal").modal('show');
+	}
+	var DeleteReligion = function () {
+		var Religion = $("#hiddenReligionId").val();
+		$.ajax({
+			type: "POST",
+			url: "/Religions/DeleteConfirmed/",
+			data: { id: Religion },
+			success: function (response) {
+				alert("Religion deleted");
+				$("#ReligionDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var EditReligion = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Religions/EditReligion",
+			data: { Id: Id },
+			success: function (response) {
+				$("#religionEditBody").html(response);
+				$("#ReligionEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#ReligionEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/Religions/Edit",
+			data: data,
+			success: function (response) {
+				alert("Religion updated");
+				$("#ReligionEditModal").modal("hide");
+				$("#ReligionEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>

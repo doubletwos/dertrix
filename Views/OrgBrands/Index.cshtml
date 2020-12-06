@@ -9,16 +9,19 @@
 		}
 	</style>
 </head>
+<br />
+<br />
+<hr />
 <div>
 	@{
 		Html.RenderAction("AddOrgBrand", "OrgBrands");
 	}
 </div>
-<br />
-<br />
 <hr />
-<table class="table table-bordered table-hover table-responsive ">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
 			Organisation Brand Name
 		</th>
@@ -26,11 +29,11 @@
 	</tr>
 	@foreach (var item in Model)
 	{
-		<tr>
+		<tr style="border-style: groove;">
 			<td>
 				@Html.DisplayFor(modelItem => item.OrgBrandName)
 			</td>
-		
+
 			<td>
 				<div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,8 +49,15 @@
 		</tr>
 	}
 </table>
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenOrgId" />
+
+
+
 @*Delete confirmation Modal*@
 <div class="modal fade" id="OrgbrandDeleteModal">
 	<div class="modal-dialog">

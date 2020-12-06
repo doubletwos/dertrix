@@ -9,30 +9,22 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.WebParts;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class AccessController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
-
         // GET: Access/Welcome
         public ActionResult Welcome()
         {
             return View();
         }
 
-
-      
-
-
         // GET: Access/Signin
         public ActionResult Signin()
         {
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -66,10 +58,7 @@ namespace Dertrix.Controllers
                 Session["OrgType"] = db.Orgs.Where(x => x.OrgId == orgredirect).Select(x => x.OrgTypeId).FirstOrDefault();
                 Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
                 Session["IsParent/Guardian"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
-
-
             }
-
             var reguseraccessLogs = new RegUsersAccessLog
             {
                 OrgId = orgredirect,
@@ -81,13 +70,8 @@ namespace Dertrix.Controllers
             };
             db.RegUsersAccessLogs.Add(reguseraccessLogs);
             db.SaveChanges();
-
-
-
-
             if (orgredirect == 23)
             {
-                
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
             }
             else
@@ -96,70 +80,34 @@ namespace Dertrix.Controllers
             }
         }
 
-
-
-
-
-
-
         public ActionResult LogOut(string id)
         {
             if (id == null)
             {
                 Session.Abandon();
-                return RedirectToAction("Signin", "Access"); 
+                return RedirectToAction("Signin", "Access");
             }
-
             else
             {
                 var logouttime = DateTime.Now;
                 var getsession = db.RegUsersAccessLogs.AsNoTracking().Where(x => x.SessionId == id).FirstOrDefault();
-
                 var getsession1 = new RegUsersAccessLog
                 {
-
-
                     RegUsersAccessLogId = getsession.RegUsersAccessLogId,
                     OrgId = getsession.OrgId,
                     SessionId = getsession.SessionId,
                     RegUserId = getsession.RegUserId,
                     UserFullName = getsession.UserFullName,
                     LogInTime = getsession.LogInTime,
-                    LogOutTime =  logouttime                  
-               };
-
-                //db.RegUsersAccessLogs.Add(getsession1);
-
-
-                  getsession = getsession1;
-
-
-
+                    LogOutTime = logouttime
+                };
+                getsession = getsession1;
                 db.Entry(getsession).State = EntityState.Modified;
                 db.SaveChanges();
                 Session.Abandon();
                 Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
-
                 return RedirectToAction("Signin", "Access");
-
             }
-
-           
         }
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

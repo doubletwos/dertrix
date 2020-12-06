@@ -1,33 +1,152 @@
 ﻿@model IEnumerable<Dertrix.Models.StudentRegForm>
 
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Student type";
 }
 
-<h2>Index</h2>
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<br />
+<br />
+<hr />
+<div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
+	@{
+		Html.RenderAction("AddStudentType", "StudentRegForms");
+	}
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.StudentRegFormId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.StudentRegFormId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.StudentRegFormId })
-        </td>
-    </tr>
-}
+<hr />
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+		<th>
+			@Html.DisplayNameFor(model => model.Name)
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr style="border-style: groove;">
+			<td>
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="EditStudentType(@item.StudentRegFormId)">Edit student type</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.StudentRegFormId)">Remove student type</a></li>
+					</ul>
+				</div>
+			</td>
+
+		</tr>
+	}
 
 </table>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenStudentRegFormId" />
+
+
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
+
+@*Delete confirmation Modal*@
+<div class="modal fade" id="StudentRegFormDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove Student type</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this student type?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteStudenttype()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*Edit religion Modal*@
+<div class="modal fade" id="StudentRegFormEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit student type</h3>
+			</div>
+			<div class="modal-body" id="StudenttypeEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+	var ConfirmDelete = function (StudentRegFormId) {
+		$("#hiddenStudentRegFormId").val(StudentRegFormId);
+		$("#StudentRegFormDeleteModal").modal('show');
+	}
+	var DeleteStudenttype = function () {
+		var StudentType = $("#hiddenStudentRegFormId").val();
+		$.ajax({
+			type: "POST",
+			url: "/StudentRegForms/DeleteConfirmed/",
+			data: { id: StudentType },
+			success: function (response) {
+				alert("Student type deleted");
+				$("#StudentRegFormDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+
+<script>
+	var EditStudentType = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/StudentRegForms/EditStudentType",
+			data: { Id: Id },
+			success: function (response) {
+				$("#StudenttypeEditBody").html(response);
+				$("#StudentRegFormEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#StudentTypeEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/StudentRegForms/Edit",
+			data: data,
+			success: function (response) {
+				alert("Student type updated");
+				$("#StudentRegFormEditModal").modal("hide");
+				$("#StudentTypeEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>

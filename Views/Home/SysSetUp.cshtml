@@ -1,22 +1,13 @@
-﻿
-@{
+﻿@{
 	ViewBag.Title = "SysSetUp";
 }
-
 <h2>SysSetUp</h2>
-
-
 @{
 	ViewBag.Title = "SysAdminSetUp";
 }
-
-
-
-
 <div class="jumbotron">
 	<div class="row">
 		<div class="col-md-3">
-			@*<p>@Html.ActionLink("Update Subjects", "SystemAdminIndex", "Class", "", new { @class = "RegUserOrgButtonColour" })</p>*@
 			<p>
 				@{
 					Html.RenderAction("StudentUpdateSubject", "StudentSubjects");
@@ -24,62 +15,30 @@
 			</p>
 		</div>
 		<div class="col-md-3">
-			@*<p>@Html.ActionLink("Organisation Types", "Index", "OrgTypes", "", new { @class = "RegUserOrgButtonColour" })</p>*@
 		</div>
 		<div class="col-md-3">
-			@*<p>@Html.ActionLink("Organisation Brands", "Index", "OrgBrands", "", new { @class = "RegUserOrgButtonColour" })</p>*@
 		</div>
 		<div class="col-md-3">
-			@*<p>@Html.ActionLink("Organisation Domains", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })</p>*@
 		</div>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
-
-
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
-
 }
-
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
-
 	$("#stusubup").click(function () {
-
 		var data = $("#updatesubjects").serialize();
 		$.ajax({
 			type: "POST",
 			url: "/StudentSubjects/StudentUpdateSubject",
 			data: data,
 			success: function (response) {
-
 				alert("Update in Progress");
 				$("#StuSubUp").modal("hide");
 				$("#updatesubjects")[0].reset();
 				window.location.reload();
-
-
-
-
 			}
 		})
 	})
-
 </script>
-

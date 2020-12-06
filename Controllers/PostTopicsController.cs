@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class PostTopicsController : Controller
@@ -17,36 +16,44 @@ namespace Dertrix.Controllers
         // GET: PostTopics
         public ActionResult Index()
         {
-            return View(db.PostTopics.ToList());
-        }
-
-        // GET: PostTopics/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PostTopic postTopic = db.PostTopics.Find(id);
-            if (postTopic == null)
-            {
-                return HttpNotFound();
-            }
-            return View(postTopic);
+            return View(db.PostTopics.ToList());
         }
 
-        // GET: PostTopics/Create
-        public ActionResult Create()
+        [ChildActionOnly]
+        public ActionResult AddPostTopic()
         {
-            return View();
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddPostTopic.cshtml");
         }
+
+        public ActionResult EditPostTopic(int Id)
+        {
+            if (Id != 0)
+            {
+                var edtPostTopic = db.PostTopics.Where(x => x.PostTopicId == Id).FirstOrDefault();
+                var edtPostTopic1 = new PostTopic
+                {
+                    PostTopicId = edtPostTopic.PostTopicId,
+                    PostTopicName = edtPostTopic.PostTopicName
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditPostTopic.cshtml", edtPostTopic1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditPostTopic.cshtml");
+        }
+
+
 
         // POST: PostTopics/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostTopicId,PostTopicName")] PostTopic postTopic)
+        public ActionResult Create(PostTopic postTopic)
         {
             if (ModelState.IsValid)
             {
@@ -54,31 +61,13 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(postTopic);
-        }
-
-        // GET: PostTopics/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PostTopic postTopic = db.PostTopics.Find(id);
-            if (postTopic == null)
-            {
-                return HttpNotFound();
-            }
             return View(postTopic);
         }
 
         // POST: PostTopics/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostTopicId,PostTopicName")] PostTopic postTopic)
+        public ActionResult Edit(PostTopic postTopic)
         {
             if (ModelState.IsValid)
             {
@@ -89,24 +78,7 @@ namespace Dertrix.Controllers
             return View(postTopic);
         }
 
-        // GET: PostTopics/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PostTopic postTopic = db.PostTopics.Find(id);
-            if (postTopic == null)
-            {
-                return HttpNotFound();
-            }
-            return View(postTopic);
-        }
-
-        // POST: PostTopics/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+  
         public ActionResult DeleteConfirmed(int id)
         {
             PostTopic postTopic = db.PostTopics.Find(id);

@@ -11,15 +11,19 @@
 		}
 	</style>
 </head>
+<br />
+<br />
+<hr />
 <div>
 	@{
 		Html.RenderAction("AddDomain", "Domains");
 	}
 </div>
-<br />
 <hr />
-<table class="table table-bordered table-hover table-responsive ">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
 			@Html.DisplayNameFor(model => model.DomainName)
 		</th>
@@ -28,7 +32,8 @@
 
 	@foreach (var item in Model)
 	{
-		<tr>
+		<tr style="border-style: groove;">
+
 			<td>
 				@Html.DisplayFor(modelItem => item.DomainName)
 			</td>
@@ -47,6 +52,9 @@
 	}
 
 </table>
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenDomainId" />

@@ -1,9 +1,7 @@
 ﻿@model IEnumerable<Dertrix.Models.RegisteredUserType>
-
 @{
 	ViewBag.Title = "User Types";
 }
-
 <head>
 	<style>
 		.btn-group:hover .dropdown-menu {
@@ -11,24 +9,27 @@
 		}
 	</style>
 </head>
+<br />
+<br />
+<hr />
 <div>
 	@{
 		Html.RenderAction("AddRegisteredUserType", "RegisteredUserTypes");
 	}
 </div>
-<br />
 <hr />
-<table class="table table-bordered table-hover table-responsive ">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
 			@Html.DisplayNameFor(model => model.RegisteredUserTypeName)
 		</th>
 		<th></th>
 	</tr>
-
 	@foreach (var item in Model)
 	{
-		<tr>
+		<tr style="border-style: groove;">
 			<td>
 				@Html.DisplayFor(modelItem => item.RegisteredUserTypeName)
 			</td>
@@ -45,13 +46,12 @@
 			</td>
 		</tr>
 	}
-
 </table>
-
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenRegUsrTypeId" />
-
-
 @*Delete confirmation Modal*@
 <div class="modal fade" id="RegUsrTypeDeleteModal">
 	<div class="modal-dialog">
@@ -70,7 +70,6 @@
 		</div>
 	</div>
 </div>
-
 @*Edit domain modal*@
 <div class="modal fade" id="RegUsrTypeEditModal">
 	<div class="modal-dialog">
@@ -87,7 +86,6 @@
 		</div>
 	</div>
 </div>
-
 <script>
 	var ConfirmDelete = function (DomainId) {
 		$("#hiddenRegUsrTypeId").val(DomainId);
@@ -107,7 +105,6 @@
 		})
 	}
 </script>
-
 <script>
 	var EditRegUsrType = function (Id) {
 		$.ajax({
@@ -137,5 +134,3 @@
 		})
 	})
 </script>
-
-

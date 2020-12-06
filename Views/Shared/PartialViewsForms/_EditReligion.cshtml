@@ -1,0 +1,28 @@
+﻿@model Dertrix.Models.Religion
+
+<form id="ReligionEditForm">
+
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.ReligionId)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.ReligionName, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.ReligionName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.ReligionName, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+
+	</div>
+
+</form>
+
+
+
+
+

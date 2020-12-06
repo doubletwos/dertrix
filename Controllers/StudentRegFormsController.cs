@@ -7,13 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class StudentRegFormsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: StudentRegForms
         public ActionResult Index()
         {
@@ -21,113 +19,48 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
-            if ((int)Session["OrgId"] != 3)
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             if ((int)Session["RegisteredUserTypeId"] != 1)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             return View(db.StudentRegForm.ToList());
         }
-
-        // GET: StudentRegForms/Details/5
-        public ActionResult Details(int? id)
+        [ChildActionOnly]
+        public ActionResult AddStudentType()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentRegForm studentRegForm = db.StudentRegForm.Find(id);
-            if (studentRegForm == null)
-            {
-                return HttpNotFound();
-            }
-            return View(studentRegForm);
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddStudentType.cshtml");
         }
-
-        // GET: StudentRegForms/Create
-        public ActionResult Create()
+        public ActionResult EditStudentType(int Id)
         {
-            if (Session["OrgId"] == null)
+            if (Id != 0)
             {
-                return RedirectToAction("Signin", "Access");
+                var edtstutyp = db.StudentRegForm.Where(x => x.StudentRegFormId == Id).FirstOrDefault();
+                var edtstutyp1 = new StudentRegForm
+                {
+                    StudentRegFormId = edtstutyp.StudentRegFormId,
+                    Name = edtstutyp.Name
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditStudentType.cshtml", edtstutyp1);
             }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View();
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditStudentType.cshtml");
         }
-
         // POST: StudentRegForms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(StudentRegForm studentRegForm)
         {
-
             if (ModelState.IsValid)
             {
                 db.StudentRegForm.Add(studentRegForm);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(studentRegForm);
         }
-
-        // GET: StudentRegForms/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentRegForm studentRegForm = db.StudentRegForm.Find(id);
-            if (studentRegForm == null)
-            {
-                return HttpNotFound();
-            }
-            return View(studentRegForm);
-        }
-
         // POST: StudentRegForms/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -141,39 +74,7 @@ namespace Dertrix.Controllers
             }
             return View(studentRegForm);
         }
-
-        // GET: StudentRegForms/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 3)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentRegForm studentRegForm = db.StudentRegForm.Find(id);
-            if (studentRegForm == null)
-            {
-                return HttpNotFound();
-            }
-            return View(studentRegForm);
-        }
-
         // POST: StudentRegForms/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             StudentRegForm studentRegForm = db.StudentRegForm.Find(id);
@@ -181,7 +82,6 @@ namespace Dertrix.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

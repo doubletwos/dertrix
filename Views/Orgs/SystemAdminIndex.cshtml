@@ -47,12 +47,13 @@
 		Html.RenderAction("AddOrg", "Orgs");
 	}
 </div>
+<hr />
 
 
 <br />
-
-<table class="table table-bordered table-hover table-responsive ">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
 			Id
 		</th>
@@ -85,7 +86,7 @@
 
 	@foreach (var item in Model)
 	{
-		<tr>
+		<tr style="border-style: groove;">
 			<td>
 				@Html.DisplayFor(modelItem => item.OrgId)
 			</td>
@@ -126,9 +127,7 @@
 
 
 						}
-						@*<li><a href="#">Something else here</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">Separated link</a></li>*@
+						
 					</ul>
 				</div>
 			</td>
@@ -211,7 +210,7 @@
 			$("#hiddenOrgId").val(OrgId);
 			$("#myModall").modal('show');
 		}
-		var DeleteRegisteredUser = function () {
+		var DeleteOrg = function () {
 			var OrgId = $("#hiddenOrgId").val();
 			$.ajax({
 				type: "POST",

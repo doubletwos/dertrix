@@ -1,38 +1,154 @@
 ﻿@model IEnumerable<Dertrix.Models.PrimarySchoolUserRole>
 
 @{
-	ViewBag.Title = "Index";
+	ViewBag.Title = "Role";
 }
 
-<h2>Index</h2>
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<br />
+<br />
+<hr />
+<div>
 
-<p>
-	@Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-	<tr>
+	@{
+		Html.RenderAction("AddPriSchRole", "PrimarySchoolUserRoles");
+	}
+</div>
+
+<hr />
+<br />
+<br />
+
+
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
 			@Html.DisplayNameFor(model => model.RoleName)
 		</th>
 		<th></th>
 	</tr>
 
-@foreach (var item in Model) {
-	<tr>
-		<td>
-			@Html.DisplayFor(modelItem => item.RoleName)
-		</td>
-		<td>
-			@Html.ActionLink("Edit", "Edit", new { id=item.PrimarySchoolUserRoleID }) |
-			@Html.ActionLink("Details", "Details", new { id=item.PrimarySchoolUserRoleID }) |
-			@Html.ActionLink("Delete", "Delete", new { id=item.PrimarySchoolUserRoleID })
-		</td>
-	</tr>
-}
+	@foreach (var item in Model)
+	{
+		<tr style="border-style: groove;">
+			<td>
+				@Html.DisplayFor(modelItem => item.RoleName)
+			</td>
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="EditPriSchRole(@item.PrimarySchoolUserRoleID)">Edit role</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.PrimarySchoolUserRoleID)">Remove role</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	}
 
 </table>
 
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenPriSchRoleId" />
+
+
 <div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
 </div>
+
+
+
+@*Delete confirmation Modal*@
+<div class="modal fade" id="PriSchRoleDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove role</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this role?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteRole()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*Edit Pri Sch role Modal*@
+<div class="modal fade" id="PriSchRoleEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit role</h3>
+			</div>
+			<div class="modal-body" id="PriSchRoleEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var ConfirmDelete = function (PriSchRoleId) {
+		$("#hiddenPriSchRoleId").val(PriSchRoleId);
+		$("#PriSchRoleDeleteModal").modal('show');
+	}
+	var DeleteRole = function () {
+		var Role = $("#hiddenPriSchRoleId").val();
+		$.ajax({
+			type: "POST",
+			url: "/PrimarySchoolUserRoles/DeleteConfirmed/",
+			data: { id: Role },
+			success: function (response) {
+				alert("Role deleted");
+				$("#PriSchRoleDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+
+<script>
+	var EditPriSchRole = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/PrimarySchoolUserRoles/EditPriSchRole",
+			data: { Id: Id },
+			success: function (response) {
+				$("#PriSchRoleEditBody").html(response);
+				$("#PriSchRoleEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#Prischroleform").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/PrimarySchoolUserRoles/Edit",
+			data: data,
+			success: function (response) {
+				alert("Role updated");
+				$("#PriSchRoleEditModal").modal("hide");
+				$("#Prischroleform")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>

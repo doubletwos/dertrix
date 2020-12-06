@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class OrgTypesController : Controller
@@ -21,64 +20,11 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
             if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             return View(db.OrgTypes.ToList());
-        }
-
-        // GET: OrgTypes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgType orgType = db.OrgTypes.Find(id);
-            if (orgType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orgType);
-        }
-
-        // GET: OrgTypes/Create
-        public ActionResult Create()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-
-
-
-
-            return View();
         }
 
 
@@ -88,33 +34,27 @@ namespace Dertrix.Controllers
             return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgType.cshtml");
         }
 
-
-
         public ActionResult EditOrgType(int Id)
         {
             if (Id != 0)
             {
-              
                 var edtorgtype = db.OrgTypes
                     .Where(x => x.OrgTypeId == Id)
                     .FirstOrDefault();
-
                 var edtorgtype1 = new OrgType
                 {
                     OrgTypeId = edtorgtype.OrgTypeId,
                     OrgTypeName = edtorgtype.OrgTypeName
-                
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml", edtorgtype1);
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml");
         }
 
-
         // POST: OrgTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( OrgType orgType)
+        public ActionResult Create(OrgType orgType)
         {
             if (ModelState.IsValid)
             {
@@ -122,44 +62,13 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(orgType);
-        }
-
-        // GET: OrgTypes/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgType orgType = db.OrgTypes.Find(id);
-            if (orgType == null)
-            {
-                return HttpNotFound();
-            }
             return View(orgType);
         }
 
         // POST: OrgTypes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( OrgType orgType)
+        public ActionResult Edit(OrgType orgType)
         {
             if (ModelState.IsValid)
             {
@@ -170,39 +79,7 @@ namespace Dertrix.Controllers
             return View(orgType);
         }
 
-        // GET: OrgTypes/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
 
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgType orgType = db.OrgTypes.Find(id);
-            if (orgType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orgType);
-        }
-
-        // POST: OrgTypes/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             OrgType orgType = db.OrgTypes.Find(id);
@@ -210,7 +87,6 @@ namespace Dertrix.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

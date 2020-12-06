@@ -9,7 +9,6 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class OrgsController : Controller
@@ -19,8 +18,11 @@ namespace Dertrix.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
             var isTester = Convert.ToInt32(Session["IsTester"]);
-
             if (isTester == 1)
             {
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
@@ -28,45 +30,22 @@ namespace Dertrix.Controllers
                 Session["IsTester"] = isTester;
                 Session["RegisteredUserId"] = RegisteredUserId;
                 Session["OrgId"] = id;
-
                 Session["OrgType"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgTypeId).FirstOrDefault();
-
-
-
                 Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
-                ////Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.OrgName).FirstOrDefault();
-                ///
                 Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
-
-
                 Session["RegisteredUserTypeId"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
-                //Session["RegisteredUserTypeId"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
-
-
-
                 Session["IsTester"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
-                //Session["IsTester"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
-
                 Session["regUserOrgBrand"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault();
-                //Session["regUserOrgBrand"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == id).Select(x => x.RegUserOrgBrand).FirstOrDefault();
-
-
-
                 var orgbrand = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault();
                 Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandBar).FirstOrDefault();
                 Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
-
                 var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
-
                 return View(orgs1.ToList());
             }
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
+    
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,12 +59,6 @@ namespace Dertrix.Controllers
             return View(orgs.ToList());
         }
 
-
-
-
-
-
-
         public ActionResult JumpToOrg(int id)
         {
             if (Session["OrgId"] == null)
@@ -96,26 +69,15 @@ namespace Dertrix.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-        
-
-           var orgName = Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName.FirstOrDefault());
-           var brandId = Session["brandId"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault().ToString();
+            var orgName = Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName.FirstOrDefault());
+            var brandId = Session["brandId"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault().ToString();
             var logo = Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.Content).FirstOrDefault();
             var orgBrand = Session["regUserOrgBrand"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgBrandBar).FirstOrDefault();
             var regUserOrgNavBar = Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgNavigationBar).FirstOrDefault();
             var IsTesterOrgId = Session["IsTesterOrgId"] = id;
-            var IsTester = Session["IsTester"] = true; 
-
-
-            return RedirectToAction("Index", "Orgs", new { id  });
-
-
+            var IsTester = Session["IsTester"] = true;
+            return RedirectToAction("Index", "Orgs", new { id });
         }
-
-
-
-
 
         // GET: Orgs/Details/5
         public ActionResult Details(int? id)
@@ -128,8 +90,6 @@ namespace Dertrix.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -142,18 +102,12 @@ namespace Dertrix.Controllers
             return View(org);
         }
 
-
-
-
         public ActionResult OrgDetails(int Id)
         {
             var stud = db.Orgs.Where(x => x.OrgId == Id);
-
             ViewBag.Org = stud;
-
-            return PartialView("_OrgDetails");
+            return PartialView("~/Views/Shared/PartialViewsForms/_OrgDetails.cshtml");
         }
-
 
         public ActionResult EditOrg(int Id)
         {
@@ -170,8 +124,6 @@ namespace Dertrix.Controllers
                 ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", edtorg.DomainId);
                 ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", edtorg.OrgTypeId);
                 ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", edtorg.OrgBrandId);
-
-
                 var edtorg1 = new Org
                 {
                     OrgId = edtorg.OrgId,
@@ -181,40 +133,11 @@ namespace Dertrix.Controllers
                     DomainId = edtorg.DomainId,
                     OrgTypeId = edtorg.OrgTypeId,
                     OrgBrandId = edtorg.OrgBrandId,
-                    
-
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditOrg.cshtml", edtorg1);
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditOrg.cshtml");
         }
-
-
-
-
-
-        // GET: Orgs/Create
-        public ActionResult Create()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Welcome", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-
-            ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
-            ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
-            ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
-            return View();
-        }
-
-
-
 
         [ChildActionOnly]
         public ActionResult AddOrg()
@@ -223,12 +146,8 @@ namespace Dertrix.Controllers
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName");
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName");
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName");
-
             return PartialView("~/Views/Shared/PartialViewsForms/_AddOrg.cshtml");
         }
-
-
-
 
         // POST: Orgs/Create
         [HttpPost]
@@ -238,47 +157,32 @@ namespace Dertrix.Controllers
             var rud = Session["Email"].ToString();
             var loggedinuser = db.RegisteredUsers.Where(x => x.Email == rud).Select(x => x.Email).SingleOrDefault();
             var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == rud).Select(x => x.OrgId).FirstOrDefault();
-
-
             if (rud != loggedinuser)
-
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
             if (ModelState.IsValid)
             {
                 org.CreatedBy = Session["RegisteredUserId"].ToString();
                 org.CreationDate = DateTime.Now;
                 db.Orgs.Add(org);
                 db.SaveChanges();
-
-
                 var orgOrgType = new OrgOrgType()
                 {
                     OrgId = org.OrgId,
                     OrgName = org.OrgName,
                     OrgTypeId = (int)org.OrgTypeId
-
                 };
-
                 db.OrgOrgTypes.Add(orgOrgType);
                 db.SaveChanges();
-
-
-               // list of groups
+                // list of groups
                 var groups = db.GroupTypes.Where(x => (x.GroupOrgTypeId == org.OrgTypeId) || x.GroupOrgTypeId == null).Select(g => g.GroupTypeId).ToList();
                 var grouptypeid = new List<int>(groups);
-
-
                 foreach (var newgrp in groups)
                 {
                     var groupname = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupTypeName).FirstOrDefault();
                     var grouporgtypeid = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupOrgTypeId).FirstOrDefault();
                     var grouprefnumb = db.GroupTypes.Where(x => x.GroupTypeId == newgrp).Select(s => s.GroupRefNumb).FirstOrDefault();
-
-
                     var orggroup = new OrgGroup()
                     {
                         OrgId = org.OrgId,
@@ -287,52 +191,17 @@ namespace Dertrix.Controllers
                         GroupTypeId = newgrp,
                         GroupOrgTypeId = grouporgtypeid,
                         GroupRefNumb = grouprefnumb
-
                     };
                     db.OrgGroups.Add(orggroup);
                     db.SaveChanges();
-
                 }
-
-                //return RedirectToAction("Index", "Orgs", new { id = orgredirect });
                 return View(org);
             }
-
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", org.OrgBrandId);
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", org.OrgTypeId);
             return View(org);
         }
-
-        // GET: Orgs/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("welcome", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Org org = db.Orgs.Find(id);
-            if (org == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);
-            ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", org.OrgBrandId);
-            ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", org.OrgTypeId);
-            return View(org);
-        }
-
-
-
-
 
         // POST: Orgs/Edit/5
         [HttpPost]
@@ -348,43 +217,12 @@ namespace Dertrix.Controllers
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", org.OrgBrandId);
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", org.OrgTypeId);
-
             return View(org);
         }
 
-        // GET: Orgs/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Welcome", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Org org = db.Orgs.Find(id);
-            if (org == null)
-            {
-                return HttpNotFound();
-            }
-            return View(org);
-        }
 
         // POST: Orgs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Org org = db.Orgs.Find(id);
@@ -393,20 +231,16 @@ namespace Dertrix.Controllers
             return RedirectToAction("SystemAdminIndex");
         }
 
-
         public ActionResult SystemAdminIndex(string searchname, string searchid)
         {
             var isTester = Convert.ToInt32(Session["IsTester"]);
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-
-
             if (isTester == 1 && ((int)Session["OrgId"] != 23))
             {
                 Session.Clear();
                 Session["OrgId"] = 23;
                 Session["RegisteredUserId"] = RegisteredUserId;
                 Session["OrgName"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Select(x => x.OrgName).FirstOrDefault();
-
                 Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
                 Session["RegisteredUserTypeId"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
                 Session["IsTester"] = db.RegisteredUserOrganisations.Where(x => x.OrgId == 23).Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
@@ -417,52 +251,35 @@ namespace Dertrix.Controllers
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
-
                 var org1 = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
                 return View(org1);
-
-
-
-
-
-
             }
-
-
-
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
-
             if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             var org = db.Orgs.Where(x => x.OrgTypeId != 5).Include(t => t.OrgType).ToList();
-
             // returns null at page load
             if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
             {
                 return View(org);
             }
-
             // returns org if id is selected & searchname is null
             else if (string.IsNullOrWhiteSpace(searchname) && !(string.IsNullOrWhiteSpace(searchid)))
             {
                 return View(db.Orgs.Where(i => i.OrgId.ToString() == searchid).Include(t => t.OrgType).ToList());
             }
-
             // returns org if searchname is selected & id is null
             else if (!(string.IsNullOrWhiteSpace(searchname) && (string.IsNullOrWhiteSpace(searchid))))
             {
                 return View(db.Orgs.Where(n => n.OrgName == searchname).Include(t => t.OrgType).ToList());
             }
-
             return View(org);
         }
-
 
         public JsonResult AutoCompleteSchool(string prefix)
         {
@@ -473,19 +290,8 @@ namespace Dertrix.Controllers
                                   label = org.OrgName,
                                   Val = org.OrgId
                               }).ToList();
-
             return Json(schoollist);
         }
-
-
-
-
-
-
-
-
-
-
 
         protected override void Dispose(bool disposing)
         {

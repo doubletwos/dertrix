@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class GendersController : Controller
@@ -21,37 +20,34 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
             if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
             return View(db.Genders.ToList());
         }
 
-
-
-        // GET: Genders/Create
-        public ActionResult Create()
+        [ChildActionOnly]
+        public ActionResult AddGender()
         {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View();
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddGender.cshtml");
         }
+
+        public ActionResult EditGender(int Id)
+        {
+            if (Id != 0)
+            {
+                var edtgndr = db.Genders.Where(x => x.GenderId == Id).FirstOrDefault();
+                var edtgndr1 = new Gender
+                {
+                    GenderId = edtgndr.GenderId,
+                    GenderName = edtgndr.GenderName
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditGender.cshtml", edtgndr1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditGender.cshtml");
+        }
+
 
         // POST: Genders/Create
         [HttpPost]
@@ -64,38 +60,9 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(gender);
         }
 
-        // GET: Genders/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Gender gender = db.Genders.Find(id);
-            if (gender == null)
-            {
-                return HttpNotFound();
-            }
-            return View(gender);
-        }
 
         // POST: Genders/Edit/5
         [HttpPost]
@@ -111,37 +78,8 @@ namespace Dertrix.Controllers
             return View(gender);
         }
 
-        // GET: Genders/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Gender gender = db.Genders.Find(id);
-            if (gender == null)
-            {
-                return HttpNotFound();
-            }
-            return View(gender);
-        }
 
         // POST: Genders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Gender gender = db.Genders.Find(id);
@@ -160,40 +98,3 @@ namespace Dertrix.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// GET: Genders/Details/5
-//public ActionResult Details(int? id)
-//{
-//    if (id == null)
-//    {
-//        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-//    }
-//    Gender gender = db.Genders.Find(id);
-//    if (gender == null)
-//    {
-//        return HttpNotFound();
-//    }
-//    return View(gender);
-//}

@@ -7,46 +7,53 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class GroupTypesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: GroupTypes
         public ActionResult Index()
         {
-            return View(db.GroupTypes.ToList());
-        }
-
-        // GET: GroupTypes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            if ((int)Session["OrgId"] != 23)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            GroupType groupType = db.GroupTypes.Find(id);
-            if (groupType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(groupType);
+            return View(db.GroupTypes.ToList());
         }
 
-        // GET: GroupTypes/Create
-        public ActionResult Create()
+        [ChildActionOnly]
+        public ActionResult AddGroupType()
         {
-            return View();
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddGroupType.cshtml");
+        }
+
+        public ActionResult EditGroupType(int Id)
+        {
+            if (Id != 0)
+            {
+                var edtgrptye = db.GroupTypes.Where(x => x.GroupTypeId == Id).FirstOrDefault();
+                GroupType grouptype = db.GroupTypes.Find(Id);
+                var edtgrptye1 = new GroupType
+                {
+                    GroupTypeId = edtgrptye.GroupTypeId,
+                    GroupOrgTypeId = edtgrptye.GroupOrgTypeId,
+                    GroupRefNumb = edtgrptye.GroupRefNumb,
+                    GroupTypeName = edtgrptye.GroupTypeName,
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditGroupType.cshtml", edtgrptye1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditGroupType.cshtml");
         }
 
         // POST: GroupTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "GroupTypeId,GroupTypeName")] GroupType groupType)
+        public ActionResult Create(GroupType groupType)
         {
             if (ModelState.IsValid)
             {
@@ -54,24 +61,10 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(groupType);
         }
 
-        // GET: GroupTypes/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            GroupType groupType = db.GroupTypes.Find(id);
-            if (groupType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(groupType);
-        }
+
 
         // POST: GroupTypes/Edit/5
         [HttpPost]
@@ -87,24 +80,8 @@ namespace Dertrix.Controllers
             return View(groupType);
         }
 
-        // GET: GroupTypes/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            GroupType groupType = db.GroupTypes.Find(id);
-            if (groupType == null)
-            {
-                return HttpNotFound();
-            }
-            return View(groupType);
-        }
 
         // POST: GroupTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             GroupType groupType = db.GroupTypes.Find(id);

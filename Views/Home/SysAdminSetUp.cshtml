@@ -1,12 +1,7 @@
-﻿
-@{
+﻿@{
 	ViewBag.Title = "SysAdminSetUp";
 }
-
 <h2>System Admin Set Up Page</h2>
-
-
-
 <div class="jumbotron">
 	<div class="row">
 		<div class="col-md-3">
@@ -22,7 +17,6 @@
 			<p>@Html.ActionLink("Organisation Domains", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })</p>
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-md-3">
 			<p>@Html.ActionLink("System User Types", "Index", "RegisteredUserTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
@@ -37,17 +31,13 @@
 			<p>@Html.ActionLink("Genders", "Index", "Genders", "", new { @class = "RegUserOrgButtonColour" })</p>
 		</div>
 	</div>
-
-
 	<div class="row">
 		<div class="col-md-3">
-			@*<p>@Html.ActionLink("Add User", "Create", "RegisteredUsers", "", new { @class = "btn btn-primary" })</p>*@
 			<p>
 				@{
 					Html.RenderAction("RegisterUser", "RegisteredUsers");
 				}
 			</p>
-
 		</div>
 		<div class="col-md-3">
 			<p>@Html.ActionLink("Student Type", "Index", "StudentRegForms", "", new { @class = "RegUserOrgButtonColour" })</p>
@@ -59,31 +49,15 @@
 			<p>@Html.ActionLink("Primary School Roles", "Index", "PrimarySchoolUserRoles", "", new { @class = "RegUserOrgButtonColour" })</p>
 		</div>
 	</div>
-
-
 	<div class="row">
-
 		<div class="col-md-6">
 			<p>@Html.ActionLink("Post Topics", "Index", "PostTopics", "", new { @class = "RegUserOrgButtonColour" })</p>
 		</div>
-
 		<div class="col-md-6">
 			<p>@Html.ActionLink("Group Types", "Index", "GroupTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
 		</div>
-
 	</div>
-
-
-
-
-
-
-
-
-
 </div>
-
-
 @section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/bundles/custom-validator")

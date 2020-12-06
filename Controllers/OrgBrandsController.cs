@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class OrgBrandsController : Controller
@@ -25,48 +24,15 @@ namespace Dertrix.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-        
             return View(db.OrgBrands.ToList());
         }
-
-        // GET: OrgBrands/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgBrand orgBrand = db.OrgBrands.Find(id);
-            if (orgBrand == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orgBrand);
-        }
-
 
         public ActionResult OrgBrandDetails(int Id)
         {
             var stud = db.OrgBrands.Where(x => x.OrgBrandId == Id);
-
             ViewBag.OrgBrand = stud;
-
             return PartialView("_OrgBrandDetails");
         }
-
-
 
         public ActionResult EditOrgBrand(int Id)
         {
@@ -78,7 +44,6 @@ namespace Dertrix.Controllers
                     .Include(f => f.Files)
                     .Where(x => x.OrgBrandId == Id)
                     .FirstOrDefault();
-
                 var edtorgBrand1 = new OrgBrand
                 {
                     OrgBrandId = edtorgbrand.OrgBrandId,
@@ -87,56 +52,26 @@ namespace Dertrix.Controllers
                     OrgNavigationBar = edtorgbrand.OrgNavigationBar,
                     OrgNavBarTextColour = edtorgbrand.OrgNavBarTextColour,
                     OrgBrandButtonColour = edtorgbrand.OrgBrandButtonColour,
-
                 };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgBrand.cshtml" , edtorgBrand1);
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgBrand.cshtml", edtorgBrand1);
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgBrand.cshtml");
-        }
-
-
-
-
-
-
-        // GET: OrgBrands/Create
-        public ActionResult Create()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Welcome", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            return View();
         }
 
 
         [ChildActionOnly]
         public ActionResult AddOrgBrand()
         {
-     
-          return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgBrand.cshtml");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgBrand.cshtml");
         }
-
-
-
-
-
 
         // POST: OrgBrands/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( OrgBrand orgBrand, HttpPostedFileBase upload)
+        public ActionResult Create(OrgBrand orgBrand, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
-
                 if (upload != null && upload.ContentLength > 0)
                 {
                     var avatar = new File
@@ -151,63 +86,17 @@ namespace Dertrix.Controllers
                     }
                     orgBrand.Files = new List<File> { avatar };
                 }
-
-
-
                 db.OrgBrands.Add(orgBrand);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(orgBrand);
-        }
-
-        // GET: OrgBrands/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            OrgBrand orgbrand = db.OrgBrands.Include(s => s.Files).SingleOrDefault(s => s.OrgBrandId == id);
-
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgBrand orgBrand = db.OrgBrands.Find(id);
-            if (orgBrand == null)
-            {
-                return HttpNotFound();
-            }
-
-         
-
-
             return View(orgBrand);
         }
 
         // POST: OrgBrands/Edit/5
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public ActionResult Edit(OrgBrand orgBrand, HttpPostedFileBase Logo)
         {
-           
-
             if (ModelState.IsValid)
             {
                 var orgBrandInDb = db.OrgBrands.Include(f => f.Files).Single(c => c.OrgBrandId == orgBrand.OrgBrandId);
@@ -216,7 +105,6 @@ namespace Dertrix.Controllers
                 orgBrandInDb.OrgNavigationBar = orgBrand.OrgNavigationBar;
                 orgBrandInDb.OrgNavBarTextColour = orgBrand.OrgNavBarTextColour;
                 orgBrandInDb.OrgBrandButtonColour = orgBrand.OrgBrandButtonColour;
-
                 if (Logo != null && Logo.ContentLength > 0)
                 {
                     if (orgBrandInDb.Files.Any(f => f.FileType == FileType.Logo))
@@ -235,42 +123,9 @@ namespace Dertrix.Controllers
                     }
                     orgBrandInDb.Files = new List<File> { logo };
                 }
-
-
                 db.Entry(orgBrandInDb).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            return View(orgBrand);
-        }
-
-        // GET: OrgBrands/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgBrand orgBrand = db.OrgBrands.Find(id);
-            if (orgBrand == null)
-            {
-                return HttpNotFound();
             }
             return View(orgBrand);
         }

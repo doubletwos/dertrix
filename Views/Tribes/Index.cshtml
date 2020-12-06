@@ -1,37 +1,136 @@
 ﻿@model IEnumerable<Dertrix.Models.Tribe>
-
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Tribes";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TribeName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TribeName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TribeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TribeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TribeId })
-        </td>
-    </tr>
-}
-
-</table>
-
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+<br />
+<br />
+<hr />
 <div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "btn btn-primary" })</p>
+	@{
+		Html.RenderAction("AddTribe", "Tribes");
+	}
 </div>
+<hr />
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+		<th>
+			@Html.DisplayNameFor(model => model.TribeName)
+		</th>
+		<th></th>
+	</tr>
+	@foreach (var item in Model)
+	{
+		<tr style="border-style: groove;">
+			<td>
+				@Html.DisplayFor(modelItem => item.TribeName)
+			</td>
+			<td>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="background-color:white">
+						<li><a href="#" onclick="EditTribe(@item.TribeId)">Edit tribe</a></li>
+						<li><a href="#" onclick="ConfirmDelete(@item.TribeId)">Remove tribe</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	}
+</table>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenTribeId" />
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
+@*Delete confirmation Modal*@
+<div class="modal fade" id="tribeDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove tribe</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this tribe?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteTribe()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit Class Details Modal*@
+<div class="modal fade" id="TribeEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit tribe</h3>
+			</div>
+			<div class="modal-body" id="TribeEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var ConfirmDelete = function (ClassId) {
+		$("#hiddenTribeId").val(ClassId);
+		$("#tribeDeleteModal").modal('show');
+	}
+	var DeleteTribe = function () {
+		var Tribe = $("#hiddenTribeId").val();
+		$.ajax({
+			type: "POST",
+			url: "/Tribes/DeleteConfirmed/",
+			data: { id: Tribe },
+			success: function (response) {
+				alert("Tribe deleted");
+				$("#tribeDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var EditTribe = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Tribes/EditTribe",
+			data: { Id: Id },
+			success: function (response) {
+				$("#TribeEditBody").html(response);
+				$("#TribeEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#TribeEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/Tribes/Edit",
+			data: data,
+			success: function (response) {
+				alert("Tribe updated");
+				$("#TribeEditModal").modal("hide");
+				$("#TribeEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>

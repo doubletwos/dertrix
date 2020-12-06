@@ -7,13 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
-
 namespace Dertrix.Controllers
 {
     public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: Posts
         public ActionResult Index()
         {
@@ -21,12 +19,9 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
-
             var posts = db.Posts.Include(p => p.Org).Include(p => p.PostTopic);
             return View(posts.ToList());
         }
-
         // GET: Posts/Details/5
         public ActionResult Details(int? id)
         {
@@ -41,7 +36,6 @@ namespace Dertrix.Controllers
             }
             return View(post);
         }
-
         // GET: Posts/Create
         public ActionResult Create()
         {
@@ -49,9 +43,6 @@ namespace Dertrix.Controllers
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName");
             return View();
         }
-
-
-
         //  GET: Posts/CreatePost
         [ChildActionOnly]
         public ActionResult AddPost()
@@ -60,38 +51,19 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
-
-
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName");
-
             return PartialView("~/Views/Shared/PartialViewsForms/_AddPost.cshtml");
-
         }
-
-
         //  GET: Posts/DisplayPanel
         [ChildActionOnly]
         public ActionResult PostDisplayPanel()
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
             var posts = db.Posts.Include(p => p.Org).Include(p => p.PostTopic);
-
-
-            return PartialView("_PostDisplayPanel" , posts);
+            return PartialView("~/Views/Shared/PartialViewsForms/_PostDisplayPanel.cshtml", posts);
         }
-
-
-
-
-
-
-
-
-
         // POST: Posts/Create
         [HttpPost]
         [ValidateInput(false)]
@@ -100,29 +72,20 @@ namespace Dertrix.Controllers
         {
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
             var OrgId = Convert.ToInt32(Session["OrgId"]);
-
-
             post.PostCreatorId = RegisteredUserId;
             post.OrgId = OrgId;
             post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
             post.PostCreationDate = DateTime.Now;
-
-
-
-
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
-               
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
             return View(post);
         }
-
         // GET: Posts/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -139,10 +102,7 @@ namespace Dertrix.Controllers
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
             return View(post);
         }
-
         // POST: Posts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Post post)
@@ -157,7 +117,6 @@ namespace Dertrix.Controllers
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
             return View(post);
         }
-
         // GET: Posts/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -172,7 +131,6 @@ namespace Dertrix.Controllers
             }
             return View(post);
         }
-
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -183,7 +141,6 @@ namespace Dertrix.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

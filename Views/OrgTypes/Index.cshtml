@@ -2,7 +2,6 @@
 @{
 	ViewBag.Title = "OrgTypes";
 }
-
 <head>
 	<style>
 		.btn-group:hover .dropdown-menu {
@@ -10,26 +9,27 @@
 		}
 	</style>
 </head>
+<br />
+<br />
+<hr />
 <div>
 	@{
 		Html.RenderAction("AddOrgType", "OrgTypes");
 	}
 </div>
-<br />
 <hr />
-
-
-<table class="table table-bordered table-hover table-responsive ">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+<br />
+<br />
+<table class="table table-bordered table-responsive table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
 			@Html.DisplayNameFor(model => model.OrgTypeName)
 		</th>
 		<th></th>
 	</tr>
-
 	@foreach (var item in Model)
 	{
-		<tr>
+		<tr style="border-style: groove;">
 			<td>
 				@Html.DisplayFor(modelItem => item.OrgTypeName)
 			</td>
@@ -46,17 +46,12 @@
 			</td>
 		</tr>
 	}
-
 </table>
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenOrgTypeId" />
-
-
-
-
-
-
+<div>
+	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+</div>
 @*Delete confirmation Modal*@
 <div class="modal fade" id="OrgTypeDeleteModal">
 	<div class="modal-dialog">
@@ -75,7 +70,6 @@
 		</div>
 	</div>
 </div>
-
 @*Edit Org Type Modal*@
 <div class="modal fade" id="OrgTypeEditModal">
 	<div class="modal-dialog">
@@ -92,7 +86,6 @@
 		</div>
 	</div>
 </div>
-
 <script>
 	var ConfirmDelete = function (OrgTypeId) {
 		$("#hiddenOrgTypeId").val(OrgTypeId);
@@ -112,7 +105,6 @@
 		})
 	}
 </script>
-
 <script>
 	var EditOrgType = function (Id) {
 		$.ajax({
