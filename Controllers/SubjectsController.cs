@@ -73,11 +73,39 @@ namespace Dertrix.Controllers
             int i = Convert.ToInt32(rr);
 
             ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-
             ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
 
             return PartialView("~/Views/Shared/PartialViewsForms/_AddSubject.cshtml");
 
+        }
+
+        public ActionResult EditSubject(int Id)
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var edtsubject = db.Subjects.Where(x => x.SubjectId == Id).FirstOrDefault();
+
+                var edtsubject1 = new Subject
+                {
+                      SubjectId = edtsubject.SubjectId,
+                      SubjectName = edtsubject.SubjectName,
+                      ClassId = edtsubject.ClassId,
+                      ClassTeacherId = edtsubject.ClassTeacherId,
+                      FirstTermSubjectGrade = edtsubject.FirstTermSubjectGrade,
+                      SecondTermSubjectGrade = edtsubject.SecondTermSubjectGrade,
+                      ThirdTermSubjectGrade = edtsubject.ThirdTermSubjectGrade
+
+                };
+
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
+
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml", edtsubject1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml");
         }
 
 
@@ -165,11 +193,9 @@ namespace Dertrix.Controllers
         }
 
         // POST: Subjects/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SubjectId,SubjectName,ClassId")] Subject subject)
+        public ActionResult Edit(Subject subject)
         {
 
             if (Session["OrgId"] == null)
@@ -211,8 +237,6 @@ namespace Dertrix.Controllers
         }
 
         // POST: Subjects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             if (Session["OrgId"] == null)

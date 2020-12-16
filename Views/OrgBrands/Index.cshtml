@@ -11,47 +11,56 @@
 </head>
 <br />
 <br />
-<hr />
-<div>
-	@{
-		Html.RenderAction("AddOrgBrand", "OrgBrands");
-	}
-</div>
-<hr />
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			Organisation Brand Name
-		</th>
-		<th></th>
-	</tr>
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgBrandName)
-			</td>
 
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="ShowOrgBrand(@item.OrgBrandId)">Brand details</a></li>
-						<li><a href="#" onclick="EditOrgBrand(@item.OrgBrandId)">Edit branding</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.OrgBrandId)">Remove branding</a></li>
-					</ul>
-				</div>
-			</td>
-		</tr>
-	}
-</table>
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+<div class="jumbotron" style="height:100vh;">
+
+	<div>
+		@{
+			Html.RenderAction("AddOrgBrand", "OrgBrands");
+		}
+	</div>
+	<hr />
+	<br />
+	<br />
+	<div class="panel panel-default">
+		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+
+				<th>
+					Organisation Brand Name
+				</th>
+				<th>
+					Select Action
+				</th>
+			</tr>
+			@foreach (var item in Model)
+			{
+				<tr style="border-style: groove;">
+					<td>
+						@Html.DisplayFor(modelItem => item.OrgBrandName)
+					</td>
+
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="ShowOrgBrand(@item.OrgBrandId)">Brand details</a></li>
+								<li><a href="#" onclick="EditOrgBrand(@item.OrgBrandId)">Edit branding</a></li>
+								<li><a href="#" onclick="ConfirmDelete(@item.OrgBrandId)">Remove branding</a></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	</div>
+	<div>
+		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+	</div>
 </div>
+
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenOrgId" />

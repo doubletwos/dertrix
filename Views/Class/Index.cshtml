@@ -1,36 +1,51 @@
 ﻿@model IEnumerable<Dertrix.Models.Class>
-<div class="panel panel-default">
-	<table class="table  table-bordered table-striped table-hover table-responsive">
-		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px;">
-			<th>
-				Class
-			</th>
-			<th>
-				Student Count
-			</th>
-			<th>
-				Class Teacher
-			</th>
-			<th>
-				Assign Teacher
-			</th>
-		</tr>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.ClassName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
-				</td>
-				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.ClassId })
-				</td>
-			</tr>
+@{
+	ViewBag.Title = "Classes";
+}
+
+<head>
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
 		}
-	</table>
+	</style>
+</head>
+
+<div class="jumbotron" style="height:100vh;">
+
+	<div class="panel panel-default">
+		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+				<th>
+					Class
+				</th>
+				<th>
+					Student Count
+				</th>
+				<th>
+					Class Teacher
+				</th>
+				<th>
+					Assign Teacher
+				</th>
+			</tr>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.ClassName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+					</td>
+					<td>
+						@Html.ActionLink("Edit", "Edit", new { id = item.ClassId })
+					</td>
+				</tr>
+			}
+		</table>
+	</div>
 </div>

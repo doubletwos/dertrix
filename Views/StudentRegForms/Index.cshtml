@@ -13,55 +13,59 @@
 </head>
 <br />
 <br />
-<hr />
-<div>
+<div class="jumbotron" style="height:100vh;">
 
-	@{
-		Html.RenderAction("AddStudentType", "StudentRegForms");
-	}
-</div>
+	<div>
 
-<hr />
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			@Html.DisplayNameFor(model => model.Name)
-		</th>
-		<th></th>
-	</tr>
+		@{
+			Html.RenderAction("AddStudentType", "StudentRegForms");
+		}
+	</div>
 
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-			<td>
-				@Html.DisplayFor(modelItem => item.Name)
-			</td>
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="EditStudentType(@item.StudentRegFormId)">Edit student type</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.StudentRegFormId)">Remove student type</a></li>
-					</ul>
-				</div>
-			</td>
-
+	<hr />
+	<br />
+	<br />
+	<table class="table table-bordered table-responsive table-condensed">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th></th>
 		</tr>
-	}
 
-</table>
+		@foreach (var item in Model)
+		{
+			<tr style="border-style: groove;">
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="EditStudentType(@item.StudentRegFormId)">Edit student type</a></li>
+							<li><a href="#" onclick="ConfirmDelete(@item.StudentRegFormId)">Remove student type</a></li>
+						</ul>
+					</div>
+				</td>
+
+			</tr>
+		}
+
+	</table>
+
+
+
+
+	<div>
+		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+	</div>
+</div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenStudentRegFormId" />
-
-
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
-</div>
 
 @*Delete confirmation Modal*@
 <div class="modal fade" id="StudentRegFormDeleteModal">

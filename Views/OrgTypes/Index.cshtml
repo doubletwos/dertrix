@@ -11,47 +11,53 @@
 </head>
 <br />
 <br />
-<hr />
-<div>
-	@{
-		Html.RenderAction("AddOrgType", "OrgTypes");
-	}
-</div>
-<hr />
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			@Html.DisplayNameFor(model => model.OrgTypeName)
-		</th>
-		<th></th>
-	</tr>
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgTypeName)
-			</td>
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="EditOrgType(@item.OrgTypeId)">Edit class</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.OrgTypeId)">Remove org type</a></li>
-					</ul>
-				</div>
-			</td>
+<div class="jumbotron" style="height:100vh;">
+
+	<div>
+		@{
+			Html.RenderAction("AddOrgType", "OrgTypes");
+		}
+	</div>
+	<hr />
+	<br />
+	<br />
+	<table class="table table-bordered table-responsive table-condensed">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>
+				@Html.DisplayNameFor(model => model.OrgTypeName)
+			</th>
+			<th></th>
 		</tr>
-	}
-</table>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<input type="hidden" id="hiddenOrgTypeId" />
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+		@foreach (var item in Model)
+		{
+			<tr style="border-style: groove;">
+				<td>
+					@Html.DisplayFor(modelItem => item.OrgTypeName)
+				</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="EditOrgType(@item.OrgTypeId)">Edit class</a></li>
+							<li><a href="#" onclick="ConfirmDelete(@item.OrgTypeId)">Remove org type</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</table>
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+	<input type="hidden" id="hiddenOrgTypeId" />
+	<div>
+		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+	</div>
 </div>
+
+
+
+
 @*Delete confirmation Modal*@
 <div class="modal fade" id="OrgTypeDeleteModal">
 	<div class="modal-dialog">

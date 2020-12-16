@@ -11,138 +11,144 @@
 </head>
 <br />
 <br />
-<hr />
-<div>
-	@{
-		Html.RenderAction("AddGroupType", "GroupTypes");
-	}
-</div>
-<hr />
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			@Html.DisplayNameFor(model => model.GroupTypeName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.GroupOrgTypeId)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.GroupRefNumb)
-		</th>
-		<th></th>
-	</tr>
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-			<td>
-				@Html.DisplayFor(modelItem => item.GroupTypeName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.GroupOrgTypeId)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.GroupRefNumb)
-			</td>
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="EditGroup(@item.GroupTypeId)">Edit group </a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.GroupTypeId)">Remove group</a></li>
-					</ul>
-				</div>
-			</td>
+<div class="jumbotron" style="height:100vh;">
+
+	<div>
+		@{
+			Html.RenderAction("AddGroupType", "GroupTypes");
+		}
+	</div>
+	<hr />
+	<br />
+	<br />
+	<table class="table table-bordered table-responsive table-condensed">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>
+				@Html.DisplayNameFor(model => model.GroupTypeName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.GroupOrgTypeId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.GroupRefNumb)
+			</th>
+			<th></th>
 		</tr>
-	}
-</table>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<input type="hidden" id="hiddenGroupId" />
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+		@foreach (var item in Model)
+		{
+			<tr style="border-style: groove;">
+				<td>
+					@Html.DisplayFor(modelItem => item.GroupTypeName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.GroupOrgTypeId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.GroupRefNumb)
+				</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="EditGroup(@item.GroupTypeId)">Edit group </a></li>
+							<li><a href="#" onclick="ConfirmDelete(@item.GroupTypeId)">Remove group</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</table>
+
+	<div>
+		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+	</div>
 </div>
-@*Delete confirmation Modal*@
-<div class="modal fade" id="GroupDeleteModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Remove group</h3>
-			</div>
-			<div class="modal-body">
-				<h3>Are you sure you want to remove this group?</h3>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteGroup()">Confirm</a>
+
+
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+	<input type="hidden" id="hiddenGroupId" />
+
+	@*Delete confirmation Modal*@
+	<div class="modal fade" id="GroupDeleteModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Remove group</h3>
+				</div>
+				<div class="modal-body">
+					<h3>Are you sure you want to remove this group?</h3>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteGroup()">Confirm</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-@*Edit group Modal*@
-<div class="modal fade" id="GroupEditModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit group</h3>
-			</div>
-			<div class="modal-body" id="groupEditBody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+	@*Edit group Modal*@
+	<div class="modal fade" id="GroupEditModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Edit group</h3>
+				</div>
+				<div class="modal-body" id="groupEditBody"></div>
+				<div class="modal-footer">
+					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+					<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<script>
-	var ConfirmDelete = function (GroupId) {
-		$("#hiddenGroupId").val(GroupId);
-		$("#GroupDeleteModal").modal('show');
-	}
-	var DeleteGroup = function () {
-		var grp = $("#hiddenGroupId").val();
-		$.ajax({
-			type: "POST",
-			url: "/GroupTypes/DeleteConfirmed/",
-			data: { id: grp },
-			success: function (response) {
-				alert("Group deleted");
-				$("#GroupDeleteModal").modal("hide");
-				window.location.reload();
-			}
+	<script>
+		var ConfirmDelete = function (GroupId) {
+			$("#hiddenGroupId").val(GroupId);
+			$("#GroupDeleteModal").modal('show');
+		}
+		var DeleteGroup = function () {
+			var grp = $("#hiddenGroupId").val();
+			$.ajax({
+				type: "POST",
+				url: "/GroupTypes/DeleteConfirmed/",
+				data: { id: grp },
+				success: function (response) {
+					alert("Group deleted");
+					$("#GroupDeleteModal").modal("hide");
+					window.location.reload();
+				}
+			})
+		}
+	</script>
+	<script>
+		var EditGroup = function (Id) {
+			$.ajax({
+				type: "GET",
+				url: "/GroupTypes/EditGroupType",
+				data: { Id: Id },
+				success: function (response) {
+					$("#groupEditBody").html(response);
+					$("#GroupEditModal").modal("show");
+				}
+			})
+		}
+	</script>
+	<script>
+		$("#edtSubmit").click(function () {
+			var data = $("#GroupTypeEditForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/GroupTypes/Edit",
+				data: data,
+				success: function (response) {
+					alert("Group updated");
+					$("#GroupEditModal").modal("hide");
+					$("#GroupTypeEditForm")[0].reset();
+					window.location.reload();
+				}
+			})
 		})
-	}
-</script>
-<script>
-	var EditGroup = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/GroupTypes/EditGroupType",
-			data: { Id: Id },
-			success: function (response) {
-				$("#groupEditBody").html(response);
-				$("#GroupEditModal").modal("show");
-			}
-		})
-	}
-</script>
-<script>
-	$("#edtSubmit").click(function () {
-		var data = $("#GroupTypeEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/GroupTypes/Edit",
-			data: data,
-			success: function (response) {
-				alert("Group updated");
-				$("#GroupEditModal").modal("hide");
-				$("#GroupTypeEditForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
-</script>
+	</script>

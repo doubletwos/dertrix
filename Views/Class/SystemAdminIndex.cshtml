@@ -12,65 +12,73 @@
 <br />
 <br />
 <hr />
-<div>
-	@{
-		Html.RenderAction("AddOrgClass", "Class");
-	}
-</div>
-<hr />
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			@Html.DisplayNameFor(model => model.Org.OrgName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.ClassName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.ClassRefNumb)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.ClassIsActive)
-		</th>
-		<th></th>
-	</tr>
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-			<td>
-				@Html.DisplayFor(modelItem => item.Org.OrgName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ClassName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ClassRefNumb)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ClassIsActive)
-			</td>
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="ShowClass(@item.ClassId)">Class details</a></li>
-						<li><a href="#" onclick="EditClass(@item.ClassId)">Edit class</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">Remove class</a></li>
-					</ul>
-				</div>
-			</td>
+<div class="jumbotron" style="height:100vh;">
+
+	<div>
+		@{
+			Html.RenderAction("AddOrgClass", "Class");
+		}
+	</div>
+	<hr />
+	<br />
+	<br />
+	<table class="table table-bordered table-responsive table-condensed">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>
+				@Html.DisplayNameFor(model => model.Org.OrgName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ClassName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ClassRefNumb)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ClassIsActive)
+			</th>
+			<th></th>
 		</tr>
-	}
-</table>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<input type="hidden" id="hiddenClassId" />
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+		@foreach (var item in Model)
+		{
+			<tr style="border-style: groove;">
+				<td>
+					@Html.DisplayFor(modelItem => item.Org.OrgName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ClassName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ClassRefNumb)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ClassIsActive)
+				</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="ShowClass(@item.ClassId)">Class details</a></li>
+							<li><a href="#" onclick="EditClass(@item.ClassId)">Edit class</a></li>
+							<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">Remove class</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</table>
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+	<input type="hidden" id="hiddenClassId" />
+	<div>
+		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+	</div>
 </div>
+
+
+
+
+
 @*Delete confirmation Modal*@
 <div class="modal fade" id="classDeleteModal">
 	<div class="modal-dialog">

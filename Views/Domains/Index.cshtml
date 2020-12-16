@@ -13,140 +13,142 @@
 </head>
 <br />
 <br />
-<hr />
-<div>
-	@{
-		Html.RenderAction("AddDomain", "Domains");
-	}
-</div>
-<hr />
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			@Html.DisplayNameFor(model => model.DomainName)
-		</th>
-		<th></th>
-	</tr>
+<div class="jumbotron" style="height:100vh;">
 
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-
-			<td>
-				@Html.DisplayFor(modelItem => item.DomainName)
-			</td>
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="EditDomain(@item.DomainId)">Edit domain</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.DomainId)">Remove domain</a></li>
-					</ul>
-				</div>
-			</td>
+	<div>
+		@{
+			Html.RenderAction("AddDomain", "Domains");
+		}
+	</div>
+	<hr />
+	<br />
+	<br />
+	<table class="table table-bordered table-responsive table-condensed">
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>
+				@Html.DisplayNameFor(model => model.DomainName)
+			</th>
+			<th></th>
 		</tr>
-	}
 
-</table>
-<div>
-	<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
-</div>
+		@foreach (var item in Model)
+		{
+			<tr style="border-style: groove;">
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<input type="hidden" id="hiddenDomainId" />
+				<td>
+					@Html.DisplayFor(modelItem => item.DomainName)
+				</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" style="background-color:white">
+							<li><a href="#" onclick="EditDomain(@item.DomainId)">Edit domain</a></li>
+							<li><a href="#" onclick="ConfirmDelete(@item.DomainId)">Remove domain</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
 
-
-
-
-
-
-@*Delete confirmation Modal*@
-<div class="modal fade" id="DomainDeleteModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Remove Domain</h3>
-			</div>
-			<div class="modal-body">
-				<h3>Are you sure you want to remove this domain?</h3>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteDomain()">Confirm</a>
-			</div>
-		</div>
+	</table>
+	<div>
+		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
 	</div>
 </div>
 
-@*Edit domain modal*@
-<div class="modal fade" id="DomainEditModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit domain</h3>
-			</div>
-			<div class="modal-body" id="DomainEditModalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+	<input type="hidden" id="hiddenDomainId" />
+
+
+
+
+
+
+	@*Delete confirmation Modal*@
+	<div class="modal fade" id="DomainDeleteModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Remove Domain</h3>
+				</div>
+				<div class="modal-body">
+					<h3>Are you sure you want to remove this domain?</h3>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteDomain()">Confirm</a>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<script>
-	var ConfirmDelete = function (DomainId) {
-		$("#hiddenDomainId").val(DomainId);
-		$("#DomainDeleteModal").modal('show');
-	}
-	var DeleteDomain = function () {
-		var OrgType = $("#hiddenDomainId").val();
-		$.ajax({
-			type: "POST",
-			url: "/Domains/DeleteConfirmed/",
-			data: { id: OrgType },
-			success: function (response) {
-				alert("Domain deleted");
-				$("#DomainDeleteModal").modal("hide");
-				window.location.reload();
-			}
-		})
-	}
-</script>
+	@*Edit domain modal*@
+	<div class="modal fade" id="DomainEditModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Edit domain</h3>
+				</div>
+				<div class="modal-body" id="DomainEditModalbody"></div>
+				<div class="modal-footer">
+					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+					<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+				</div>
+			</div>
+		</div>
+	</div>
 
-<script>
-	var EditDomain = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Domains/EditDomain",
-			data: { Id: Id },
-			success: function (response) {
-				$("#DomainEditModalbody").html(response);
-				$("#DomainEditModal").modal("show");
-			}
+	<script>
+		var ConfirmDelete = function (DomainId) {
+			$("#hiddenDomainId").val(DomainId);
+			$("#DomainDeleteModal").modal('show');
+		}
+		var DeleteDomain = function () {
+			var OrgType = $("#hiddenDomainId").val();
+			$.ajax({
+				type: "POST",
+				url: "/Domains/DeleteConfirmed/",
+				data: { id: OrgType },
+				success: function (response) {
+					alert("Domain deleted");
+					$("#DomainDeleteModal").modal("hide");
+					window.location.reload();
+				}
+			})
+		}
+	</script>
+
+	<script>
+		var EditDomain = function (Id) {
+			$.ajax({
+				type: "GET",
+				url: "/Domains/EditDomain",
+				data: { Id: Id },
+				success: function (response) {
+					$("#DomainEditModalbody").html(response);
+					$("#DomainEditModal").modal("show");
+				}
+			})
+		}
+	</script>
+	<script>
+		$("#edtSubmit").click(function () {
+			var data = $("#DomainEditForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/Domains/Edit",
+				data: data,
+				success: function (response) {
+					alert("Domain updated");
+					$("#DomainEditModal").modal("hide");
+					$("#DomainEditForm")[0].reset();
+					window.location.reload();
+				}
+			})
 		})
-	}
-</script>
-<script>
-	$("#edtSubmit").click(function () {
-		var data = $("#DomainEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/Domains/Edit",
-			data: data,
-			success: function (response) {
-				alert("Domain updated");
-				$("#DomainEditModal").modal("hide");
-				$("#DomainEditForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
-</script>
+	</script>
 

@@ -6,7 +6,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add New Subject </h3>
+				<h3 class="modal-title">Add new subject </h3>
 			</div>
 			<div class="modal-body">
 				<form id="mySubjectForm">
@@ -15,7 +15,6 @@
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
 					<div class="form-horizontal">
-						<h4>Subject</h4>
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 						<div class="form-group">
@@ -54,10 +53,13 @@
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
 <script>
 	$(document).ready(function () {
-		$("#btnSubmit5").click(function () {
+
+	$("#btnSubmit5").on("click", function () {
 			if ($("#mySubjectForm").valid()) {
 				var data = $("#mySubjectForm").serialize();
 				$.ajax({
@@ -65,13 +67,14 @@
 					url: "/Subjects/Create",
 					data: data,
 					success: function (response) {
-						alert("New Subject created");
+						alert("New subject created");
 						$("#myModalAddSubject").modal("hide");
 						$("#mySubjectForm")[0].reset();
 						window.location.reload();
 					}
 				})
+
 			}
 		})
-	})
+	});
 </script>

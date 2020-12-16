@@ -22,6 +22,36 @@ namespace Dertrix.Controllers
             var posts = db.Posts.Include(p => p.Org).Include(p => p.PostTopic);
             return View(posts.ToList());
         }
+
+        public ActionResult EditPost(int? Id)
+        {
+            if(Id != 0)
+            {
+                var edtpost = db.Posts
+                    .Include(p => p.PostTopic)
+                    .Where(x => x.PostId == Id).FirstOrDefault();
+                Post Post = db.Posts.Find(Id);
+                var edtpost1 = new Post
+                {
+                    PostId = edtpost.PostId,
+                    PostTopicId = edtpost.PostId,
+                    OrgId = edtpost.OrgId,
+                    PostSubject = edtpost.PostSubject,
+                    PostCreatorId = edtpost.PostCreatorId,
+                    CreatorFullName = edtpost.CreatorFullName,
+                    PostCreationDate = edtpost.PostCreationDate,
+                    PostExpirtyDate = edtpost.PostExpirtyDate,
+                    PostContent = edtpost.PostContent
+                };
+                ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", Post.PostTopicId);
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml", edtpost1);
+
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml");
+        }
+
+
+
         // GET: Posts/Details/5
         public ActionResult Details(int? id)
         {
@@ -109,6 +139,7 @@ namespace Dertrix.Controllers
         {
             if (ModelState.IsValid)
             {
+                post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == post.PostCreatorId).Select(x => x.FullName).FirstOrDefault();
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -132,8 +163,8 @@ namespace Dertrix.Controllers
             return View(post);
         }
         // POST: Posts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Post post = db.Posts.Find(id);

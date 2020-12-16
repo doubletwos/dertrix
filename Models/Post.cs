@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Dertrix.Models
 {
@@ -25,6 +26,7 @@ namespace Dertrix.Models
 
         public string CreatorFullName { get; set; }
 
+        [AllowHtml]
         [Display(Name = "Content")]
         public string  PostContent { get; set; }
 

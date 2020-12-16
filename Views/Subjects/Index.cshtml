@@ -5,54 +5,101 @@
 }
 
 
+<div class="jumbotron" style="height:100vh;">
+	<p>
+		@{
+			Html.RenderAction("AddSubject", "Subjects");
+		}
+	</p>
+	<hr />
+	<br />
+	<br />
+	<div class="panel panel-default">
+		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+				<th>
+					@Html.DisplayNameFor(model => model.Class.ClassName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.SubjectName)
+				</th>
+				<td>
+					@Html.DisplayNameFor(model => model.ClassTeacher.ClassTeacherName)
+
+				</td>
+				<th></th>
+			</tr>
+
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Class.ClassName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.SubjectName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.TaughtBy)
+					</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
+								<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>
+							</ul>
+						</div>
+					</td>
+			
+				</tr>
+			}
+
+		</table>
+	</div>
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddensubjectId" />
 
 
-<p>
-	@{
-		Html.RenderAction("AddSubject", "Subjects");
-	}
-</p>
-
-<br />
-<br />
-
-
-<table class="table table-bordered table-striped table-hover table-responsive ">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
-		<th>
-			@Html.DisplayNameFor(model => model.Class.ClassName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.SubjectName)
-		</th>
-		<td>
-			@Html.DisplayNameFor(model => model.ClassTeacher.ClassTeacherName)
-
-		</td>
-		<th></th>
-	</tr>
-
-	@foreach (var item in Model)
-	{
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.Class.ClassName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.SubjectName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.TaughtBy)
-			</td>
-			<td>
-				@Html.ActionLink("Edit", "Edit", new { id = item.SubjectId }) |
-				@Html.ActionLink("Details", "Details", new { id = item.SubjectId }) |
-				@Html.ActionLink("Delete", "Delete", new { id = item.SubjectId })
-			</td>
-		</tr>
-	}
-
-</table>
+@*Delete confirmation Modal*@
+<div class="modal fade" id="SubjectDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove subject</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this subject?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteSubject()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit subject modal*@
+<div class="modal fade" id="SubjectEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit subject</h3>
+			</div>
+			<div class="modal-body" id="SubjectEditModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
 
 
 
@@ -60,6 +107,57 @@
 @section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/bundles/custom-validator")
+
+
+	<script>
+		var ConfirmDelete = function (SubjectId) {
+			$("#hiddensubjectId").val(SubjectId);
+			$("#SubjectDeleteModal").modal('show');
+		}
+		var DeleteSubject = function () {
+			var Sub = $("#hiddensubjectId").val();
+			$.ajax({
+				type: "POST",
+				url: "/Subjects/DeleteConfirmed/",
+				data: { id: Sub },
+				success: function (response) {
+					alert("Subject deleted");
+					$("#SubjectDeleteModal").modal("hide");
+					window.location.reload();
+				}
+			})
+		}
+	</script>
+	<script>
+		var EditSubject = function (Id) {
+			$.ajax({
+				type: "GET",
+				url: "/Subjects/EditSubject",
+				data: { Id: Id },
+				success: function (response) {
+					$("#SubjectEditModalbody").html(response);
+					$("#SubjectEditModal").modal("show");
+				}
+			})
+		}
+	</script>
+	<script>
+		$("#edtSubmit").click(function () {
+			var data = $("#SubjectEditForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/Subjects/Edit",
+				data: data,
+				success: function (response) {
+					alert("Subject updated");
+					$("#SubjectEditModal").modal("hide");
+					$("#SubjectEditForm")[0].reset();
+					window.location.reload();
+				}
+			})
+		})
+	</script>
+
 }
 
 

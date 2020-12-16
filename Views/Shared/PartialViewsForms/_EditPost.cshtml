@@ -1,0 +1,66 @@
+﻿@model Dertrix.Models.Post
+<form id="PostEditForm">
+	@Html.AntiForgeryToken()
+	<div class="form-horizontal">
+		<h4> Edit post</h4>
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.PostId)
+		@Html.HiddenFor(model => model.OrgId)
+		@Html.HiddenFor(model => model.PostCreatorId)
+		@Html.HiddenFor(model => model.PostCreationDate)
+		
+
+
+
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.PostTopicId, "PostTopicId0", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("PostTopicId", null, htmlAttributes: new { @id = "", @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.PostTopicId, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PostSubject, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PostSubject, new { htmlAttributes = new { @id = "", @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.PostSubject, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PostExpirtyDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+				@Html.ValidationMessageFor(model => model.PostExpirtyDate, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextAreaFor(model => model.PostContent, new { htmlAttributes = new { @class = "form-control PostContent" } })
+				@Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
+			</div>
+		</div>
+	</div>
+</form>
+<script>
+	$(document).ready(function () {
+		$(function () {
+			debugger
+			$(".datepicker").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-35:+35",
+			});
+		})
+		$(function () {
+			$('#PostContent').summernote({
+				height: '300px',
+				dialogsInBody: true,
+				spellCheck: true,
+			});
+		})
+	})
+</script>

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dertrix.Models.OrgGroup>
 
 @{
-	ViewBag.Title = "Index";
+	ViewBag.Title = "Groups";
 }
 
 <head>
@@ -20,93 +20,86 @@
 	@Html.ActionLink("Create New", "Create")
 </p>
 
+<div class="jumbotron" style="height:100vh;">
 
-<div class="panel panel-default">
-	<table class="table table-bordered table-striped table-hover table-responsive ">
-		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; ">
+	<div class="panel panel-default">
+		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 
-
-	
-		
-			<th>
-				@Html.DisplayNameFor(model => model.GroupName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.CreationDate)
-			</th>
-			<th>
-				Select Action
-			</th>
-			<th></th>
-		</tr>
-
-		@foreach (var item in Model)
-		{
-			<tr>
-		
-
-		
-			
-				<td>
-					@Html.DisplayFor(modelItem => item.GroupName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.CreationDate)
-				</td>
-				<td>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Action <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" style="background-color:white">
-							<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
-							<li><a href="#" onclick="UsersToGroup(@item.OrgGroupId)">Add Users</a></li>
-							@*<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Remove Staff</a></li>*@
-
-							@*<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>*@
-						</ul>
-					</div>
-				</td>
-				@*<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.OrgGroupId }) |
-					@Html.ActionLink("Details", "Details", new { id = item.OrgGroupId }) |
-					@Html.ActionLink("Delete", "Delete", new { id = item.OrgGroupId })
-				</td>*@
+				<th>
+					@Html.DisplayNameFor(model => model.GroupName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.CreationDate)
+				</th>
+				<th>
+					Select Action
+				</th>
+				<th></th>
 			</tr>
-		}
 
-	</table>
-	<input type="hidden" id="hiddenOrgGroupId" />
-
-</div>
+			@foreach (var item in Model)
+			{
+				<tr>
 
 
 
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+					<td>
+						@Html.DisplayFor(modelItem => item.GroupName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.CreationDate)
+					</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
+								<li><a href="#" onclick="UsersToGroup(@item.OrgGroupId)">Add Users</a></li>
+								@*<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Remove Staff</a></li>*@
+
+
+							</ul>
+						</div>
+					</td>
+
+				</tr>
+			}
+
+		</table>
+		<input type="hidden" id="hiddenOrgGroupId" />
+
+	</div>
 
 
 
 
-@*View GroupMembers Modal*@
-<div class="modal fade" id="Grpmembersmodal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Members</h3>
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-			</div>
-			<div class="modal-body" id="Grpmembersmodalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+
+
+
+	@*View GroupMembers Modal*@
+	<div class="modal fade" id="Grpmembersmodal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Members</h3>
+
+				</div>
+				<div class="modal-body" id="Grpmembersmodalbody"></div>
+				<div class="modal-footer">
+					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
+</div>
 
 <script>
 	var GrpMembersCount = function (Id) {

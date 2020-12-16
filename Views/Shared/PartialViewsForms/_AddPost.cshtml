@@ -1,8 +1,5 @@
 ﻿@model Dertrix.Models.Post
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="~/Scripts/summernote/summernote-bs4.js"></script>
-<script src="~/Scripts/summernote/summernote.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#mycreatepost">Create Post</a>
 <div class="modal fade" id="mycreatepost">
 	<div class="modal-dialog">
@@ -28,14 +25,14 @@
 						<div class="form-group">
 							@Html.LabelFor(model => model.PostTopicId, "PostTopicId", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.DropDownList("PostTopicId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+								@Html.DropDownList("PostTopicId", null, "Please select", htmlAttributes: new { @class = "form-control", @id = "PostTopicId22" })
 								@Html.ValidationMessageFor(model => model.PostTopicId, "", new { @class = "text-danger" })
 							</div>
 						</div>
 						<div class="form-group">
 							@Html.LabelFor(model => model.PostSubject, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.PostSubject, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.EditorFor(model => model.PostSubject, new { htmlAttributes = new { @class = "form-control", @id = "PostSubject22" } })
 								@Html.ValidationMessageFor(model => model.PostSubject, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -49,7 +46,9 @@
 						<div class="form-group">
 							@Html.LabelFor(model => model.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.TextAreaFor(model => model.PostContent, new { htmlAttributes = new { @class = "form-control", @id = "PostContent" } })
+								<div class="summernote">
+									@Html.TextAreaFor(model => model.PostContent, new { htmlAttributes = new { @class = "form-control PostContent" } })
+								</div>
 								@Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -63,12 +62,6 @@
 		</div>
 	</div>
 </div>
-
-
-@section Scripts {
-	@Scripts.Render("~/bundles/jqueryval")
-}
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$(function () {
@@ -80,14 +73,14 @@
 			});
 		})
 		$(function () {
-			$('#PostContent').summernote({
+			  $('#PostContent').summernote({
 				height: '300px',
 				dialogsInBody: true,
-			});
+				spellCheck: true,
+			  });
 		})
 		$(function () {
 			$("#cancel").on("click", function () {
-				window.location.reload();
 			})
 		})
 	   $("#btnSubmit").on("click", function () {

@@ -12,128 +12,133 @@
 </head>
 
 
+<div class="jumbotron" style="height:100vh;">
 
 
 
-<div class="row">
-	<div class="col-lg-12">
-		<p><b>Organisation management</b></p>
-		<p>
-			@using (Html.BeginForm("SystemAdminIndex", "Orgs", FormMethod.Get))
-			{
-				<div class="form-inline">
-					id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
-					<input type="hidden" id="hfId" name="searchid" />
 
-					School Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
-					<input type="hidden" id="hfName" name="searchname" />
+	<div class="row">
+		<div class="col-lg-12">
+			<p><b>Organisation management</b></p>
+			<p>
+				@using (Html.BeginForm("SystemAdminIndex", "Orgs", FormMethod.Get))
+				{
+					<div class="form-inline">
+						id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
+						<input type="hidden" id="hfId" name="searchid" />
 
-					&nbsp;&nbsp;
-					<button class="RegUserOrgButtonColour">Filter</button>
+						School Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
+						<input type="hidden" id="hfName" name="searchname" />
+
+						&nbsp;&nbsp;
+						<button class="RegUserOrgButtonColour">Filter</button>
 
 
 
-				</div>
+					</div>
+				}
+			</p>
+		</div>
+	</div>
+
+	<br />
+	<br />
+	<div>
+		@{
+			Html.RenderAction("AddOrg", "Orgs");
+		}
+	</div>
+	<hr />
+
+
+	<br />
+	<br />
+
+	<div class="panel panel-default">
+		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+				<th>
+					Id
+				</th>
+				<th>
+					Name
+				</th>
+				<th>
+					Type
+				</th>
+				<th>
+					Address
+				</th>
+				<th>
+					Creation Date
+				</th>
+
+				<th>
+					Select Action
+				</th>
+
+			</tr>
+
+
+
+			@{
+				var orgid = Session["OrgId"].ToString();
 			}
-		</p>
+
+
+
+			@foreach (var item in Model)
+			{
+				<tr style="border-style: groove;">
+					<td>
+						@Html.DisplayFor(modelItem => item.OrgId)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.OrgName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.OrgAddress)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.CreationDate)
+					</td>
+
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
+								<li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
+								<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
+
+								@{
+									var isTester = Convert.ToInt32(Session["IsTester"]);
+
+									if (isTester == 1)
+									{
+										<li>
+											@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+										</li>
+									}
+
+
+
+
+								}
+
+							</ul>
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
 	</div>
 </div>
-
-<br />
-<br />
-<hr />
-<div>
-	@{
-		Html.RenderAction("AddOrg", "Orgs");
-	}
-</div>
-<hr />
-
-
-<br />
-<br />
-<table class="table table-bordered table-responsive table-condensed">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			Id
-		</th>
-		<th>
-			Name
-		</th>
-		<th>
-			Type
-		</th>
-		<th>
-			Address
-		</th>
-		<th>
-			Creation Date
-		</th>
-
-		<th>
-			Select Action
-		</th>
-
-	</tr>
-
-
-
-	@{
-		var orgid = Session["OrgId"].ToString();
-	}
-
-
-
-	@foreach (var item in Model)
-	{
-		<tr style="border-style: groove;">
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgId)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgAddress)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.CreationDate)
-			</td>
-
-			<td>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" style="background-color:white">
-						<li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
-						<li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
-						<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
-
-						@{
-							var isTester = Convert.ToInt32(Session["IsTester"]);
-
-							if (isTester == 1)
-							{
-								<li>
-									@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
-								</li>
-							}
-
-
-
-
-						}
-						
-					</ul>
-				</div>
-			</td>
-		</tr>
-	}
-</table>
 
 
 @section scripts{

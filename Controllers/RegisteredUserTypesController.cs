@@ -34,6 +34,7 @@ namespace Dertrix.Controllers
         {
             return PartialView("~/Views/Shared/PartialViewsForms/_AddRegisteredUserType.cshtml");
         }
+
         public ActionResult EditRegUserType(int Id)
         {
             if (Id != 0)
@@ -50,6 +51,7 @@ namespace Dertrix.Controllers
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditRegUserType.cshtml");
         }
+
         // POST: RegisteredUserTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
