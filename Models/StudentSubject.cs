@@ -13,8 +13,6 @@ namespace Dertrix.Models
         public int RegisteredUserId { get; set; }
         public RegisteredUser RegisteredUser { get; set; }
 
-
-
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
 
@@ -22,7 +20,6 @@ namespace Dertrix.Models
         public string SubjectName { get; set; }
 
         public string StudentFullName { get; set; }
-
 
         public int? ClassId { get; set; }
 

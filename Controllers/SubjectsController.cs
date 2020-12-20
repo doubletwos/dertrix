@@ -25,11 +25,9 @@ namespace Dertrix.Controllers
 
             if ((int)Session["OrgId"] != 23)
             {
-                var rr = Session["OrgId"].ToString();
+                var rr = (int)Session["OrgId"];
                 int i = Convert.ToInt32(rr);
-
-
-                var subjects = db.Subjects
+                var subjects = db.Subjects.Where(s => s.SubjectOrgId == rr)
                     .Include(s => s.Class);
 
                     
@@ -142,11 +140,15 @@ namespace Dertrix.Controllers
             }
 
 
+
+
             if (ModelState.IsValid)
             {
                 var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
 
                 subject.TaughtBy = taughtby;
+                subject.SubjectOrgId = (int)Session["OrgId"];
+
 
 
                 db.Subjects.Add(subject);

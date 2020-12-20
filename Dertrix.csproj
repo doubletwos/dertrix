@@ -220,6 +220,10 @@
     <Compile Include="Migrations\202012150827160_15120827.Designer.cs">
       <DependentUpon>202012150827160_15120827.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012200755394_20120755.cs" />
+    <Compile Include="Migrations\202012200755394_20120755.Designer.cs">
+      <DependentUpon>202012200755394_20120755.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -544,7 +548,6 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditStaff.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_OrgDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrg.cshtml" />
-    <Content Include="Views\Class\Edit.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\PostTopics\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost.cshtml" />
@@ -562,7 +565,7 @@
     <Content Include="Views\Home\SysSetUp.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_StudentUpdateSubject.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddSubject.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\UpdateStudentGrade.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_UpdateStudentGrade.cshtml" />
     <Content Include="Views\GroupTypes\Index.cshtml" />
     <Content Include="Views\OrgGroups\Create.cshtml" />
     <Content Include="Views\OrgGroups\Delete.cshtml" />
@@ -623,6 +626,10 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddGroupType.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditPost.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditSubject.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AssignClassTeacher.cshtml" />
+    <Content Include="Views\StudentSubjects\MyClass.cshtml" />
+    <Content Include="Views\Shared\_MyClassCount.cshtml" />
+    <Content Include="Views\Shared\_MyClassList.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -671,6 +678,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012150827160_15120827.resx">
       <DependentUpon>202012150827160_15120827.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012200755394_20120755.resx">
+      <DependentUpon>202012200755394_20120755.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

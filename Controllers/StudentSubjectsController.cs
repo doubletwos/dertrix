@@ -32,7 +32,7 @@ namespace Dertrix.Controllers
             // returns students of org if class is selected
             if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(classid)))
             {
-                return View(db.StudentSubject.Where(p => p.ClassId == j).ToList());
+                return View(db.StudentSubject.Where(p => p.ClassId == j).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
             }
 
             // returns students of org if fullname is provided
@@ -52,7 +52,7 @@ namespace Dertrix.Controllers
 
 
 
-            var studentSubject = db.StudentSubject.Include(s => s.RegisteredUser).Include(s => s.Subject);
+            var studentSubject = db.StudentSubject.Where(p => p.ClassId == j).Include(s => s.RegisteredUser).Include(s => s.Subject);
             return View(studentSubject.ToList());
         }
 
@@ -174,6 +174,24 @@ namespace Dertrix.Controllers
         }
 
 
+        public ActionResult MyClass(int id)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
+            var OrgId = (int)Session["OrgId"];
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+            var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId).Select(x => x.ClassId).FirstOrDefault();
+            var mystudents = db.StudentSubject.Where(x => x.ClassId == id && x.ClassId == myclasses)
+                .Include(s => s.Subject).Include(r => r.RegisteredUser).ToList();
+
+            return View(mystudents);
+
+        }
+
+
 
         public ActionResult UpdateStudentGrade(int Id)
         {
@@ -194,6 +212,7 @@ namespace Dertrix.Controllers
                     SubjectId = stud1.SubjectId,
                     SubjectName = stud1.SubjectName,
                     ClassId = stud1.ClassId,
+                    StudentFullName = stud1.StudentFullName,
                     FirstTermStudentGrade = stud1.FirstTermStudentGrade,
                     SecondTermStudentGrade = stud1.SecondTermStudentGrade,
                     ThirdTermStudentGrade = stud1.ThirdTermStudentGrade
@@ -257,7 +276,7 @@ namespace Dertrix.Controllers
             {
                 db.Entry(studentSubject).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Grades");
             }
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentSubject.RegisteredUserId);
             ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName", studentSubject.SubjectId);

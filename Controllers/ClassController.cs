@@ -59,6 +59,39 @@ namespace Dertrix.Controllers
             return RedirectToAction("SystemAdminIndex");
         }
 
+
+        [ChildActionOnly]
+        public ActionResult MyClassCount()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var myclassCount = db.Classes
+                .Where(x => x.OrgId == i)
+                .Where(j => j.ClassTeacherId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MyClassCount", myclassCount);
+        }
+
+
+
+        public ActionResult MyClassList()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var myclassCount = db.Classes
+                .Where(x => x.OrgId == i)
+                .Where(j => j.ClassTeacherId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MyClassList", myclassCount);
+        }
+
+
+
+
         public ActionResult ClassDetails(int Id)
         {
             var cla = db.Classes.Where(x => x.ClassId == Id);
@@ -117,40 +150,58 @@ namespace Dertrix.Controllers
             return PartialView("~/Views/Shared/PartialViewsForms/_EditClass.cshtml");
         }
 
-        // This action is used at school level to assign teachers to class
-        // GET: Class/Edit/5
-        public ActionResult Edit(int? id)
+
+        public ActionResult MyClass()
         {
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            @Class @Class = db.Classes.Find(id);
-            if (@Class == null)
-            {
-                return HttpNotFound();
-            }
-            var classroom = db.Classes.Where(x => x.ClassId == id).FirstOrDefault();
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            var cr = new Class
-            {
-                ClassId = classroom.ClassId,
-                ClassName = classroom.ClassName,
-                ClassIsActive = classroom.ClassIsActive,
-                OrgId = classroom.OrgId,
-                ClassRefNumb = classroom.ClassRefNumb,
-                ClassTeacherId = classroom.ClassTeacherId,
-                ClassTeacherFullName = classroom.ClassTeacherFullName
-            };
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
-            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
-            return View(@Class);
+
+            var OrgId = (int)Session["OrgId"];
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+            var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId).Select(x => x.ClassId).FirstOrDefault();
+            var mystudents = db.RegisteredUsers.Where(x => x.RegisteredUserTypeId == 2 && x.StudentRegFormId == 1 && x.ClassId == myclasses && x.SelectedOrg == OrgId);
+
+            return View(mystudents.ToList());
+
         }
+
+
+        public ActionResult AssignClassTeacher(int? id)
+        {
+
+            if (id != 0)
+            {
+                @Class @Class = db.Classes.Find(id);
+                if (@Class == null)
+                {
+                    return HttpNotFound();
+                }
+                var classroom = db.Classes.Where(x => x.ClassId == id).FirstOrDefault();
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var cr = new Class
+                {
+                    ClassId = classroom.ClassId,
+                    ClassName = classroom.ClassName,
+                    ClassIsActive = classroom.ClassIsActive,
+                    OrgId = classroom.OrgId,
+                    ClassRefNumb = classroom.ClassRefNumb,
+                    ClassTeacherId = classroom.ClassTeacherId,
+                    ClassTeacherFullName = classroom.ClassTeacherFullName
+                };
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
+                return PartialView("~/Views/Shared/PartialViewsForms/_AssignClassTeacher.cshtml", cr);
+
+            }
+
+            return PartialView("~/Views/Shared/PartialViewsForms/_AssignClassTeacher.cshtml");
+        }
+
+
+
+
 
         // This action is used at school level to assign teachers to class
         // POST: Class/Edit/5

@@ -27,6 +27,9 @@
 			border-color:  @regUserOrgNavBar;
 
 		}
+			.btn-group:hover .dropdown-menu {
+				display: block;
+			}
 
 
 		</style>
@@ -42,54 +45,112 @@
 	}
 	<br />
 	<br />
-		<div class="container">
-			<ul class="nav nav-pills" role="tablist">
-				<li role="presentation" class="active">
-					<a href="#">
-						Date <span class="badge">
-							@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
-						</span>
-					</a>
-				</li>
-				<li role="presentation" class="active">
-					<a href="#">
-						Registered Students <span class="badge">
-							@{
-								Html.RenderAction("StudentCount", "RegisteredUsers");
-							}
-						</span>
-					</a>
-				</li>
-			</ul>
+	<div class="container">
+		<ul class="nav nav-pills" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#">
+					Date <span class="badge">
+						@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
+					</span>
+				</a>
+			</li>
+			<li role="presentation" class="active">
+				<a href="#">
+					Registered Students <span class="badge">
+						@{
+							Html.RenderAction("StudentCount", "RegisteredUsers");
+						}
+					</span>
+				</a>
+			</li>
+			<li role="presentation" class="active" id="MyClassCountWidget" onclick="DisplayModal()">
+				<a href="#">
+					My classes <span class="badge">
+						@{
+							Html.RenderAction("MyClassCount", "Class");
+						}
+					</span>
+				</a>
+			</li>
+		</ul>
+		<div id="MyClassCountWidget" style="display:none;">
+			@{
+				Html.RenderAction("MyClassList", "Class");
+			}
 		</div>
-		<br />
-		<br />
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					@{
-						Html.RenderAction("PostDisplayPanel", "Posts");
-					}
-				</div>
-				<div class="col-lg-6">
-				</div>
+
+
+
+
+	</div>
+	<br />
+	<br />
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				@{
+					Html.RenderAction("PostDisplayPanel", "Posts");
+				}
+			</div>
+			<div class="col-lg-6">
 			</div>
 		</div>
+	</div>
 
 
-		@*@if (Session["IsParent/Guardian"] != null)
+	@*@if (Session["IsParent/Guardian"] != null)
 		{
 			Layout = "~/Views/Shared/_BespokeLayout1.cshtml";
 		}*@
-	</div>
+</div>
 
-	@section scripts{
-		@Scripts.Render("~/bundles/jqueryval")
-		@Scripts.Render("~/bundles/custom-validator")
-		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-		<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-		<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-		<script src="~/Scripts/summernote/summernote.min.js"></script>
-		<script src="~/Scripts/summernote/summernote-bs4.js"></script>
-		<script src="~/Scripts/summernote/summernote.js"></script>
+
+
+
+@*Display MyclassList modal*@
+<div class="modal fade" id="ClasslistModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Select Class</h3>
+			</div>
+			<div class="modal-body" id="ClassListModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var DisplayModal = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Class/MyClassList",
+			data: { Id: Id },
+			success: function (response) {
+				$("#ClassListModalbody").html(response);
+				$("#ClasslistModal").modal("show");
+			}
+		})
 	}
+</script>
+
+
+
+
+
+
+
+
+@section scripts{
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+	<script src="~/Scripts/summernote/summernote.min.js"></script>
+	<script src="~/Scripts/summernote/summernote-bs4.js"></script>
+	<script src="~/Scripts/summernote/summernote.js"></script>
+}

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Dertrix.Models.Class>
+
+
+<table class="table table-bordered table-responsive table-condensed table-hover">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+
+
+		<th>
+			@Html.DisplayNameFor(model => model.ClassName)
+		</th>
+
+
+
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+
+
+			<td>
+				@Html.DisplayFor(modelItem => item.ClassName)
+			</td>
+			<td>
+				@Html.ActionLink("Select", "MyClass", "StudentSubjects", new { id = item.ClassId }, null)
+
+			</td>
+		</tr>
+	}
+
+</table>

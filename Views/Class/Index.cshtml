@@ -41,11 +41,73 @@
 					<td>
 						@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
 					</td>
+				
 					<td>
-						@Html.ActionLink("Edit", "Edit", new { id = item.ClassId })
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
+								@*<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">View Class Details</a></li>*@
+							</ul>
+						</div>
 					</td>
 				</tr>
 			}
 		</table>
 	</div>
 </div>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenClassId" />
+
+
+@*Assign Teacher Modal*@
+<div class="modal fade" id="AssignTeacherModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Assign Teacher</h3>
+			</div>
+			<div class="modal-body" id="AssignTeacherBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var AssignTeacher = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Class/AssignClassTeacher",
+			data: { Id: Id },
+			success: function (response) {
+				$("#AssignTeacherBody").html(response);
+				$("#AssignTeacherModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#AssignClassTeacherForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/Class/Edit",
+			data: data,
+			success: function (response) {
+				alert("Teacher assigned");
+				$("#AssignTeacherModal").modal("hide");
+				$("#AssignClassTeacherForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>

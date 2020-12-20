@@ -31,7 +31,7 @@
 		<br />
 		<hr />
 		<div>
-			@if (Session["IsAdmin"] != null)
+			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
 			{
 				Html.RenderAction("AddStaff", "RegisteredUsers");
 			}

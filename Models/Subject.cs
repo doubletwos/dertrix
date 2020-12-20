@@ -20,7 +20,10 @@ namespace Dertrix.Models
 
         public int? ClassTeacherId { get; set; }
         public ClassTeacher ClassTeacher { get; set; }
-         
+
+        public int? SubjectOrgId { get; set; }
+
+
         public string TaughtBy { get; set; }
 
 

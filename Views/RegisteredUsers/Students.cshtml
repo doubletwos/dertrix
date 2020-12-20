@@ -45,7 +45,7 @@
 		<br />
 		<hr />
 		<div class="row">
-			@if (Session["IsAdmin"] != null)
+			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
 			{
 				<div class="col-md-3">
 					@{
