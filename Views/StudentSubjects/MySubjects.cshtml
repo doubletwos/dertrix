@@ -1,0 +1,241 @@
+﻿@model IEnumerable<Dertrix.Models.StudentSubject>
+<head>
+	@{
+		ViewBag.Title = "Index";
+	}
+
+	<style>
+
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+</head>
+
+
+
+<div class="jumbotron" style="height:100vh;">
+
+
+	<div>
+		<div class="row">
+			<div class="col-lg-12">
+				<p>
+					<b>Student Grades management</b>
+				</p>
+				<p>
+					@using (Html.BeginForm("Grades", "StudentSubjects", FormMethod.Get))
+					{
+
+						<div class="form-inline">
+							Student Id: &nbsp;&nbsp;
+							<input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
+							<input type="hidden" id="hfId" name="searchid" />
+
+							Student Name: &nbsp;&nbsp;
+							<input type="text" name="searchname" class="" placeholder="" id="searchname" />
+							<input type="hidden" id="hfName" name="searchname" />&nbsp;&nbsp;
+
+							Class: &nbsp;&nbsp;
+							<select class="" id="classid" name="ij">
+								<option>Select Class</option>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+								<option>6</option>
+							</select>
+							&nbsp;&nbsp;
+
+							<button class="RegUserOrgButtonColour">Filter</button>
+						</div>
+					}
+
+				</p>
+			</div>
+		</div>
+
+
+		<br />
+		<br />
+
+
+
+		<div class="panel panel-default">
+			<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+
+					<th>
+						Student Id
+					</th>
+
+					<th>
+						Name
+					</th>
+					<th>
+						Subject
+					</th>
+					<th>
+						First Term Grade
+					</th>
+					<th>
+						Second Term Grade
+					</th>
+					<th>
+						Third Term Grade
+					</th>
+					<th></th>
+				</tr>
+
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Subject.SubjectName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.FirstTermStudentGrade)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.SecondTermStudentGrade)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ThirdTermStudentGrade)
+						</td>
+
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="ShowStudent(@item.StudentSubjectId)">View Subject Details</a></li>
+									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>
+									<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>
+
+
+								</ul>
+							</div>
+
+
+
+						</td>
+					</tr>
+				}
+
+			</table>
+		</div>
+		<script src="~/Scripts/jquery-3.4.1.js"></script>
+		<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<input type="hidden" id="hiddenStudentSubjectId" />
+
+	</div>
+</div>
+
+
+
+@*Delete Subject confirmation Modal*@
+<div class="modal fade" id="myModalsubject">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove Subject</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this subject?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteStudentSubject()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@*Edit Student Details Modal*@
+<div class="modal fade" id="myModalUpdateSubject">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Update student Grades</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDiv2"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<input type="button" value="Save" class="RegUserOrgButtonColour" id="updateGrade" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<script>
+		var ConfirmDeleteSubject = function (StudentSubjectId) {
+			$("#hiddenStudentSubjectId").val(StudentSubjectId);
+			$("#myModalsubject").modal('show');
+		}
+		var DeleteStudentSubject = function () {
+			debugger
+
+			var studentSubjectId = $("#hiddenStudentSubjectId").val();
+			$.ajax({
+				type: "POST",
+				url: "/StudentSubjects/DeleteConfirmed/",
+				data: { id: studentSubjectId },
+				success: function (response) {
+					alert("Subject Deleted");
+					$("#myModalsubject").modal("hide");
+					window.location.reload();
+				}
+			})
+		}
+</script>
+
+
+
+<script>
+		var UpdateStudentGrade = function (Id) {
+			$.ajax({
+				type: "GET",
+				url: "/StudentSubjects/UpdateStudentGrade",
+				data: { Id: Id },
+				success: function (response) {
+					$("#myModalBodyDiv2").html(response);
+					$("#myModalUpdateSubject").modal("show");
+				}
+			})
+		}
+</script>
+
+
+<script>
+		$("#updateGrade").click(function () {
+			var data = $("#UpdateStudentGradeForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/StudentSubjects/Edit",
+				data: data,
+				success: function (response) {
+					alert("Grade Updated");
+					$("#myModalUpdateSubject").modal("hide");
+					$("#UpdateStudentGradeForm")[0].reset();
+					window.location.reload();
+				}
+			})
+		})
+</script>
+
+

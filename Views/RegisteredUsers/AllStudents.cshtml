@@ -76,7 +76,7 @@
 				</th>
 				<th>Select Action</th>
 			</tr>
-			@foreach (var item in Model)
+			@foreach (var item in Model.OrderBy(i => i.ClassRef))
 			{
 				<tr>
 					<td>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Dertrix.Models.Subject>
+
+
+<table class="table table-bordered table-responsive table-condensed table-hover">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+		<th>
+			Class
+		</th>
+		<th>
+			Subject
+		</th>
+		<th>
+	       1st Term Grade
+		</th>
+		<th>
+			2nd Term Grade
+		</th>
+		<th>
+			3rd Term Grade
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Class.ClassName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.SubjectName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.FirstTermSubjectGrade)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.SecondTermSubjectGrade)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ThirdTermSubjectGrade)
+			</td>
+			<td>
+				@Html.ActionLink("Students Grades", "MySubjects", "StudentSubjects", new { id = item.SubjectId }, null)
+			</td>
+	
+		</tr>
+	}
+
+</table>

@@ -82,11 +82,36 @@ namespace Dertrix.Controllers
             int i = Convert.ToInt32(rr);
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
 
-            var myclassCount = db.Classes
+            var myclasslist = db.Classes
                 .Where(x => x.OrgId == i)
                 .Where(j => j.ClassTeacherId == RegisteredUserId)
                 .ToList();
-            return PartialView("_MyClassList", myclassCount);
+            return PartialView("_MyClassList", myclasslist);
+        }
+
+        [ChildActionOnly]
+        public ActionResult AllClassCount()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            var AllclassCount = db.Classes
+                .Where(x => x.OrgId == i)
+                .ToList();
+            return PartialView("_AllClassCount", AllclassCount);
+        }
+
+
+
+        public ActionResult AllClassList()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            var Allclasslist = db.Classes 
+                .Where(x => x.OrgId == i)
+                .ToList();
+            return PartialView("_AllClassList", Allclasslist);
         }
 
 

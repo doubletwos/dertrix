@@ -72,15 +72,31 @@
 					</span>
 				</a>
 			</li>
+			<li role="presentation" class="active" id="MySubjectCountWidget" onclick="DisplayModal1()">
+				<a href="#">
+					My Subjects <span class="badge">
+						@{
+							Html.RenderAction("MySubjectsCount", "Subjects");
+						}
+					</span>
+				</a>
+			</li>
+			<li role="presentation" class="active" id="AllClassCountWidget" onclick="DisplayModal2()">
+				<a href="#">
+					All classes <span class="badge">
+						@{
+							Html.RenderAction("AllClassCount", "Class");
+						}
+					</span>
+				</a>
+			</li>
 		</ul>
-		<div id="MyClassCountWidget" style="display:none;">
+
+		@*<div id="MyClassCountWidget" style="display:none;">
 			@{
 				Html.RenderAction("MyClassList", "Class");
 			}
-		</div>
-
-
-
+		</div>*@
 
 	</div>
 	<br />
@@ -123,6 +139,38 @@
 	</div>
 </div>
 
+
+<div class="modal fade" id="SubjectslistModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Subject list</h3>
+			</div>
+			<div class="modal-body" id="SubjectsListModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="AllClasslistModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">All class list</h3>
+			</div>
+			<div class="modal-body" id="AllClassListModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script>
 	var DisplayModal = function (Id) {
 		$.ajax({
@@ -132,6 +180,34 @@
 			success: function (response) {
 				$("#ClassListModalbody").html(response);
 				$("#ClasslistModal").modal("show");
+			}
+		})
+	}
+</script>
+
+<script>
+	var DisplayModal1 = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Subjects/MySubjectsList",
+			data: { Id: Id },
+			success: function (response) {
+				$("#SubjectsListModalbody").html(response);
+				$("#SubjectslistModal").modal("show");
+			}
+		})
+	}
+</script>
+
+<script>
+	var DisplayModal2 = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Class/AllClassList",
+			data: { Id: Id },
+			success: function (response) {
+				$("#AllClassListModalbody").html(response);
+				$("#AllClasslistModal").modal("show");
 			}
 		})
 	}

@@ -27,7 +27,8 @@ namespace Dertrix.Controllers
             {
                 var rr = (int)Session["OrgId"];
                 int i = Convert.ToInt32(rr);
-                var subjects = db.Subjects.Where(s => s.SubjectOrgId == rr)
+                var subjects = db.Subjects
+                    .Where(s => s.SubjectOrgId == rr)
                     .Include(s => s.Class);
 
                     
@@ -94,12 +95,13 @@ namespace Dertrix.Controllers
                       ClassTeacherId = edtsubject.ClassTeacherId,
                       FirstTermSubjectGrade = edtsubject.FirstTermSubjectGrade,
                       SecondTermSubjectGrade = edtsubject.SecondTermSubjectGrade,
-                      ThirdTermSubjectGrade = edtsubject.ThirdTermSubjectGrade
+                      ThirdTermSubjectGrade = edtsubject.ThirdTermSubjectGrade,
+                      SubjectOrgId = edtsubject.SubjectOrgId
 
                 };
 
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName" , edtsubject.ClassTeacherId);
+                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName", edtsubject.ClassId);
 
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml", edtsubject1);
             }
@@ -138,19 +140,11 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
-
-
-
             if (ModelState.IsValid)
             {
                 var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
-
                 subject.TaughtBy = taughtby;
                 subject.SubjectOrgId = (int)Session["OrgId"];
-
-
-
                 db.Subjects.Add(subject);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -167,6 +161,42 @@ namespace Dertrix.Controllers
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
             return View(subject);
         }
+
+
+
+        [ChildActionOnly]
+        public ActionResult MySubjectsCount()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var mysubjectsCount = db.Subjects
+                .Where(x => x.SubjectOrgId == i)
+                .Where(j => j.ClassTeacherId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MySubjectsCount", mysubjectsCount);
+        }
+
+
+        public ActionResult MySubjectsList()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var mysubjectsCount = db.Subjects
+                .Where(x => x.SubjectOrgId == i)
+                .Where(j => j.ClassTeacherId == RegisteredUserId)
+                .Include(s => s.Class)
+                .ToList();
+            return PartialView("_MySubjectsList", mysubjectsCount);
+        }
+
+
+
+
+
 
         // GET: Subjects/Edit/5
         public ActionResult Edit(int? id)
@@ -208,6 +238,8 @@ namespace Dertrix.Controllers
 
             if (ModelState.IsValid)
             {
+                var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
+                subject.TaughtBy = taughtby;
                 db.Entry(subject).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

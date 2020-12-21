@@ -89,6 +89,8 @@ namespace Dertrix.Models
         public int? ClassId { get; set; }    
         public virtual Class Class { get; set; }
 
+        public int? ClassRef { get; set; }
+
         public int? GenderId { get; set; }
         public virtual Gender Gender { get; set; }
 

@@ -224,6 +224,18 @@
     <Compile Include="Migrations\202012200755394_20120755.Designer.cs">
       <DependentUpon>202012200755394_20120755.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012211311571_SprintDec2020.cs" />
+    <Compile Include="Migrations\202012211311571_SprintDec2020.Designer.cs">
+      <DependentUpon>202012211311571_SprintDec2020.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012211340311_SprintDec2020-1.cs" />
+    <Compile Include="Migrations\202012211340311_SprintDec2020-1.Designer.cs">
+      <DependentUpon>202012211340311_SprintDec2020-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012212213411_SprintDec2020-2.cs" />
+    <Compile Include="Migrations\202012212213411_SprintDec2020-2.Designer.cs">
+      <DependentUpon>202012212213411_SprintDec2020-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -528,7 +540,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddOrg.cshtml" />
     <Content Include="Views\Class\SystemAdminIndex.cshtml" />
     <Content Include="Views\Class\Index.cshtml" />
-    <Content Include="Views\RegisteredUsers\Students.cshtml" />
+    <Content Include="Views\RegisteredUsers\AllStudents.cshtml" />
     <Content Include="Views\Home\SysAdminSetUp.cshtml" />
     <Content Include="Views\PrimarySchoolUserRoles\Index.cshtml" />
     <Content Include="Views\SecondarySchoolUserRoles\Index.cshtml" />
@@ -630,6 +642,12 @@
     <Content Include="Views\StudentSubjects\MyClass.cshtml" />
     <Content Include="Views\Shared\_MyClassCount.cshtml" />
     <Content Include="Views\Shared\_MyClassList.cshtml" />
+    <Content Include="Views\Subjects\_MySubjectsCount.cshtml" />
+    <Content Include="Views\Subjects\_MySubjectsList.cshtml" />
+    <Content Include="Views\StudentSubjects\MySubjects.cshtml" />
+    <Content Include="Views\Class\_AllClassCount.cshtml" />
+    <Content Include="Views\Class\_AllClassList.cshtml" />
+    <Content Include="Views\RegisteredUsers\ClassStudents.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -681,6 +699,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012200755394_20120755.resx">
       <DependentUpon>202012200755394_20120755.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012211311571_SprintDec2020.resx">
+      <DependentUpon>202012211311571_SprintDec2020.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012211340311_SprintDec2020-1.resx">
+      <DependentUpon>202012211340311_SprintDec2020-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012212213411_SprintDec2020-2.resx">
+      <DependentUpon>202012212213411_SprintDec2020-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

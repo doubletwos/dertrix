@@ -240,39 +240,18 @@ namespace Dertrix.Controllers
         }
 
         // GET: RegisteredUsers/Students/
-        public ActionResult Students(int? id, int? ij, string searchname, string searchid)
+        public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            id = i;
-            if (ij == null)
-            {
-                ij = 1;
-            }
-            var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
-            var stds = db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == j).Include(c => c.Class).Include(g => g.Gender).Include(n => n.Class).ToList();
-            string classid = ij.ToString();
-            // returns students of org if class is selected
-            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(classid)))
-            {
-                return View(db.RegisteredUsers.Where(p => p.ClassId == j).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Include(c => c.Class).Include(g => g.Gender).ToList());
-            }
-            // returns students of org if fullname is provided
-            if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
-            {
-                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
-            }
-            // returns students of org if studentid is provided
-            if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
-            {
-                int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Where(s => s.RegisteredUserTypeId == 2).Where(o => o.SelectedOrg == i).Where(p => p.StudentRegFormId != null).ToList());
-            }
-            return View(stds);
+            var orgid  = (int)Session["OrgId"];
+
+            var students = db.RegisteredUsers
+                .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid)              
+                .ToList();
+            return View(students);
         }
 
         public JsonResult AutoCompleteStudentFullname(string prefix, int? id)
@@ -355,6 +334,30 @@ namespace Dertrix.Controllers
                                  }).ToList();
             return Json(stafffullname);
         }
+
+
+
+        // GET: RegisteredUsers/ClassStudents/
+        public ActionResult ClassStudents(int? id, int? ij, string searchname, string searchid)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            var orgid = (int)Session["OrgId"];
+
+            var classref = db.Classes.Where(x => x.ClassId == id).Select(x => x.ClassRefNumb).FirstOrDefault();
+
+            var students = db.RegisteredUsers
+                .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid && x.ClassRef == classref && x.ClassId == id)
+                .ToList();
+            return View(students);
+        }
+
+
+
+
+
 
         // GET: RegisteredUsers/Staffs/
         public ActionResult Guardians(int? id, string searchname, string searchid)
@@ -475,6 +478,7 @@ namespace Dertrix.Controllers
                     registeredUser.EnrolmentDate = DateTime.Now;
                     var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgBrandId).FirstOrDefault();
                     int j = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.ClassRef = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
                     registeredUser.RegUserOrgBrand = j;
                 }
                 /*When parents are added at school level*/

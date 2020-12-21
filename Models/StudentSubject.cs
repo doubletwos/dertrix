@@ -23,6 +23,9 @@ namespace Dertrix.Models
 
         public int? ClassId { get; set; }
 
+        public int? ClassRef { get; set; }
+
+        public int? OrgId { get; set; }
 
         public decimal? FirstTermStudentGrade { get; set; }
 
