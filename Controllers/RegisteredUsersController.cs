@@ -239,7 +239,7 @@ namespace Dertrix.Controllers
             return PartialView("~/Views/Shared/PartialViewsForms/_EditStaff.cshtml");
         }
 
-        // GET: RegisteredUsers/Students/
+        // GET: RegisteredUsers/AllStudents/
         public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
             if (Session["OrgId"] == null)
@@ -248,11 +248,39 @@ namespace Dertrix.Controllers
             }
             var orgid  = (int)Session["OrgId"];
 
+
+            // returns students of org if fullname is provided
+            if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
+            {
+                return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Include(s => s.Class).ToList());
+
+            }
+
+
+            // returns students of org if studentid is provided
+            if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
+            {
+                int reguserid = Convert.ToInt32(searchid);
+                return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Include(s => s.Class).ToList());
+
+            }
+
+
             var students = db.RegisteredUsers
-                .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid)              
-                .ToList();
+           .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid)
+           .ToList();
             return View(students);
+
+
         }
+
+
+
+
+
+
+
+
 
         public JsonResult AutoCompleteStudentFullname(string prefix, int? id)
         {

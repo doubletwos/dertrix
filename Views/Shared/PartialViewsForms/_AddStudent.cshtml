@@ -1,6 +1,9 @@
 ﻿@model Dertrix.Models.RegisteredUser
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myModal">Add New Student</a>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myModal">
+	<i class="fa fa-user-plus fa-3x" aria-hidden="true"></i>
+	Add Student
+</a>
 <div class="modal fade" id="myModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -77,7 +80,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal"  id="cancel"/>
 						<input type="submit" value="Add Student" class="RegUserOrgButtonColour" id="btnSubmit2" />
 					</div>
 				</form>
@@ -127,6 +130,15 @@
 
 			}
 
+		})
+		$(function () {
+			$("#cancel").on("click", function () {
+				$("#AddStudentForm")[0].reset();
+
+				window.location.reload();
+
+
+			})
 		})
 
 	})

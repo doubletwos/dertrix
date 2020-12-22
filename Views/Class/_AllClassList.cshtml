@@ -3,31 +3,37 @@
 
 <table class="table table-bordered table-responsive table-condensed table-hover">
 	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-	
+
 		<th>
-			@Html.DisplayNameFor(model => model.ClassName)
+			Class
 		</th>
 		<th>
-			@Html.DisplayNameFor(model => model.ClassTeacherFullName)
+			Class Teacher
+		</th>
+		<th>
+		Number of students
 		</th>
 		<th></th>
 	</tr>
 
 	@foreach (var item in Model.OrderBy(i => i.ClassRefNumb))
 	{
-		<tr>
-	
-			<td>
-				@Html.DisplayFor(modelItem => item.ClassName)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
-			</td>
-			<td>
-				@Html.ActionLink("Select Class", "ClassStudents", "RegisteredUsers", new { id = item.ClassId }, null)
+<tr>
 
-			</td>
-		</tr>
+	<td>
+		@Html.DisplayFor(modelItem => item.ClassName)
+	</td>
+	<td>
+		@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+	</td>
+	<td>
+		@Html.DisplayFor(modelItem => item.RegisteredUsers.Count)
+	</td>
+	<td>
+		@Html.ActionLink("Select Class", "ClassStudents", "RegisteredUsers", new { id = item.ClassId }, null)
+
+	</td>
+</tr>
 	}
 
 </table>

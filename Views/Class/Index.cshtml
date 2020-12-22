@@ -9,52 +9,62 @@
 			display: block;
 		}
 	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+
 </head>
 
 <div class="jumbotron" style="height:100vh;">
 
 	<div class="panel panel-default">
-		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-				<th>
-					Class
-				</th>
-				<th>
-					Student Count
-				</th>
-				<th>
-					Class Teacher
-				</th>
-				<th>
-					Assign Teacher
-				</th>
-			</tr>
-			@foreach (var item in Model)
-			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.ClassName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
-					</td>
-				
-					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" style="background-color:white">
-								<li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
-								@*<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">View Class Details</a></li>*@
-							</ul>
-						</div>
-					</td>
+		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<thead>
+
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+
+					<th>
+						Class
+					</th>
+					<th>
+						Student Count
+					</th>
+					<th>
+						Class Teacher
+					</th>
+					<th>
+						Assign Teacher
+					</th>
 				</tr>
-			}
+			</thead>
+			<tbody>
+
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.ClassName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+						</td>
+
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
+									@*<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">View Class Details</a></li>*@
+								</ul>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+
 		</table>
 	</div>
 </div>
@@ -111,3 +121,19 @@
 		})
 	})
 </script>
+
+
+@section scripts{
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#myTable').DataTable(
+				{
+					"ordering": false,
+				}
+			);
+		});
+	</script>
+
+
+}

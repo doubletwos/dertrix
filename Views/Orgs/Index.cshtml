@@ -1,16 +1,15 @@
 ﻿@model IEnumerable<Dertrix.Models.Org>
-@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
-{
-	var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
-
-
-
-
-	<head>
-		@{
-			ViewBag.Title = "Index";
+<head>
+	@{
+		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
+	}
+	@{
+		ViewBag.Title = "Organisations";
+	}
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
 		}
-		<style>
 		.note-btn-group.btn-group.note-style,
 		.note-btn-group.btn-group.note-view,
 		.note-btn-group.btn-group.note-table,
@@ -20,84 +19,25 @@
 		.note-btn.btn.btn-default.btn-sm.note-current-color-button {
 			display: none;
 		}
-
 		.nav-pills > li {
 			float: left;
 			border-style: double;
 			border-color:  @regUserOrgNavBar;
-
 		}
-			.btn-group:hover .dropdown-menu {
-				display: block;
-			}
-
-
-		</style>
-
-	</head>
-
-}
+	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
 <div class="jumbotron" style="height:100vh;">
-
-
-	@{
-		Html.RenderAction("AddPost", "Posts");
-	}
-	<br />
-	<br />
-	<div class="container">
-		<ul class="nav nav-pills" role="tablist">
-			<li role="presentation" class="active">
-				<a href="#">
-					Date <span class="badge">
-						@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
-					</span>
-				</a>
-			</li>
-			<li role="presentation" class="active">
-				<a href="#">
-					Registered Students <span class="badge">
-						@{
-							Html.RenderAction("StudentCount", "RegisteredUsers");
-						}
-					</span>
-				</a>
-			</li>
-			<li role="presentation" class="active" id="MyClassCountWidget" onclick="DisplayModal()">
-				<a href="#">
-					My classes <span class="badge">
-						@{
-							Html.RenderAction("MyClassCount", "Class");
-						}
-					</span>
-				</a>
-			</li>
-			<li role="presentation" class="active" id="MySubjectCountWidget" onclick="DisplayModal1()">
-				<a href="#">
-					My Subjects <span class="badge">
-						@{
-							Html.RenderAction("MySubjectsCount", "Subjects");
-						}
-					</span>
-				</a>
-			</li>
-			<li role="presentation" class="active" id="AllClassCountWidget" onclick="DisplayModal2()">
-				<a href="#">
-					All classes <span class="badge">
-						@{
-							Html.RenderAction("AllClassCount", "Class");
-						}
-					</span>
-				</a>
-			</li>
-		</ul>
-
-		@*<div id="MyClassCountWidget" style="display:none;">
+	@Html.Partial("_WidgetDashboard")
+	<div>
+		<hr />
+		<div>
 			@{
-				Html.RenderAction("MyClassList", "Class");
+				Html.RenderAction("AddPost", "Posts");
 			}
-		</div>*@
-
+		</div>
+		<hr />
 	</div>
 	<br />
 	<br />
@@ -112,114 +52,11 @@
 			</div>
 		</div>
 	</div>
-
-
 	@*@if (Session["IsParent/Guardian"] != null)
 		{
 			Layout = "~/Views/Shared/_BespokeLayout1.cshtml";
 		}*@
 </div>
-
-
-
-
-@*Display MyclassList modal*@
-<div class="modal fade" id="ClasslistModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Select Class</h3>
-			</div>
-			<div class="modal-body" id="ClassListModalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="modal fade" id="SubjectslistModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Subject list</h3>
-			</div>
-			<div class="modal-body" id="SubjectsListModalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="AllClasslistModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">All class list</h3>
-			</div>
-			<div class="modal-body" id="AllClassListModalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<script>
-	var DisplayModal = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Class/MyClassList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#ClassListModalbody").html(response);
-				$("#ClasslistModal").modal("show");
-			}
-		})
-	}
-</script>
-
-<script>
-	var DisplayModal1 = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Subjects/MySubjectsList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#SubjectsListModalbody").html(response);
-				$("#SubjectslistModal").modal("show");
-			}
-		})
-	}
-</script>
-
-<script>
-	var DisplayModal2 = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Class/AllClassList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#AllClassListModalbody").html(response);
-				$("#AllClasslistModal").modal("show");
-			}
-		})
-	}
-</script>
-
-
-
-
-
-
-
-
 @section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/bundles/custom-validator")

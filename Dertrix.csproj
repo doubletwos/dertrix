@@ -564,15 +564,7 @@
     <Content Include="Views\PostTopics\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_PostDisplayPanel.cshtml" />
-    <Content Include="Views\Subjects\Create.cshtml" />
-    <Content Include="Views\Subjects\Delete.cshtml" />
-    <Content Include="Views\Subjects\Details.cshtml" />
-    <Content Include="Views\Subjects\Edit.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
-    <Content Include="Views\StudentSubjects\Create.cshtml" />
-    <Content Include="Views\StudentSubjects\Delete.cshtml" />
-    <Content Include="Views\StudentSubjects\Details.cshtml" />
-    <Content Include="Views\StudentSubjects\Edit.cshtml" />
     <Content Include="Views\StudentSubjects\Grades.cshtml" />
     <Content Include="Views\Home\SysSetUp.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_StudentUpdateSubject.cshtml" />
@@ -642,12 +634,13 @@
     <Content Include="Views\StudentSubjects\MyClass.cshtml" />
     <Content Include="Views\Shared\_MyClassCount.cshtml" />
     <Content Include="Views\Shared\_MyClassList.cshtml" />
-    <Content Include="Views\Subjects\_MySubjectsCount.cshtml" />
-    <Content Include="Views\Subjects\_MySubjectsList.cshtml" />
+    <Content Include="Views\Shared\_MySubjectsCount.cshtml" />
+    <Content Include="Views\Shared\_MySubjectsList.cshtml" />
     <Content Include="Views\StudentSubjects\MySubjects.cshtml" />
     <Content Include="Views\Class\_AllClassCount.cshtml" />
     <Content Include="Views\Class\_AllClassList.cshtml" />
     <Content Include="Views\RegisteredUsers\ClassStudents.cshtml" />
+    <Content Include="Views\Shared\_WidgetDashboard.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
