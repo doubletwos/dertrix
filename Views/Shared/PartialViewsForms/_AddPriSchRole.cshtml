@@ -1,27 +1,30 @@
 ﻿@model Dertrix.Models.PrimarySchoolUserRole
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addprischrolemodal">New role</a>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addprischrolemodal">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+	New Role
+</a>
 
 <div class="modal fade" id="addprischrolemodal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add new role</h3>
+				<h3 class="modal-title">New Role</h3>
 			</div>
 			<div class="modal-body">
 				<form id="AddPrischrole">
-
-
-
 					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
 
 					<div class="form-horizontal">
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 						<div class="form-group">
-							@Html.LabelFor(model => model.RoleName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
+								@Html.LabelFor(model => model.RoleName, "Role Name")
 								@Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
 							</div>
@@ -29,7 +32,7 @@
 
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add role" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="submit" value="Add Role" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 
 
@@ -49,7 +52,8 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$("#btnSubmit").click(function () {
+		$("#btnSubmit").on("click", function () {
+			if ($("#AddPrischrole").valid()) {
 			var data = $("#AddPrischrole").serialize();
 			$.ajax({
 				type: "POST",
@@ -62,6 +66,8 @@
 					window.location.reload();
 				}
 			})
+			}
 		})
-	})
+
+	});
 </script>

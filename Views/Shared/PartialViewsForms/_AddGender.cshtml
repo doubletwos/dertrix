@@ -1,32 +1,39 @@
 ﻿@model Dertrix.Models.Gender
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addgendermodal">New gender</a>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addgendermodal">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+	New Gender
+</a>
 
 <div class="modal fade" id="addgendermodal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add new gender</h3>
+				<h3 class="modal-title">New Gender</h3>
 			</div>
 			<div class="modal-body">
 				<form id="AddGender">
 					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
 
 					<div class="form-horizontal">
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						<div class="form-group">
-							@Html.LabelFor(model => model.GenderName, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.GenderName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.GenderName, "", new { @class = "text-danger" })
-							</div>
+					<div class="form-group">
+						<div class="col-md-10">
+
+							@Html.LabelFor(model => model.GenderName, "Gender Name")
+							@Html.EditorFor(model => model.GenderName, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.GenderName, "", new { @class = "text-danger" })
 						</div>
+					</div>
 
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add gender" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="submit" value="Add Gender" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 
 
@@ -47,10 +54,11 @@
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
-	$(document).ready(function () {
-		$("#btnSubmit").click(function () {
-			var data = $("#AddGender").serialize();
-			$.ajax({
+   $(document).ready(function () {
+	  $("#btnSubmit").on("click", function () {
+		  if ($("#AddGender").valid()) {
+			 var data = $("#AddGender").serialize();
+			  $.ajax({
 				type: "POST",
 				url: "/Genders/Create",
 				data: data,
@@ -60,9 +68,12 @@
 					$("#AddGender")[0].reset();
 					window.location.reload();
 				}
-			})
-		})
-	})
+			  })
+		 }
+	   })
+
+   });
+
 </script>
 
 

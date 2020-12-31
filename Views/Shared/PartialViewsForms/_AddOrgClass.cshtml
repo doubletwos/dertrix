@@ -1,91 +1,93 @@
 ﻿@model Dertrix.Models.Class
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myclassmodal">New class</a>
-
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myclassmodal">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+	New Class
+</a>
 <div class="modal fade" id="myclassmodal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add new class</h3>
+				<h3 class="modal-title">New Class</h3>
 			</div>
 			<div class="modal-body">
 				<form id="AddClass">
-
-
 					@Html.AntiForgeryToken()
-
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
 					<div class="form-horizontal">
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						<div class="form-group">
-							@Html.LabelFor(model => model.ClassName, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
-							</div>
-						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(model => model.ClassRefNumb, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
+								@Html.LabelFor(model => model.ClassName, "Class Name")
+								@Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })
+
+								@Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
+							</div>
+
+						</div>
+						<div class="form-group">
+							<div class="col-md-10">
+								@Html.LabelFor(model => model.ClassRefNumb, "Class Reference Number")
 								@Html.EditorFor(model => model.ClassRefNumb, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.ClassRefNumb, "", new { @class = "text-danger" })
 							</div>
+
+						</div>
+						<div class="form-group">
+							<div class="col-md-10">
+								@Html.LabelFor(model => model.OrgId, "Class Organisation Name")
+								@Html.DropDownList("OrgId", null, "", htmlAttributes: new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.OrgId, "", new { @class = "text-danger" })
+							</div>
 						</div>
 
+						<hr />
 						<div class="form-group">
-							@Html.LabelFor(model => model.ClassIsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								<div class="checkbox">
-									@Html.EditorFor(model => model.ClassIsActive)
+							@Html.LabelFor(model => model.ClassIsActive, "Class Is Active?", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="checkbox">
+								<div class="col-md-10">
+									@Html.CheckBoxFor(model => model.ClassIsActive)
 									@Html.ValidationMessageFor(model => model.ClassIsActive, "", new { @class = "text-danger" })
 								</div>
 							</div>
 						</div>
 
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgId, "OrgId", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("OrgId", null, htmlAttributes: new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.OrgId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-
-
-
-
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add class" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="submit" value="Add Class" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 					</div>
-
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
-
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$("#btnSubmit").click(function () {
-			var data = $("#AddClass").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/Class/Create",
-				data: data,
-				success: function (response) {
-					alert("New class created");
-					$("#myclassmodal").modal("hide");
-					$("#AddClass")[0].reset();
-					window.location.reload();
-				}
-			})
+		$("#btnSubmit").on("click", function () {
+			if ($("#AddClass").valid()) {
+				var data = $("#AddClass").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/Class/Create",
+					data: data,
+					success: function (response) {
+						alert("New class created");
+						$("#myclassmodal").modal("hide");
+						$("#AddClass")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
 		})
-	})
+	});
 </script>

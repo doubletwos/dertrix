@@ -3,105 +3,111 @@
 	@{
 		ViewBag.Title = "Grades";
 	}
-
 	<style>
-
 		.btn-group:hover .dropdown-menu {
 			display: block;
 		}
 	</style>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-
 <div class="jumbotron" style="height:100vh;">
+	@Html.Partial("_WidgetDashboard")
 	<div>
-
-		<br />
-		<br />
-		<div class="panel panel-default">
-			<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-				<thead>
-
-					<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-
-						<th>
-							Student Id
-						</th>
-
-						<th>
-							Name
-						</th>
-						<th>
-							Subject
-						</th>
-						<th>
-							First Term Grade
-						</th>
-						<th>
-							Second Term Grade
-						</th>
-						<th>
-							Third Term Grade
-						</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-
-
-					@foreach (var item in Model)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Subject.SubjectName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.FirstTermStudentGrade)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.SecondTermStudentGrade)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.ThirdTermStudentGrade)
-							</td>
-
-							<td>
-								<div class="btn-group">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Action <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" style="background-color:white">
-										<li><a href="#" onclick="ShowStudent(@item.StudentSubjectId)">View Subject Details</a></li>
-										<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>
-										<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>
-
-
-									</ul>
-								</div>
-
-
-
-							</td>
-						</tr>
-					}
-				</tbody>
-
-
-			</table>
+		<hr />
+		<div class="row">
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
 		</div>
-		<script src="~/Scripts/jquery-3.4.1.js"></script>
-		@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
-		@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
-		<input type="hidden" id="hiddenStudentSubjectId" />
-
 	</div>
+	<hr />
+	<br />
+	<div class="panel panel-default">
+		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<thead>
+
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+
+					<th>
+						Student Id
+					</th>
+
+					<th>
+						Name
+					</th>
+					<th>
+						Subject
+					</th>
+					<th>
+						First Term Grade
+					</th>
+					<th>
+						Second Term Grade
+					</th>
+					<th>
+						Third Term Grade
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+
+
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Subject.SubjectName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.FirstTermStudentGrade)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.SecondTermStudentGrade)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ThirdTermStudentGrade)
+						</td>
+
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="ShowStudent(@item.StudentSubjectId)">View Subject Details</a></li>
+									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>
+									<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>
+
+
+								</ul>
+							</div>
+
+
+
+						</td>
+					</tr>
+				}
+			</tbody>
+
+
+		</table>
+	</div>
+	<script src="~/Scripts/jquery-3.4.1.js"></script>
+	<input type="hidden" id="hiddenStudentSubjectId" />
+
 </div>
 
 
@@ -213,6 +219,5 @@
 			);
 		});
 	</script>
-
 
 }

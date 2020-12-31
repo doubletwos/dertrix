@@ -22,23 +22,69 @@ namespace Dertrix.Controllers
                 var grp1 = db.OrgGroups
                     .Where(x => x.OrgGroupId == Id)
                     .FirstOrDefault();
-                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(k => k.StudentRegFormId == null), "RegisteredUserId", "FullName");
-                ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+
                 var grp = new RegisteredUsersGroups
                 {
                     OrgGroupId = grp1.OrgGroupId,
                 };
+
+                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(k => k.StudentRegFormId == null), "RegisteredUserId", "FullName");
+                ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+
                 return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup.cshtml", grp);
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup.cshtml");
         }
 
+
+
+
+        [ChildActionOnly]
+        public ActionResult AddMemberToGroup1(int Id)
+        {
+ 
+          if (Id != 0)
+           { 
+
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var grp1 = db.OrgGroups
+                .Where(x => x.OrgGroupId == Id)
+                .FirstOrDefault();
+
+            var grp = new RegisteredUsersGroups
+            {
+                OrgGroupId = grp1.OrgGroupId,
+            };
+
+            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(k => k.StudentRegFormId == null), "RegisteredUserId", "FullName");
+            ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml", grp);
+
+        }
+        return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml");
+
+        }
+
+
+
+
+
+
+
+
+
+
+
         public ActionResult RegisteredUsersGroupMembers(int id)
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
+
             var membercount = db.RegisteredUsersGroups
                 .Where(x => x.OrgGroupId == id)
+                .Where(x => x.RegUserOrgId == i)
                 .Include(r => r.RegisteredUser)
                 .Include(l => l.RegisteredUser.SecondarySchoolUserRole)
                 .Include(l => l.RegisteredUser.PrimarySchoolUserRole)
@@ -53,6 +99,11 @@ namespace Dertrix.Controllers
         {
             if (ModelState.IsValid)
             {
+                var orgid = Convert.ToInt32(Session["OrgId"]);
+                var reguseremail = db.RegisteredUsers.Where(x => x.SelectedOrg == orgid && x.RegisteredUserId == registeredUsersGroups.RegisteredUserId).Select(x => x.Email).FirstOrDefault();
+
+                registeredUsersGroups.RegUserOrgId = orgid;
+                registeredUsersGroups.Email = reguseremail;
                 db.RegisteredUsersGroups.Add(registeredUsersGroups);
                 db.SaveChanges();
                 return RedirectToAction("Index", "OrgGroups");

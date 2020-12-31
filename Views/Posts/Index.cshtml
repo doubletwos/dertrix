@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<Dertrix.Models.Post>
 <head>
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-	@{var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString(); }
-
-
+	@{
+		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
+	}
 	@{
 		ViewBag.Title = "Posts";
 	}
 	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
 		.note-btn-group.btn-group.note-style,
 		.note-btn-group.btn-group.note-view,
 		.note-btn-group.btn-group.note-table,
@@ -18,114 +19,36 @@
 		.note-btn.btn.btn-default.btn-sm.note-current-color-button {
 			display: none;
 		}
-
 		.nav-pills > li {
 			float: left;
 			border-style: double;
 			border-color:  @regUserOrgNavBar;
-
-		}
-
-
-		.btn-group:hover .dropdown-menu {
-			display: block;
 		}
 	</style>
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-@section scripts{
-	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/custom-validator")
-	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-	<script src="~/Scripts/summernote/summernote.min.js"></script>
-	<script src="~/Scripts/summernote/summernote-bs4.js"></script>
-	<script src="~/Scripts/summernote/summernote.js"></script>
-}
-<br />
 <div class="jumbotron" style="height:100vh;">
-
-	<div class="container">
-		<ul class="nav nav-pills" role="tablist">
-			<li role="presentation" class="active">
-				<a href="#">
-					<i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
-					Date <span class="badge">
-						@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
-					</span>
-				</a>
-			</li>
-			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
-			{
-
-				<li role="presentation" class="active">
-					<a href="@Url.Action("AllStudents", "RegisteredUsers")">
-						<i class="fa fa-users fa-2x" aria-hidden="true"></i>
-						Registered Students <span class="badge">
-							@{
-								Html.RenderAction("StudentCount", "RegisteredUsers");
-							}
-						</span>
-					</a>
-				</li>
-				<li role="presentation" class="active" id="AllClassCountWidget" onclick="DisplayModal2()">
-					<a href="#">
-						<i class="fa fa-list-ol fa-2x" aria-hidden="true"></i>
-						All classes <span class="badge">
-							@{
-								Html.RenderAction("AllClassCount", "Class");
-							}
-						</span>
-					</a>
-				</li>
-			}
-
-
-			<li role="presentation" class="active" id="MyClassCountWidget" onclick="DisplayModal()">
-				<a href="#">
-					<i class="fa fa-list-ol fa-2x" aria-hidden="true"></i>
-					My classes <span class="badge">
-						@{
-							Html.RenderAction("MyClassCount", "Class");
-						}
-					</span>
-				</a>
-			</li>
-			<li role="presentation" class="active" id="MySubjectCountWidget" onclick="DisplayModal1()">
-				<a href="#">
-					<i class="fa fa-book fa-2x" aria-hidden="true"></i>
-					My Subjects <span class="badge">
-						@{
-							Html.RenderAction("MySubjectsCount", "Subjects");
-						}
-					</span>
-				</a>
-			</li>
-
-		</ul>
-
-		@*<div id="MyClassCountWidget" style="display:none;">
-				@{
-					Html.RenderAction("MyClassList", "Class");
-				}
-			</div>*@
-
+	@Html.Partial("_WidgetDashboard")
+	<div>
+		<hr />
+		<div>
+		</div>
+		<hr />
 	</div>
-
-
-
 	<br />
 	<br />
-
-
-
-
-
-
-
-
-	<div class="panel panel-default">
-		<table class="table table-bordered table-condensed  table-responsive" style="background-color:white;">
+	@section scripts{
+		@Scripts.Render("~/bundles/jqueryval")
+		@Scripts.Render("~/bundles/custom-validator")
+		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+		<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+		<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+		<script src="~/Scripts/summernote/summernote.min.js"></script>
+		<script src="~/Scripts/summernote/summernote-bs4.js"></script>
+		<script src="~/Scripts/summernote/summernote.js"></script>
+	}
+	<div class="panel panel-default" style="height:70vh; overflow:auto;">
+		<table class="table table-bordered table-condensed  table-responsive" style="background-color:white; ">
 			@foreach (var item in Model)
 			{
 				<tr>
@@ -135,13 +58,10 @@
 								&nbsp;&nbsp;
 								<u>@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)</u> &nbsp;&nbsp;&nbsp;
 								@Html.DisplayFor(modelItem => item.PostSubject)
-
 								<br />
 							</strong>
 							&nbsp;&nbsp;@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>@Html.DisplayFor(modelItem => item.PostCreationDate)</i>
 							<hr />
-
-
 						</div>
 						<div style="background-color:white;">
 							@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
@@ -163,9 +83,34 @@
 			}
 		</table>
 	</div>
-
 	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 	<input type="hidden" id="hiddenPostId" />
+
+	<a class="btn btn danger" onclick="SendEmail()">Send email</a>
+
+
+
+	<script>
+		var SendEmail = function () {
+
+			$.ajax({
+
+				type: "Post",
+			    url:  '@Url.Action("SendTestEmail", "Posts")',
+				success: function (data) {
+					alert("Email Sent");
+				}
+			})
+
+		}
+
+
+	</script>
+
+
+
+
+
 
 	@*Delete confirmation Modal*@
 	<div class="modal fade" id="PostDeleteModal">
@@ -185,7 +130,6 @@
 			</div>
 		</div>
 	</div>
-
 	@*Edit post  Modal*@
 	<div class="modal fade" id="OrgpostEditModal1">
 		<div class="modal-dialog">
@@ -202,106 +146,7 @@
 			</div>
 		</div>
 	</div>
-
-
-	@*Display MyclassList modal*@
-	<div class="modal fade" id="ClasslistModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Select Class</h3>
-				</div>
-				<div class="modal-body" id="ClassListModalbody"></div>
-				<div class="modal-footer">
-					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<div class="modal fade" id="SubjectslistModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Subject list</h3>
-				</div>
-				<div class="modal-body" id="SubjectsListModalbody"></div>
-				<div class="modal-footer">
-					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="AllClasslistModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">All class list</h3>
-				</div>
-				<div class="modal-body" id="AllClassListModalbody"></div>
-				<div class="modal-footer">
-					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
 </div>
-
-
-
-<script>
-	var DisplayModal = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Class/MyClassList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#ClassListModalbody").html(response);
-				$("#ClasslistModal").modal("show");
-			}
-		})
-	}
-</script>
-
-<script>
-	var DisplayModal1 = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Subjects/MySubjectsList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#SubjectsListModalbody").html(response);
-				$("#SubjectslistModal").modal("show");
-			}
-		})
-	}
-</script>
-
-<script>
-	var DisplayModal2 = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Class/AllClassList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#AllClassListModalbody").html(response);
-				$("#AllClasslistModal").modal("show");
-			}
-		})
-	}
-</script>
-
-
-
-
 <script>
 	var ConfirmDelete = function (PostId) {
 		$("#hiddenPostId").val(PostId);
@@ -321,7 +166,6 @@
 		})
 	}
 </script>
-
 <script>
 	var EditPost = function (Id) {
 		$.ajax({
@@ -361,3 +205,5 @@
 		})
 	})
 </script>
+
+

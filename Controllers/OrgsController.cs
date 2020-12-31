@@ -281,17 +281,7 @@ namespace Dertrix.Controllers
             return View(org);
         }
 
-        public JsonResult AutoCompleteSchool(string prefix)
-        {
-            var schoollist = (from org in db.Orgs
-                              where org.OrgName.StartsWith(prefix)
-                              select new
-                              {
-                                  label = org.OrgName,
-                                  Val = org.OrgId
-                              }).ToList();
-            return Json(schoollist);
-        }
+
 
         protected override void Dispose(bool disposing)
         {

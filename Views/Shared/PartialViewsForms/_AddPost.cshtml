@@ -1,7 +1,7 @@
-﻿@model Dertrix.Models.Post
+﻿@*@model Dertrix.Models.Post
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#mycreatepost">
-	<i class="fa fa-pencil-square fa-3x" aria-hidden="true"></i>
+	<i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>
 	Create Post
 </a>
 <div class="modal fade" id="mycreatepost">
@@ -55,10 +55,13 @@
 								@Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
 							</div>
 						</div>
-						<div class="modal-footer">
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
-							<input type="submit" value="Create Post" class="RegUserOrgButtonColour" id="btnSubmit" />
-						</div>
+
+
+
+							<div class="modal-footer">
+								<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
+								<input type="submit" value="Create Post" class="RegUserOrgButtonColour" id="btnSubmit" />
+							</div>
 					</div>
 				</form>
 			</div>
@@ -103,4 +106,4 @@
 		   }
 	   })
 	})
-</script>
+</script>*@

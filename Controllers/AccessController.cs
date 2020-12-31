@@ -68,7 +68,7 @@ namespace Dertrix.Controllers
                 LogInTime = DateTime.Now,
                 LogOutTime = null
             };
-            db.RegUsersAccessLogs.Add(reguseraccessLogs);
+            //db.RegUsersAccessLogs.Add(reguseraccessLogs);
             db.SaveChanges();
             if (orgredirect == 23)
             {
@@ -102,8 +102,8 @@ namespace Dertrix.Controllers
                     LogOutTime = logouttime
                 };
                 getsession = getsession1;
-                db.Entry(getsession).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(getsession).State = EntityState.Modified;
+                //db.SaveChanges();
                 Session.Abandon();
                 Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
                 return RedirectToAction("Signin", "Access");

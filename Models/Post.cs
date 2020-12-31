@@ -9,6 +9,14 @@ namespace Dertrix.Models
 {
     public class Post
     {
+
+        public Post()
+        {
+            OrgGroups = new List<OrgGroup>();
+        }
+
+
+
         public int PostId { get; set; }
 
         [Required(ErrorMessage = "This field is required.")]
@@ -37,6 +45,11 @@ namespace Dertrix.Models
         [Display(Name = "Expires")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? PostExpirtyDate { get; set; }
+
+        public List<OrgGroup> OrgGroups { get; set; }
+
+        public bool? SendAsEmail { get; set; }
+
 
     }
 }

@@ -1,318 +1,242 @@
 ﻿@model IEnumerable<Dertrix.Models.Org>
-@{
-	ViewBag.Title = "SystemAdminIndex";
-}
-
 <head>
+	@{
+		ViewBag.Title = "Org table";
+	}
 	<style>
 		.btn-group:hover .dropdown-menu {
 			display: block;
 		}
 	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
-
 <div class="jumbotron" style="height:100vh;">
-
-
-
-
-	<div class="row">
-		<div class="col-lg-12">
-			<p><b>Organisation management</b></p>
-			<p>
-				@using (Html.BeginForm("SystemAdminIndex", "Orgs", FormMethod.Get))
-				{
-					<div class="form-inline">
-						id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
-						<input type="hidden" id="hfId" name="searchid" />
-
-						School Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
-						<input type="hidden" id="hfName" name="searchname" />
-
-						&nbsp;&nbsp;
-						<button class="RegUserOrgButtonColour">Filter</button>
-
-
-
-					</div>
+	<div>
+		<hr />
+		<div class="row">
+			<div class="col-md-3">
+				@{
+					Html.RenderAction("AddOrg", "Orgs");
 				}
-			</p>
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
 		</div>
 	</div>
-
-	<br />
-	<br />
-	<div>
-		@{
-			Html.RenderAction("AddOrg", "Orgs");
-		}
-	</div>
 	<hr />
-
-
 	<br />
-	<br />
-
 	<div class="panel panel-default">
-		<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-				<th>
-					Id
-				</th>
-				<th>
-					Name
-				</th>
-				<th>
-					Type
-				</th>
-				<th>
-					Address
-				</th>
-				<th>
-					Creation Date
-				</th>
-
-				<th>
-					Select Action
-				</th>
-
-			</tr>
-
-
-
-			@{
-				var orgid = Session["OrgId"].ToString();
-			}
-
-
-
-			@foreach (var item in Model)
-			{
-				<tr style="border-style: groove;">
-					<td>
-						@Html.DisplayFor(modelItem => item.OrgId)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.OrgName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.OrgAddress)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.CreationDate)
-					</td>
-
-					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" style="background-color:white">
-								<li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
-								<li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
-								<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
-
-								@{
-									var isTester = Convert.ToInt32(Session["IsTester"]);
-
-									if (isTester == 1)
-									{
-										<li>
-											@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
-										</li>
-									}
-
-
-
-
-								}
-
-							</ul>
-						</div>
-					</td>
+		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<thead>
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+					<th>
+						Id
+					</th>
+					<th>
+						Name
+					</th>
+					<th>
+						Type
+					</th>
+					<th>
+						Address
+					</th>
+					<th>
+						Creation Date
+					</th>
+					<th>
+						Select Action
+					</th>
 				</tr>
-			}
+			</thead>
+			<tbody>
+				@{
+					var orgid = Session["OrgId"].ToString();
+				}
+				@foreach (var item in Model)
+				{
+					<tr style="border-style: groove;">
+						<td>
+							@Html.DisplayFor(modelItem => item.OrgId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.OrgName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.OrgAddress)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.CreationDate)
+						</td>
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
+									<li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
+									<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
+									@{
+										var isTester = Convert.ToInt32(Session["IsTester"]);
+										if (isTester == 1)
+										{
+											<li>
+												@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+											</li>
+										}
+									}
+								</ul>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
 		</table>
 	</div>
 </div>
 
 
+<input type="hidden" id="hiddenOrgId" />
+
+
+
+
+@*Delete confirmation Modal*@
+<div class="modal fade" id="myModall">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove Org</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this org?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteOrg()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*View Org Details Modal*@
+<div class="modal fade" id="myModalll">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Org Details</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDiv"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit Org Details Modal*@
+<div class="modal fade" id="myModallll">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit Org Details</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDiv1"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var ConfirmDelete = function (OrgId) {
+		$("#hiddenOrgId").val(OrgId);
+		$("#myModall").modal('show');
+	}
+	var DeleteOrg = function () {
+		var OrgId = $("#hiddenOrgId").val();
+		$.ajax({
+			type: "POST",
+			url: "/Orgs/DeleteConfirmed/",
+			data: { id: OrgId },
+			success: function (response) {
+				alert("Org Deleted");
+				$("#myModall").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var ShowOrg = function (Id) {
+		$.ajax({
+			type: "POST",
+			url: "/Orgs/OrgDetails",
+			data: { Id: Id },
+			success: function (response) {
+				$("#myModalBodyDiv").html(response);
+				$("#myModalll").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	var EditOrg = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Orgs/EditOrg",
+			data: { Id: Id },
+			success: function (response) {
+				$("#myModalBodyDiv1").html(response);
+				$("#myModallll").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#myFormm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/Orgs/Edit",
+			data: data,
+			success: function (response) {
+				alert("Org Updated");
+				$("#myModal").modal("hide");
+				$("#myFormm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>
+
 @section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/bundles/custom-validator")
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
-	@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
-	<input type="hidden" id="hiddenOrgId" />
-
-
-
-	@*Delete confirmation Modal*@
-	<div class="modal fade" id="myModall">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Remove Org</h3>
-				</div>
-				<div class="modal-body">
-					<h3>Are you sure you want to remove this org?</h3>
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteOrg()">Confirm</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	@*View Org Details Modal*@
-	<div class="modal fade" id="myModalll">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Org Details</h3>
-				</div>
-				<div class="modal-body" id="myModalBodyDiv"></div>
-				<div class="modal-footer">
-					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-
-	@*Edit Org Details Modal*@
-	<div class="modal fade" id="myModallll">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Edit Org Details</h3>
-				</div>
-				<div class="modal-body" id="myModalBodyDiv1"></div>
-				<div class="modal-footer">
-					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-					<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
 
 	<script>
-		var ConfirmDelete = function (OrgId) {
-			$("#hiddenOrgId").val(OrgId);
-			$("#myModall").modal('show');
-		}
-		var DeleteOrg = function () {
-			var OrgId = $("#hiddenOrgId").val();
-			$.ajax({
-				type: "POST",
-				url: "/Orgs/DeleteConfirmed/",
-				data: { id: OrgId },
-				success: function (response) {
-					alert("Org Deleted");
-					$("#myModall").modal("hide");
-					window.location.reload();
+		$(document).ready(function () {
+			$('#myTable').DataTable(
+				{
+					"ordering": false,
 				}
-			})
-		}
-	</script>
-	<script>
-		var ShowOrg = function (Id) {
-			$.ajax({
-				type: "POST",
-				url: "/Orgs/OrgDetails",
-				data: { Id: Id },
-				success: function (response) {
-					$("#myModalBodyDiv").html(response);
-					$("#myModalll").modal("show");
-				}
-			})
-		}
-	</script>
-	<script>
-		var EditOrg = function (Id) {
-			$.ajax({
-				type: "GET",
-				url: "/Orgs/EditOrg",
-				data: { Id: Id },
-				success: function (response) {
-					$("#myModalBodyDiv1").html(response);
-					$("#myModallll").modal("show");
-				}
-			})
-		}
-	</script>
-	<script>
-		$("#edtSubmit").click(function () {
-			var data = $("#myFormm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/Orgs/Edit",
-				data: data,
-				success: function (response) {
-					alert("Org Updated");
-					$("#myModal").modal("hide");
-					$("#myFormm")[0].reset();
-					window.location.reload();
-				}
-			})
-		})
-	</script>
-
-
-
-
-
-
-
-	<script type="text/javascript">
-		$(function () {
-			$("#searchname").autocomplete({
-				source: function (request, response) {
-					$.ajax({
-						url: '/Orgs/AutoCompleteSchool/',
-						data: " {'prefix' : '" + request.term + "'}",
-						dataType: "json",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						success: function (data) {
-							response($.map(data, function (item) {
-								return item;
-							}))
-						},
-						error: function (response) {
-							alert(response.responseText);
-						},
-						failure: function (response) {
-							alert(response.responseText);
-						}
-					});
-				},
-				select: function (e, i) {
-					$("#hfName").val(i.item.val);
-				},
-				minLength: 0
-			});
+			);
 		});
-
-
-
-
 	</script>
+
 }
-
-
-

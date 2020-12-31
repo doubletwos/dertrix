@@ -131,8 +131,8 @@ namespace Dertrix.Controllers
         }
 
         // POST: OrgBrands/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             OrgBrand orgBrand = db.OrgBrands.Find(id);

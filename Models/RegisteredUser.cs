@@ -17,12 +17,12 @@ namespace Dertrix.Models
 
         public int RegisteredUserId { get; set; }
 
-        [Display(Name = "User's First Name")]
+        [Display(Name = "First Name")]
         [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
         [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
 
-        [Display(Name = "User's Last Name")]
+        [Display(Name = "Last Name")]
         [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
         [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
@@ -57,7 +57,7 @@ namespace Dertrix.Models
 
 
 
-        [Display(Name = "Mobile Telephone Number ")]
+        [Display(Name = "Telephone Number ")]
         public string Telephone { get; set; }
 
 

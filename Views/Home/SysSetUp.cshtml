@@ -1,44 +1,53 @@
-﻿@{
-	ViewBag.Title = "SysSetUp";
-}
-<h2>SysSetUp</h2>
-@{
-	ViewBag.Title = "SysAdminSetUp";
-}
+﻿<head>
+	@{
+		ViewBag.Title = "System Config";
+	}
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
 <div class="jumbotron" style="height:100vh;">
-	<div class="row">
-		<div class="col-md-3">
-			<p>
-				@{
-					Html.RenderAction("StudentUpdateSubject", "StudentSubjects");
-				}
-			</p>
-		</div>
-		<div class="col-md-3">
-		</div>
-		<div class="col-md-3">
-		</div>
-		<div class="col-md-3">
+	@Html.Partial("_WidgetDashboard")
+	<div>
+		<hr />
+		<div class="row">
+			<div class="col-md-3">
+				<p>
+					@{
+						Html.RenderAction("StudentUpdateSubject", "StudentSubjects");
+					}
+				</p>
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
 		</div>
 	</div>
+	<hr />
+	<br />
+
 </div>
-@section Scripts {
-	@Scripts.Render("~/bundles/jqueryval")
-}
-<script src="~/Scripts/jquery-3.4.1.js"></script>
-<script>
-	$("#stusubup").click(function () {
-		var data = $("#updatesubjects").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/StudentSubjects/StudentUpdateSubject",
-			data: data,
-			success: function (response) {
-				alert("Update in Progress");
-				$("#StuSubUp").modal("hide");
-				$("#updatesubjects")[0].reset();
-				window.location.reload();
-			}
+
+
+	@section Scripts {
+		@Scripts.Render("~/bundles/jqueryval")
+	}
+	<script src="~/Scripts/jquery-3.4.1.js"></script>
+	<script>
+		$("#stusubup").click(function () {
+			var data = $("#updatesubjects").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/StudentSubjects/StudentUpdateSubject",
+				data: data,
+				success: function (response) {
+					alert("Update in Progress");
+					$("#StuSubUp").modal("hide");
+					$("#updatesubjects")[0].reset();
+					window.location.reload();
+				}
+			})
 		})
-	})
-</script>
+	</script>

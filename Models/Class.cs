@@ -11,6 +11,7 @@ namespace Dertrix.Models
 
         public int ClassId { get; set; }
 
+        [Display(Name = "Class Name")]
         public string  ClassName { get; set; }
 
         public int? ClassRefNumb { get; set; }

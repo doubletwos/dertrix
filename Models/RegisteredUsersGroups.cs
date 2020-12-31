@@ -13,7 +13,14 @@ namespace Dertrix.Models
         public RegisteredUser RegisteredUser { get; set; }
 
         public int OrgGroupId { get; set; }
-        public OrgGroup OrgGroup  { get; set; }
+        public OrgGroup OrgGroup { get; set; }
+
+        public int RegUserOrgId { get; set; }
+
+        public string Email { get; set; }
+
+
+    
 
 
 

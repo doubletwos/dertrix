@@ -21,8 +21,10 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Welcome", "Access");
             }
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
 
-            var orgGroups = db.OrgGroups.Include(o => o.GroupType).Include(o => o.Org);
+            var orgGroups = db.OrgGroups.Where(x => x.OrgId == i).Include(o => o.GroupType).Include(o => o.Org);
             return View(orgGroups.ToList());
         }
 

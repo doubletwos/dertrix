@@ -236,6 +236,26 @@
     <Compile Include="Migrations\202012212213411_SprintDec2020-2.Designer.cs">
       <DependentUpon>202012212213411_SprintDec2020-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012300850254_SprintDec2020-3.cs" />
+    <Compile Include="Migrations\202012300850254_SprintDec2020-3.Designer.cs">
+      <DependentUpon>202012300850254_SprintDec2020-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012301339058_SprintDec2020-4.cs" />
+    <Compile Include="Migrations\202012301339058_SprintDec2020-4.Designer.cs">
+      <DependentUpon>202012301339058_SprintDec2020-4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012302220541_SprintDec2020-5.cs" />
+    <Compile Include="Migrations\202012302220541_SprintDec2020-5.Designer.cs">
+      <DependentUpon>202012302220541_SprintDec2020-5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012310835367_SprintDec2020-6.cs" />
+    <Compile Include="Migrations\202012310835367_SprintDec2020-6.Designer.cs">
+      <DependentUpon>202012310835367_SprintDec2020-6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012311807073_SprintDec2020-7.cs" />
+    <Compile Include="Migrations\202012311807073_SprintDec2020-7.Designer.cs">
+      <DependentUpon>202012311807073_SprintDec2020-7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -272,6 +292,7 @@
     <Compile Include="Models\Tribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AddNewPostViewModel.cs" />
     <Compile Include="ViewModels\NewRegisterUserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +511,7 @@
     <Content Include="Content\BespokeContents\_BespokeLayout1\login.html" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\signup.html" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\style.css" />
+    <Content Include="Views\EmailTemplates\HtmlPage.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -637,10 +659,12 @@
     <Content Include="Views\Shared\_MySubjectsCount.cshtml" />
     <Content Include="Views\Shared\_MySubjectsList.cshtml" />
     <Content Include="Views\StudentSubjects\MySubjects.cshtml" />
-    <Content Include="Views\Class\_AllClassCount.cshtml" />
-    <Content Include="Views\Class\_AllClassList.cshtml" />
+    <Content Include="Views\Shared\_AllClassCount.cshtml" />
+    <Content Include="Views\Shared\_AllClassList.cshtml" />
     <Content Include="Views\RegisteredUsers\ClassStudents.cshtml" />
     <Content Include="Views\Shared\_WidgetDashboard.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup1.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -656,6 +680,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RegisteredUsersGroups\" />
     <Folder Include="Views\Shared\Layouts\" />
   </ItemGroup>
   <ItemGroup>
@@ -701,6 +726,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012212213411_SprintDec2020-2.resx">
       <DependentUpon>202012212213411_SprintDec2020-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012300850254_SprintDec2020-3.resx">
+      <DependentUpon>202012300850254_SprintDec2020-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012301339058_SprintDec2020-4.resx">
+      <DependentUpon>202012301339058_SprintDec2020-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012302220541_SprintDec2020-5.resx">
+      <DependentUpon>202012302220541_SprintDec2020-5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012310835367_SprintDec2020-6.resx">
+      <DependentUpon>202012310835367_SprintDec2020-6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012311807073_SprintDec2020-7.resx">
+      <DependentUpon>202012311807073_SprintDec2020-7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

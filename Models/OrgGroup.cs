@@ -22,6 +22,8 @@ namespace Dertrix.Models
 
         public string  GroupName { get; set; }
 
+        public bool IsSelected { get; set; }
+
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? CreationDate { get; set; }

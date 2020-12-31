@@ -1,26 +1,32 @@
 ﻿@model Dertrix.Models.Religion
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addreligionmodal">New religion</a>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addreligionmodal">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+	New Religion
+</a>
 
 <div class="modal fade" id="addreligionmodal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add new religion</h3>
+				<h3 class="modal-title">New Religion</h3>
 			</div>
 			<div class="modal-body">
 				<form id="AddReligion">
 
 					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
 
 					<div class="form-horizontal">
 						<hr />
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 						<div class="form-group">
-							@Html.LabelFor(model => model.ReligionName, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
+								@Html.LabelFor(model => model.ReligionName, "Religion Name")
 								@Html.EditorFor(model => model.ReligionName, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.ReligionName, "", new { @class = "text-danger" })
 							</div>
@@ -28,7 +34,7 @@
 
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add religion" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="submit" value="Add Religion" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 					</div>
 
@@ -46,7 +52,9 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$("#btnSubmit").click(function () {
+		$("#btnSubmit").on("click", function () {
+			if ($("#AddReligion").valid()) {
+
 			var data = $("#AddReligion").serialize();
 			$.ajax({
 				type: "POST",
@@ -59,6 +67,9 @@
 					window.location.reload();
 				}
 			})
+
+			}
+
 		})
-	})
+	});
 </script>

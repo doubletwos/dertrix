@@ -1,154 +1,189 @@
 ﻿@model IEnumerable<Dertrix.Models.Domain>
-
-@{
-	ViewBag.Title = "Domains";
-}
-
 <head>
+
+	@{
+		ViewBag.Title = "Domains table";
+	}
 	<style>
 		.btn-group:hover .dropdown-menu {
 			display: block;
 		}
 	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<br />
-<br />
-<div class="jumbotron" style="height:100vh;">
 
+<div class="jumbotron" style="height:100vh;">
 	<div>
-		@{
-			Html.RenderAction("AddDomain", "Domains");
-		}
+		<hr />
+		<div class="row">
+			<div class="col-md-3">
+				@{
+					Html.RenderAction("AddDomain", "Domains");
+				}
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+		</div>
 	</div>
 	<hr />
 	<br />
-	<br />
-	<table class="table table-bordered table-responsive table-condensed">
-		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-			<th>
-				@Html.DisplayNameFor(model => model.DomainName)
-			</th>
-			<th></th>
-		</tr>
+	<div class="panel panel-default">
+		<table id="myTable" class="table table-bordered table-responsive table-condensed">
+			<thead>
 
-		@foreach (var item in Model)
-		{
-			<tr style="border-style: groove;">
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+					<th>
+						@Html.DisplayNameFor(model => model.DomainName)
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr style="border-style: groove;">
 
-				<td>
-					@Html.DisplayFor(modelItem => item.DomainName)
-				</td>
-				<td>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Action <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" style="background-color:white">
-							<li><a href="#" onclick="EditDomain(@item.DomainId)">Edit domain</a></li>
-							<li><a href="#" onclick="ConfirmDelete(@item.DomainId)">Remove domain</a></li>
-						</ul>
-					</div>
-				</td>
-			</tr>
-		}
+						<td>
+							@Html.DisplayFor(modelItem => item.DomainName)
+						</td>
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="EditDomain(@item.DomainId)">Edit domain</a></li>
+									<li><a href="#" onclick="ConfirmDelete(@item.DomainId)">Remove domain</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
 
-	</table>
-	<div>
-		<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+
+		</table>
+		<div>
+			<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+		</div>
 	</div>
 </div>
 
-	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-	<input type="hidden" id="hiddenDomainId" />
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenDomainId" />
 
 
 
 
 
 
-	@*Delete confirmation Modal*@
-	<div class="modal fade" id="DomainDeleteModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Remove Domain</h3>
-				</div>
-				<div class="modal-body">
-					<h3>Are you sure you want to remove this domain?</h3>
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteDomain()">Confirm</a>
-				</div>
+@*Delete confirmation Modal*@
+<div class="modal fade" id="DomainDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove Domain</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this domain?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteDomain()">Confirm</a>
 			</div>
 		</div>
 	</div>
+</div>
 
-	@*Edit domain modal*@
-	<div class="modal fade" id="DomainEditModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Edit domain</h3>
-				</div>
-				<div class="modal-body" id="DomainEditModalbody"></div>
-				<div class="modal-footer">
-					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-					<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
-				</div>
+@*Edit domain modal*@
+<div class="modal fade" id="DomainEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit domain</h3>
+			</div>
+			<div class="modal-body" id="DomainEditModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
 			</div>
 		</div>
 	</div>
+</div>
 
-	<script>
-		var ConfirmDelete = function (DomainId) {
-			$("#hiddenDomainId").val(DomainId);
-			$("#DomainDeleteModal").modal('show');
-		}
-		var DeleteDomain = function () {
-			var OrgType = $("#hiddenDomainId").val();
-			$.ajax({
-				type: "POST",
-				url: "/Domains/DeleteConfirmed/",
-				data: { id: OrgType },
-				success: function (response) {
-					alert("Domain deleted");
-					$("#DomainDeleteModal").modal("hide");
-					window.location.reload();
-				}
-			})
-		}
-	</script>
-
-	<script>
-		var EditDomain = function (Id) {
-			$.ajax({
-				type: "GET",
-				url: "/Domains/EditDomain",
-				data: { Id: Id },
-				success: function (response) {
-					$("#DomainEditModalbody").html(response);
-					$("#DomainEditModal").modal("show");
-				}
-			})
-		}
-	</script>
-	<script>
-		$("#edtSubmit").click(function () {
-			var data = $("#DomainEditForm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/Domains/Edit",
-				data: data,
-				success: function (response) {
-					alert("Domain updated");
-					$("#DomainEditModal").modal("hide");
-					$("#DomainEditForm")[0].reset();
-					window.location.reload();
-				}
-			})
+<script>
+	var ConfirmDelete = function (DomainId) {
+		$("#hiddenDomainId").val(DomainId);
+		$("#DomainDeleteModal").modal('show');
+	}
+	var DeleteDomain = function () {
+		var OrgType = $("#hiddenDomainId").val();
+		$.ajax({
+			type: "POST",
+			url: "/Domains/DeleteConfirmed/",
+			data: { id: OrgType },
+			success: function (response) {
+				alert("Domain deleted");
+				$("#DomainDeleteModal").modal("hide");
+				window.location.reload();
+			}
 		})
+	}
+</script>
+
+<script>
+	var EditDomain = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/Domains/EditDomain",
+			data: { Id: Id },
+			success: function (response) {
+				$("#DomainEditModalbody").html(response);
+				$("#DomainEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#DomainEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/Domains/Edit",
+			data: data,
+			success: function (response) {
+				alert("Domain updated");
+				$("#DomainEditModal").modal("hide");
+				$("#DomainEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>
+
+
+@section scripts{
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$('#myTable').DataTable(
+				{
+					"ordering": false,
+				}
+			);
+		});
 	</script>
 
+}

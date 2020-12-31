@@ -1,12 +1,8 @@
 ﻿@model IEnumerable<Dertrix.Models.OrgGroup>
-
-@{
-	ViewBag.Title = "Groups";
-}
-
 <head>
-
-
+	@{
+		ViewBag.Title = "Groups";
+	}
 	<style>
 
 		.btn-group:hover .dropdown-menu {
@@ -14,14 +10,25 @@
 		}
 	</style>
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-
-
-
-
 <div class="jumbotron" style="height:100vh;">
-
+	@Html.Partial("_WidgetDashboard")
+	<div>
+		<hr />
+		<div class="row">
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
+			</div>
+		</div>
+	</div>
+	<hr />
+	<br />
 	<div class="panel panel-default">
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
 			<thead>
@@ -40,15 +47,9 @@
 				</tr>
 			</thead>
 			<tbody>
-
-
 				@foreach (var item in Model)
 				{
 					<tr>
-
-
-
-
 						<td>
 							@Html.DisplayFor(modelItem => item.GroupName)
 						</td>
@@ -62,9 +63,7 @@
 								</button>
 								<ul class="dropdown-menu" style="background-color:white">
 									<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
-									<li><a href="#" onclick="UsersToGroup(@item.OrgGroupId)">Add Users</a></li>
-
-
+									@*<li><a href="#" onclick="UsersToGroup(@item.OrgGroupId)">Add Users</a></li>*@
 								</ul>
 							</div>
 						</td>
@@ -72,16 +71,9 @@
 					</tr>
 				}
 			</tbody>
-
-
 		</table>
-
 	</div>
-
 	<input type="hidden" id="hiddenOrgGroupId" />
-
-
-
 	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 
@@ -93,7 +85,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Members</h3>
+					<h3 class="modal-title">Group Members</h3>
 
 				</div>
 				<div class="modal-body" id="Grpmembersmodalbody"></div>
@@ -126,6 +118,26 @@
 
 @*Load Add users to group Form*@
 <div class="modal fade" id="AddUsersToGrpsmodal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Add Users</h3>
+
+			</div>
+			<div class="modal-body" id="AddGrpuserssmodalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Add User" class="RegUserOrgButtonColour" id="adduser" />
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@*Load Add users to group Form1*@
+<div class="modal fade" id="Addusertogroup1">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
