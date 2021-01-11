@@ -256,6 +256,30 @@
     <Compile Include="Migrations\202012311807073_SprintDec2020-7.Designer.cs">
       <DependentUpon>202012311807073_SprintDec2020-7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101011303225_SprintDec2020-8.cs" />
+    <Compile Include="Migrations\202101011303225_SprintDec2020-8.Designer.cs">
+      <DependentUpon>202101011303225_SprintDec2020-8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101011417547_SprintDec2020-9.cs" />
+    <Compile Include="Migrations\202101011417547_SprintDec2020-9.Designer.cs">
+      <DependentUpon>202101011417547_SprintDec2020-9.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101020848584_SprintDec2020-10.cs" />
+    <Compile Include="Migrations\202101020848584_SprintDec2020-10.Designer.cs">
+      <DependentUpon>202101020848584_SprintDec2020-10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101020952539_SprintDec2020-11.cs" />
+    <Compile Include="Migrations\202101020952539_SprintDec2020-11.Designer.cs">
+      <DependentUpon>202101020952539_SprintDec2020-11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101021116365_SprintDec2020-12.cs" />
+    <Compile Include="Migrations\202101021116365_SprintDec2020-12.Designer.cs">
+      <DependentUpon>202101021116365_SprintDec2020-12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101062044142_SprintDec2020HF.cs" />
+    <Compile Include="Migrations\202101062044142_SprintDec2020HF.Designer.cs">
+      <DependentUpon>202101062044142_SprintDec2020HF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -266,7 +290,6 @@
     <Compile Include="Models\FileType.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\GroupType.cs" />
-    <Compile Include="Models\Guardian.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -283,12 +306,14 @@
     <Compile Include="Models\RegisteredUsersGroups.cs" />
     <Compile Include="Models\RegisteredUserType.cs" />
     <Compile Include="Models\RegUsersAccessLog.cs" />
+    <Compile Include="Models\Relationship.cs" />
     <Compile Include="Models\Religion.cs" />
     <Compile Include="Models\SecondarySchoolUserRole.cs" />
     <Compile Include="Models\StudentGuardian.cs" />
     <Compile Include="Models\StudentRegForm.cs" />
     <Compile Include="Models\StudentSubject.cs" />
     <Compile Include="Models\Subject.cs" />
+    <Compile Include="Models\Title.cs" />
     <Compile Include="Models\Tribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -601,7 +626,6 @@
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup.cshtml" />
     <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_AddGuardian.cshtml" />
     <Content Include="Views\StudentGuardians\Create.cshtml" />
     <Content Include="Views\StudentGuardians\Delete.cshtml" />
     <Content Include="Views\StudentGuardians\Details.cshtml" />
@@ -665,6 +689,10 @@
     <Content Include="Views\Shared\_WidgetDashboard.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup1.cshtml" />
+    <Content Include="Views\RegisteredUsersGroups\_MyGroups.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\_MyOrgCount.cshtml" />
+    <Content Include="Views\RegisteredUserOrganisations\_MyOrgList.cshtml" />
+    <Content Include="Views\StudentGuardians\_MyGuardians.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -680,7 +708,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\RegisteredUsersGroups\" />
     <Folder Include="Views\Shared\Layouts\" />
   </ItemGroup>
   <ItemGroup>
@@ -741,6 +768,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012311807073_SprintDec2020-7.resx">
       <DependentUpon>202012311807073_SprintDec2020-7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101011303225_SprintDec2020-8.resx">
+      <DependentUpon>202101011303225_SprintDec2020-8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101011417547_SprintDec2020-9.resx">
+      <DependentUpon>202101011417547_SprintDec2020-9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101020848584_SprintDec2020-10.resx">
+      <DependentUpon>202101020848584_SprintDec2020-10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101020952539_SprintDec2020-11.resx">
+      <DependentUpon>202101020952539_SprintDec2020-11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101021116365_SprintDec2020-12.resx">
+      <DependentUpon>202101021116365_SprintDec2020-12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101062044142_SprintDec2020HF.resx">
+      <DependentUpon>202101062044142_SprintDec2020HF.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

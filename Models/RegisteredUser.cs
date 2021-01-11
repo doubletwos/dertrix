@@ -80,7 +80,7 @@ namespace Dertrix.Models
 
         public Org Org { get; set; }
 
-        public int SelectedOrg { get; set; }
+        public int? SelectedOrg { get; set; }
         public ICollection<int> SelectedOrgList { get; set; }
 
         public ICollection<RegisteredUserOrganisation> RegisteredUserOrganisations { get; set; }
@@ -124,6 +124,8 @@ namespace Dertrix.Models
 
 
         public int? RegUserOrgBrand { get; set; }
+
+        public int? TempIntHolder { get; set; } 
 
 
 

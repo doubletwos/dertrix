@@ -42,6 +42,7 @@ namespace Dertrix.Controllers
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
+                Session["IsAdmin"] = 15;
                 var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
                 return View(orgs1.ToList());
             }
@@ -59,25 +60,25 @@ namespace Dertrix.Controllers
             return View(orgs.ToList());
         }
 
-        public ActionResult JumpToOrg(int id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var orgName = Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName.FirstOrDefault());
-            var brandId = Session["brandId"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault().ToString();
-            var logo = Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.Content).FirstOrDefault();
-            var orgBrand = Session["regUserOrgBrand"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgBrandBar).FirstOrDefault();
-            var regUserOrgNavBar = Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgNavigationBar).FirstOrDefault();
-            var IsTesterOrgId = Session["IsTesterOrgId"] = id;
-            var IsTester = Session["IsTester"] = true;
-            return RedirectToAction("Index", "Orgs", new { id });
-        }
+        //public ActionResult JumpToOrg(int id)
+        //{
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Signin", "Access");
+        //    }
+        //    if ((int)Session["OrgId"] != 23)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    var orgName = Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName.FirstOrDefault());
+        //    var brandId = Session["brandId"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault().ToString();
+        //    var logo = Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.Content).FirstOrDefault();
+        //    var orgBrand = Session["regUserOrgBrand"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgBrandBar).FirstOrDefault();
+        //    var regUserOrgNavBar = Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgNavigationBar).FirstOrDefault();
+        //    var IsTesterOrgId = Session["IsTesterOrgId"] = id;
+        //    var IsTester = Session["IsTester"] = true;
+        //    return RedirectToAction("Index", "Orgs", new { id });
+        //}
 
         // GET: Orgs/Details/5
         public ActionResult Details(int? id)
@@ -154,10 +155,10 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Org org)
         {
-            var rud = Session["Email"].ToString();
-            var loggedinuser = db.RegisteredUsers.Where(x => x.Email == rud).Select(x => x.Email).SingleOrDefault();
-            var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == rud).Select(x => x.OrgId).FirstOrDefault();
-            if (rud != loggedinuser)
+            var rud = Session["Email"];
+            var loggedinuser = db.RegisteredUsers.Where(x => x.Email == rud.ToString()).Select(x => x.Email).FirstOrDefault();
+            var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == rud.ToString()).Select(x => x.OrgId).FirstOrDefault();
+            if (rud.ToString() != loggedinuser)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -167,14 +168,17 @@ namespace Dertrix.Controllers
                 org.CreationDate = DateTime.Now;
                 db.Orgs.Add(org);
                 db.SaveChanges();
+
                 var orgOrgType = new OrgOrgType()
                 {
                     OrgId = org.OrgId,
                     OrgName = org.OrgName,
                     OrgTypeId = (int)org.OrgTypeId
                 };
+
                 db.OrgOrgTypes.Add(orgOrgType);
                 db.SaveChanges();
+
                 // list of groups
                 var groups = db.GroupTypes.Where(x => (x.GroupOrgTypeId == org.OrgTypeId) || x.GroupOrgTypeId == null).Select(g => g.GroupTypeId).ToList();
                 var grouptypeid = new List<int>(groups);
@@ -195,8 +199,12 @@ namespace Dertrix.Controllers
                     db.OrgGroups.Add(orggroup);
                     db.SaveChanges();
                 }
-                return View(org);
+
+                return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
+
             }
+
+
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);
             ViewBag.OrgBrandId = new SelectList(db.OrgBrands, "OrgBrandId", "OrgBrandName", org.OrgBrandId);
             ViewBag.OrgTypeId = new SelectList(db.OrgTypes, "OrgTypeId", "OrgTypeName", org.OrgTypeId);
@@ -231,7 +239,7 @@ namespace Dertrix.Controllers
             return RedirectToAction("SystemAdminIndex");
         }
 
-        public ActionResult SystemAdminIndex(string searchname, string searchid)
+        public ActionResult SystemAdminIndex()
         {
             var isTester = Convert.ToInt32(Session["IsTester"]);
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
@@ -251,8 +259,8 @@ namespace Dertrix.Controllers
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
-                var org1 = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
-                return View(org1);
+                //var org1 = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
+                //return View(org1);
             }
             if (Session["OrgId"] == null)
             {
@@ -263,21 +271,8 @@ namespace Dertrix.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var org = db.Orgs.Where(x => x.OrgTypeId != 5).Include(t => t.OrgType).ToList();
-            // returns null at page load
-            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
-            {
-                return View(org);
-            }
-            // returns org if id is selected & searchname is null
-            else if (string.IsNullOrWhiteSpace(searchname) && !(string.IsNullOrWhiteSpace(searchid)))
-            {
-                return View(db.Orgs.Where(i => i.OrgId.ToString() == searchid).Include(t => t.OrgType).ToList());
-            }
-            // returns org if searchname is selected & id is null
-            else if (!(string.IsNullOrWhiteSpace(searchname) && (string.IsNullOrWhiteSpace(searchid))))
-            {
-                return View(db.Orgs.Where(n => n.OrgName == searchname).Include(t => t.OrgType).ToList());
-            }
+
+   
             return View(org);
         }
 

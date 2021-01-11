@@ -31,7 +31,7 @@ namespace Dertrix.Controllers
         public ActionResult Signin(RegisteredUser registeredUser)
         {
             var reguserdetails = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email && x.Password == registeredUser.Password).FirstOrDefault();
-            var orgredirect = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.SelectedOrg).FirstOrDefault();
+            var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.OrgId).FirstOrDefault();
             var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
             var regUserOrgBrand = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.RegUserOrgBrand).FirstOrDefault();
             //var isadmin = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
@@ -56,8 +56,13 @@ namespace Dertrix.Controllers
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.Content).FirstOrDefault();
                 Session["IsTester"] = reguserdetails.IsTester;
                 Session["OrgType"] = db.Orgs.Where(x => x.OrgId == orgredirect).Select(x => x.OrgTypeId).FirstOrDefault();
-                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
+                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).Where(x => x.RegUserOrgId == orgredirect).Select(x => x.OrgGroupId).FirstOrDefault();
                 Session["IsParent/Guardian"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
+
+
+
+
+
             }
             var reguseraccessLogs = new RegUsersAccessLog
             {
@@ -91,17 +96,17 @@ namespace Dertrix.Controllers
             {
                 var logouttime = DateTime.Now;
                 var getsession = db.RegUsersAccessLogs.AsNoTracking().Where(x => x.SessionId == id).FirstOrDefault();
-                var getsession1 = new RegUsersAccessLog
-                {
-                    RegUsersAccessLogId = getsession.RegUsersAccessLogId,
-                    OrgId = getsession.OrgId,
-                    SessionId = getsession.SessionId,
-                    RegUserId = getsession.RegUserId,
-                    UserFullName = getsession.UserFullName,
-                    LogInTime = getsession.LogInTime,
-                    LogOutTime = logouttime
-                };
-                getsession = getsession1;
+                //var getsession1 = new RegUsersAccessLog
+                //{
+                //    RegUsersAccessLogId = getsession.RegUsersAccessLogId,
+                //    OrgId = getsession.OrgId,
+                //    SessionId = getsession.SessionId,
+                //    RegUserId = getsession.RegUserId,
+                //    UserFullName = getsession.UserFullName,
+                //    LogInTime = getsession.LogInTime,
+                //    LogOutTime = logouttime
+                //};
+                //getsession = getsession1;
                 //db.Entry(getsession).State = EntityState.Modified;
                 //db.SaveChanges();
                 Session.Abandon();

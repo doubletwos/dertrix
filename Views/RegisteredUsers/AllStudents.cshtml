@@ -15,8 +15,9 @@
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
+
 		<div class="row">
-			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+			@if ((int)Session["IsAdmin"] == 15 )
 			{
 				<div class="col-md-3">
 					@{
@@ -24,6 +25,7 @@
 					}
 				</div>
 			}
+
 			<div class="col-md-3">
 			</div>
 			<div class="col-md-3">
@@ -171,6 +173,14 @@
 	var ShowStudent = function (Id) {
 		$.ajax({
 			type: "POST",
+			url: "/StudentGuardians/MyGuardians",
+			data: { Id: Id },
+			success: function (response) {
+			}
+		}),
+
+		$.ajax({
+			type: "POST",
 			url: "/RegisteredUsers/StudentDetails",
 			data: { Id: Id },
 			success: function (response) {
@@ -178,6 +188,8 @@
 				$("#myModalll4").modal("show");
 			}
 		})
+
+
 	}
 </script>
 <script>

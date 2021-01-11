@@ -165,6 +165,7 @@ $(document).ready(function () {
 			'Email': {
 				required: true,
 			}
+	
 		},
 		messages: {
 			'FirstName': 'Please enter first name',
@@ -700,5 +701,11 @@ $(document).ready(function () {
 		}
 	});
 });
+
+
+$(document).ready(function () {
+  
+});
+
 
 

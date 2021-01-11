@@ -17,9 +17,28 @@ namespace Dertrix.Controllers
         // GET: StudentGuardians
         public ActionResult Index()
         {
-            var studentGuardians = db.StudentGuardians.Include(s => s.Guardian).Include(s => s.RegisteredUser);
+            var studentGuardians = db.StudentGuardians.Include(s => s.RegisteredUser);
             return View(studentGuardians.ToList());
         }
+
+
+
+
+        public ActionResult MyGuardians(int id)
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            var Myguardians = db.StudentGuardians
+                .Where(x => x.StudentId == id && x.OrgId == i)
+                .ToList();
+
+            return PartialView("_MyGuardians", Myguardians);
+        }
+
+
+
+
 
         // GET: StudentGuardians/Details/5
         public ActionResult Details(int? id)
@@ -39,7 +58,6 @@ namespace Dertrix.Controllers
         // GET: StudentGuardians/Create
         public ActionResult Create()
         {
-            ViewBag.GuardianId = new SelectList(db.Guardians, "GuardianId", "GuardianFirstName");
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName");
             return View();
         }
@@ -56,7 +74,6 @@ namespace Dertrix.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GuardianId = new SelectList(db.Guardians, "GuardianId", "GuardianFirstName", studentGuardian.GuardianId);
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentGuardian.RegisteredUserId);
             return View(studentGuardian);
         }
@@ -73,7 +90,6 @@ namespace Dertrix.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.GuardianId = new SelectList(db.Guardians, "GuardianId", "GuardianFirstName", studentGuardian.GuardianId);
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentGuardian.RegisteredUserId);
             return View(studentGuardian);
         }
@@ -89,7 +105,6 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GuardianId = new SelectList(db.Guardians, "GuardianId", "GuardianFirstName", studentGuardian.GuardianId);
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentGuardian.RegisteredUserId);
             return View(studentGuardian);
         }

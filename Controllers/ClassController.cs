@@ -150,7 +150,9 @@ namespace Dertrix.Controllers
             int i = Convert.ToInt32(rr);
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
             ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-            return View(@Class);
+
+            return RedirectToAction("SystemAdminIndex");
+
         }
 
         public ActionResult EditClass(int Id)

@@ -200,11 +200,6 @@ namespace Dertrix.Controllers
 
             }
 
-
-
-
-
-
             //selected org list
             var selectedgroups = viewmodel.OrgGroups.Where(x => x.IsSelected == true).Select(x => x.OrgGroupId).ToList();
             var selectedgroupid = new List<int>(selectedgroups);

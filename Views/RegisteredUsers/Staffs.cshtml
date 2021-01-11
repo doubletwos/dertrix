@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dertrix.Models.RegisteredUser>
+﻿@model IEnumerable<Dertrix.Models.RegisteredUserOrganisation>
 <head>
 	@{
 		ViewBag.Title = "All staffs";
@@ -15,15 +15,18 @@
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
+
 		<div class="row">
-			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+			@if ((int)Session["IsAdmin"] == 15)
 			{
 				<div class="col-md-3">
 					@{
 						Html.RenderAction("AddStaff", "RegisteredUsers");
+
 					}
 				</div>
-			}
+			 }
+
 			<div class="col-md-3">
 			</div>
 			<div class="col-md-3">
@@ -48,9 +51,9 @@
 					<th>
 						Email Address
 					</th>
-					<th>
+					@*<th>
 						Role
-					</th>
+					</th>*@
 					<th>
 						Registration Date
 					</th>
@@ -72,10 +75,10 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.Email)
 						</td>
-						<td>
+						@*<td>
 							@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
 							@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
-						</td>
+						</td>*@
 						<td>
 							@Html.DisplayFor(modelItem => item.EnrolmentDate)
 						</td>
@@ -169,8 +172,21 @@
 		})
 	}
 </script>
+
+
+
 <script>
 	var ShowStaff = function (Id) {
+		$.ajax({
+			type: "POST",
+			url: "/RegisteredUsersGroups/MyGroups",
+			data: { Id: Id },
+			success: function (response) {
+			}
+		}),
+
+
+
 		$.ajax({
 			type: "POST",
 			url: "/RegisteredUsers/StaffDetails",
@@ -180,8 +196,17 @@
 				$("#myModalll").modal("show");
 			}
 		})
+	
+
 	}
 </script>
+
+
+
+
+
+
+
 <script>
 	var EditStaff = function (Id) {
 		$.ajax({

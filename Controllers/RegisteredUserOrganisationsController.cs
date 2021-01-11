@@ -43,6 +43,35 @@ namespace Dertrix.Controllers
 
         }
 
+
+
+        [ChildActionOnly]
+        public ActionResult MyOrgCount()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var myorgCount = db.RegisteredUserOrganisations
+                .Where(x => x.OrgId == i)
+                .Where(j => j.RegisteredUserId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MyOrgCount", myorgCount);
+        }
+
+        public ActionResult MyOrgList()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var myorgCount = db.RegisteredUserOrganisations
+                .Where(j => j.RegisteredUserId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MyOrgList", myorgCount);
+        }
+
+
         // GET: RegisteredUserOrganisations/Details/5
         public ActionResult Details(int? id)
         {

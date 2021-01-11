@@ -46,9 +46,11 @@ namespace Dertrix.Models
         public DbSet<GroupType> GroupTypes { get; set; }
         public DbSet<OrgGroup> OrgGroups { get; set; }
         public DbSet<RegisteredUsersGroups> RegisteredUsersGroups { get; set; }
-        public DbSet<Guardian> Guardians { get; set; }
         public DbSet<StudentGuardian> StudentGuardians { get; set; }
         public DbSet<RegUsersAccessLog> RegUsersAccessLogs { get; set; }
+        public DbSet<Relationship> Relationships { get; set; }
+        public DbSet<Title> Titles { get; set; }
+
 
 
 

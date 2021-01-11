@@ -11,12 +11,7 @@ namespace Dertrix.Models
         public int StudentGuardianId { get; set; }
 
         public int RegisteredUserId { get; set; }
-
         public RegisteredUser RegisteredUser { get; set; }
-
-        public int GuardianId { get; set; }
-
-        public Guardian Guardian { get; set; }
 
         public string GuardianFirstName { get; set; }
 
@@ -26,9 +21,14 @@ namespace Dertrix.Models
 
         public string GuardianEmailAddress { get; set; }
 
+        public int StudentId { get; set; }
+        public string StudentFullName { get; set; }
+
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }
+
+        public int OrgId { get; set; } 
 
 
     }

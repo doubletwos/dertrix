@@ -140,8 +140,12 @@ namespace Dertrix.Controllers
             return PartialView("_StudentDetails");
         }
 
+
+
+
         public ActionResult StaffDetails(int Id)
         {
+          
             var stud = db.RegisteredUsers
                 .Where(x => x.RegisteredUserId == Id);
             ViewBag.RegisteredUser = stud;
@@ -195,7 +199,8 @@ namespace Dertrix.Controllers
                     .Include(c => c.Class)
                     .Where(x => x.RegisteredUserId == Id)
                     .FirstOrDefault();
-                ViewBag.GuardianId = new SelectList(db.Guardians, "GuardianId", "GuardianFirstName");
+                ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+                ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
                 var stud = new RegisteredUser
                 {
                     RegisteredUserId = stud1.RegisteredUserId,
@@ -298,7 +303,7 @@ namespace Dertrix.Controllers
         }
 
         // GET: RegisteredUsers/Staffs/
-        public ActionResult Staffs(int? id, string searchname, string searchid)
+        public ActionResult Staffs(int? id)
         {
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
@@ -312,41 +317,19 @@ namespace Dertrix.Controllers
                 int i = Convert.ToInt32(rr);
                 id = i;
             }
-            /*Returns Dertrix staff - if & when name is provided*/
-            if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchname))
-            {
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Include(t => t.RegisteredUserType).ToList());
-            }
-            /*Returns Dertrix staff - if & when id is provided*/
-            if ((int)Session["OrgId"] == 23 && !string.IsNullOrWhiteSpace(searchid))
-            {
-                int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(r => r.RegisteredUserId == reguserid).Include(t => t.RegisteredUserType).ToList());
-            }
-            /*Returns Dertrix staff - upon page load*/
-            if ((int)Session["OrgId"] == 23 && string.IsNullOrWhiteSpace(searchname))
-            {
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Include(t => t.RegisteredUserType).ToList());
-            }
-            /*Returns NON Dertrix staff - if & when name is provided*/
-            if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchname))
-            {
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(f => f.FullName == searchname).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
-            }
-            /*Returns NON Dertrix staff - if & when id is provided*/
-            if ((int)Session["OrgId"] != 23 && !string.IsNullOrWhiteSpace(searchid))
-            {
-                int reguserid = Convert.ToInt32(searchid);
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(r => r.RegisteredUserId == reguserid).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).ToList());
-            }
-            /*Returns NON Dertrix staff - upon page load*/
-            if ((int)Session["OrgId"] != 23 && string.IsNullOrWhiteSpace(searchname))
-            {
-                return View(db.RegisteredUsers.Where(j => j.SelectedOrg == id).Where(p => p.StudentRegFormId == null).Include(t => t.RegisteredUserType).Include(s => s.SecondarySchoolUserRole).Include(s => s.PrimarySchoolUserRole)
-                    .ToList());
-            }
-            return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
+
+
+            var staffs = db.RegisteredUserOrganisations
+                .Where(j => j.OrgId == id)
+                .Where(p => p.PrimarySchoolUserRoleId != null || p.SecondarySchoolUserRoleId != null)
+                .Where(p => p.PrimarySchoolUserRoleId != 5)
+                .Where(p => p.SecondarySchoolUserRoleId != 5)
+
+                .ToList();
+
+            return View(staffs);
         }
+
 
         public JsonResult AutoCompleteStaffFullname(string prefix, int? id)
         {
@@ -411,6 +394,9 @@ namespace Dertrix.Controllers
             return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
         }
 
+
+
+
         // POST: RegisteredUsers/Create
         [HttpPost]
         public ActionResult Create(RegisteredUser registeredUser)
@@ -418,47 +404,105 @@ namespace Dertrix.Controllers
             /*Accepting all state of model*/
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
-                //Add existing user to another organsation 
+                // 1- Checking if user already exist on the system 
                 var checkemail = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.Email).FirstOrDefault();
                 var firstname = db.RegisteredUsers.Where(x => x.FirstName == registeredUser.FirstName).Select(x => x.FirstName).FirstOrDefault();
                 var lastname = db.RegisteredUsers.Where(x => x.LastName == registeredUser.LastName).Select(x => x.LastName).FirstOrDefault();
-                if (checkemail != null && checkemail == registeredUser.Email && firstname == registeredUser.FirstName && lastname == registeredUser.LastName)
+
+                //sTEP 1 - Checking if email address is already in DB - If in DB assign the existing values to object
+                if (checkemail != null)
                 {
-                    registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.RegisteredUserId).FirstOrDefault();
-                    registeredUser.RegisteredUserTypeId = 2;
-                    registeredUser.FirstName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.FirstName).FirstOrDefault();
-                    registeredUser.LastName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.LastName).FirstOrDefault();
-                    registeredUser.Email = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Email).FirstOrDefault();
-                    registeredUser.Password = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Password).FirstOrDefault();
-                    registeredUser.ConfirmPassword = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.ConfirmPassword).FirstOrDefault();
-                    registeredUser.Telephone = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.Telephone).FirstOrDefault();
-                    var Dertrixuser = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
-                    int k = Convert.ToInt32(Dertrixuser);
-                    registeredUser.SelectedOrg = k;
-                    registeredUser.PrimarySchoolUserRoleId = 3;
-                    registeredUser.SecondarySchoolUserRoleId = 4;
-                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
-                    registeredUser.FullName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(i => i.FullName).FirstOrDefault();
-                    registeredUser.RegUserOrgBrand = db.Orgs.Where(x => x.OrgId == k).Select(i => i.OrgBrandId).FirstOrDefault();
-                    registeredUser.IsTester = true;
-                    /*Adding users to the RegUserOrg(Many to Many)*/
-                    var onetomany = new RegisteredUserOrganisation()
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
+                    if (registeredUser.SecondarySchoolUserRoleId != 5 && registeredUser.PrimarySchoolUserRoleId != 5)
                     {
-                        RegisteredUserId = registeredUser.RegisteredUserId,
-                        OrgId = registeredUser.SelectedOrg,
-                        Email = registeredUser.Email,
-                        FirstName = registeredUser.FirstName,
-                        LastName = registeredUser.LastName,
-                        OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault(),
-                        RegUserOrgBrand = registeredUser.RegUserOrgBrand,
-                        RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
-                        IsTester = registeredUser.IsTester
-                    };
-                    db.RegisteredUserOrganisations.Add(onetomany);
-                    db.SaveChanges();
-                    return RedirectToAction("Students", "RegisteredUsers");
+                        registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(d => d.RegisteredUserId).FirstOrDefault();
+                    }
+                    registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.FirstName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.FirstName).FirstOrDefault();
+                    registeredUser.LastName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.LastName).FirstOrDefault();
+                    registeredUser.Email = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.Email).FirstOrDefault();
+                    registeredUser.Password = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.Password).FirstOrDefault();
+                    registeredUser.ConfirmPassword = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.ConfirmPassword).FirstOrDefault();
+                    registeredUser.Telephone = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.Telephone).FirstOrDefault();
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
+                    registeredUser.FullName = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(c => c.FullName).FirstOrDefault();
+                    registeredUser.SelectedOrg = i;
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgBrandId).FirstOrDefault();
+                    int j = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.RegUserOrgBrand = j;
+
+                    /*STEP 2 - Adding already existing users to the RegUserOrg(Many to Many)*/
+                    var reguserinorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Where(x => x.OrgId == i).FirstOrDefault();
+                    if (reguserinorg == null)
+                    {
+
+                        var regusrid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
+                        var onetomany = new RegisteredUserOrganisation()
+                        {
+                            RegisteredUserId = regusrid,
+                            OrgId = i,
+                            Email = registeredUser.Email,
+                            FirstName = registeredUser.FirstName,
+                            LastName = registeredUser.LastName,
+                            OrgName = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgName).FirstOrDefault(),
+                            RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                            RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
+                            PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
+                            SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                            EnrolmentDate = DateTime.Now,
+                            CreatedBy = Session["RegisteredUserId"].ToString(),
+                            FullName = registeredUser.FullName
+                        };
+                        db.RegisteredUserOrganisations.Add(onetomany);
+                        db.SaveChanges();
+
+                        if (registeredUser.PrimarySchoolUserRoleId != 5 || registeredUser.SecondarySchoolUserRoleId != 5)
+                        {
+                            registeredUser.TempIntHolder = registeredUser.RegisteredUserId;
+                            var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
+                            string clear = null;
+                            registeredUser.RegisteredUserId = Convert.ToInt32(clear);
+                            var reguserid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
+                            var studentguardian = new StudentGuardian()
+                            {
+                                RegisteredUserId = reguserid,
+                                GuardianFirstName = registeredUser.FirstName,
+                                GuardianLastName = registeredUser.LastName,
+                                GuardianFullName = registeredUser.FullName,
+                                GuardianEmailAddress = registeredUser.Email,
+                                StudentId = (int)registeredUser.TempIntHolder,
+                                StudentFullName = studentfullname,
+                                DateAdded = DateTime.Now,
+                                OrgId = i
+                            };
+                            if (registeredUser.PrimarySchoolUserRoleId == 5 || registeredUser.SecondarySchoolUserRoleId == 5)
+                            {
+                                db.StudentGuardians.Add(studentguardian);
+                                db.SaveChanges();
+                                return RedirectToAction("Students", "RegisteredUsers");
+                            }
+                            var reguserinorg1 = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Where(x => x.OrgId == i).FirstOrDefault();
+                            if (reguserinorg1 != null)
+                            {
+                                return RedirectToAction("Staffs", "RegisteredUsers");
+                            }
+
+                            else
+                            {
+                                db.RegisteredUserOrganisations.Add(onetomany);
+                                db.SaveChanges();
+                                return RedirectToAction("Staffs", "RegisteredUsers");
+                            }
+                        }
+                        else
+                        {
+                            return RedirectToAction("Staffs", "RegisteredUsers");
+                        }
+                    }
                 }
-                /*When users are added at Dertrix Level*/
+
+                /* STEP 3- When Dertrix users are added at Dertrix Level*/
                 if (registeredUser.SelectedOrgList != null)
                 {
                     var Dertrixuser = registeredUser.SelectedOrgList.FirstOrDefault().ToString();
@@ -474,11 +518,36 @@ namespace Dertrix.Controllers
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
                     registeredUser.RegisteredUserTypeId = registeredUser.RegisteredUserTypeId;
+                    db.RegisteredUsers.Add(registeredUser);
+                    db.SaveChanges();
+                    var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgId = i,
+                        Email = registeredUser.Email,
+                        FirstName = registeredUser.FirstName,
+                        LastName = registeredUser.LastName,
+                        OrgName = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgName).FirstOrDefault(),
+                        RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                        IsTester = registeredUser.IsTester,
+                        RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
+                        PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                        EnrolmentDate = DateTime.Now,
+                        CreatedBy = Session["RegisteredUserId"].ToString(),
+                        FullName = registeredUser.FullName
+                    };
+                    db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
+                    db.SaveChanges();
+                    return RedirectToAction("SysAdminSetUp", "Home");
                 }
-                /*When staffs are added at school level*/
-                if (registeredUser.SelectedOrgList == null && registeredUser.StudentRegFormId == null)
+
+                /*STEP 4- When NEW staff sare added at school level*/
+                var chkifusrexist0 = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(x => x.RegisteredUserId).FirstOrDefault();
+                if (registeredUser.StudentRegFormId == null && registeredUser.SelectedOrg != 23 && chkifusrexist0 == 0)
                 {
-                    registeredUser.SelectedOrg = (int)Session["OrgId"];
+                    var rr1 = Session["OrgId"].ToString();
+                    int w1 = Convert.ToInt32(rr1);
                     registeredUser.Email = registeredUser.Email;
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
@@ -487,14 +556,143 @@ namespace Dertrix.Controllers
                     registeredUser.RegisteredUserTypeId = 2;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
-                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgBrandId).FirstOrDefault();
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == w1).Select(x => x.OrgBrandId).FirstOrDefault();
                     int j = Convert.ToInt32(regUserOrgBrand);
                     registeredUser.RegUserOrgBrand = j;
+                    db.RegisteredUsers.Add(registeredUser);
+                    db.SaveChanges();
+
+                    /*Adding users to the RegUserOrg(Many to Many)*/
+                    var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgId = w1,
+                        Email = registeredUser.Email,
+                        FirstName = registeredUser.FirstName,
+                        LastName = registeredUser.LastName,
+                        OrgName = db.Orgs.Where(x => x.OrgId == w1).Select(x => x.OrgName).FirstOrDefault(),
+                        RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                        IsTester = registeredUser.IsTester,
+                        RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
+                        PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                        EnrolmentDate = DateTime.Now,
+                        CreatedBy = Session["RegisteredUserId"].ToString(),
+                        FullName = registeredUser.FullName
+                    };
+                    db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
+                    db.SaveChanges();
+                    return RedirectToAction("Staffs", "RegisteredUsers");
                 }
-                /*When students are added at school level*/
+
+                /*STEP 5- When new  Guardians are added at school level*/
+                var rr2 = Session["OrgId"].ToString();
+                int w2 = Convert.ToInt32(rr2);
+                var chkifguardianexist1 = db.StudentGuardians.Where(x => x.GuardianEmailAddress == registeredUser.Email).Where(x => x.OrgId == w2).Select(x => x.GuardianEmailAddress).FirstOrDefault();
+                if (chkifguardianexist1 == null && registeredUser.StudentRegFormId == null)
+                {
+                    var rr = Session["OrgId"].ToString();
+                    int w = Convert.ToInt32(rr);
+                    registeredUser.Email = registeredUser.Email;
+                    var pwd = "iamanewuser";
+                    registeredUser.Password = pwd;
+                    registeredUser.ConfirmPassword = pwd;
+                    registeredUser.FullName = registeredUser.ContactFullName;
+                    registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
+                    registeredUser.EnrolmentDate = DateTime.Now;
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == w).Select(x => x.OrgBrandId).FirstOrDefault();
+                    int j = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.RegUserOrgBrand = j;
+                    registeredUser.TempIntHolder = registeredUser.RegisteredUserId;
+                    string clear = null;
+                    registeredUser.RegisteredUserId = Convert.ToInt32(clear);
+                    db.RegisteredUsers.Add(registeredUser);
+                    db.SaveChanges();
+                    var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgId = w,
+                        Email = registeredUser.Email,
+                        FirstName = registeredUser.FirstName,
+                        LastName = registeredUser.LastName,
+                        OrgName = db.Orgs.Where(x => x.OrgId == w).Select(x => x.OrgName).FirstOrDefault(),
+                        RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                        IsTester = registeredUser.IsTester,
+                        RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
+                        PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                        EnrolmentDate = DateTime.Now,
+                        CreatedBy = Session["RegisteredUserId"].ToString(),
+                        FullName = registeredUser.FullName
+                    };
+                    db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
+                    db.SaveChanges();
+                    var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
+                    var studentguardian = new StudentGuardian()
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        GuardianFirstName = registeredUser.FirstName,
+                        GuardianLastName = registeredUser.LastName,
+                        GuardianFullName = registeredUser.FullName,
+                        GuardianEmailAddress = registeredUser.Email,
+                        StudentId = (int)registeredUser.TempIntHolder,
+                        StudentFullName = studentfullname,
+                        DateAdded = DateTime.Now,
+                        OrgId = w
+                    };
+                    db.StudentGuardians.Add(studentguardian);
+                    db.SaveChanges();
+                    return RedirectToAction("Students", "RegisteredUsers");
+                }
+
+                //*STEP 6- When Existing Guardians are added at school level*/
+                var rr3 = Session["OrgId"].ToString();
+                int w3 = Convert.ToInt32(rr3);
+                var chkifguardianexist0 = db.StudentGuardians.Where(x => x.GuardianEmailAddress == registeredUser.Email).Where(x => x.OrgId == w3).Select(x => x.GuardianEmailAddress).FirstOrDefault();
+                if (chkifguardianexist0 != null && registeredUser.StudentRegFormId == null)
+                {
+                    var oi = Session["OrgId"].ToString();
+                    int p = Convert.ToInt32(oi);
+                    registeredUser.Email = registeredUser.Email;
+                    var pwd = "iamanewuser";
+                    registeredUser.Password = pwd;
+                    registeredUser.ConfirmPassword = pwd;
+                    registeredUser.FullName = registeredUser.ContactFullName;
+                    registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
+                    registeredUser.EnrolmentDate = DateTime.Now;
+                    var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == p).Select(x => x.OrgBrandId).FirstOrDefault();
+                    int w = Convert.ToInt32(regUserOrgBrand);
+                    registeredUser.RegUserOrgBrand = w;
+                    registeredUser.TempIntHolder = registeredUser.RegisteredUserId;
+                    string clear = null;
+                    registeredUser.RegisteredUserId = Convert.ToInt32(clear);
+                    var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
+                    var reguserid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
+                    var studentguardian = new StudentGuardian()
+                    {
+                        RegisteredUserId = reguserid,
+                        GuardianFirstName = registeredUser.FirstName,
+                        GuardianLastName = registeredUser.LastName,
+                        GuardianFullName = registeredUser.FullName,
+                        GuardianEmailAddress = registeredUser.Email,
+                        StudentId = (int)registeredUser.TempIntHolder,
+                        StudentFullName = studentfullname,
+                        DateAdded = DateTime.Now,
+                        OrgId = w3
+                    };
+                    db.StudentGuardians.Add(studentguardian);
+                    db.SaveChanges();
+                    return RedirectToAction("Students", "RegisteredUsers");
+                }
+
+                /*STEP 7- When students are added at school level*/
                 if (registeredUser.SelectedOrgList == null && registeredUser.StudentRegFormId != null)
                 {
-                    registeredUser.SelectedOrg = (int)Session["OrgId"];
+                    var rr4 = Session["OrgId"].ToString();
+                    int w4 = Convert.ToInt32(rr4);
+                    registeredUser.SelectedOrg = w4;
                     var email = "iamanewuser@thisorg.com";
                     registeredUser.Email = email;
                     var pwd = "iamanewuser";
@@ -508,31 +706,35 @@ namespace Dertrix.Controllers
                     int j = Convert.ToInt32(regUserOrgBrand);
                     registeredUser.ClassRef = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
                     registeredUser.RegUserOrgBrand = j;
+                    db.RegisteredUsers.Add(registeredUser);
+                    db.SaveChanges();
+                    var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgId = w4,
+                        Email = registeredUser.Email,
+                        FirstName = registeredUser.FirstName,
+                        LastName = registeredUser.LastName,
+                        OrgName = db.Orgs.Where(x => x.OrgId == w4).Select(x => x.OrgName).FirstOrDefault(),
+                        RegUserOrgBrand = registeredUser.RegUserOrgBrand,
+                        IsTester = registeredUser.IsTester,
+                        RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
+                        PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                        EnrolmentDate = DateTime.Now,
+                        CreatedBy = Session["RegisteredUserId"].ToString(),
+                        FullName = registeredUser.FullName
+                    };
+                    db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
+                    db.SaveChanges();
+                    return RedirectToAction("Students", "RegisteredUsers");
                 }
-                /*When parents are added at school level*/
-                db.RegisteredUsers.Add(registeredUser);
-                db.SaveChanges();
-                /*Adding users to the RegUserOrg(Many to Many)*/
-                var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
-                {
-                    RegisteredUserId = registeredUser.RegisteredUserId,
-                    OrgId = registeredUser.SelectedOrg,
-                    Email = registeredUser.Email,
-                    FirstName = registeredUser.FirstName,
-                    LastName = registeredUser.LastName,
-                    OrgName = db.Orgs.Where(x => x.OrgId == registeredUser.SelectedOrg).Select(x => x.OrgName).FirstOrDefault(),
-                    RegUserOrgBrand = registeredUser.RegUserOrgBrand,
-                };
-                db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
-                db.SaveChanges();
-                return RedirectToAction("Students", "RegisteredUsers");
             }
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.SelectedOrgList = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
             return View(registeredUser);
         }
-
 
         // POST: RegisteredUsers/Edit/5
         [HttpPost]

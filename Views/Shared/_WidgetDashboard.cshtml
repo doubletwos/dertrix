@@ -13,10 +13,7 @@
 
 	}
 	</style>
-
 </head>
-
-
 
 <div class="container">
 	<ul class="nav nav-pills" role="tablist">
@@ -34,7 +31,7 @@
 			<li role="presentation" class="active">
 				<a href="@Url.Action("AllStudents", "RegisteredUsers")">
 					<i class="fa fa-users fa-2x" aria-hidden="true"></i>
-					Registered Students <span class="badge">
+					All Students <span class="badge">
 						@{
 							Html.RenderAction("StudentCount", "RegisteredUsers");
 						}
@@ -74,6 +71,16 @@
 				</span>
 			</a>
 		</li>
+		<li role="presentation" class="active" id="MyclassCountWidget" onclick="DisplayModal3()">
+			<a href="#">
+				<i class="fa fa-exchange fa-2x" aria-hidden="true"></i>
+				Jump to <span class="badge">
+					@{
+						Html.RenderAction("MyOrgCount", "RegisteredUserOrganisations");
+					}
+				</span>
+			</a>
+		</li>
 
 	</ul>
 </div>
@@ -94,7 +101,7 @@
 	</div>
 </div>
 
-
+@*Display SubjectList modal*@
 <div class="modal fade" id="SubjectslistModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -110,6 +117,7 @@
 	</div>
 </div>
 
+@*Display AllclassList modal*@
 <div class="modal fade" id="AllClasslistModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -118,6 +126,22 @@
 				<h3 class="modal-title">All class list</h3>
 			</div>
 			<div class="modal-body" id="AllClassListModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</div>
+
+@*Display AllOtgList modal*@
+<div class="modal fade" id="AllschoolListModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">My school list</h3>
+			</div>
+			<div class="modal-body" id="AllschoolListModalbody"></div>
 			<div class="modal-footer">
 				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
 			</div>
@@ -163,6 +187,20 @@
 			success: function (response) {
 				$("#AllClassListModalbody").html(response);
 				$("#AllClasslistModal").modal("show");
+			}
+		})
+	}
+</script>
+
+<script>
+	var DisplayModal3 = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/RegisteredUserOrganisations/MyOrgList",
+			data: { Id: Id },
+			success: function (response) {
+				$("#AllschoolListModalbody").html(response);
+				$("#AllschoolListModal").modal("show");
 			}
 		})
 	}

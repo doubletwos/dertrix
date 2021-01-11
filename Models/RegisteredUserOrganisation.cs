@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -37,6 +38,22 @@ namespace Dertrix.Models
         public bool? IsTester { get; set; }
 
         public int? RegisteredUserTypeId { get; set; }
+
+        public int? PrimarySchoolUserRoleId { get; set; }
+
+        public int? SecondarySchoolUserRoleId { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? EnrolmentDate { get; set; }
+
+
+        public string CreatedBy { get; set; }
+
+        public string FullName { get; set; }
+
+
+
 
 
 
