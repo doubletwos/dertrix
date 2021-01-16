@@ -2,14 +2,14 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#mycreatepost1">
 	<i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>
-	Create Post 1
+	Create Post
 </a>
 <div class="modal fade" id="mycreatepost1">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add New Post 1</h3>
+				<h3 class="modal-title">Add New Post </h3>
 			</div>
 			<div class="modal-body">
 				<form id="myCreatePostForm1">
@@ -80,8 +80,6 @@
 									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
 
 
-
-
 									<br />
 								}
 
@@ -97,7 +95,7 @@
 						</div>
 					</div>
 
-</form>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -117,29 +115,76 @@
 				height: '300px',
 				dialogsInBody: true,
 				spellCheck: true,
-			  });
+			});
 		})
 		$(function () {
 			$("#cancel").on("click", function () {
+				window.location.reload();
+
 			})
 		})
-	   $("#btnSubmit").on("click", function () {
-		   if ($("#myCreatePostForm1").valid()) {
-			   var data = $("#myCreatePostForm1").serialize();
-			   $.ajax({
-				   type: "POST",
-				   url: "/Posts/Create1",
+		$("#btnSubmit").on("click", function () {
+			if ($("#myCreatePostForm1").valid()) {
+				var data = $("#myCreatePostForm1").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/Posts/Create1",
 
-				   @*url: '@Url.Action("Create1", "Posts")',*@
-				   data: data,
-				   success: function (response) {
-					   alert("New Post created");
-					   $("#mycreatepost1").modal("hide");
-					   $("#myCreatePostForm1")[0].reset();
-					   window.location.reload();
-				   }
-			   })
-		   }
-	   })
+					data: data,
+					success: function (response) {
+						alert("New Post created");
+						$("#mycreatepost1").modal("hide");
+						$("#myCreatePostForm1")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+		})
 	})
+</script>
+
+
+
+
+<script>
+	$(document).ready(function () {
+		$('#myCreatePostForm1').validate({
+			errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+			errorElement: 'div',
+			errorPlacement: function (error, e) {
+				e.parents('.form-group > div').append(error);
+			},
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+				$(e).closest('.help-block').remove();
+			},
+			success: function (e) {
+				e.closest('.form-group').removeClass('has-success has-error');
+				e.closest('.help-block').remove();
+			},
+			rules: {
+				'Post.PostTopicId': {
+					required: true,
+				},
+				'Post.PostSubject': {
+					required: true,
+				},
+				'Post.PostContent': {
+					required: true,
+				},
+				'Post.SendAsEmail': {
+					required: true,
+				}
+
+			},
+			messages: {
+				'Post.PostTopicId': 'Please select appropriate topic',
+				'Post.PostSubject': 'Please enter subject',
+				'Post.PostContent': 'Post can not be empty',
+				'Post.SendAsEmail': 'Please select an option',
+
+			}
+		});
+	});
+
 </script>

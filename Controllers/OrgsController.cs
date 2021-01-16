@@ -60,25 +60,25 @@ namespace Dertrix.Controllers
             return View(orgs.ToList());
         }
 
-        //public ActionResult JumpToOrg(int id)
-        //{
-        //    if (Session["OrgId"] == null)
-        //    {
-        //        return RedirectToAction("Signin", "Access");
-        //    }
-        //    if ((int)Session["OrgId"] != 23)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    var orgName = Session["OrgName"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgName.FirstOrDefault());
-        //    var brandId = Session["brandId"] = db.Orgs.Where(x => x.OrgId == id).Select(x => x.OrgBrandId).FirstOrDefault().ToString();
-        //    var logo = Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.Content).FirstOrDefault();
-        //    var orgBrand = Session["regUserOrgBrand"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgBrandBar).FirstOrDefault();
-        //    var regUserOrgNavBar = Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId.ToString() == brandId.ToString()).Select(x => x.OrgNavigationBar).FirstOrDefault();
-        //    var IsTesterOrgId = Session["IsTesterOrgId"] = id;
-        //    var IsTester = Session["IsTester"] = true;
-        //    return RedirectToAction("Index", "Orgs", new { id });
-        //}
+
+
+        // GET: Orgs/Home/5
+        public ActionResult Home(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Org org = db.Orgs.Find(id);
+            if (org == null)
+            {
+                return HttpNotFound();
+            }
+            var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+
+            return View();
+        }
+
 
         // GET: Orgs/Details/5
         public ActionResult Details(int? id)

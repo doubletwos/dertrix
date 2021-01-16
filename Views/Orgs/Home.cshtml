@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Dertrix.Models.Org>
+<head>
+	<link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+</head>
+
+@{
+	ViewBag.Title = "Home";
+}
+
+<div class="jumbotron" style="height:100vh;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<h3 style="font-family :'Exo 2', sans-serif;">School News</h3>
+				@{
+					Html.RenderAction("PostDisplayPanel", "Posts");
+				}
+			</div>
+			<div class="col-lg-6">
+				<h3 style="font-family :'Exo 2', sans-serif;">School Calendar</h3>
+
+			</div>
+		</div>
+	</div>
+</div>
+

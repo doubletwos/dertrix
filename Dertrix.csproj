@@ -693,6 +693,7 @@
     <Content Include="Views\RegisteredUserOrganisations\_MyOrgCount.cshtml" />
     <Content Include="Views\RegisteredUserOrganisations\_MyOrgList.cshtml" />
     <Content Include="Views\StudentGuardians\_MyGuardians.cshtml" />
+    <Content Include="Views\Orgs\Home.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

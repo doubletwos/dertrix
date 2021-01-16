@@ -34,7 +34,6 @@ namespace Dertrix.Controllers
             var orgredirect = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email.ToString()).Select(x => x.OrgId).FirstOrDefault();
             var reguserorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.OrgName).FirstOrDefault();
             var regUserOrgBrand = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Select(x => x.RegUserOrgBrand).FirstOrDefault();
-            //var isadmin = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
             if (reguserdetails == null)
             {
                 registeredUser.LoginErrorMsg = "Invalid Email or Password";
@@ -57,12 +56,7 @@ namespace Dertrix.Controllers
                 Session["IsTester"] = reguserdetails.IsTester;
                 Session["OrgType"] = db.Orgs.Where(x => x.OrgId == orgredirect).Select(x => x.OrgTypeId).FirstOrDefault();
                 Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).Where(x => x.RegUserOrgId == orgredirect).Select(x => x.OrgGroupId).FirstOrDefault();
-                Session["IsParent/Guardian"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).FirstOrDefault();
-
-
-
-
-
+                Session["IsParent/Guardian"] = db.StudentGuardians.Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId && x.OrgId == orgredirect).Select(x => x.GuardianEmailAddress).FirstOrDefault();
             }
             var reguseraccessLogs = new RegUsersAccessLog
             {
@@ -78,6 +72,10 @@ namespace Dertrix.Controllers
             if (orgredirect == 23)
             {
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
+            }
+            if (Session["IsParent/Guardian"] != null)
+            {
+                return RedirectToAction("Home", "Orgs", new { id = orgredirect });
             }
             else
             {
