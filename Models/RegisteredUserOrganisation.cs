@@ -19,6 +19,9 @@ namespace Dertrix.Models
 
         public string OrgName { get; set; }
 
+        public int? TitleId { get; set; }
+        public virtual Title Title { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

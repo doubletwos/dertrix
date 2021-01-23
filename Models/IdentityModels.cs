@@ -50,6 +50,8 @@ namespace Dertrix.Models
         public DbSet<RegUsersAccessLog> RegUsersAccessLogs { get; set; }
         public DbSet<Relationship> Relationships { get; set; }
         public DbSet<Title> Titles { get; set; }
+        public DbSet<OrgImportantDate> OrgImportantDates { get; set; }
+
 
 
 

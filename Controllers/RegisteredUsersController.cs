@@ -88,6 +88,7 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult AddStaff()
         {
+            ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
@@ -145,9 +146,10 @@ namespace Dertrix.Controllers
 
         public ActionResult StaffDetails(int Id)
         {
-          
+
             var stud = db.RegisteredUsers
-                .Where(x => x.RegisteredUserId == Id);
+            .Where(x => x.RegisteredUserId == Id)
+            .Include(x => x.Title);
             ViewBag.RegisteredUser = stud;
             return PartialView("_StaffDetails");
         }
@@ -219,11 +221,13 @@ namespace Dertrix.Controllers
                 var stud1 = db.RegisteredUsers
                     .Where(x => x.RegisteredUserId == Id)
                     .FirstOrDefault();
+                ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", stud1.TitleId);
                 ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
                 var stud = new RegisteredUser
                 {
                     RegisteredUserId = stud1.RegisteredUserId,
                     RegisteredUserTypeId = stud1.RegisteredUserTypeId,
+                    TitleId = stud1.TitleId,
                     FirstName = stud1.FirstName,
                     LastName = stud1.LastName,
                     Email = stud1.Email,
@@ -324,6 +328,7 @@ namespace Dertrix.Controllers
                 .Where(p => p.PrimarySchoolUserRoleId != null || p.SecondarySchoolUserRoleId != null)
                 .Where(p => p.PrimarySchoolUserRoleId != 5)
                 .Where(p => p.SecondarySchoolUserRoleId != 5)
+                .Include(p => p.Title)
 
                 .ToList();
 
@@ -452,7 +457,8 @@ namespace Dertrix.Controllers
                             SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
-                            FullName = registeredUser.FullName
+                            FullName = registeredUser.FullName,
+                            //Title = registeredUser.TitleId
                         };
                         db.RegisteredUserOrganisations.Add(onetomany);
                         db.SaveChanges();
@@ -542,7 +548,7 @@ namespace Dertrix.Controllers
                     return RedirectToAction("SysAdminSetUp", "Home");
                 }
 
-                /*STEP 4- When NEW staff sare added at school level*/
+                /*STEP 4- When NEW staffs are added at school level*/
                 var chkifusrexist0 = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(x => x.RegisteredUserId).FirstOrDefault();
                 if (registeredUser.StudentRegFormId == null && registeredUser.SelectedOrg != 23 && chkifusrexist0 == 0)
                 {
@@ -552,6 +558,7 @@ namespace Dertrix.Controllers
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
+                    registeredUser.TitleId = registeredUser.TitleId;
                     registeredUser.FullName = registeredUser.ContactFullName;
                     registeredUser.RegisteredUserTypeId = 2;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
@@ -578,7 +585,9 @@ namespace Dertrix.Controllers
                         SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
                         EnrolmentDate = DateTime.Now,
                         CreatedBy = Session["RegisteredUserId"].ToString(),
-                        FullName = registeredUser.FullName
+                        FullName = registeredUser.FullName,
+                        TitleId = registeredUser.TitleId
+
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
@@ -750,11 +759,58 @@ namespace Dertrix.Controllers
                 registeredUser.SelectedOrg = (int)Session["OrgId"];
                 db.Entry(registeredUser).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
             }
+
+            //registered user id count
+            var reguseridcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(p => p.RegisteredUserOrganisationId).ToList();
+            var listofreguserid = new List<int>(reguseridcount);
+
+
+            foreach (var re in reguseridcount)
+            {
+                var getid = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserOrganisationId == re).FirstOrDefault();
+
+                var reguser = new RegisteredUserOrganisation
+                {
+
+
+                    RegisteredUserOrganisationId = getid.RegisteredUserOrganisationId,
+                    RegisteredUserId = getid.RegisteredUserId,
+                    OrgId = getid.OrgId,
+                    OrgName = getid.OrgName,
+                    RegUserOrgBrand = getid.RegUserOrgBrand,
+                    IsTester = getid.IsTester,
+                    RegisteredUserTypeId = getid.RegisteredUserTypeId,
+                    PrimarySchoolUserRoleId = getid.PrimarySchoolUserRoleId,
+                    SecondarySchoolUserRoleId = getid.SecondarySchoolUserRoleId,
+                    EnrolmentDate = getid.EnrolmentDate,
+                    CreatedBy = getid.CreatedBy,
+
+
+
+
+
+
+                    Email = registeredUser.Email,
+                    FirstName = registeredUser.FirstName,
+                    LastName = registeredUser.LastName,
+                    FullName = registeredUser.FullName,
+                    TitleId = registeredUser.TitleId
+                };
+
+                getid = reguser;
+
+                db.Entry(getid).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
-            return View(registeredUser);
+            return RedirectToAction("Index");
+
+            //return View(registeredUser);
         }
 
 

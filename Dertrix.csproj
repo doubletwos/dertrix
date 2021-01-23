@@ -196,6 +196,7 @@
     <Compile Include="Controllers\StudentRegFormsController.cs" />
     <Compile Include="Controllers\StudentSubjectsController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
+    <Compile Include="Controllers\TitlesController.cs" />
     <Compile Include="Controllers\TribesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -280,6 +281,26 @@
     <Compile Include="Migrations\202101062044142_SprintDec2020HF.Designer.cs">
       <DependentUpon>202101062044142_SprintDec2020HF.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101211236077_SprintJan2021-1.cs" />
+    <Compile Include="Migrations\202101211236077_SprintJan2021-1.Designer.cs">
+      <DependentUpon>202101211236077_SprintJan2021-1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101211245249_SprintJan2021-2.cs" />
+    <Compile Include="Migrations\202101211245249_SprintJan2021-2.Designer.cs">
+      <DependentUpon>202101211245249_SprintJan2021-2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101222035112_SprintJan2021-3.cs" />
+    <Compile Include="Migrations\202101222035112_SprintJan2021-3.Designer.cs">
+      <DependentUpon>202101222035112_SprintJan2021-3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101222114171_SprintJan2021-4.cs" />
+    <Compile Include="Migrations\202101222114171_SprintJan2021-4.Designer.cs">
+      <DependentUpon>202101222114171_SprintJan2021-4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101230542088_SprintJan2021-5.cs" />
+    <Compile Include="Migrations\202101230542088_SprintJan2021-5.Designer.cs">
+      <DependentUpon>202101230542088_SprintJan2021-5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -296,6 +317,7 @@
     <Compile Include="Models\Org.cs" />
     <Compile Include="Models\OrgBrand.cs" />
     <Compile Include="Models\OrgGroup.cs" />
+    <Compile Include="Models\OrgImportantDate.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\Post.cs" />
@@ -694,6 +716,9 @@
     <Content Include="Views\RegisteredUserOrganisations\_MyOrgList.cshtml" />
     <Content Include="Views\StudentGuardians\_MyGuardians.cshtml" />
     <Content Include="Views\Orgs\Home.cshtml" />
+    <Content Include="Views\Titles\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -787,6 +812,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101062044142_SprintDec2020HF.resx">
       <DependentUpon>202101062044142_SprintDec2020HF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101211236077_SprintJan2021-1.resx">
+      <DependentUpon>202101211236077_SprintJan2021-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101211245249_SprintJan2021-2.resx">
+      <DependentUpon>202101211245249_SprintJan2021-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101222035112_SprintJan2021-3.resx">
+      <DependentUpon>202101222035112_SprintJan2021-3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101222114171_SprintJan2021-4.resx">
+      <DependentUpon>202101222114171_SprintJan2021-4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101230542088_SprintJan2021-5.resx">
+      <DependentUpon>202101230542088_SprintJan2021-5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

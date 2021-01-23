@@ -97,6 +97,9 @@ namespace Dertrix.Models
         public int? ReligionId { get; set; }
         public virtual Religion Religion { get; set; }
 
+        public int? TitleId { get; set; }
+        public virtual Title Title{ get; set; }
+
         public int? StudentRegFormId { get; set; }
         public StudentRegForm StudentRegForm { get; set; }
 
