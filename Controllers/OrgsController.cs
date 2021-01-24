@@ -65,6 +65,10 @@ namespace Dertrix.Controllers
         // GET: Orgs/Home/5
         public ActionResult Home(int? id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Welcome", "Access");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

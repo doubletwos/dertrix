@@ -71,7 +71,7 @@ namespace Dertrix.Controllers
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
-            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
             ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
 
             return PartialView("~/Views/Shared/PartialViewsForms/_AddSubject.cshtml");

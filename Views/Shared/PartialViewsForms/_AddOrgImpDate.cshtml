@@ -1,0 +1,78 @@
+﻿@model Dertrix.Models.OrgImportantDate
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#orgimpdatemodal">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+	New Important Date
+</a>
+<div class="modal fade" id="orgimpdatemodal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">New Important Date</h3>
+			</div>
+			<div class="modal-body">
+				<form id="AddOrgImpDate">
+					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
+					<div class="form-horizontal">
+						<hr />
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						<div class="form-group">
+							@Html.LabelFor(model => model.ImportantDateName, "Important Date Name", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.ImportantDateName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.ImportantDateName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.ImportanttDate, "Date", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.ImportanttDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+								@Html.ValidationMessageFor(model => model.ImportanttDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+							<input type="submit" value="Add Important Date" class="RegUserOrgButtonColour" id="btnSubmit" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$(function () {
+			$(".datepicker").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-35:+35",
+			});
+		})
+		$("#btnSubmit").on("click", function () {
+			if ($("#AddOrgImpDate").valid()) {
+				var data = $("#AddOrgImpDate").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/OrgImportantDates/Create",
+					data: data,
+					success: function (response) {
+						alert("New important date created");
+						$("#orgimpdatemodal").modal("hide");
+						$("#AddOrgImpDate")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+		})
+	});
+</script>

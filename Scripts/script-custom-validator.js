@@ -308,44 +308,7 @@ $(document).ready(function () {
 
 });
 
-//$(document).ready(function () {
-//	$('#myCreatePostForm1').validate({
-//		errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
-//		errorElement: 'div',
-//		errorPlacement: function (error, e) {
-//			e.parents('.form-group > div').append(error);
-//		},
-//		highlight: function (e) {
-//			$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
-//			$(e).closest('.help-block').remove();
-//		},
-//		success: function (e) {
-//			e.closest('.form-group').removeClass('has-success has-error');
-//			e.closest('.help-block').remove();
-//		},
-//		rules: {
-//			'PostTopicId': {
-//				required: true,
-//			},
-//			'PostSubject': {
-//				required: true,
-//			},
-//			'PostContent': {
-//				required: true,
-//			},
-//			'Post.PostSubject': {
-//				required: true,
 
-//			}
-//		},
-//		messages: {
-//			'PostTopicId': 'Please select appropriate topic',
-//			'PostSubject': 'Please enter subject',
-//			'PostContent': 'Post can not be empty',
-//			'Post.PostSubject': 'Test this'
-//		}
-//	});
-//});
 
 
 
@@ -501,6 +464,98 @@ $(document).ready(function () {
 		messages: {
 			'DomainName': 'Please enter domain',
 		}
+	});
+});
+
+
+$(document).ready(function () {
+	$('#AddOrgImpDate').validate({
+		errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+		errorElement: 'div',
+		errorPlacement: function (error, e) {
+			e.parents('.form-group > div').append(error);
+		},
+		highlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+			$(e).closest('.help-block').remove();
+		},
+		success: function (e) {
+			e.closest('.form-group').removeClass('has-success has-error');
+			e.closest('.help-block').remove();
+		},
+		rules: {
+			'ImportantDateName': {
+				required: true,
+				maxlength: 25,
+
+			},
+			'ImportanttDate': {
+				required: true,
+			},
+		},
+		messages: {
+			'ImportantDateName': {
+				required: 'Please enter important date name',
+				maxlength: 'Not more than 25 characters allowed'
+			},
+
+			'ImportanttDate': {
+			   required: 'Please enter the date'
+			},
+
+		}
+	
+	});
+});
+
+
+$(document).ready(function () {
+	$('#AddOrgEvent').validate({
+		errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+		errorElement: 'div',
+		errorPlacement: function (error, e) {
+			e.parents('.form-group > div').append(error);
+		},
+		highlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+			$(e).closest('.help-block').remove();
+		},
+		success: function (e) {
+			e.closest('.form-group').removeClass('has-success has-error');
+			e.closest('.help-block').remove();
+		},
+		rules: {
+			'EventName': {
+				required: true,
+				maxlength: 25,
+
+			},
+			'EventDescription': {
+				required: true,
+				maxlength: 150,
+
+			},
+			'EventDate': {
+				required: true,
+			},
+		},
+		messages: {
+			'EventName': {
+				required: 'Please enter event name',
+				maxlength: 'Not more than 25 characters allowed'
+			},
+			'EventDescription': {
+				required: 'Please enter event description',
+				maxlength: 'Not more than 150 characters allowed'
+
+			},
+			'EventDate': {
+				required: 'Please enter event date',
+
+			},
+
+		}
+
 	});
 });
 

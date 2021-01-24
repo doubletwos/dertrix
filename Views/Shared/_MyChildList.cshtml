@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Dertrix.Models.StudentGuardian>
+
+
+<table class="table table-bordered table-responsive table-condensed table-hover">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+	
+		<th>
+			@Html.DisplayNameFor(model => model.StudentId)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.StudentFullName)
+		</th>
+	
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+
+			<td>
+				@Html.DisplayFor(modelItem => item.StudentId)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.StudentFullName)
+			</td>
+		
+			<td>
+				@Html.ActionLink("Select", "YourChild", "StudentSubjects", new { id = item.StudentId }, null) 
+		
+			</td>
+		</tr>
+	}
+
+</table>

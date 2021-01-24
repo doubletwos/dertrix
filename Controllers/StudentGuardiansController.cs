@@ -39,6 +39,36 @@ namespace Dertrix.Controllers
 
 
 
+        [ChildActionOnly]
+        public ActionResult MyChildCount()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var mychildcount = db.StudentGuardians
+                .Where(x => x.OrgId == i)
+                .Where(j => j.RegisteredUserId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MyChildCount", mychildcount);
+        }
+
+
+        public ActionResult MyChildList()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var mychildlist = db.StudentGuardians
+                .Where(x => x.OrgId == i)
+                .Where(j => j.RegisteredUserId == RegisteredUserId)
+                .ToList();
+            return PartialView("_MyChildList", mychildlist);
+        }
+
+
+
 
         // GET: StudentGuardians/Details/5
         public ActionResult Details(int? id)

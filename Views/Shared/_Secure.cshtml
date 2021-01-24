@@ -1,41 +1,30 @@
 ﻿@model IEnumerable<Dertrix.Models.RegisteredUser>
-@if (Session["OrgId"] == null && Session["regUserOrgBrand"] == null)
-{
-	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
-	<ul class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
-		<li>@Html.ActionLink("Sign in", "Index", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
-		<li>@Html.ActionLink("Register", "Create", "RegisteredUsers", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "navbar-right" })</li>
-	</ul>
-}
+
+
+
+
 @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 {
 	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
 	var currentsession = HttpContext.Current.Session.SessionID.ToString();
-	<div class="nav navbar-nav navbar-right" style="background-color:@sessionNavbar">
-		<div class="row">
-			<div class="col-md-12">
-				@{
-					var isTester = Convert.ToInt32(Session["IsTester"]);
-					if (isTester == 1 && ((int)Session["OrgId"] != 23))
-					{
-						<div> @Html.ActionLink("Back to Dertrix", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "RegUserOrgButtonColour" }) </div>
-					}
-					else
-					{
-						@*<div> @Html.ActionLink("Log off", "LogOut", "Access", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "RegUserOrgButtonColour" }) </div>*@
-						<div> @Html.ActionLink("Log off", "LogOut", "Access",  new { id = @currentsession }, htmlAttributes: new { id = "loginLink", @class = "RegUserOrgButtonColour" }) </div>
-
-					}
+	<ul class="nav navbar-nav navbar-left">
+		<li>
+			@{
+				var isTester = Convert.ToInt32(Session["IsTester"]);
+				if (isTester == 1 && ((int)Session["OrgId"] != 23))
+				{
+				 @Html.ActionLink("BACK TO DERTRIX", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { }) 
 				}
-			</div>
-		</div>
-	</div>
+				else
+				{
+		        @Html.ActionLink("LOG OFF", "LogOut", "Access", new { id = @currentsession }, htmlAttributes: new { id = "loginLink" })
+
+			    }
+			}
+
+</li>
+	</ul>
+
+
 }
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-@if (Session["RegisteredUserId"] != null)
-{
-	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
-	<div class="nav navbar-nav navbar-default" style="background-color:@sessionNavbar">
-		<div> <i>You are logged in as <strong>@Session["FullName"]</strong></i>  </div>
-	</div>
-}
+

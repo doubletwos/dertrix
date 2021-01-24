@@ -179,7 +179,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrgBrandsController.cs" />
+    <Compile Include="Controllers\OrgEventsController.cs" />
     <Compile Include="Controllers\OrgGroupsController.cs" />
+    <Compile Include="Controllers\OrgImportantDatesController.cs" />
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
@@ -301,6 +303,10 @@
     <Compile Include="Migrations\202101230542088_SprintJan2021-5.Designer.cs">
       <DependentUpon>202101230542088_SprintJan2021-5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101231400459_SprintJan2021-6.cs" />
+    <Compile Include="Migrations\202101231400459_SprintJan2021-6.Designer.cs">
+      <DependentUpon>202101231400459_SprintJan2021-6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -316,6 +322,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Org.cs" />
     <Compile Include="Models\OrgBrand.cs" />
+    <Compile Include="Models\OrgEvent.cs" />
     <Compile Include="Models\OrgGroup.cs" />
     <Compile Include="Models\OrgImportantDate.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
@@ -719,6 +726,19 @@
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
+    <Content Include="Views\OrgImportantDates\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddOrgImpDate.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_ImpDateDisplayPanel.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditImpDate.cshtml" />
+    <Content Include="Views\OrgEvents\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EventDisplayPanel.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditEvent.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddOrgEvent.cshtml" />
+    <Content Include="Views\Shared\_WidgetDashboard1.cshtml" />
+    <Content Include="Views\Shared\_MyChildList.cshtml" />
+    <Content Include="Views\Shared\_MyChildCount.cshtml" />
+    <Content Include="Views\StudentSubjects\YourChild.cshtml" />
+    <Content Include="Views\Shared\_MyRegProfile.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -827,6 +847,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101230542088_SprintJan2021-5.resx">
       <DependentUpon>202101230542088_SprintJan2021-5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101231400459_SprintJan2021-6.resx">
+      <DependentUpon>202101231400459_SprintJan2021-6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

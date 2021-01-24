@@ -22,7 +22,6 @@ namespace Dertrix.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? ImportanttDate { get; set; }
 
-        public bool? DateisPast { get; set; }
 
 
 

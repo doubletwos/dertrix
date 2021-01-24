@@ -12,6 +12,8 @@
 	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
@@ -23,54 +25,54 @@
 		</div>
 		<hr />
 	</div>
-		<br />
-		<div class="panel panel-default">
-			<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-				<thead>
-					<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-						<th>
-							@Html.DisplayNameFor(model => model.Class.ClassName)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.SubjectName)
-						</th>
+	<br />
+	<div class="panel panel-default">
+		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<thead>
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+					<th>
+						@Html.DisplayNameFor(model => model.Class.ClassName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.SubjectName)
+					</th>
+					<td>
+						@Html.DisplayNameFor(model => model.ClassTeacher.ClassTeacherName)
+
+					</td>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
 						<td>
-							@Html.DisplayNameFor(model => model.ClassTeacher.ClassTeacherName)
-
+							@Html.DisplayFor(modelItem => item.Class.ClassName)
 						</td>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.Class.ClassName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.SubjectName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.TaughtBy)
-							</td>
-							<td>
-								<div class="btn-group">
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Action <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" style="background-color:white">
-										<li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
-										<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>
-									</ul>
-								</div>
-							</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.SubjectName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.TaughtBy)
+						</td>
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
+									<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>
+								</ul>
+							</div>
+						</td>
 
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 </div>
 <input type="hidden" id="hiddensubjectId" />
 @*Delete confirmation Modal*@

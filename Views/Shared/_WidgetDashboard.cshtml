@@ -17,14 +17,14 @@
 
 <div class="container">
 	<ul class="nav nav-pills" role="tablist">
-		<li role="presentation" class="active">
+		@*<li role="presentation" class="active">
 			<a href="#">
 				<i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
 				Date <span class="badge">
 					@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
 				</span>
 			</a>
-		</li>
+		</li>*@
 		@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
 		{
 

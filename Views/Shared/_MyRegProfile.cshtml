@@ -1,0 +1,33 @@
+﻿@model Dertrix.Models.RegisteredUser
+<hr />
+<h4>
+	@Html.DisplayFor(model => model.FullName)
+</h4>
+
+<div class="profile">
+	<ul>
+		<li>
+			Class : <strong> @Html.DisplayFor(model => model.Class.ClassName) </strong>
+		</li>
+		<li>
+			Gender : <strong>@Html.DisplayFor(model => model.Gender.GenderName)</strong>
+		</li>
+		<li>
+			Religion : <strong>@Html.DisplayFor(model => model.Religion.ReligionName)</strong>
+		</li>
+		<li>
+			Tribe : <strong>@Html.DisplayFor(model => model.Tribe.TribeName)</strong>
+		</li>
+		<li>
+			Date of birth : <strong>@Html.DisplayFor(model => model.DateOfBirth)</strong>
+		</li>
+		<li>
+			Enrolement date : <strong>@Html.DisplayFor(model => model.EnrolmentDate)</strong>
+		</li>
+
+	</ul>
+</div>
+<hr />
+
+
+

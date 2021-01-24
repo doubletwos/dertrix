@@ -1,0 +1,55 @@
+﻿<head>
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	@{
+		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
+	}
+	<style>
+	.nav-pills > li {
+	float: left;
+	border-style: double;
+	border-color:  @regUserOrgNavBar;
+	}
+	</style>
+</head>
+<div class="container">
+	<ul class="nav nav-pills" role="tablist">
+		<li role="presentation" class="active" id="MyChildCountWidget" onclick="MychiildListDisplayModal()">
+			<a href="#">
+				<i class="fa fa-users fa-2x" style="color:#FF5733;"  aria-hidden="true"></i>
+				Your Child(ren) <span class="badge">
+					@{
+						Html.RenderAction("MyChildCount", "StudentGuardians");
+					}
+				</span>
+			</a>
+		</li>
+	</ul>
+</div>
+@*Display MychildList modal*@
+<div class="modal fade" id="ChildlistModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Select Child</h3>
+			</div>
+			<div class="modal-body" id="ChildListModalbody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var MychiildListDisplayModal = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/StudentGuardians/MyChildList",
+			data: { Id: Id },
+			success: function (response) {
+				$("#ChildListModalbody").html(response);
+				$("#ChildlistModal").modal("show");
+			}
+		})
+	}
+</script>

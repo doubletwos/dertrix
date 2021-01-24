@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Dertrix.Models.StudentSubject>
+
+@{
+	ViewBag.Title = "YourChild";
+}
+
+<div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
+	@Html.Partial("_WidgetDashboard1")
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				@{
+					Html.RenderAction("MyRegProfile", "RegisteredUsers");
+				}
+			</div>
+			<div class="col-lg-6">
+
+			</div>
+		</div>
+	</div>
+
+
+	<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+		<thead>
+
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+
+
+				<th>
+					Subject
+				</th>
+				<th>
+					1st Term Grade
+				</th>
+				<th>
+					2nd Term Grade
+				</th>
+				<th>
+					3rd Term Grade
+				</th>
+			</tr>
+
+		</thead>
+
+
+		@foreach (var item in Model)
+		{
+			<tr>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.SubjectName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.FirstTermStudentGrade)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SecondTermStudentGrade)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ThirdTermStudentGrade)
+				</td>
+
+			</tr>
+		}
+
+	</table>
+</div>
+
+
+
+

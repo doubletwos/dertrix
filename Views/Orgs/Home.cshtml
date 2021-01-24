@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<Dertrix.Models.Org>
 <head>
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
 </head>
 
 @{
@@ -8,16 +13,40 @@
 }
 
 <div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
+	@Html.Partial("_WidgetDashboard1")
+
+	<hr />
+
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6">
-				<h3 style="font-family :'Exo 2', sans-serif;">School News</h3>
+
+				<h3 style="font-family :'Exo 2', sans-serif;">
+					School News
+					<i class="fa fa-newspaper-o" style="color:green;" aria-hidden="true"></i>
+				</h3>
 				@{
 					Html.RenderAction("PostDisplayPanel", "Posts");
 				}
+
 			</div>
 			<div class="col-lg-6">
-				<h3 style="font-family :'Exo 2', sans-serif;">School Calendar</h3>
+				<h3 style="font-family :'Exo 2', sans-serif;">
+					School Calendar
+					<i class="fa fa-calendar" style="color:blue;" aria-hidden="true"></i>
+				</h3>
+				@{
+					Html.RenderAction("ImpDateDisplayPanel", "OrgImportantDates");
+				}
+				<br />
+				<hr />
+				@{
+					Html.RenderAction("EventDisplayPanel", "OrgEvents");
+				}
+
+
 
 			</div>
 		</div>

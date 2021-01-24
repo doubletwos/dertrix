@@ -12,6 +12,8 @@
 	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
@@ -25,7 +27,7 @@
 
 					}
 				</div>
-			 }
+			}
 
 			<div class="col-md-3">
 			</div>
@@ -52,8 +54,8 @@
 						Email Address
 					</th>
 					@*<th>
-						Role
-					</th>*@
+							Role
+						</th>*@
 					<th>
 						Registration Date
 					</th>
@@ -77,9 +79,9 @@
 							@Html.DisplayFor(modelItem => item.Email)
 						</td>
 						@*<td>
-							@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
-							@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
-						</td>*@
+								@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
+								@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
+							</td>*@
 						<td>
 							@Html.DisplayFor(modelItem => item.EnrolmentDate)
 						</td>

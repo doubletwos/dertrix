@@ -218,7 +218,7 @@ namespace Dertrix.Controllers
                     ClassTeacherId = classroom.ClassTeacherId,
                     ClassTeacherFullName = classroom.ClassTeacherFullName
                 };
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
                 return PartialView("~/Views/Shared/PartialViewsForms/_AssignClassTeacher.cshtml", cr);
 
             }

@@ -142,6 +142,23 @@ namespace Dertrix.Controllers
         }
 
 
+        public ActionResult MyRegProfile(int id)
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            var myprofile = db.RegisteredUsers
+                .Where(x => x.RegisteredUserId == id)
+                .Include(x => x.Title)
+                .Include(x => x.Religion)
+                .Include(x => x.Tribe)
+                .Include(x => x.Class)
+                .FirstOrDefault();
+
+            return PartialView("_MyRegProfile", myprofile);
+        }
+
+
 
 
         public ActionResult StaffDetails(int Id)

@@ -32,6 +32,23 @@ namespace Dertrix.Controllers
         }
 
 
+        public ActionResult YourChild(int id)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+     
+            var yourchild = db.StudentSubject.Where(p => p.OrgId == i).Where(x => x.RegisteredUserId == id);
+            return View(yourchild.ToList());
+
+        }
+
+
+
         // GET: StudentSubjects/MySubjects
         public ActionResult MySubjects(int? id, int? ij, string searchname, string searchid)
         {

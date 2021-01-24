@@ -6,6 +6,8 @@
 
 </head>
 <div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
@@ -18,8 +20,12 @@
 				</p>
 			</div>
 			<div class="col-md-3">
+				<p>@Html.ActionLink("Important Dates", "Index", "OrgImportantDates", "", new { @class = "RegUserOrgButtonColour" })</p>
+
 			</div>
 			<div class="col-md-3">
+				<p>@Html.ActionLink("Events", "Index", "OrgEvents", "", new { @class = "RegUserOrgButtonColour" })</p>
+
 			</div>
 			<div class="col-md-3">
 			</div>
