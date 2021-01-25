@@ -20,7 +20,11 @@ namespace Dertrix.Models
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? ImportanttDate { get; set; }
+        public DateTime? FromImportanttDate { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? ToImportanttDate { get; set; }
 
 
 

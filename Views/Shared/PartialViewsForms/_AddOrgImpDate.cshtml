@@ -28,10 +28,17 @@
 							</div>
 						</div>
 						<div class="form-group">
-							@Html.LabelFor(model => model.ImportanttDate, "Date", htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.FromImportanttDate, "From Date", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.ImportanttDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
-								@Html.ValidationMessageFor(model => model.ImportanttDate, "", new { @class = "text-danger" })
+								@Html.EditorFor(model => model.FromImportanttDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+								@Html.ValidationMessageFor(model => model.FromImportanttDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.ToImportanttDate, "To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.ToImportanttDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+								@Html.ValidationMessageFor(model => model.ToImportanttDate, "", new { @class = "text-danger" })
 							</div>
 						</div>
 						<div class="modal-footer">

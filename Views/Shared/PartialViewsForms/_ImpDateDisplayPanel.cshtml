@@ -12,24 +12,22 @@
 		</th>
 	</tr>
 
-	@foreach (var item in Model.OrderBy(i => i.ImportanttDate))
+	@foreach (var item in Model.OrderBy(i => i.FromImportanttDate))
 	{
 <tr>
 
 
-	@if (item.ImportanttDate >= DateTime.Today)
+	@if (item.FromImportanttDate >= DateTime.Today)
 	{
 	<td>
 		@Html.DisplayFor(modelItem => item.ImportantDateName)
 
 	</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.ImportanttDate)
-		</td>
+	<td>
+		@Html.DisplayFor(modelItem => item.FromImportanttDate) | @Html.DisplayFor(modelItem => item.ToImportanttDate)
+	</td>
 
 	}
-
-
 
 </tr>
 	}
