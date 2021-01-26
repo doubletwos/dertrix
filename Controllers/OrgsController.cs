@@ -84,6 +84,23 @@ namespace Dertrix.Controllers
         }
 
 
+        // GET: Orgs/Home/5
+        public ActionResult SchCalendar()
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Welcome", "Access");
+            }
+            if (Session["IsParent/Guardian"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View();
+        }
+
+
+
+
         // GET: Orgs/Details/5
         public ActionResult Details(int? id)
         {

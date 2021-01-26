@@ -743,6 +743,8 @@
     <Content Include="Views\Shared\_MyChildCount.cshtml" />
     <Content Include="Views\StudentSubjects\YourChild.cshtml" />
     <Content Include="Views\Shared\_MyRegProfile.cshtml" />
+    <Content Include="Views\Posts\PostsTable.cshtml" />
+    <Content Include="Views\Orgs\SchCalendar.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

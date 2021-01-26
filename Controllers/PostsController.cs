@@ -24,6 +24,25 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
+            if(Session["IsParent/Guardian"] != null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            }
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
+            return View(posts.ToList());
+        }
+
+
+        public ActionResult PostsTable() 
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
