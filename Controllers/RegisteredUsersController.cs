@@ -421,6 +421,7 @@ namespace Dertrix.Controllers
 
         // POST: RegisteredUsers/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(RegisteredUser registeredUser)
         {
             /*Accepting all state of model*/
@@ -475,7 +476,7 @@ namespace Dertrix.Controllers
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
                             FullName = registeredUser.FullName,
-                            //Title = registeredUser.TitleId
+                            TitleId = registeredUser.TitleId
                         };
                         db.RegisteredUserOrganisations.Add(onetomany);
                         db.SaveChanges();
@@ -619,6 +620,7 @@ namespace Dertrix.Controllers
                 {
                     var rr = Session["OrgId"].ToString();
                     int w = Convert.ToInt32(rr);
+                    registeredUser.TitleId = registeredUser.TitleId;
                     registeredUser.Email = registeredUser.Email;
                     var pwd = "iamanewuser";
                     registeredUser.Password = pwd;
@@ -637,6 +639,7 @@ namespace Dertrix.Controllers
                     db.SaveChanges();
                     var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                     {
+                        TitleId = registeredUser.TitleId,
                         RegisteredUserId = registeredUser.RegisteredUserId,
                         OrgId = w,
                         Email = registeredUser.Email,

@@ -15,20 +15,11 @@ namespace Dertrix.Models
         public int OrgGroupId { get; set; }
         public OrgGroup OrgGroup { get; set; }
 
-        public int RegUserOrgId { get; set; }
-
         public string Email { get; set; }
 
+        public int RegUserOrgId { get; set; }
 
-    
-
-
-
-
-
-
-
-
+        public int GroupTypeId { get; set; }
 
     }
 }

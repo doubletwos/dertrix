@@ -82,7 +82,7 @@
 					</div>
 					<div class="modal-footer">
 						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-						<input type="submit" value="Add Staff" class="RegUserOrgButtonColour" id="btnSubmit" />
+						<input type="submit" value="Add Staff" class="RegUserOrgButtonColour" id="addstaff" />
 					</div>
 				</form>
 			</div>
@@ -102,23 +102,21 @@
 	$(document).ready(function () {
 		$("#ClassId").hide();
 		$("#ClassId0").hide();
-		$("#btnSubmit").on("click", function () {
+
+
+		$("#addstaff").on("click", function () {
+			debugger
 			if ($("#AddStaffForm").valid()) {
 				var data = $("#AddStaffForm").serialize();
 				$.ajax({
 					type: "POST",
-					url: '@Url.Action("Create", "RegisteredUsers")',
-
 					//url: "/RegisteredUsers/Create",
+					url: '@Url.Action("Create", "RegisteredUsers")',
 					data: data,
 					success: function (response) {
 						alert("New staff added");
-						debugger
 						$("#myModal").modal("hide");
-						debugger
-
 						$("#AddStaffForm")[0].reset();
-						debugger
 						window.location.reload();
 					}
 				})
