@@ -8,5 +8,7 @@ namespace Dertrix.Models
     public class Relationship
     {
         public int RelationshipId { get; set; }
+
+        public string  RelationshipName { get; set; }
     }
 }

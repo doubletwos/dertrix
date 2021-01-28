@@ -13,6 +13,12 @@ namespace Dertrix.Models
         public int RegisteredUserId { get; set; }
         public RegisteredUser RegisteredUser { get; set; }
 
+        public int? TitleId { get; set; }
+        public virtual Title Title { get; set; }
+
+        public int? RelationshipId { get; set; }
+        public virtual Relationship Relationship { get; set; }
+
         public string GuardianFirstName { get; set; }
 
         public string GuardianLastName { get; set; }

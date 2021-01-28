@@ -6,7 +6,7 @@
 		<table class="table table-bordered table-striped">
 			<tr>
 				<td>
-					Full Name
+					<strong>Full Name</strong>
 				</td>
 				<td>
 					@item.ContactFullName
@@ -14,7 +14,7 @@
 			</tr>
 			<tr>
 				<td>
-					Class
+					<strong>Class</strong>
 				</td>
 				<td>
 					@item.Class.ClassName
@@ -22,7 +22,7 @@
 			</tr>
 			<tr>
 				<td>
-					Gender
+					<strong>Gender</strong>
 				</td>
 				<td>
 					@item.Gender.GenderName
@@ -30,7 +30,7 @@
 			</tr>
 			<tr>
 				<td>
-					Religion
+					<strong>Religion</strong>
 				</td>
 				<td>
 					@item.Religion.ReligionName
@@ -38,7 +38,7 @@
 			</tr>
 			<tr>
 				<td>
-					Tribe
+					<strong>Tribe</strong>
 				</td>
 				<td>
 					@item.Tribe.TribeName
@@ -46,15 +46,18 @@
 			</tr>
 			<tr>
 				<td>
-					Date Of Birth
+					<strong>Date Of Birth</strong>	
 				</td>
 				<td>
-					@item.DateOfBirth
+					@item.DateOfBirth.ToShortDateString()
 				</td>
 			</tr>
 			<tr>
 				<td>
-					Enrolment Date
+					<strong>Enrolment Date</strong>
+				</td>
+				<td>
+					@item.EnrolmentDate.ToShortDateString()
 				</td>
 			</tr>
 		</table>

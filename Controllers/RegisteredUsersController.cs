@@ -91,8 +91,10 @@ namespace Dertrix.Controllers
             ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
-            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
-            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+
+            ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID != 5), "PrimarySchoolUserRoleId", "RoleName");
+            ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles.Where(x => x.SecondarySchoolUserRoleId != 5), "SecondarySchoolUserRoleId", "RoleName");
+
             return PartialView("~/Views/Shared/PartialViewsForms/_AddStaff.cshtml");
         }
 
@@ -166,7 +168,12 @@ namespace Dertrix.Controllers
 
             var stud = db.RegisteredUsers
             .Where(x => x.RegisteredUserId == Id)
-            .Include(x => x.Title);
+            .Include(x => x.Title)
+            .Include(x => x.PrimarySchoolUserRole)
+            .Include(x => x.SecondarySchoolUserRole)
+
+
+            ;
             ViewBag.RegisteredUser = stud;
             return PartialView("_StaffDetails");
         }
@@ -220,6 +227,10 @@ namespace Dertrix.Controllers
                     .FirstOrDefault();
                 ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
                 ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+                ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
+                ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
+
+
                 var stud = new RegisteredUser
                 {
                     RegisteredUserId = stud1.RegisteredUserId,
@@ -346,7 +357,8 @@ namespace Dertrix.Controllers
                 .Where(p => p.PrimarySchoolUserRoleId != 5)
                 .Where(p => p.SecondarySchoolUserRoleId != 5)
                 .Include(p => p.Title)
-
+                .Include(p => p.PrimarySchoolUserRole)
+                .Include(p => p.SecondarySchoolUserRole)
                 .ToList();
 
             return View(staffs);
@@ -626,7 +638,7 @@ namespace Dertrix.Controllers
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.FullName = registeredUser.ContactFullName;
-                    registeredUser.RegisteredUserTypeId = 2;
+                    registeredUser.RegisteredUserTypeId = 2;                   
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
                     var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == w).Select(x => x.OrgBrandId).FirstOrDefault();
@@ -661,6 +673,8 @@ namespace Dertrix.Controllers
                     var studentguardian = new StudentGuardian()
                     {
                         RegisteredUserId = registeredUser.RegisteredUserId,
+                        TitleId = registeredUser.TitleId,
+                        RelationshipId = registeredUser.RelationshipId,
                         GuardianFirstName = registeredUser.FirstName,
                         GuardianLastName = registeredUser.LastName,
                         GuardianFullName = registeredUser.FullName,

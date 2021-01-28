@@ -6,18 +6,35 @@
 		<table class="table table-bordered table-striped">
 			<tr>
 				<td>
-					Full Name
+					<strong>Full Name</strong>
 				</td>
 				<td>
 					@item.Title.TitleName
 					@item.ContactFullName
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<strong>Tel</strong>	
+				</td>
+				<td>
+					@item.Telephone
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong>Email</strong>
+				</td>
+				<td>
+					@item.Email
+				</td>
+			
+			</tr>
 		</table>
 	}
 }
-<hr/>
-<h3>Groups</h3>
-@{
-	Html.RenderAction("MyGroups", "RegisteredUsersGroups");
-}
+	<hr />
+	<h3>Groups</h3>
+	@{
+		Html.RenderAction("MyGroups", "RegisteredUsersGroups");
+	}

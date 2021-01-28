@@ -19,7 +19,7 @@
 		<hr />
 
 		<div class="row">
-			@if ((int)Session["IsAdmin"] == 1)
+			@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
 			{
 				<div class="col-md-3">
 					@{

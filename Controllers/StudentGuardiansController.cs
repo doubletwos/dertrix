@@ -31,6 +31,8 @@ namespace Dertrix.Controllers
 
             var Myguardians = db.StudentGuardians
                 .Where(x => x.StudentId == id && x.OrgId == i)
+                .Include(x => x.Title)
+                .Include(x => x.Relationship)
                 .ToList();
 
             return PartialView("_MyGuardians", Myguardians);

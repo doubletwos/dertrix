@@ -43,8 +43,12 @@ namespace Dertrix.Models
         public int? RegisteredUserTypeId { get; set; }
 
         public int? PrimarySchoolUserRoleId { get; set; }
+        public PrimarySchoolUserRole PrimarySchoolUserRole { get; set; }
+
 
         public int? SecondarySchoolUserRoleId { get; set; }
+        public SecondarySchoolUserRole SecondarySchoolUserRole { get; set; }
+
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]

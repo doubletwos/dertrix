@@ -19,7 +19,7 @@
 		<hr />
 
 		<div class="row">
-			@if ((int)Session["IsAdmin"] == 1)
+			@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
 			{
 				<div class="col-md-3">
 					@{
@@ -53,9 +53,9 @@
 					<th>
 						Email Address
 					</th>
-					@*<th>
+					<th>
 							Role
-						</th>*@
+						</th>
 					<th>
 						Registration Date
 					</th>
@@ -78,10 +78,10 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.Email)
 						</td>
-						@*<td>
+						<td>
 								@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
 								@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
-							</td>*@
+							</td>
 						<td>
 							@Html.DisplayFor(modelItem => item.EnrolmentDate)
 						</td>

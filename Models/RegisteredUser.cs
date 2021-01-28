@@ -18,12 +18,10 @@ namespace Dertrix.Models
         public int RegisteredUserId { get; set; }
 
         [Display(Name = "First Name")]
-        [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
         [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
-        [StringLength(12, ErrorMessage = "Only 12 characters allowed")]
         [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
 
@@ -99,6 +97,9 @@ namespace Dertrix.Models
 
         public int? TitleId { get; set; }
         public virtual Title Title{ get; set; }
+
+        public int? RelationshipId { get; set; }
+        public virtual Relationship Relationship { get; set; }
 
         public int? StudentRegFormId { get; set; }
         public StudentRegForm StudentRegForm { get; set; }

@@ -272,9 +272,11 @@ $(document).ready(function () {
 		rules: {
 			'FirstName': {
 				required: true,
+				maxlength: 20
 			},
 			'LastName': {
 				required: true,
+				maxlength: 20
 			},
 			'ClassId': {
 				required: true,
@@ -293,8 +295,14 @@ $(document).ready(function () {
 			}
 		},
 		messages: {
-			'FirstName': 'Please enter first name',
-			'LastName': 'Please enter last name',
+			'FirstName': {
+				required: 'Please enter first name',
+				maxlength : 'Not more than 20 characters allowed'
+			},
+			'LastName': {
+				required: 'Please enter last name',
+				maxlength: 'Not more than 20 characters allowed'
+			},
 			'ClassId': 'Please select class',
 			'GenderId': 'Please select gender',
 			'ReligionId': 'Please select religion',
