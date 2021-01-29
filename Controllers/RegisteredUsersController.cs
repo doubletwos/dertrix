@@ -163,7 +163,7 @@ namespace Dertrix.Controllers
 
 
 
-        public ActionResult StaffDetails(int Id)
+        public ActionResult StaffDetails(int? Id)
         {
 
             var stud = db.RegisteredUsers
@@ -638,6 +638,7 @@ namespace Dertrix.Controllers
                     registeredUser.Password = pwd;
                     registeredUser.ConfirmPassword = pwd;
                     registeredUser.FullName = registeredUser.ContactFullName;
+                    registeredUser.Telephone = registeredUser.Telephone;
                     registeredUser.RegisteredUserTypeId = 2;                   
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
                     registeredUser.EnrolmentDate = DateTime.Now;
@@ -678,6 +679,7 @@ namespace Dertrix.Controllers
                         GuardianFirstName = registeredUser.FirstName,
                         GuardianLastName = registeredUser.LastName,
                         GuardianFullName = registeredUser.FullName,
+                        Telephone = registeredUser.Telephone,
                         GuardianEmailAddress = registeredUser.Email,
                         StudentId = (int)registeredUser.TempIntHolder,
                         StudentFullName = studentfullname,
@@ -723,7 +725,8 @@ namespace Dertrix.Controllers
                         StudentId = (int)registeredUser.TempIntHolder,
                         StudentFullName = studentfullname,
                         DateAdded = DateTime.Now,
-                        OrgId = w3
+                        OrgId = w3,
+                        Telephone = registeredUser.Telephone
                     };
                     db.StudentGuardians.Add(studentguardian);
                     db.SaveChanges();

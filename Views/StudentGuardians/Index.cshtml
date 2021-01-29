@@ -1,65 +1,170 @@
 ﻿@model IEnumerable<Dertrix.Models.StudentGuardian>
+<head>
+	@{
+		ViewBag.Title = "Guardians";
+	}
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+</head>
+<div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
+	@Html.Partial("_WidgetDashboard")
+	<hr />
+	<br />
+	<div class="panel panel-default">
+		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<thead>
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+					<th>
+						Full Name
+					</th>
+					<th>
+						Student
+					</th>
+					<th>
+						Email
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Title.TitleName)
+							@Html.DisplayFor(modelItem => item.GuardianFullName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.StudentFullName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.GuardianEmailAddress)
+						</td>
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Action <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="background-color:white">
+									<li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
+									<li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenGuardianId" />
+@*Delete confirmation Modal*@
+<div class="modal fade" id="myModall">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Remove Guardian</h3>
+			</div>
+			<div class="modal-body">
+				<h3>Are you sure you want to remove this guardian?</h3>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteGuardian()">Confirm</a>
+			</div>
+		</div>
+	</div>
+</div>
+@*Edit Guardian Modal*@
+<div class="modal fade" id="GuardianEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit guardian</h3>
+			</div>
+			<div class="modal-body" id="guardianEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
 
-@{
-    ViewBag.Title = "Index";
+
+
+
+
+
+<script>
+	var ConfirmDelete = function (StudentGuardianId) {
+		$("#hiddenGuardianId").val(StudentGuardianId);
+		$("#myModall").modal('show');
+	}
+	var DeleteGuardian = function () {
+		var registeredUserId = $("#hiddenGuardianId").val();
+		$.ajax({
+			type: "POST",
+			url: "/StudentGuardians/DeleteConfirmed/",
+			data: { id: registeredUserId },
+			success: function (response) {
+				alert("Guardian Deleted");
+				$("#myModall").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var EditGuardian = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/StudentGuardians/EditGuardian",
+			data: { Id: Id },
+			success: function (response) {
+				$("#guardianEditBody").html(response);
+				$("#GuardianEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#GuardianEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/StudentGuardians/Edit",
+			data: data,
+			success: function (response) {
+				alert("Guardian Updated");
+				$("#myModal").modal("hide");
+				$("#GuardianEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>
+@section scripts{
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#myTable').DataTable(
+				{
+					"ordering": false,
+				}
+			);
+		});
+	</script>
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-   
-        <th>
-            @Html.DisplayNameFor(model => model.RegisteredUser.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuardianFirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuardianLastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuardianFullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuardianEmailAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateAdded)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-
-        <td>
-            @Html.DisplayFor(modelItem => item.RegisteredUser.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuardianFirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuardianLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuardianFullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateAdded)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.StudentGuardianId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.StudentGuardianId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.StudentGuardianId })
-        </td>
-    </tr>
-}
-
-</table>

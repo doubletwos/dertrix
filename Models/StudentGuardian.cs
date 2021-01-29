@@ -27,6 +27,8 @@ namespace Dertrix.Models
 
         public string GuardianEmailAddress { get; set; }
 
+        public string Telephone { get; set; }
+
         public int StudentId { get; set; }
         public string StudentFullName { get; set; }
 

@@ -10,6 +10,9 @@
 			Email Address
 		</th>
 		<th>
+		    Tel
+		</th>
+		<th>
 			Relationship
 		</th>
 	
@@ -39,6 +42,9 @@
 	<td>
 		@Html.DisplayFor(modelItem => item.GuardianEmailAddress)
 	</td>
+	<th>
+		@Html.DisplayFor(modelItem => item.Telephone)
+	</th>
 	<td>
 		@Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
 	</td>

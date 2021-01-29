@@ -17,7 +17,19 @@ namespace Dertrix.Controllers
         // GET: StudentGuardians
         public ActionResult Index()
         {
-            var studentGuardians = db.StudentGuardians.Include(s => s.RegisteredUser);
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
+
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var studentGuardians = db.StudentGuardians
+                .Where(e => e.OrgId == i) 
+                .Include(s => s.RegisteredUser)
+                .Include(s => s.Title)
+                .Include(s => s.Relationship);               
             return View(studentGuardians.ToList());
         }
 
@@ -70,6 +82,38 @@ namespace Dertrix.Controllers
         }
 
 
+        public ActionResult EditGuardian(int Id)
+        {
+            if (Id != 0)
+            {
+                var guardian = db.StudentGuardians
+                    .Where(x => x.StudentGuardianId == Id)
+                    .FirstOrDefault();
+                var studentguardian = new StudentGuardian
+                {
+                    StudentGuardianId = guardian.StudentGuardianId,
+                    RegisteredUserId = guardian.RegisteredUserId,
+                    GuardianFirstName = guardian.GuardianFirstName,
+                    GuardianLastName = guardian.GuardianLastName,
+                    GuardianFullName = guardian.GuardianFullName,
+                    GuardianEmailAddress = guardian.GuardianEmailAddress,
+                    DateAdded = guardian.DateAdded,
+                    StudentId = guardian.StudentId,
+                    StudentFullName = guardian.StudentFullName,
+                    OrgId = guardian.OrgId,
+                    TitleId = guardian.TitleId,
+                    RelationshipId = guardian.RelationshipId,
+                    Telephone = guardian.Telephone          
+                };
+
+                ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName", guardian.RelationshipId);
+                ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", guardian.TitleId);
+
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditGuardian.cshtml", studentguardian);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditGuardian.cshtml");
+        }
+
 
 
         // GET: StudentGuardians/Details/5
@@ -101,30 +145,17 @@ namespace Dertrix.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+
                 db.StudentGuardians.Add(studentGuardian);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentGuardian.RegisteredUserId);
             return View(studentGuardian);
         }
 
-        // GET: StudentGuardians/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentGuardian studentGuardian = db.StudentGuardians.Find(id);
-            if (studentGuardian == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentGuardian.RegisteredUserId);
-            return View(studentGuardian);
-        }
 
         // POST: StudentGuardians/Edit/5
         [HttpPost]
@@ -133,11 +164,14 @@ namespace Dertrix.Controllers
         {
             if (ModelState.IsValid)
             {
+                studentGuardian.GuardianFullName = studentGuardian.GuardianFirstName + studentGuardian.GuardianLastName;
+
+
+
                 db.Entry(studentGuardian).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentGuardian.RegisteredUserId);
             return View(studentGuardian);
         }
 
@@ -157,8 +191,6 @@ namespace Dertrix.Controllers
         }
 
         // POST: StudentGuardians/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             StudentGuardian studentGuardian = db.StudentGuardians.Find(id);

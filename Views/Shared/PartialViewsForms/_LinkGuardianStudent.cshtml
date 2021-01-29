@@ -111,6 +111,10 @@
 				},
 				'RelationshipId': {
 					required: true,
+				},
+				'Telephone': {
+					required: true,
+					maxlength: 11,
 				}
 			},
 			messages: {
@@ -119,6 +123,10 @@
 				'LastName': 'Last name is required',
 				'Email': 'Please enter email address',
 				'RelationshipId': 'Please select relationship',
+				'Telephone': {
+					required: 'Please enter telephone number',
+					maxlength: 'Not more than 11 characters allowed'
+				},
 
 			}
 		});

@@ -340,6 +340,10 @@
     <Compile Include="Migrations\202101282018550_SprintJan2021-14.Designer.cs">
       <DependentUpon>202101282018550_SprintJan2021-14.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101291052078_SprintJan2021-15.cs" />
+    <Compile Include="Migrations\202101291052078_SprintJan2021-15.Designer.cs">
+      <DependentUpon>202101291052078_SprintJan2021-15.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -688,10 +692,6 @@
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup.cshtml" />
     <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
-    <Content Include="Views\StudentGuardians\Create.cshtml" />
-    <Content Include="Views\StudentGuardians\Delete.cshtml" />
-    <Content Include="Views\StudentGuardians\Details.cshtml" />
-    <Content Include="Views\StudentGuardians\Edit.cshtml" />
     <Content Include="Views\StudentGuardians\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianStudent.cshtml" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\Flaticon.eot" />
@@ -775,6 +775,8 @@
     <Content Include="Views\Posts\PostsTable.cshtml" />
     <Content Include="Views\Orgs\SchCalendar.cshtml" />
     <Content Include="Views\Relationships\Index.cshtml" />
+    <Content Include="Views\Relationships\Create.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditGuardian.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -910,6 +912,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101282018550_SprintJan2021-14.resx">
       <DependentUpon>202101282018550_SprintJan2021-14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101291052078_SprintJan2021-15.resx">
+      <DependentUpon>202101291052078_SprintJan2021-15.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
