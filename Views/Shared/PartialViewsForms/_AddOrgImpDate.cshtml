@@ -13,7 +13,6 @@
 			</div>
 			<div class="modal-body">
 				<form id="AddOrgImpDate">
-					@Html.AntiForgeryToken()
 					@{
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
@@ -42,8 +41,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add Important Date" class="RegUserOrgButtonColour" id="btnSubmit" />
+								<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+								<a href="#0"><input type="submit" value="Add Important Date" class="RegUserOrgButtonColour" id="btnSubmitID" /></a>
 						</div>
 					</div>
 				</form>
@@ -65,7 +64,7 @@
 				yearRange: "-35:+35",
 			});
 		})
-		$("#btnSubmit").on("click", function () {
+		$("#btnSubmitID").on("click", function () {
 			if ($("#AddOrgImpDate").valid()) {
 				var data = $("#AddOrgImpDate").serialize();
 				$.ajax({

@@ -89,11 +89,9 @@ namespace Dertrix.Controllers
 
         // POST: OrgEvents/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(OrgEvent orgEvent)
         {
-            if (ModelState.IsValid)
-            {
+           
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
@@ -105,9 +103,7 @@ namespace Dertrix.Controllers
                 db.OrgEvents.Add(orgEvent);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
 
-            return View(orgEvent);
         }
 
         // GET: OrgEvents/Edit/5

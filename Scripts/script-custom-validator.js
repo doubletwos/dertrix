@@ -497,17 +497,17 @@ $(document).ready(function () {
 				maxlength: 25,
 
 			},
-			'ImportanttDate': {
+			'FromImportanttDate': {
 				required: true,
 			},
 		},
 		messages: {
-			'ImportantDateName': {
+			'FromImportanttDate': {
 				required: 'Please enter important date name',
 				maxlength: 'Not more than 25 characters allowed'
 			},
 
-			'ImportanttDate': {
+			'FromImportanttDate': {
 			   required: 'Please enter the date'
 			},
 
