@@ -46,8 +46,8 @@ namespace Dertrix.Controllers
                      OrgId = edtimpdate.OrgId,
                      CreatedBy = edtimpdate.CreatedBy,
                      CreatorName = edtimpdate.CreatorName,
-                     FromImportanttDate = edtimpdate.FromImportanttDate,
-                     ToImportanttDate = edtimpdate.ToImportanttDate
+                    FromImportanttDate = edtimpdate.FromImportanttDate,
+                    ToImportanttDate = edtimpdate.ToImportanttDate
                 };
 
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditImpDate.cshtml", edtimpdate1);

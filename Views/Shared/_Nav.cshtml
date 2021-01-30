@@ -37,7 +37,7 @@
 									<li role="separator" class="divider"></li>
 								</ul>
 							</li>
-						
+
 						}
 						@if ((int)Session["OrgId"] != 23 && Session["IsParent/Guardian"] == null)
 						{
@@ -87,6 +87,7 @@
 							{
 								Html.RenderAction("Regs", "RegisteredUsers");
 							}
+
 						}
 						@if ((int)Session["OrgId"] == 23)
 						{
@@ -100,11 +101,13 @@
 									@*<li role="presentation" class="active">@Html.ActionLink("Class Management", "SystemAdminIndex", "Class")</li>*@
 								</ul>
 							</li>
+
 							{
 								Html.RenderAction("Regs", "RegisteredUsers");
 							}
+
 						}
-					
+
 
 
 

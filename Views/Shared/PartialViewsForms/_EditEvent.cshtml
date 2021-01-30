@@ -9,28 +9,28 @@
 		@Html.HiddenFor(model => model.CreatedBy)
 		@Html.HiddenFor(model => model.CreatorName)
 		<div class="form-group">
-			@Html.LabelFor(model => model.EventName, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.EventName,"Event Name", htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
 				@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })
 				@Html.ValidationMessageFor(model => model.EventName, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group">
-			@Html.LabelFor(model => model.EventDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.EventDescription, "Event Description", htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
 				@Html.EditorFor(model => model.EventDescription, new { htmlAttributes = new { @class = "form-control" } })
 				@Html.ValidationMessageFor(model => model.EventDescription, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group">
-			@Html.LabelFor(model => model.EventDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.EventDate,"Event Date", htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.EventDate, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.EditorFor(model => model.EventDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control", @id = "test3", type = "text" } })
 				@Html.ValidationMessageFor(model => model.EventDate, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group">
-			@Html.LabelFor(model => model.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.SendAsEmail, "Send As Email",htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
 				<div class="checkbox">
 					@Html.EditorFor(model => model.SendAsEmail)
@@ -40,3 +40,16 @@
 		</div>
 	</div>
 </form>
+<script>
+	$(document).ready(function () {
+		$(function () {
+			$("#test3").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-0:+10",
+			});
+		})
+
+	})
+</script>

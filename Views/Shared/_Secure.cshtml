@@ -7,23 +7,26 @@
 {
 	var sessionNavbar = Session["regUserOrgBrandBar"].ToString();
 	var currentsession = HttpContext.Current.Session.SessionID.ToString();
-	<ul class="nav navbar-nav navbar-left">
-		<li>
-			@{
-				var isTester = Convert.ToInt32(Session["IsTester"]);
-				if (isTester == 1 && ((int)Session["OrgId"] != 23))
-				{
-				 @Html.ActionLink("BACK TO DERTRIX", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { }) 
-				}
-				else
-				{
-		        @Html.ActionLink("LOG OFF", "LogOut", "Access", new { id = @currentsession }, htmlAttributes: new { id = "loginLink" })
+<ul class="nav navbar-nav navbar-right">
 
-			    }
+	<li>
+		@{
+			var isTester = Convert.ToInt32(Session["IsTester"]);
+			if (isTester == 1 && ((int)Session["OrgId"] != 23))
+			{
+				@Html.ActionLink("BACK TO DERTRIX", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "@*RegUserActionButtonColour*@" })
+
 			}
+			else
+			{
+				@Html.ActionLink("LOG OFF", "LogOut", "Access", new { id = @currentsession }, htmlAttributes: new { @class = "RegUserActionButtonColour" })
+			}
+		}
 
-</li>
-	</ul>
+	</li>
+	<li style="font-family: Trebuchet MS, Tahoma, Arial; font-size:14px; font-weight: 900; padding-top:15px; padding-left:20px; color:white; font-style:italic;">You are logged in as @Session["FullName"]</li>
+
+</ul>
 
 
 }
