@@ -14,6 +14,8 @@
 <div class="jumbotron" style="height:100vh;">
 	<br />
 	<br />
+	@Html.Partial("_WidgetDashboard")
+
 	<div>
 		<hr />
 		<div class="row">
@@ -46,17 +48,15 @@
 			<thead>
 				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 					<th>
-						@Html.DisplayNameFor(model => model.ImportantDateName)
+						Date Name
 					</th>
 
+
 					<th>
-						@Html.DisplayNameFor(model => model.CreatedBy)
+						Creator
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.CreatorName)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.FromImportanttDate)
+						Date
 					</th>
 
 					<th></th>
@@ -72,9 +72,7 @@
 							@Html.DisplayFor(modelItem => item.ImportantDateName)
 						</td>
 
-						<td>
-							@Html.DisplayFor(modelItem => item.CreatedBy)
-						</td>
+
 						<td>
 							@Html.DisplayFor(modelItem => item.CreatorName)
 						</td>

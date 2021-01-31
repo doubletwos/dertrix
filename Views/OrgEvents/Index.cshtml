@@ -15,6 +15,8 @@
 <div class="jumbotron" style="height:100vh;">
 	<br />
 	<br />
+	@Html.Partial("_WidgetDashboard")
+
 	<div>
 		<hr />
 		<div class="row">
@@ -42,28 +44,20 @@
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
 			<thead>
 
-				<tr style="border-style: groove;">
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 					<th>
-						@Html.DisplayNameFor(model => model.EventName)
+						Event Name
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.OrgId)
+						Creator
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.CreatedBy)
+						Description
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.CreatorName)
+						Event Date
 					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.EventDescription)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.EventDate)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.SendAsEmail)
-					</th>
+
 					<th></th>
 				</tr>
 			</thead>
@@ -76,12 +70,8 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.EventName)
 						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.OrgId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.CreatedBy)
-						</td>
+
+
 						<td>
 							@Html.DisplayFor(modelItem => item.CreatorName)
 						</td>
@@ -91,9 +81,7 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.EventDate)
 						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.SendAsEmail)
-						</td>
+
 						<td>
 							<div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

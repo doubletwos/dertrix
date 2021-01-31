@@ -60,7 +60,6 @@ namespace Dertrix.Controllers
             int i = Convert.ToInt32(rr);
 
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-            //var j = db.Classes.Where(s => s.OrgId == id && ij == s.ClassRefNumb).Select(g => g.ClassId).FirstOrDefault();
 
 
             string subjectid = id.ToString(); 
@@ -86,7 +85,6 @@ namespace Dertrix.Controllers
 
             }
 
-            //var mysbujects = db.Subjects.Where(p => p.ClassTeacherId == RegisteredUserId && p.SubjectId == id).Select()
 
             var studentSubject = db.StudentSubject.Where(p => p.SubjectId == id).Include(s => s.RegisteredUser).Include(s => s.Subject);
             return View(studentSubject.ToList());
@@ -126,8 +124,6 @@ namespace Dertrix.Controllers
 
 
             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName");
-            //ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
-            //ViewBag.Subjects = new MultiSelectList(db.Subjects, "SubjectId", "SubjectName");
             ViewBag.SelectedSubjects = new MultiSelectList(db.Subjects, "SubjectId", "SubjectName");
 
 
@@ -303,7 +299,10 @@ namespace Dertrix.Controllers
                     StudentFullName = stud1.StudentFullName,
                     FirstTermStudentGrade = stud1.FirstTermStudentGrade,
                     SecondTermStudentGrade = stud1.SecondTermStudentGrade,
-                    ThirdTermStudentGrade = stud1.ThirdTermStudentGrade
+                    ThirdTermStudentGrade = stud1.ThirdTermStudentGrade,
+                    OrgId = stud1.OrgId,
+                    ClassRef = stud1.ClassRef
+                    
                                    
               };
                 return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrade.cshtml", stud);
@@ -387,14 +386,12 @@ namespace Dertrix.Controllers
         }
 
         // POST: StudentSubjects/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             StudentSubject studentSubject = db.StudentSubject.Find(id);
             db.StudentSubject.Remove(studentSubject);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Grades");
         }
 
         protected override void Dispose(bool disposing)

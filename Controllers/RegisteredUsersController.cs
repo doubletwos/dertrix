@@ -208,7 +208,10 @@ namespace Dertrix.Controllers
                     TribeId = stud1.TribeId,
                     EnrolmentDate = stud1.EnrolmentDate,
                     DateOfBirth = stud1.DateOfBirth,
-                    FullName = stud1.FullName
+                    FullName = stud1.FullName,
+                    CreatedBy = stud1.CreatedBy,
+                    RegUserOrgBrand = stud1.RegUserOrgBrand,
+                    ClassRef = stud1.ClassRef
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditStudent.cshtml", stud);
             }
@@ -383,7 +386,7 @@ namespace Dertrix.Controllers
 
 
         // GET: RegisteredUsers/ClassStudents/
-        public ActionResult ClassStudents(int? id, int? ij, string searchname, string searchid)
+        public ActionResult ClassStudents(int? id)
         {
             if (Session["OrgId"] == null)
             {
