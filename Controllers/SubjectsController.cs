@@ -100,7 +100,7 @@ namespace Dertrix.Controllers
 
                 };
 
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName" , edtsubject.ClassTeacherId);
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName" , edtsubject1.ClassTeacherId) ;
                 ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName", edtsubject.ClassId);
 
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml", edtsubject1);

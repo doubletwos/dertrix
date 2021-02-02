@@ -67,7 +67,7 @@ namespace Dertrix.Controllers
                 LogInTime = DateTime.Now,
                 LogOutTime = null
             };
-            //db.RegUsersAccessLogs.Add(reguseraccessLogs);
+            db.RegUsersAccessLogs.Add(reguseraccessLogs);
             db.SaveChanges();
             if (orgredirect == 23)
             {
@@ -94,19 +94,19 @@ namespace Dertrix.Controllers
             {
                 var logouttime = DateTime.Now;
                 var getsession = db.RegUsersAccessLogs.AsNoTracking().Where(x => x.SessionId == id).FirstOrDefault();
-                //var getsession1 = new RegUsersAccessLog
-                //{
-                //    RegUsersAccessLogId = getsession.RegUsersAccessLogId,
-                //    OrgId = getsession.OrgId,
-                //    SessionId = getsession.SessionId,
-                //    RegUserId = getsession.RegUserId,
-                //    UserFullName = getsession.UserFullName,
-                //    LogInTime = getsession.LogInTime,
-                //    LogOutTime = logouttime
-                //};
-                //getsession = getsession1;
-                //db.Entry(getsession).State = EntityState.Modified;
-                //db.SaveChanges();
+                var getsession1 = new RegUsersAccessLog
+                {
+                    RegUsersAccessLogId = getsession.RegUsersAccessLogId,
+                    OrgId = getsession.OrgId,
+                    SessionId = getsession.SessionId,
+                    RegUserId = getsession.RegUserId,
+                    UserFullName = getsession.UserFullName,
+                    LogInTime = getsession.LogInTime,
+                    LogOutTime = logouttime
+                };
+                getsession = getsession1;
+                db.Entry(getsession).State = EntityState.Modified;
+                db.SaveChanges();
                 Session.Abandon();
                 Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
                 return RedirectToAction("Signin", "Access");

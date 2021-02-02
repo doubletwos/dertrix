@@ -218,6 +218,17 @@ namespace Dertrix.Controllers
             return PartialView("_EditStudent");
         }
 
+        [ChildActionOnly]
+        public ActionResult ClassStudentCount(int id)
+        {
+            var classstudentcount = (from RegisteredUserId in db.RegisteredUsers
+                                     join Classes in db.Classes on RegisteredUserId.ClassId equals id
+                                     select RegisteredUserId).ToList();
+
+
+            return PartialView("_ClassStudentCount", classstudentcount);
+        }
+
         public ActionResult LinkGuardianStudent(int Id)
         {
             if (Id != 0)
@@ -758,6 +769,9 @@ namespace Dertrix.Controllers
                     registeredUser.RegUserOrgBrand = j;
                     db.RegisteredUsers.Add(registeredUser);
                     db.SaveChanges();
+
+
+
                     var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                     {
                         RegisteredUserId = registeredUser.RegisteredUserId,

@@ -21,7 +21,7 @@ namespace Dertrix.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? StartTime { get; set; }
 
-        [Display(Name = "Job Start Time")]
+        [Display(Name = "Job End Time")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EndTime { get; set; }

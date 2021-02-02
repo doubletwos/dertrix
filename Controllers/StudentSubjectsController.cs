@@ -144,14 +144,13 @@ namespace Dertrix.Controllers
 
 
         [HttpPost]
-        public ActionResult StudentUpdateSubject(string searchname, int classid)
+        public ActionResult StudentUpdateSubject( int classid)
         {
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
             var orgid = Convert.ToInt32(Session["OrgId"]);
-
 
 
             //classref list

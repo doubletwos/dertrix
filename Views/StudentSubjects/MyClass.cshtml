@@ -34,22 +34,8 @@
 <div class="jumbotron" style="height:100vh;">
 	<br />
 	<br />
-	<div class="container">
-		<ul class="nav nav-pills" role="tablist">
-			<li role="presentation" class="active" id="MyClassCountWidget" onclick="DisplayModal()">
-				<a href="#">
-					<i class="fa fa-list-ol fa-2x" aria-hidden="true"></i>
-					My classes <span class="badge">
-						@{
-							Html.RenderAction("MyClassCount", "Class");
-						}
-					</span>
-				</a>
-			</li>
+	@Html.Partial("_WidgetDashboard")
 
-
-		</ul>
-	</div>
 
 
 	<hr />
@@ -216,19 +202,7 @@
 	})
 </script>
 
-<script>
-	var DisplayModal = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Class/MyClassList",
-			data: { Id: Id },
-			success: function (response) {
-				$("#ClassListModalbody").html(response);
-				$("#ClasslistModal").modal("show");
-			}
-		})
-	}
-</script>
+
 
 
 

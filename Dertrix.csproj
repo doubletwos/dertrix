@@ -777,6 +777,7 @@
     <Content Include="Views\Relationships\Index.cshtml" />
     <Content Include="Views\Relationships\Create.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditGuardian.cshtml" />
+    <Content Include="Views\Shared\_ClassStudentCount.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

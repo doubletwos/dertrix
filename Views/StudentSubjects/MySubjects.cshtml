@@ -17,45 +17,10 @@
 <div class="jumbotron" style="height:100vh;">
 	<br />
 	<br />
+	@Html.Partial("_WidgetDashboard")
 
 	<div>
-		<div class="row">
-			<div class="col-lg-12">
-				<p>
-					<b>Student Grades management</b>
-				</p>
-				<p>
-					@using (Html.BeginForm("Grades", "StudentSubjects", FormMethod.Get))
-					{
 
-						<div class="form-inline">
-							Student Id: &nbsp;&nbsp;
-							<input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
-							<input type="hidden" id="hfId" name="searchid" />
-
-							Student Name: &nbsp;&nbsp;
-							<input type="text" name="searchname" class="" placeholder="" id="searchname" />
-							<input type="hidden" id="hfName" name="searchname" />&nbsp;&nbsp;
-
-							Class: &nbsp;&nbsp;
-							<select class="" id="classid" name="ij">
-								<option>Select Class</option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-								<option>6</option>
-							</select>
-							&nbsp;&nbsp;
-
-							<button class="RegUserOrgButtonColour">Filter</button>
-						</div>
-					}
-
-				</p>
-			</div>
-		</div>
 
 
 		<br />
@@ -78,13 +43,13 @@
 						Subject
 					</th>
 					<th>
-						First Term Grade
+						1st Term Grade
 					</th>
 					<th>
-						Second Term Grade
+						2nd Term Grade
 					</th>
 					<th>
-						Third Term Grade
+						3rd Term Grade
 					</th>
 					<th></th>
 				</tr>
@@ -117,7 +82,6 @@
 									Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="ShowStudent(@item.StudentSubjectId)">View Subject Details</a></li>
 									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>
 									<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>
 

@@ -194,7 +194,7 @@ namespace Dertrix.Controllers
 
         }
 
-
+        // This action is used at school level to assign teachers to class
         public ActionResult AssignClassTeacher(int? id)
         {
 
