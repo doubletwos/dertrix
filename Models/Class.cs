@@ -22,20 +22,24 @@ namespace Dertrix.Models
         public Org Org { get; set; }
 
 
-
         public int? ClassTeacherId { get; set; }
         public ClassTeacher ClassTeacher { get; set; }
 
-
         public string ClassTeacherFullName { get; set; }
-
 
         public virtual ICollection<RegisteredUser> RegisteredUsers { get; set; }
 
         public virtual ICollection<ClassType> ClassTypes { get; set; }
 
+        public int? Students_Count { get; set; }
 
-  
+        public int? Female_Students_Count { get; set; }
+
+        public int? Male_Students_Count { get; set; }
+
+
+
+
 
     }
 }

@@ -218,16 +218,7 @@ namespace Dertrix.Controllers
             return PartialView("_EditStudent");
         }
 
-        [ChildActionOnly]
-        public ActionResult ClassStudentCount(int id)
-        {
-            var classstudentcount = (from RegisteredUserId in db.RegisteredUsers
-                                     join Classes in db.Classes on RegisteredUserId.ClassId equals id
-                                     select RegisteredUserId).ToList();
 
-
-            return PartialView("_ClassStudentCount", classstudentcount);
-        }
 
         public ActionResult LinkGuardianStudent(int Id)
         {
@@ -791,6 +782,34 @@ namespace Dertrix.Controllers
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
+
+                    //Upon adding student to class, Update class data
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
+                    var getclassid = db.Classes.AsNoTracking().Where(x => x.ClassId == registeredUser.ClassId).FirstOrDefault();
+                    var studentcount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.SelectedOrg == i).Count();
+                    var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.GenderId == 2 && x.SelectedOrg == i).Count();
+                    var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.GenderId == 1 && x.SelectedOrg == i).Count();
+
+
+                    var updateclass = new Class
+                    {
+                        ClassId = getclassid.ClassId,
+                        ClassName = getclassid.ClassName,
+                        ClassIsActive = getclassid.ClassIsActive,
+                        OrgId = getclassid.OrgId,
+                        ClassRefNumb = getclassid.ClassRefNumb,
+                        ClassTeacherId = getclassid.ClassTeacherId,
+                        ClassTeacherFullName = getclassid.ClassTeacherFullName,
+                        Students_Count = studentcount,
+                        Female_Students_Count = FemStuCount,
+                        Male_Students_Count = MaleStudCount
+                    };
+                    getclassid = updateclass;
+                    db.Entry(getclassid).State = EntityState.Modified; 
+                    db.SaveChanges();
+
+
                     return RedirectToAction("Students", "RegisteredUsers");
                 }
             }

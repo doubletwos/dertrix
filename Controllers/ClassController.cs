@@ -169,7 +169,10 @@ namespace Dertrix.Controllers
                     ClassRefNumb = edtcla.ClassRefNumb,
                     ClassTeacherId = edtcla.ClassTeacherId,
                     ClassTeacherFullName = edtcla.ClassTeacherFullName,
-                    OrgId = edtcla.OrgId
+                    OrgId = edtcla.OrgId,
+                    Students_Count = edtcla.Students_Count,
+                    Female_Students_Count = edtcla.Female_Students_Count,
+                    Male_Students_Count = edtcla.Male_Students_Count
                 };
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditClass.cshtml", edt1);
@@ -216,7 +219,10 @@ namespace Dertrix.Controllers
                     OrgId = classroom.OrgId,
                     ClassRefNumb = classroom.ClassRefNumb,
                     ClassTeacherId = classroom.ClassTeacherId,
-                    ClassTeacherFullName = classroom.ClassTeacherFullName
+                    ClassTeacherFullName = classroom.ClassTeacherFullName,
+                    Students_Count = classroom.Students_Count,
+                    Female_Students_Count = classroom.Female_Students_Count,
+                    Male_Students_Count = classroom.Male_Students_Count
                 };
                 ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
                 return PartialView("~/Views/Shared/PartialViewsForms/_AssignClassTeacher.cshtml", cr);

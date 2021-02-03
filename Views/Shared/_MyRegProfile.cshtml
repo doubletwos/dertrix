@@ -24,10 +24,21 @@
 		<li>
 			Enrolement date : <strong>@Html.DisplayFor(model => model.EnrolmentDate)</strong>
 		</li>
+	</ul>
+	<hr/>
+	<ul>
 		<li>
 			Class Teacher : <strong>@Html.DisplayFor(model => model.Class.ClassTeacherFullName)</strong>
 		</li>
-
+		<li>
+			Number of students in class : <strong>@Html.DisplayFor(model => model.Class.Students_Count)</strong>
+		</li>
+		<li>
+			Number of female students  : <strong>@Html.DisplayFor(model => model.Class.Female_Students_Count)</strong>
+		</li>
+		<li>
+			Number of Male students : <strong>@Html.DisplayFor(model => model.Class.Male_Students_Count)</strong>
+		</li>
 	</ul>
 </div>
 <hr />
