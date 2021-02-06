@@ -17,6 +17,10 @@ namespace Dertrix.Controllers
         // GET: OrgEvents
         public ActionResult Index()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -122,11 +126,9 @@ namespace Dertrix.Controllers
         }
 
         // POST: OrgEvents/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrgEventId,EventName,OrgId,CreatedBy,CreatorName,EventDescription,EventDate,SendAsEmail")] OrgEvent orgEvent)
+        public ActionResult Edit(OrgEvent orgEvent)
         {
             if (ModelState.IsValid)
             {

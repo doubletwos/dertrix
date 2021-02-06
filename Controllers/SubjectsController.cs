@@ -17,7 +17,11 @@ namespace Dertrix.Controllers
         // GET: Subjects
         public ActionResult Index()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
 
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -29,12 +33,8 @@ namespace Dertrix.Controllers
                 int i = Convert.ToInt32(rr);
                 var subjects = db.Subjects
                     .Where(s => s.SubjectOrgId == rr)
-                    .Include(s => s.Class);
-
-                    
-
+                    .Include(s => s.Class);                    
                 return View(subjects.ToList());
-
             }
 
             else

@@ -783,9 +783,10 @@
     <Content Include="Views\Posts\PostsTable.cshtml" />
     <Content Include="Views\Orgs\SchCalendar.cshtml" />
     <Content Include="Views\Relationships\Index.cshtml" />
-    <Content Include="Views\Relationships\Create.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditGuardian.cshtml" />
     <Content Include="Views\StudentSubjects\_ClassProfile.cshtml" />
+    <Content Include="Views\RegisteredUsers\SysAdmins.cshtml" />
+    <Content Include="Views\Orgs\WrongDevice.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

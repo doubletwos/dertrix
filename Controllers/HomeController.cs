@@ -10,6 +10,11 @@ namespace Dertrix.Controllers
     {
         public ActionResult SysAdminSetUp()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -22,6 +27,11 @@ namespace Dertrix.Controllers
         }
         public ActionResult SysSetUp()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");

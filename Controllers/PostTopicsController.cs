@@ -16,6 +16,10 @@ namespace Dertrix.Controllers
         // GET: PostTopics
         public ActionResult Index()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");

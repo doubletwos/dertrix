@@ -18,6 +18,11 @@ namespace Dertrix.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice","Orgs");
+
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -262,6 +267,11 @@ namespace Dertrix.Controllers
 
         public ActionResult SystemAdminIndex()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice");
+
+            }
             var isTester = Convert.ToInt32(Session["IsTester"]);
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
             if (isTester == 1 && ((int)Session["OrgId"] != 23))
@@ -297,6 +307,11 @@ namespace Dertrix.Controllers
             return View(org);
         }
 
+
+        public ActionResult WrongDevice()
+        {
+            return View();
+        }
 
 
         protected override void Dispose(bool disposing)

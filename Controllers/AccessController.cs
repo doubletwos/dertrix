@@ -101,12 +101,6 @@ namespace Dertrix.Controllers
             db.Entry(reguserid).State = EntityState.Modified;
             db.SaveChanges();
 
-
-            //if (Request.Browser.IsMobileDevice != true)
-            //{
-            //    return RedirectToAction("Signin", "Access");
-
-            //}
             if (orgredirect == 23)
             {
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });

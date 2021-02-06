@@ -19,6 +19,11 @@ namespace Dertrix.Controllers
         // GET: StudentSubjects/Grades
         public ActionResult Grades()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");

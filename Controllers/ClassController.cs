@@ -17,6 +17,10 @@ namespace Dertrix.Controllers
         // GET: Class/SystemAdminIndex
         public ActionResult SystemAdminIndex(int? id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -40,6 +44,10 @@ namespace Dertrix.Controllers
         // GET: Class/Index
         public ActionResult Index(int? id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");

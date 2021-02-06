@@ -286,21 +286,22 @@ namespace Dertrix.Controllers
         // GET: RegisteredUsers/AllStudents/
         public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
             var orgid  = (int)Session["OrgId"];
-
-
             // returns students of org if fullname is provided
             if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
             {
                 return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Include(s => s.Class).ToList());
 
             }
-
-
             // returns students of org if studentid is provided
             if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
             {
@@ -308,42 +309,21 @@ namespace Dertrix.Controllers
                 return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Include(s => s.Class).ToList());
 
             }
-
-
             var students = db.RegisteredUsers
            .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid)
            .ToList();
             return View(students);
-
-
         }
 
-
-
-
-
-
-
-
-
-        public JsonResult AutoCompleteStudentFullname(string prefix, int? id)
-        {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            id = i;
-            var studentsfullname = (from stu in db.RegisteredUsers.Where(p => p.StudentRegFormId != null).Where(j => j.SelectedOrg == id)
-                                    where stu.FullName.StartsWith(prefix)
-                                    select new
-                                    {
-                                        label = stu.FullName,
-                                        Val = stu.RegisteredUserId
-                                    }).ToList();
-            return Json(studentsfullname);
-        }
 
         // GET: RegisteredUsers/Staffs/
         public ActionResult Staffs(int? id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+
+            }
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -365,6 +345,33 @@ namespace Dertrix.Controllers
                 .ToList();
 
             return View(staffs);
+        }
+
+
+
+
+        // GET: RegisteredUsers/SysAdmins/
+        public ActionResult SysAdmins(int? id) 
+        {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            if (Session["OrgId"] != null)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                id = i;
+            }
+            var SysAdmins = db.RegisteredUserOrganisations
+                .Where(j => j.OrgId == 23)            
+                .ToList();
+
+            return View(SysAdmins);
         }
 
 
