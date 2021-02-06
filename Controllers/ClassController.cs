@@ -115,8 +115,6 @@ namespace Dertrix.Controllers
         }
 
 
-
-
         public ActionResult ClassDetails(int Id)
         {
             var cla = db.Classes.Where(x => x.ClassId == Id);

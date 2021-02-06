@@ -59,6 +59,7 @@
 					<th>
 						Registration Date
 					</th>
+					<th>Last Logon Date</th>
 					<th>
 						Select Action
 					</th>
@@ -67,37 +68,40 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.RegisteredUserId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Title.TitleName)
-							@Html.DisplayFor(modelItem => item.ContactFullName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Email)
-						</td>
-						<td>
-								@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
-								@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
-							</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.EnrolmentDate)
-						</td>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="ShowStaff(@item.RegisteredUserId)">View Staff Details</a></li>
-									<li><a href="#" onclick="EditStaff(@item.RegisteredUserId)">Edit Staff Details</a></li>
-									<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Staff</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.RegisteredUserId)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Title.TitleName)
+						@Html.DisplayFor(modelItem => item.ContactFullName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Email)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.SecondarySchoolUserRole.RoleName)
+						@Html.DisplayFor(modelItem => item.PrimarySchoolUserRole.RoleName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.EnrolmentDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.LastLogOn)
+					</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="ShowStaff(@item.RegisteredUserId)">View Staff Details</a></li>
+								<li><a href="#" onclick="EditStaff(@item.RegisteredUserId)">Edit Staff Details</a></li>
+								<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Staff</a></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
 				}
 			</tbody>
 		</table>

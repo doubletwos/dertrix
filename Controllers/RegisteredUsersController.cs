@@ -20,6 +20,8 @@ namespace Dertrix.Controllers
         // GET: RegisteredUsers/Index
         public ActionResult Index(int? id)
         {
+        
+
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
@@ -342,20 +344,16 @@ namespace Dertrix.Controllers
         // GET: RegisteredUsers/Staffs/
         public ActionResult Staffs(int? id)
         {
-            /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
-            /* Populate user list for non superusers if session is not null*/
             if (Session["OrgId"] != null)
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 id = i;
             }
-
-
             var staffs = db.RegisteredUserOrganisations
                 .Where(j => j.OrgId == id)
                 .Where(p => p.PrimarySchoolUserRoleId != null || p.SecondarySchoolUserRoleId != null)
@@ -367,22 +365,6 @@ namespace Dertrix.Controllers
                 .ToList();
 
             return View(staffs);
-        }
-
-
-        public JsonResult AutoCompleteStaffFullname(string prefix, int? id)
-        {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            id = i;
-            var stafffullname = (from staf in db.RegisteredUsers.Where(p => p.StudentRegFormId == null).Where(j => j.SelectedOrg == id)
-                                 where staf.FullName.StartsWith(prefix)
-                                 select new
-                                 {
-                                     label = staf.FullName,
-                                     Val = staf.RegisteredUserId
-                                 }).ToList();
-            return Json(stafffullname);
         }
 
 
@@ -493,7 +475,8 @@ namespace Dertrix.Controllers
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
                             FullName = registeredUser.FullName,
-                            TitleId = registeredUser.TitleId
+                            TitleId = registeredUser.TitleId,
+                            LastLogOn = null
                         };
                         db.RegisteredUserOrganisations.Add(onetomany);
                         db.SaveChanges();
@@ -576,7 +559,8 @@ namespace Dertrix.Controllers
                         SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
                         EnrolmentDate = DateTime.Now,
                         CreatedBy = Session["RegisteredUserId"].ToString(),
-                        FullName = registeredUser.FullName
+                        FullName = registeredUser.FullName,
+                        LastLogOn = null
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
@@ -621,7 +605,8 @@ namespace Dertrix.Controllers
                         EnrolmentDate = DateTime.Now,
                         CreatedBy = Session["RegisteredUserId"].ToString(),
                         FullName = registeredUser.FullName,
-                        TitleId = registeredUser.TitleId
+                        TitleId = registeredUser.TitleId,
+                        LastLogOn = null
 
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
@@ -671,7 +656,8 @@ namespace Dertrix.Controllers
                         SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
                         EnrolmentDate = DateTime.Now,
                         CreatedBy = Session["RegisteredUserId"].ToString(),
-                        FullName = registeredUser.FullName
+                        FullName = registeredUser.FullName,
+                        LastLogOn = null
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
@@ -778,7 +764,8 @@ namespace Dertrix.Controllers
                         SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
                         EnrolmentDate = DateTime.Now,
                         CreatedBy = Session["RegisteredUserId"].ToString(),
-                        FullName = registeredUser.FullName
+                        FullName = registeredUser.FullName,
+                        LastLogOn = null
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();

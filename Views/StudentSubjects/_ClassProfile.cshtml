@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Dertrix.Models.Class>
+
+<table class="table table-bordered table-striped table-condensed">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+		<th style="text-align: center;">
+			Class Teacher
+		</th>
+		<th style="text-align: center;">
+			Class
+		</th>
+		<th style="text-align: center;">
+			All students
+		</th>
+		<th style="text-align: center;">
+			Female students
+		</th>
+		<th style="text-align: center;">
+			Male students
+		</th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+	<td style="text-align: center;">
+		@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+	</td>
+	<td style="text-align: center;">
+		@Html.DisplayFor(modelItem => item.ClassName)
+	</td>
+	<td style="text-align: center;">
+		@Html.DisplayFor(modelItem => item.Students_Count)
+	</td>
+	<td style="text-align: center;">
+		@Html.DisplayFor(modelItem => item.Female_Students_Count)
+	</td>
+	<td style="text-align: center;">
+		@Html.DisplayFor(modelItem => item.Male_Students_Count)
+	</td>
+</tr>
+	}
+
+</table>

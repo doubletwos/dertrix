@@ -35,11 +35,17 @@
 	<br />
 	<br />
 	@Html.Partial("_WidgetDashboard")
-
-
-
 	<hr />
-
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				@{
+					Html.RenderAction("ClassProfile", "StudentSubjects");
+				}
+			</div>
+		</div>
+	</div>
+	<hr />
 	<div class="panel panel-default">
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive">
 			<thead>
@@ -48,20 +54,20 @@
 						Student Id
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.RegisteredUser.FullName)
+						Full Name
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.SubjectName)
+						Subject
 					</th>
 
-					<th>
-						@Html.DisplayNameFor(model => model.FirstTermStudentGrade)
+					<th style="text-align: center;">
+						1st Term Grade
 					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.SecondTermStudentGrade)
+					<th style="text-align: center;">
+						2nd Term Grade
 					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.ThirdTermStudentGrade)
+					<th style="text-align: center;">
+						3rd Term Grade
 					</th>
 					<th></th>
 				</tr>
@@ -79,13 +85,13 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.SubjectName)
 						</td>
-						<td>
+						<td style="text-align: center;">
 							@Html.DisplayFor(modelItem => item.FirstTermStudentGrade)
 						</td>
-						<td>
+						<td style="text-align: center;">
 							@Html.DisplayFor(modelItem => item.SecondTermStudentGrade)
 						</td>
-						<td>
+						<td style="text-align: center;">
 							@Html.DisplayFor(modelItem => item.ThirdTermStudentGrade)
 						</td>
 						<td>

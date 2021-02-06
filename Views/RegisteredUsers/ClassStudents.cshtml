@@ -17,28 +17,37 @@
 	<br />
 	@Html.Partial("_WidgetDashboard")
 
-	<div>
-
-		<br />
-		<br />
-		<hr />
+<div>
+	<br />
+	<br />
+	<hr />
+	<div class="container">
 		<div class="row">
-			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
-			{
-				<div class="col-md-3">
-					@{
-						Html.RenderAction("AddStudent", "RegisteredUsers");
-					}
-				</div>
-			}
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
+			<div class="col-lg-12">
+				@{
+					Html.RenderAction("ClassProfile", "StudentSubjects");
+				}
 			</div>
 		</div>
 	</div>
+	<hr />
+	<div class="row">
+		@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+		{
+			<div class="col-md-3">
+				@{
+					Html.RenderAction("AddStudent", "RegisteredUsers");
+				}
+			</div>
+		}
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-3">
+		</div>
+	</div>
+</div>
 	<br />
 	<div class="panel panel-default">
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">

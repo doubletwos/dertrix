@@ -144,55 +144,36 @@ namespace Dertrix.Controllers
 
 
         [HttpPost]
-        public ActionResult StudentUpdateSubject( int classid)
+        public ActionResult StudentUpdateSubject(int classid)
         {
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
             }
             var orgid = Convert.ToInt32(Session["OrgId"]);
-
-
             //classref list
             var classreflist = db.Classes.Where(x => x.ClassRefNumb == classid).Where(o => o.OrgId == orgid).Select(p => p.ClassId).ToList();
             var listofclasses = new List<int>(classreflist);
             var classref = db.Classes.Where(x => x.ClassRefNumb == classid).Where(o => o.OrgId == orgid).Select(p => p.ClassRefNumb).FirstOrDefault();
-        
-
-
-
             foreach (var cr in classreflist)
             {
-
                 //subject ids
                 var subjectid = db.Subjects.Where(s => s.ClassId == cr).Select(c => c.SubjectId).FirstOrDefault();
-                
-
                 //student list
                 var students = db.RegisteredUsers.Where(x => x.ClassId == cr).Where(p => p.SelectedOrg == orgid).Where(s => s.StudentRegFormId != null).Select(k => k.RegisteredUserId).ToList();
                 var studentid = new List<int>(students);
-
-
                 //subject list
                 var subjects = db.Subjects.Where(x => x.ClassId == cr).Select(c => c.SubjectId).ToList();
                 var subject = new List<int>(subjects);
-
-
-        
-
                 foreach (var stu in students)
                 {
-
                     foreach (var sb in subjects)
                     {
                         var subjectexistcheck = db.StudentSubject.Where(x => x.RegisteredUserId == stu && x.SubjectId == sb).FirstOrDefault();
-
                         if (subjectexistcheck == null)
                         {
                             var subjectname = db.Subjects.Where(s => s.ClassId == cr).Where(x => x.SubjectId == sb).Select(c => c.SubjectName).FirstOrDefault();
                             var fullname = db.RegisteredUsers.Where(s => s.RegisteredUserId == stu).Select(f => f.FullName).FirstOrDefault();
-                        
-
                             var studentsubjects = new StudentSubject()
                             {
                                 RegisteredUserId = stu,
@@ -208,22 +189,15 @@ namespace Dertrix.Controllers
                             };
                             db.StudentSubject.Add(studentsubjects);
                             db.SaveChanges();
-
                         }
-
-
                     }
-
                 }
-
             }
-
-
             return RedirectToAction("Index", "StudentSubjects");
         }
 
 
-        public ActionResult MyClass(int? id, string searchname, string searchid)
+        public ActionResult MyClass(int? id)
         {
             if (Session["OrgId"] == null)
             {
@@ -232,23 +206,8 @@ namespace Dertrix.Controllers
             var OrgId = (int)Session["OrgId"];
 
 
-            // returns students of org if fullname is provided
-            if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
-            {
-                return View(db.StudentSubject.Where(n => n.StudentFullName == searchname).ToList());
-
-            }
-            // returns students of org if studentid is provided
-            if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
-            {
-                int reguserid = Convert.ToInt32(searchid);
-                return View(db.StudentSubject.Where(n => n.RegisteredUserId == reguserid).ToList());
-
-            }
-
-
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-            var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId).Select(x => x.ClassId).FirstOrDefault();
+            var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId && x.ClassId == id).Select(x => x.ClassId).FirstOrDefault();
             var mystudents = db.StudentSubject.Where(x => x.ClassId == id && x.ClassId == myclasses)
                 .Include(s => s.Subject).Include(r => r.RegisteredUser).ToList();
 
@@ -257,23 +216,17 @@ namespace Dertrix.Controllers
         }
 
 
-        public JsonResult AutoCompleteStudentFullname(string prefix, int? id )
+        public ActionResult ClassProfile(int id)
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
+            var classprofile = db.Classes
+                .Where(x => x.ClassId == id)
+                .ToList();
 
-
-            var studentsfullname = (from stu in db.StudentSubject.Where(j => j.OrgId == i)
-                                    where stu.StudentFullName.StartsWith(prefix)
-                                    select new
-                                    {
-                                        label = stu.StudentFullName,
-                                        Val = stu.RegisteredUserId
-                                    }).ToList();
-            return Json(studentsfullname);
+            return PartialView("_ClassProfile", classprofile);
         }
-
 
 
         public ActionResult UpdateStudentGrade(int Id)

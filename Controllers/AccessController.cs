@@ -69,10 +69,49 @@ namespace Dertrix.Controllers
             };
             db.RegUsersAccessLogs.Add(reguseraccessLogs);
             db.SaveChanges();
+
+
+            //Upon successful logon, update logon date/time column in ReguserOrg Table
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var reguserid = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserId == reguserdetails.RegisteredUserId).Where(x => x.OrgId == i).FirstOrDefault();
+           
+            var reguserorgn = new RegisteredUserOrganisation
+            {
+             RegisteredUserOrganisationId = reguserid.RegisteredUserOrganisationId,
+             RegisteredUserId = reguserid.RegisteredUserId,
+             OrgId = reguserid.OrgId,
+             Email = reguserid.Email,
+             FirstName = reguserid.FirstName,
+             LastName = reguserid.LastName,
+             OrgName = reguserid.OrgName,
+             RegUserOrgBrand = reguserid.RegUserOrgBrand,
+             IsTester = reguserid.IsTester,
+             RegisteredUserTypeId = reguserid.RegisteredUserTypeId,
+             PrimarySchoolUserRoleId = reguserid.PrimarySchoolUserRoleId,
+             SecondarySchoolUserRoleId = reguserid.SecondarySchoolUserRoleId,
+             EnrolmentDate = reguserid.EnrolmentDate,
+             CreatedBy = reguserid.CreatedBy,
+             FullName = reguserid.FullName,
+             TitleId = reguserid.TitleId,
+             LastLogOn = DateTime.Now,
+            };
+
+            reguserid = reguserorgn;
+            db.Entry(reguserid).State = EntityState.Modified;
+            db.SaveChanges();
+
+
+            //if (Request.Browser.IsMobileDevice != true)
+            //{
+            //    return RedirectToAction("Signin", "Access");
+
+            //}
             if (orgredirect == 23)
             {
                 return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
             }
+
             if (Session["IsParent/Guardian"] != null)
             {
                 return RedirectToAction("Home", "Orgs", new { id = orgredirect });

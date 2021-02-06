@@ -51,8 +51,12 @@ namespace Dertrix.Models
 
 
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0: dddd | dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EnrolmentDate { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dddd | dd-MM-yyyy | H:mm tt}", ApplyFormatInEditMode = true)]
+        public DateTime? LastLogOn { get; set; } 
 
 
         public string CreatedBy { get; set; }
