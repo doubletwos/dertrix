@@ -60,7 +60,8 @@ namespace Dertrix.Controllers
                 var classes = db.Classes
                     .Where(f => f.OrgId == i)
                     .Include(j => j.Org)
-                    .Include(x => x.RegisteredUsers);
+                    .Include(x => x.RegisteredUsers)
+                    .Include(x => x.Title);
                 return View(classes.ToList());
             }
             else
@@ -93,6 +94,7 @@ namespace Dertrix.Controllers
             var myclasslist = db.Classes
                 .Where(x => x.OrgId == i)
                 .Where(j => j.ClassTeacherId == RegisteredUserId)
+                .Include(x => x.Title)
                 .ToList();
             return PartialView("_MyClassList", myclasslist);
         }
@@ -118,6 +120,7 @@ namespace Dertrix.Controllers
 
             var Allclasslist = db.Classes 
                 .Where(x => x.OrgId == i)
+                .Include(x => x.Title)
                 .ToList();
             return PartialView("_AllClassList", Allclasslist);
         }
@@ -174,6 +177,7 @@ namespace Dertrix.Controllers
                     ClassName = edtcla.ClassName,
                     ClassRefNumb = edtcla.ClassRefNumb,
                     ClassTeacherId = edtcla.ClassTeacherId,
+                    TitleId = edtcla.TitleId,
                     ClassTeacherFullName = edtcla.ClassTeacherFullName,
                     OrgId = edtcla.OrgId,
                     Students_Count = edtcla.Students_Count,
@@ -225,6 +229,7 @@ namespace Dertrix.Controllers
                     OrgId = classroom.OrgId,
                     ClassRefNumb = classroom.ClassRefNumb,
                     ClassTeacherId = classroom.ClassTeacherId,
+                    TitleId = classroom.TitleId,
                     ClassTeacherFullName = classroom.ClassTeacherFullName,
                     Students_Count = classroom.Students_Count,
                     Female_Students_Count = classroom.Female_Students_Count,
@@ -248,10 +253,12 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(@Class @Class)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
+                var teacherstitle = db.RegisteredUsers.Where(x => x.RegisteredUserId == Class.ClassTeacherId).Select(x => x.TitleId).FirstOrDefault();
                 var teachersName = db.RegisteredUsers.Where(x => x.RegisteredUserId == Class.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
                 Class.ClassTeacherFullName = teachersName;
+                Class.TitleId = teacherstitle;
                 db.Entry(@Class).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

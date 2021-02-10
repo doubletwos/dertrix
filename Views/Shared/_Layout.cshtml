@@ -57,33 +57,18 @@
 
 						@{
 							Html.RenderAction("Nav", "RegisteredUsers");
-						}
-
-
-
-
-						@*@{
-			               Html.RenderAction("Regs", "RegisteredUsers");
-		                 }*@
+						}			
 					</ul>
 				</div>
 			</div>
 
-				@*@{
-					Html.RenderAction("Nav", "RegisteredUsers");
-				}*@
+		
 		</div>
 		<br />
 		<br />
 		<hr/>
 
-		@*<div class="navbar" style="margin-bottom: 0px;">
-			<div class="menu" style="background-color:@regUserOrgBrandBar">
-				@{
-					Html.RenderAction("Nav", "RegisteredUsers");
-				}
-			</div>
-		</div>*@
+
 	}
 
 
@@ -91,7 +76,7 @@
 		@RenderBody()
 		<hr />
 		<footer>
-			<p>&copy; @DateTime.Now.Year - Dertrix</p>
+			<p>Powered by Dertrix | &copy; dertrix.com | All Rights Reserved @DateTime.Now.Year</p>
 		</footer>
 	</div>
 	@Scripts.Render("~/bundles/jquery")

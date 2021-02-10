@@ -25,7 +25,7 @@
 			Enrolement date : <strong>@Html.DisplayFor(model => model.EnrolmentDate)</strong>
 		</li>
 		<li>
-			Class Teacher : <strong>@Html.DisplayFor(model => model.Class.ClassTeacherFullName)</strong>
+			Class Teacher : <strong>@Html.DisplayFor(model => model.Class.Title.TitleName) @Html.DisplayFor(model => model.Class.ClassTeacherFullName)</strong>
 		</li>
 		<li>
 			Number of students in class : <strong>@Html.DisplayFor(model => model.Class.Students_Count)</strong>

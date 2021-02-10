@@ -228,6 +228,7 @@ namespace Dertrix.Controllers
 
             var classprofile = db.Classes
                 .Where(x => x.ClassId == id)
+                .Include(x => x.Title)
                 .ToList();
 
             return PartialView("_ClassProfile", classprofile);

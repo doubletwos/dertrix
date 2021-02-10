@@ -21,23 +21,29 @@
 					Full Name
 				</th>
 				<th>
-					Role
+
 				</th>
-				<th></th>
+				<th>
+
+				</th>
+			
 			</tr>
 			@foreach (var item in Model)
 			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.RegisteredUser.SecondarySchoolUserRole.RoleName)
-					</td>
-					<td>
-						<p><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)"> <i class="fa fa-trash" aria-hidden="true"></i></a></p>
-					</td>
-				</tr>
+	     <tr>
+			 <td>
+			 @Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
+			 </td>
+		<td>
+			@Html.DisplayFor(modelItem => item.RegisteredUser.SecondarySchoolUserRole.RoleName)
+			@Html.DisplayFor(modelItem => item.RegisteredUser.PrimarySchoolUserRole.RoleName)
+
+		</td>
+
+		<td>
+			<p><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)"> <i class="fa fa-trash" aria-hidden="true"></i></a></p>
+		</td>
+	</tr>
 			}
 
 	</table>

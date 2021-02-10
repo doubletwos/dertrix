@@ -153,7 +153,6 @@ namespace Dertrix.Controllers
 
             var myprofile = db.RegisteredUsers
                 .Where(x => x.RegisteredUserId == id)
-                .Include(x => x.Title)
                 .Include(x => x.Religion)
                 .Include(x => x.Tribe)
                 .Include(x => x.Class)
@@ -193,7 +192,7 @@ namespace Dertrix.Controllers
                     .Include(t => t.Tribe)
                     .Where(x => x.RegisteredUserId == Id)
                     .FirstOrDefault();
-                ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
+                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName", stud1.ClassId);
                 ViewBag.ReligionId = new SelectList(db.Religions, "ReligionId", "ReligionName", stud1.ReligionId);
                 ViewBag.GenderId = new SelectList(db.Genders, "GenderId", "GenderName", stud1.GenderId);
                 ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName", stud1.TribeId);
@@ -277,6 +276,7 @@ namespace Dertrix.Controllers
                     SecondarySchoolUserRoleId = stud1.SecondarySchoolUserRoleId,
                     FullName = stud1.FullName,
                     RegUserOrgBrand = stud1.RegUserOrgBrand
+                    
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditStaff.cshtml", stud);
             }
@@ -827,22 +827,16 @@ namespace Dertrix.Controllers
                 registeredUser.SelectedOrg = (int)Session["OrgId"];
                 db.Entry(registeredUser).State = EntityState.Modified;
                 db.SaveChanges();
-                //return RedirectToAction("Index");
             }
 
-            //registered user id count
+            //Updating registered user organisation with changes 
             var reguseridcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(p => p.RegisteredUserOrganisationId).ToList();
             var listofreguserid = new List<int>(reguseridcount);
-
-
             foreach (var re in reguseridcount)
             {
                 var getid = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserOrganisationId == re).FirstOrDefault();
-
                 var reguser = new RegisteredUserOrganisation
                 {
-
-
                     RegisteredUserOrganisationId = getid.RegisteredUserOrganisationId,
                     RegisteredUserId = getid.RegisteredUserId,
                     OrgId = getid.OrgId,
@@ -854,32 +848,101 @@ namespace Dertrix.Controllers
                     SecondarySchoolUserRoleId = getid.SecondarySchoolUserRoleId,
                     EnrolmentDate = getid.EnrolmentDate,
                     CreatedBy = getid.CreatedBy,
-
-
-
-
-
-
                     Email = registeredUser.Email,
                     FirstName = registeredUser.FirstName,
                     LastName = registeredUser.LastName,
-                    FullName = registeredUser.FullName,
-                    TitleId = registeredUser.TitleId
+                    FullName = registeredUser.FirstName + " " + registeredUser.LastName,
+                    TitleId = registeredUser.TitleId,
+                    LastLogOn = getid.LastLogOn
                 };
-
                 getid = reguser;
-
                 db.Entry(getid).State = EntityState.Modified;
                 db.SaveChanges();
             }
+            //If registered user is a teacher, update teacher details in Class Model.
+            var teacher = db.Classes.Where(x => x.ClassTeacherId == registeredUser.RegisteredUserId).Select(x => x.ClassId).ToList();
+            var listofteacher = new List<int>(teacher);
+            if (listofteacher.Count > 0)
+            {
+                foreach(var te in teacher)
+                {
+                    var getteacher = db.Classes.AsNoTracking().Where(x => x.ClassId == te).FirstOrDefault();
+                    var regteacher = new Class
+                    {
+                      ClassId = getteacher.ClassId,
+                      ClassName = getteacher.ClassName,
+                      ClassIsActive = getteacher.ClassIsActive,
+                      OrgId = getteacher.OrgId,
+                      ClassRefNumb = getteacher.ClassRefNumb,
+                      ClassTeacherId = getteacher.ClassTeacherId,
+                      ClassTeacherFullName = registeredUser.FirstName + " " + registeredUser.LastName,
+                      Students_Count = getteacher.Students_Count,
+                      Female_Students_Count = getteacher.Female_Students_Count,
+                      Male_Students_Count = getteacher.Male_Students_Count,
+                      TitleId = registeredUser.TitleId
+                    };
+                    getteacher = regteacher;
+                    db.Entry(getteacher).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            };
 
+            //////If registered user is a student - update class object
+            if (registeredUser.StudentRegFormId != null)
+            {
+                var updateclasses = UpdateClassProfile();
+            }
 
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName", registeredUser.RegisteredUserTypeId);
             return RedirectToAction("Index");
-
-            //return View(registeredUser);
         }
+
+
+
+
+
+        //Update Class profile.
+        public ActionResult UpdateClassProfile()
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            //Number of classes in org.
+            var numbofclasses = db.Classes.Where(x => x.OrgId == i).Select(p => p.ClassId).ToList();
+            var classestolist = new List<int>(numbofclasses);
+
+            foreach (var cl in numbofclasses)
+            {
+                var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cl).FirstOrDefault();
+
+                var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.SelectedOrg == i).Count();
+                var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 2 && x.SelectedOrg == i).Count();
+                var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 1 && x.SelectedOrg == i).Count();
+
+                var updateclass = new Class
+                {
+                    ClassId = classid.ClassId,
+                    ClassName = classid.ClassName,
+                    ClassIsActive = classid.ClassIsActive,
+                    OrgId = classid.OrgId,
+                    ClassRefNumb = classid.ClassRefNumb,
+                    ClassTeacherId = classid.ClassTeacherId,
+                    ClassTeacherFullName = classid.ClassTeacherFullName,
+                    Students_Count = studentcount,
+                    Female_Students_Count = FemStuCount,
+                    Male_Students_Count = MaleStudCount,
+                    TitleId = classid.TitleId
+                };
+                classid = updateclass;
+                db.Entry(classid).State = EntityState.Modified;
+                db.SaveChanges();
+            };
+
+            return RedirectToAction("Index");
+        }
+
+
 
 
         // POST: RegisteredUsers/Delete/5

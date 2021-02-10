@@ -31,22 +31,7 @@
 		</div>
 	</div>
 	<hr />
-	<div class="row">
-		@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
-		{
-			<div class="col-md-3">
-				@{
-					Html.RenderAction("AddStudent", "RegisteredUsers");
-				}
-			</div>
-		}
-		<div class="col-md-3">
-		</div>
-		<div class="col-md-3">
-		</div>
-		<div class="col-md-3">
-		</div>
-	</div>
+
 </div>
 	<br />
 	<div class="panel panel-default">

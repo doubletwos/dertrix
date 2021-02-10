@@ -25,6 +25,9 @@ namespace Dertrix.Models
         public int? ClassTeacherId { get; set; }
         public ClassTeacher ClassTeacher { get; set; }
 
+        public int? TitleId { get; set; }
+        public virtual Title Title { get; set; }
+
         public string ClassTeacherFullName { get; set; }
 
         public virtual ICollection<RegisteredUser> RegisteredUsers { get; set; }

@@ -352,6 +352,10 @@
     <Compile Include="Migrations\202102060804009_SprintFeb2021-1.Designer.cs">
       <DependentUpon>202102060804009_SprintFeb2021-1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102071101205_SprintFeb2021-2.cs" />
+    <Compile Include="Migrations\202102071101205_SprintFeb2021-2.Designer.cs">
+      <DependentUpon>202102071101205_SprintFeb2021-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -784,7 +788,7 @@
     <Content Include="Views\Orgs\SchCalendar.cshtml" />
     <Content Include="Views\Relationships\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditGuardian.cshtml" />
-    <Content Include="Views\StudentSubjects\_ClassProfile.cshtml" />
+    <Content Include="Views\Shared\_ClassProfile.cshtml" />
     <Content Include="Views\RegisteredUsers\SysAdmins.cshtml" />
     <Content Include="Views\Orgs\WrongDevice.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
@@ -931,6 +935,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102060804009_SprintFeb2021-1.resx">
       <DependentUpon>202102060804009_SprintFeb2021-1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102071101205_SprintFeb2021-2.resx">
+      <DependentUpon>202102071101205_SprintFeb2021-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
