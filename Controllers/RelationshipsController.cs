@@ -32,6 +32,26 @@ namespace Dertrix.Controllers
             return View(db.Relationships.ToList());
         }
 
+        [ChildActionOnly]
+        public ActionResult AddRelationship()
+        {
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddRelationship.cshtml");
+        }
+        public ActionResult EditRelationship(int Id)
+        {
+            if (Id != 0)
+            {
+                var edtrls = db.Relationships.Where(x => x.RelationshipId == Id).FirstOrDefault();
+                var edtrls1 = new Relationship
+                {
+                    RelationshipId = edtrls.RelationshipId,
+                    RelationshipName = edtrls.RelationshipName
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditRelationship.cshtml", edtrls1);
+            }
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditRelationship.cshtml");
+        }
+
         // GET: Relationships/Details/5
         public ActionResult Details(int? id)
         {
@@ -62,11 +82,9 @@ namespace Dertrix.Controllers
         }
 
         // POST: Relationships/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RelationshipId,RelationshipName")] Relationship relationship)
+        public ActionResult Create(Relationship relationship)
         {
             if (ModelState.IsValid)
             {
@@ -94,8 +112,6 @@ namespace Dertrix.Controllers
         }
 
         // POST: Relationships/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "RelationshipId,RelationshipName")] Relationship relationship)
@@ -125,8 +141,6 @@ namespace Dertrix.Controllers
         }
 
         // POST: Relationships/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Relationship relationship = db.Relationships.Find(id);

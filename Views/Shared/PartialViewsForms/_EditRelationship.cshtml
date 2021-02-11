@@ -1,0 +1,26 @@
+﻿@model Dertrix.Models.Relationship
+
+<form id="RelationshipEditForm">
+
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<hr />
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.RelationshipId)
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.RelationshipName, "Relationship Name",htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.RelationshipName, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.RelationshipName, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+
+	</div>
+
+</form>
+
+
+

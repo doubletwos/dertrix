@@ -951,7 +951,19 @@ namespace Dertrix.Controllers
             RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
             db.RegisteredUsers.Remove(registeredUser);
             db.SaveChanges();
+
+            var updateclasses = UpdateClassProfile();
             return RedirectToAction("Index");
+
+
+            ////check if user to be deleted is a student & update classes number if true
+            //var checkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
+
+            //if (checkifstud != null)
+            //{
+
+            //}
+        
         }
 
         protected override void Dispose(bool disposing)

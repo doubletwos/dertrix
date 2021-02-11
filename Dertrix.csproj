@@ -791,6 +791,8 @@
     <Content Include="Views\Shared\_ClassProfile.cshtml" />
     <Content Include="Views\RegisteredUsers\SysAdmins.cshtml" />
     <Content Include="Views\Orgs\WrongDevice.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditRelationship.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddRelationship.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

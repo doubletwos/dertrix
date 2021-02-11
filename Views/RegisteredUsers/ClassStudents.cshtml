@@ -17,22 +17,22 @@
 	<br />
 	@Html.Partial("_WidgetDashboard")
 
-<div>
-	<br />
-	<br />
-	<hr />
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				@{
-					Html.RenderAction("ClassProfile", "StudentSubjects");
-				}
+	<div>
+		<br />
+		<br />
+		<hr />
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					@{
+						Html.RenderAction("ClassProfile", "StudentSubjects");
+					}
+				</div>
 			</div>
 		</div>
-	</div>
-	<hr />
+		<hr />
 
-</div>
+	</div>
 	<br />
 	<div class="panel panel-default">
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
@@ -72,9 +72,6 @@
 								</button>
 								<ul class="dropdown-menu" style="background-color:white">
 									<li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
-									<li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
-									<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
-									<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>
 								</ul>
 							</div>
 						</td>
@@ -88,6 +85,59 @@
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 <input type="hidden" id="hiddenRegisterUserId" />
+
+@*View Student Details Modal*@
+<div class="modal fade" id="myModalll4">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Student Details</h3>
+			</div>
+			<div class="modal-body" id="myModalBodyDiv"></div>
+			<div class="modal-footer">
+				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var ShowStudent = function (Id) {
+		$.ajax({
+			type: "POST",
+			url: "/StudentGuardians/MyGuardians",
+			data: { Id: Id },
+			success: function (response) {
+			}
+		}),
+
+			$.ajax({
+				type: "POST",
+				url: "/RegisteredUsers/StudentDetails",
+				data: { Id: Id },
+				success: function (response) {
+					$("#myModalBodyDiv").html(response);
+					$("#myModalll4").modal("show");
+				}
+			})
+
+
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @section scripts{
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
