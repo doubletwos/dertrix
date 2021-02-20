@@ -6,40 +6,39 @@
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		@Html.HiddenFor(model => model.OrgId)
 		@Html.HiddenFor(model => model.OrgTypeId)
+		@Html.HiddenFor(model => model.CreationDate)
+		@Html.HiddenFor(model => model.CreatedBy)
+
+
+
 		<div class="form-group">
 			@Html.LabelFor(model => model.OrgName, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.EditorFor(model => model.OrgName, new { htmlAttributes = new { @class = "form-control " } })
+				@Html.EditorFor(model => model.OrgName,"Name", new { htmlAttributes = new { @class = "form-control " } })
 				@Html.ValidationMessageFor(model => model.OrgName, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group">
-			@Html.LabelFor(model => model.OrgAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.OrgAddress,"Address" ,htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
 				@Html.EditorFor(model => model.OrgAddress, new { htmlAttributes = new { @class = "form-control" } })
 				@Html.ValidationMessageFor(model => model.OrgAddress, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group">
-			@Html.LabelFor(model => model.DomainId, "DomainId", htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.DomainId, "Domain", htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
 				@Html.DropDownList("DomainId", null, "", htmlAttributes: new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.DomainId, "", new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="form-group">
-			@Html.LabelFor(model => model.OrgBrandId, "OrgBrandId", htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.OrgBrandId, "Org Brand", htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
 				@Html.DropDownList("OrgBrandId", null, "", htmlAttributes: new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.OrgBrandId, "", new { @class = "text-danger" })
 			</div>
 		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.CreationDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
-				@Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
-			</div>
-		</div>
+
 	</div>
 </form>

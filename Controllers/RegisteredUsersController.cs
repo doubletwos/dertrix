@@ -686,6 +686,24 @@ namespace Dertrix.Controllers
                     };
                     db.StudentGuardians.Add(studentguardian);
                     db.SaveChanges();
+
+                    //Add Guardian to classid Orggroup
+                    var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
+                    var orggrpref = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.OrgGroupId).FirstOrDefault();
+                    var orggrptypeid = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.GroupTypeId).FirstOrDefault();
+
+
+                    var regusergrp = new RegisteredUsersGroups
+                    {
+                         RegisteredUserId = registeredUser.RegisteredUserId,
+                         OrgGroupId = orggrpref,
+                         Email = registeredUser.Email,
+                         RegUserOrgId = w,
+                         GroupTypeId = orggrptypeid
+                    };
+                    db.RegisteredUsersGroups.Add(regusergrp);
+                    db.SaveChanges();
+
                     return RedirectToAction("Students", "RegisteredUsers");
                 }
 
@@ -786,6 +804,9 @@ namespace Dertrix.Controllers
                     var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.GenderId == 1 && x.SelectedOrg == i).Count();
 
 
+                  
+
+
                     var updateclass = new Class
                     {
                         ClassId = getclassid.ClassId,
@@ -793,6 +814,7 @@ namespace Dertrix.Controllers
                         ClassIsActive = getclassid.ClassIsActive,
                         OrgId = getclassid.OrgId,
                         ClassRefNumb = getclassid.ClassRefNumb,
+                        TitleId = getclassid.TitleId,
                         ClassTeacherId = getclassid.ClassTeacherId,
                         ClassTeacherFullName = getclassid.ClassTeacherFullName,
                         Students_Count = studentcount,
@@ -820,6 +842,8 @@ namespace Dertrix.Controllers
         {
             if (registeredUser.StudentRegFormId == 1)
             {
+                var classref = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
+                registeredUser.ClassRef = classref;
                 registeredUser.Email = "iamanewuser@thisorg.com";
             }
             if (!(ModelState.IsValid) || ModelState.IsValid)
@@ -915,7 +939,6 @@ namespace Dertrix.Controllers
             foreach (var cl in numbofclasses)
             {
                 var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cl).FirstOrDefault();
-
                 var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.SelectedOrg == i).Count();
                 var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 2 && x.SelectedOrg == i).Count();
                 var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 1 && x.SelectedOrg == i).Count();

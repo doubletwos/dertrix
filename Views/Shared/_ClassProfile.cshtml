@@ -23,20 +23,30 @@
 	{
 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 	<td style="text-align: center;">
-		@Html.DisplayFor(modelItem => item.Title.TitleName)
-		@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+		<b>
+			@Html.DisplayFor(modelItem => item.Title.TitleName)
+			@Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+		</b>
 	</td>
 	<td style="text-align: center;">
-		@Html.DisplayFor(modelItem => item.ClassName)
+		<b>
+			@Html.DisplayFor(modelItem => item.ClassName)
+		</b>
 	</td>
 	<td style="text-align: center;">
-		@Html.DisplayFor(modelItem => item.Students_Count)
+		<b>
+			@Html.DisplayFor(modelItem => item.Students_Count)
+		</b>
 	</td>
 	<td style="text-align: center;">
-		@Html.DisplayFor(modelItem => item.Female_Students_Count)
+		<b>
+			@Html.DisplayFor(modelItem => item.Female_Students_Count)
+		</b>
 	</td>
 	<td style="text-align: center;">
-		@Html.DisplayFor(modelItem => item.Male_Students_Count)
+		<b>
+			@Html.DisplayFor(modelItem => item.Male_Students_Count)
+		</b>
 	</td>
 </tr>
 	}

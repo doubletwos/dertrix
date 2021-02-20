@@ -160,6 +160,7 @@ namespace Dertrix.Controllers
                     DomainId = edtorg.DomainId,
                     OrgTypeId = edtorg.OrgTypeId,
                     OrgBrandId = edtorg.OrgBrandId,
+                    CreatedBy = edtorg.CreatedBy
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditOrg.cshtml", edtorg1);
             }
@@ -246,6 +247,20 @@ namespace Dertrix.Controllers
             {
                 db.Entry(org).State = EntityState.Modified;
                 db.SaveChanges();
+
+                var changedorg = db.OrgOrgTypes.AsNoTracking().Where(x => x.OrgId == org.OrgId).FirstOrDefault();
+                var orgorgtype = new OrgOrgType
+                {
+                     OrgOrgTypeId = changedorg.OrgOrgTypeId,
+                     OrgId = changedorg.OrgId,
+                     OrgTypeId = changedorg.OrgTypeId,
+                     OrgName = org.OrgName
+                };
+                changedorg = orgorgtype;
+                db.Entry(changedorg).State = EntityState.Modified;
+                db.SaveChanges();
+
+
                 return RedirectToAction("SystemAdminIndex");
             }
             ViewBag.DomainId = new SelectList(db.Domains, "DomainId", "DomainName", org.DomainId);
