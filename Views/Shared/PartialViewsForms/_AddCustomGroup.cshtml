@@ -1,0 +1,71 @@
+﻿@model Dertrix.Models.OrgGroup
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myGroupModal">
+	<i class="fa fa-users fa-2x" aria-hidden="true"></i>
+	Add Group
+</a>
+<div class="modal fade" id="myGroupModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Add Custom Group</h3>
+			</div>
+			<div class="modal-body">
+				<form id="AddCustomGrp">
+					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
+					<div class="form-horizontal">
+						<hr />
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						@Html.HiddenFor(model => model.OrgId)
+						@Html.HiddenFor(model => model.GroupOrgTypeId)
+						@Html.HiddenFor(model => model.GroupRefNumb)
+						@Html.HiddenFor(model => model.IsSelected)
+						@Html.HiddenFor(model => model.CreationDate)
+						<div class="form-group">
+							@Html.LabelFor(model => model.GroupName, "Group Name",htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.GroupName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+						<input type="submit" value="Add Group" class="RegUserOrgButtonColour" id="addgroup" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+	$(document).ready(function () {
+	
+		$("#addgroup").on("click", function () {
+			debugger
+			if ($("#AddCustomGrp").valid()) {
+				var data = $("#AddCustomGrp").serialize();
+				$.ajax({
+					type: "POST",
+					//url: "/RegisteredUsers/Create",
+					url: '@Url.Action("Create", "OrgGroups")',
+					data: data,
+					success: function (response) {
+						alert("New group added");
+						$("#myGroupModal").modal("hide");
+						$("#AddCustomGrp")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+		})
+	})
+</script>

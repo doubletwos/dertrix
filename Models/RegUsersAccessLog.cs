@@ -20,12 +20,12 @@ namespace Dertrix.Models
 
         [Display(Name = "Log in date & time")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dddd | dd-MM-yyyy | H:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? LogInTime { get; set; }
 
         [Display(Name = "Log out date & time")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dddd | dd-MM-yyyy | H:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? LogOutTime { get; set; }
 
 

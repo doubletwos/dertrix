@@ -93,7 +93,6 @@ namespace Dertrix.Controllers
             ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
-
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID != 5), "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles.Where(x => x.SecondarySchoolUserRoleId != 5), "SecondarySchoolUserRoleId", "RoleName");
 
@@ -971,23 +970,75 @@ namespace Dertrix.Controllers
         // POST: RegisteredUsers/Delete/5
         public ActionResult DeleteConfirmed(int id)
         {
+            // check if user to be deleted is student
+            var chkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
+            //if user to be deleted is a student - locate linked guardiands
+            if (chkifstud != null)
+            {
+                //list number of guardians linked to student
+                var guardianstolist = db.StudentGuardians.Where(x => x.StudentId == id).Select(x => x.StudentGuardianId).ToList();
+                var linkedguardians = new List<int>(guardianstolist);
+                //if list of guardians is not 0
+                if (guardianstolist.Count > 0)
+                {
+                    foreach (var gd in guardianstolist)
+                    {
+                        // Get gd reguserid
+                        var gdreguserid = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
+                        // check how many other students this guardian is linked to
+                        var mylinkedstudents = db.StudentGuardians.Where(x => x.RegisteredUserId == gdreguserid).Select(x => x.StudentId).ToList();
+                        var linkedstudents = new List<int>(mylinkedstudents);
+                        // if count of linked student is only 1 - delete guardian from reguser / reguserorg / studguard -  
+                        if (mylinkedstudents.Count == 1)
+                        {
+                            //Locate guardian in reg user table and delete
+                            var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
+                            RegisteredUser remvguard = db.RegisteredUsers.Find(locateguard);
+                            db.RegisteredUsers.Remove(remvguard);
+                            db.SaveChanges();
+                        }
+                        // count of linked student is more than 1 - 
+                        else
+                        {
+                            foreach (var std in mylinkedstudents)
+                            {
+                                if (std == id)
+                                {
+                                    var rr = Session["OrgId"].ToString();
+                                    int i = Convert.ToInt32(rr);
+                                    //Locate guardian in reg user table 
+                                    var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
+                                    //check how many students gd is linked to in  active session org
+                                    // if ==  1 delete guardian from reguserorg or active session org
+                                    var linkedstdinorgcount = db.StudentGuardians.Where(x => x.RegisteredUserId == locateguard).Where(x => x.OrgId == i).Select(x => x.OrgId).Count();
+                                    //if == 1 - means gd is only linked to the stu to be deleted in the org - so delete gd from reguserorg
+                                    if (linkedstdinorgcount == 1)
+                                    {
+                                        ////Locate gd in reguserorg                                      
+                                        var locategd1 = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == gdreguserid).Where(x => x.OrgId == i).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+                                        // delete from reguserorg
+                                        RegisteredUserOrganisation regusrorg = db.RegisteredUserOrganisations.Find(locategd1);
+                                        db.RegisteredUserOrganisations.Remove(regusrorg);
+                                        db.SaveChanges();
+                                    }
+                                    // select guardian & delete from studentguardian table
+                                    StudentGuardian studentguardian = db.StudentGuardians.Find(gd);
+                                    db.StudentGuardians.Remove(studentguardian);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
             db.RegisteredUsers.Remove(registeredUser);
             db.SaveChanges();
-
             var updateclasses = UpdateClassProfile();
             return RedirectToAction("Index");
-
-
-            ////check if user to be deleted is a student & update classes number if true
-            //var checkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
-
-            //if (checkifstud != null)
-            //{
-
-            //}
-        
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

@@ -84,6 +84,40 @@
 	});
 
 
+$('#AddCustomGrp').validate({
+	errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+	errorElement: 'div',
+	errorPlacement: function (error, e) {
+		e.parents('.form-group > div').append(error);
+	},
+	highlight: function (e) {
+		$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+		$(e).closest('.help-block').remove();
+	},
+	success: function (e) {
+		e.closest('.form-group').removeClass('has-success has-error');
+		e.closest('.help-block').remove();
+	},
+	rules: {
+		'GroupName': {
+			required: true,
+			maxlength: 30,
+
+
+		}
+	},
+	messages: {
+		'GroupName': {
+			required: 'Please enter group name',
+			maxlength: 'Not more than 30 characters allowed',
+
+
+		}
+	}
+
+});
+
+
 
 
 $('#AddTitle').validate({

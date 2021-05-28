@@ -26,7 +26,7 @@
 						@Html.HiddenFor(model => model.Post.CreatorFullName)
 						@Html.HiddenFor(model => model.Post.PostCreationDate)
 						<div class="form-group">
-							@Html.LabelFor(model => model.Post.PostTopicId, "PostTopicId", htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.Post.PostTopicId, "Post Topic", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
 								@Html.DropDownListFor(x => x.Post.PostTopicId, new SelectList(Model.PostTopics, "PostTopicId", "PostTopicName"), "Please Select", new { @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.Post.PostTopicId, "", new { @class = "text-danger" })

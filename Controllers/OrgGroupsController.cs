@@ -47,6 +47,20 @@ namespace Dertrix.Controllers
             return View(orgGroup);
         }
 
+
+
+        [ChildActionOnly]
+        public ActionResult AddCustomGroup() 
+        {
+            ViewBag.GroupTypeId = new SelectList(db.GroupTypes, "GroupTypeId", "GroupTypeName");
+            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddCustomGroup.cshtml");
+
+        }
+
+
+
         // GET: OrgGroups/Create
         public ActionResult Create()
         {
@@ -60,16 +74,19 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrgGroup orgGroup)
         {
-            if (ModelState.IsValid)
-            {
+           
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                orgGroup.OrgId = i;
+                orgGroup.GroupName = orgGroup.GroupName;
+                orgGroup.CreationDate = DateTime.Now;
+                orgGroup.GroupTypeId = 18;         
+                    
                 db.OrgGroups.Add(orgGroup);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
 
-            ViewBag.GroupTypeId = new SelectList(db.GroupTypes, "GroupTypeId", "GroupTypeName", orgGroup.GroupTypeId);
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", orgGroup.OrgId);
-            return View(orgGroup);
         }
 
         // GET: OrgGroups/Edit/5

@@ -20,6 +20,28 @@ namespace Dertrix.Controllers
             return View();
         }
 
+
+        // GET: Access/Logs
+        public ActionResult Logs()
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            if ((int)Session["OrgId"] != 23)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            return View(db.RegUsersAccessLogs.ToList());
+
+        }
+
+
+
+
+
+
         // GET: Access/Signin
         public ActionResult Signin()
         {

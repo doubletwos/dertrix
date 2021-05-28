@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Dertrix.Models.RegUsersAccessLog>
+<head>
+	@{
+		ViewBag.Title = "All staffs";
+	}
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+
+
+<div class="jumbotron" style="height:100vh;">
+	<div>
+		<hr />
+
+
+	</div>
+	<hr />
+	<br />
+	<div class="panel panel-default">
+
+
+
+		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+			<thead>
+
+
+				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+					<th>
+						User Id
+					</th>
+					<th>
+						Org Id
+					</th>
+					<th>
+						Full Name
+					</th>
+					<th>
+						Log in date & time
+					</th>
+					<th>
+						Log out date & time
+
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+
+
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.RegUserId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.OrgId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.UserFullName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.LogInTime)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.LogOutTime)
+						</td>
+
+					</tr>
+				}
+			</tbody>
+
+
+		</table>
+		<div>
+			<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+		</div>
+	</div>
+
+
+</div>
+
+@section scripts{
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#myTable').DataTable(
+				{
+					"ordering": false,
+					"bLengthChange": false,
+				}
+			);
+		});
+	</script>
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+}

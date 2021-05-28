@@ -68,6 +68,9 @@ namespace Dertrix.Controllers
 
 
 
+
+
+
         public ActionResult MyGroups(int id)
         {
             var rr = Session["OrgId"].ToString();
@@ -80,6 +83,8 @@ namespace Dertrix.Controllers
 
             return PartialView("_MyGroups", Mygroups);
         }
+
+
 
 
 
