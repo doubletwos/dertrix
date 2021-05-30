@@ -356,6 +356,14 @@
     <Compile Include="Migrations\202102071101205_SprintFeb2021-2.Designer.cs">
       <DependentUpon>202102071101205_SprintFeb2021-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105290620520_Sprint2021.06.01.cs" />
+    <Compile Include="Migrations\202105290620520_Sprint2021.06.01.Designer.cs">
+      <DependentUpon>202105290620520_Sprint2021.06.01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105291030310_Sprint2021.06.02.cs" />
+    <Compile Include="Migrations\202105291030310_Sprint2021.06.02.Designer.cs">
+      <DependentUpon>202105291030310_Sprint2021.06.02.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -376,6 +384,7 @@
     <Compile Include="Models\OrgImportantDate.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgType.cs" />
+    <Compile Include="Models\Org_Events_Log.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\PostTopic.cs" />
     <Compile Include="Models\RegisteredUser.cs" />
@@ -942,6 +951,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102071101205_SprintFeb2021-2.resx">
       <DependentUpon>202102071101205_SprintFeb2021-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105290620520_Sprint2021.06.01.resx">
+      <DependentUpon>202105290620520_Sprint2021.06.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105291030310_Sprint2021.06.02.resx">
+      <DependentUpon>202105291030310_Sprint2021.06.02.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
