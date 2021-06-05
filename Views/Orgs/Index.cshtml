@@ -55,6 +55,29 @@
 			<div class="col-lg-6">
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<ul class="nav nav-tabs">
+					<li role="presentation" class="active"><a href="#eventlogs" data-toggle="tab">Event logs</a></li>
+					@*<li role="presentation"><a href="#profile" data-toggle="tab">Coming Soon</a></li>*@
+				</ul>
+
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="eventlogs">
+						@Html.Partial("_Widget_EventLog")
+
+					</div>
+					<div class="tab-pane fade" id="profile">
+						
+					</div>
+				</div>
+
+
+
+
+
+			</div>
+		</div>
 	</div>
 
 </div>
@@ -68,3 +91,10 @@
 	<script src="~/Scripts/summernote/summernote-bs4.js"></script>
 	<script src="~/Scripts/summernote/summernote.js"></script>
 }
+
+<script>
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		var target = $(e.target).attr("href") // activated tab
+		alert(target);
+	});
+</script>

@@ -185,6 +185,7 @@
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
+    <Compile Include="Controllers\Org_Events_LogController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\PostTopicsController.cs" />
     <Compile Include="Controllers\PrimarySchoolUserRolesController.cs" />
@@ -804,6 +805,8 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddRelationship.cshtml" />
     <Content Include="Views\Access\Logs.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddCustomGroup.cshtml" />
+    <Content Include="Views\Shared\_Widget_EventLog.cshtml" />
+    <Content Include="Views\Shared\_Eventlogs.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

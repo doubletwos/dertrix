@@ -456,7 +456,7 @@ namespace Dertrix.Controllers
                     int j = Convert.ToInt32(regUserOrgBrand);
                     registeredUser.RegUserOrgBrand = j;
 
- //EXISTING SCHOOL STAFFS                     // CHECKING IF USER IS A GUARDIAN - IF THE USER IS NOT A GUARDIAN THEN WE GO INTO THIS CONDITION - (ONLY SCHOOL STAFFS SHOULD GO INTO THIS CONDITION).
+ //EXISTING SCHOOL STAFFS    // CHECKING IF USER IS A GUARDIAN - IF THE USER IS NOT A GUARDIAN THEN WE GO INTO THIS CONDITION - (ONLY SCHOOL STAFFS SHOULD GO INTO THIS CONDITION).
                     if (registeredUser.SecondarySchoolUserRoleId != 5 && registeredUser.PrimarySchoolUserRoleId != 5)
                     {
                         registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(d => d.RegisteredUserId).FirstOrDefault();
@@ -504,7 +504,7 @@ namespace Dertrix.Controllers
                         }
                     }
 
- //EXISTING GUARDIANS                   // CHECKING TO SEE IF THE USER BEING ADDED IS A GUARDIAN - (ONLY GUARDIANS SHOULD GO INTO THIS CONDITION).
+ //EXISTING GUARDIANS     // CHECKING TO SEE IF THE USER BEING ADDED IS A GUARDIAN - (ONLY GUARDIANS SHOULD GO INTO THIS CONDITION).
                     if (registeredUser.PrimarySchoolUserRoleId != 5 || registeredUser.SecondarySchoolUserRoleId != 5)
                     {
                         // CHECKING TO MAKE SURE THE USER DOES NOT ALREADY HAVE AN ACCOUNT AT THIS ORG. IF NO, THEN ADD THE  USER TO THE REGUSERORG.
@@ -1094,70 +1094,210 @@ namespace Dertrix.Controllers
         // POST: RegisteredUsers/Delete/5
         public ActionResult DeleteConfirmed(int id)
         {
-            // check if user to be deleted is student
-            var chkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
-            //if user to be deleted is a student - locate linked guardiands
+            // CHECK IF USER BEING DELETED IS A STAFF = IF YES - WE GO INTO THIS CONDITION - LOG EVENT. REMOVING  STUDENT IS EVENTTYPEID = 4
+            // LOCATE USERS ROLES
+            var chkifPsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.PrimarySchoolUserRoleId).FirstOrDefault();
+            var chkifSsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
+
+            if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4)
+            {
+            
+            var staforgcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.RegisteredUserId).Count();
+            // IF COUNT OF ORG IS 1 - WE GO INTO THIS CONDITION - WE DELETE USER FROM REGUSER TABLE / LOG EVENT AND MOVE ON.
+             if (staforgcount == 1)
+             {
+            // GET STAFF'S FULLNAME
+              var stafullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.FullName).FirstOrDefault();
+            // BEFORE REMVING STAFF - LOG EVENT. REMOVING STAFF IS EVENTTYPEID = 6
+                    var orgeventlog = new Org_Events_Log()
+                    {
+                        Org_Event_TypeId = 6,
+                        Org_Event_Name = "Deregistered staff",
+                        Org_Event_SubjectId = id.ToString(),
+                        Org_Event_SubjectName = stafullname,
+                        Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                        Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                        Org_Event_Time = DateTime.Now,
+                        OrgId = Session["OrgId"].ToString()
+                    };
+                    db.Org_Events_Logs.Add(orgeventlog);
+                    db.SaveChanges();
+
+               RegisteredUser removestaff = db.RegisteredUsers.Find(id);
+               db.RegisteredUsers.Remove(removestaff);
+               db.SaveChanges();
+                
+               return RedirectToAction("Index");
+
+             }
+            // GET A LIST OF ORGS STAFF IS LINKED TO - LOOP THRU - AND DELETE FROM REGUSERORG TABLE AND LOG EVENT ONCE ON ORG THAT IS SAME AS ACTIVE SESSION.
+            else
+             {
+                    var stafsorgs = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.OrgId).ToList();
+                    var linkedorgs = new List<int>(stafsorgs);
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
+                    foreach (var ruo in stafsorgs)
+                    {
+                      if (ruo == i)
+                      {
+                            var getstaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Where(x => x.OrgId == i).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+                            RegisteredUserOrganisation removestaff = db.RegisteredUserOrganisations.Find(getstaff);
+                            db.RegisteredUserOrganisations.Remove(removestaff);
+                            db.SaveChanges();
+
+           // GET STAFF'S FULLNAME
+                            var stafullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.FullName).FirstOrDefault();
+
+           // UPON REMVING STAFF - LOG EVENT. REMOVING STAFF IS EVENTTYPEID = 6
+                            var orgeventlog = new Org_Events_Log()
+                            {
+                                Org_Event_TypeId = 6,
+                                Org_Event_Name = "Deregistered staff",
+                                Org_Event_SubjectId = id.ToString(),
+                                Org_Event_SubjectName = stafullname,
+                                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                                Org_Event_Time = DateTime.Now,
+                                OrgId = Session["OrgId"].ToString()
+                            };
+                            db.Org_Events_Logs.Add(orgeventlog);
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                    }
+
+             }
+
+
+            }
+
+
+
+           // CHECK IF USER TO BE DELETED IS A STUDENT - IF YES - WE GO INTO THIS CONDITION.  
+           // IF USER BEING DELETED IS A STUDENT - WE NEED TO LOCATE STUD'S GUARDIANS.
+                 var chkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
             if (chkifstud != null)
             {
-                //list number of guardians linked to student
+           //LIST NUMBER OF GUARDIANS LINKED TO STUDENT.
                 var guardianstolist = db.StudentGuardians.Where(x => x.StudentId == id).Select(x => x.StudentGuardianId).ToList();
                 var linkedguardians = new List<int>(guardianstolist);
-                //if list of guardians is not 0
+           // IF LIST OF GUARDIANS IS NOT 0 - WE GO INTO THIS CONDITION. 
                 if (guardianstolist.Count > 0)
                 {
                     foreach (var gd in guardianstolist)
                     {
-                        // Get gd reguserid
+           // GET GUARDIAN REGUSERID
                         var gdreguserid = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
-                        // check how many other students this guardian is linked to
+           // CHECK IF THIS GUARDIAN IS LINKED TO ANY OTHER STUDENT. IF FALSE - WE REMV BOTH GUARDIAN AND STUDENT.
                         var mylinkedstudents = db.StudentGuardians.Where(x => x.RegisteredUserId == gdreguserid).Select(x => x.StudentId).ToList();
                         var linkedstudents = new List<int>(mylinkedstudents);
-                        // if count of linked student is only 1 - delete guardian from reguser / reguserorg / studguard -  
+
+           // IF COUNT OF LINKED STUD IS ONLY 1 - REMV GUARD FROM REGUSER/REGUSERORG/STUDGUARDIAN TABLE
                         if (mylinkedstudents.Count == 1)
                         {
-                            //Locate guardian in reg user table and delete
+           //LOCATE GUARD IN REG USER TABLE AND DELETE.
                             var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
+                            var guardfullname = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.GuardianFullName).FirstOrDefault();
                             RegisteredUser remvguard = db.RegisteredUsers.Find(locateguard);
                             db.RegisteredUsers.Remove(remvguard);
                             db.SaveChanges();
+
+           // UPON REMVING GUARD - LOG EVENT. REMOVING GUARD IS EVENTTYPEID = 5
+                            var orgeventlog = new Org_Events_Log()
+                            {
+                                Org_Event_TypeId = 5,
+                                Org_Event_Name = "Deregistered guardian",
+                                Org_Event_SubjectId = locateguard.ToString(),
+                                Org_Event_SubjectName = guardfullname,
+                                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                                Org_Event_Time = DateTime.Now,
+                                OrgId = Session["OrgId"].ToString()
+                            };
+                            db.Org_Events_Logs.Add(orgeventlog);
+                            db.SaveChanges();
                         }
-                        // count of linked student is more than 1 - 
+                        // GUARDIAN IS LINKED TO MORE THAN 1 STUDENT - WE GO INTO THIS CONDITION. AND LOOP THRU LIST OF ALL STUDENTS TILL WE GET TO THE STUD BEING REMOVED.
                         else
                         {
                             foreach (var std in mylinkedstudents)
                             {
+           // IF STD TO BE DELETED - WE GO INTO THIS CONDITION 
                                 if (std == id)
                                 {
                                     var rr = Session["OrgId"].ToString();
                                     int i = Convert.ToInt32(rr);
-                                    //Locate guardian in reg user table 
+           // LOCATE THE GD IN THE STUD GUARD TABLE  
                                     var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
-                                    //check how many students gd is linked to in  active session org
-                                    // if ==  1 delete guardian from reguserorg or active session org
+           // CHECK HOW MANY OTHER STUD GUARD IS LINKED TO IN ACTIVE ORG = IF ONLY 1 THEN WE CAN REMV GUARD FROM REGUSERORG TABLE
                                     var linkedstdinorgcount = db.StudentGuardians.Where(x => x.RegisteredUserId == locateguard).Where(x => x.OrgId == i).Select(x => x.OrgId).Count();
-                                    //if == 1 - means gd is only linked to the stu to be deleted in the org - so delete gd from reguserorg
+           // IF ONLY 1 - MEANS GUARD IS ONLY LINKED TO BE DELETED WE GO INTO THIS CONDITION - SO WE DELETE GUARD FROM REGUSERORG TABLE AND LOG EVENT.
                                     if (linkedstdinorgcount == 1)
                                     {
-                                        ////Locate gd in reguserorg                                      
+           // LOCATE GUARD IN REGUSER ORG TABLE.                                      
                                         var locategd1 = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == gdreguserid).Where(x => x.OrgId == i).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
-                                        // delete from reguserorg
+           // DELETE GUARD FROM REGUSER ORG TABLE.
                                         RegisteredUserOrganisation regusrorg = db.RegisteredUserOrganisations.Find(locategd1);
                                         db.RegisteredUserOrganisations.Remove(regusrorg);
                                         db.SaveChanges();
+           // GET GUARDIANS FULLNAME 
+                                    var guardfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == gdreguserid).Select(x => x.FullName).FirstOrDefault();
+           // WE THEN LOG EVENT - REMOVING GUARD IS EVENTTYPEID = 5
+                                        var orgeventlog = new Org_Events_Log()
+                                        {
+                                            Org_Event_TypeId = 5,
+                                            Org_Event_Name = "Deregistered guardian",
+                                            Org_Event_SubjectId = gdreguserid.ToString(),
+                                            Org_Event_SubjectName = guardfullname,
+                                            Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                                            Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                                            Org_Event_Time = DateTime.Now,
+                                            OrgId = Session["OrgId"].ToString()
+                                        };
+                                        db.Org_Events_Logs.Add(orgeventlog);
+                                        db.SaveChanges();
                                     }
-                                    // select guardian & delete from studentguardian table
+                                    // WE THEN DELETE GUARDIAN & LINKED STUDENT RECORD FROM STUDGUARD TABLE. 
                                     StudentGuardian studentguardian = db.StudentGuardians.Find(gd);
                                     db.StudentGuardians.Remove(studentguardian);
                                     db.SaveChanges();
+         
+                                    
+
                                 }
                             }
                         }
                     }
                 }
             }
+           // IF USER BEING DELETED IS NOT A STUDENT - WE COME HERE STRAIGHT AND REMOVE USER.
             RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
             db.RegisteredUsers.Remove(registeredUser);
             db.SaveChanges();
+
+           // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT. REMOVING  STUDENT IS EVENTTYPEID = 4
+            var chkifstud1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
+            var studfullname = db.RegisteredUsers.Where(x => x.RelationshipId == id).Select(x => x.FullName).FirstOrDefault();
+            if (chkifstud != null)
+            {
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_TypeId = 4,
+                    Org_Event_Name = "Deregistered student",
+                    Org_Event_SubjectId = id.ToString(),
+                    Org_Event_SubjectName = registeredUser.FullName,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString()
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+            }
+
+
+
             var updateclasses = UpdateClassProfile();
             return RedirectToAction("Index");
         }
