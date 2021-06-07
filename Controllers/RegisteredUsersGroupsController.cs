@@ -43,7 +43,7 @@ namespace Dertrix.Controllers
             {
              ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
              .Where(x => x.OrgId == i)
-             .Where(k => k.SecondarySchoolUserRoleId != 5)
+             //.Where(k => k.SecondarySchoolUserRoleId != 5)
              .Where(e => e.SecondarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
              ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
             }
@@ -54,7 +54,7 @@ namespace Dertrix.Controllers
             {
              ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
              .Where(x => x.OrgId == i)
-             .Where(k => k.PrimarySchoolUserRoleId != 5)
+             //.Where(k => k.PrimarySchoolUserRoleId != 5)
              .Where(e => e.PrimarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
              ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
             }  

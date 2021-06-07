@@ -203,11 +203,51 @@ namespace Dertrix.Controllers
         // POST: StudentGuardians/Delete/5
         public ActionResult DeleteConfirmed(int id)
         {
-            StudentGuardian studentGuardian = db.StudentGuardians.Find(id);
-            db.StudentGuardians.Remove(studentGuardian);
-            db.SaveChanges();
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            // CHECK IF GUARDIAN IS LINKED TO ANY OTHER STUDENT IN THIS ORG - IF NO - DELETE FROM SG /REGUSERORG/ REGUSER - TABLE AND LOG EVENT. CHECK USER IS DELETED FROM GRP LINKED TO CLASS.
+
+            // GET GUARDIANS REGUSERID
+            var gd_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.RegisteredUserId).FirstOrDefault();
+            // COUNT HOW MANY STUDENT GUARDIANS IS LINKED TO IN ORG
+            var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i ).Count();
+            // IF COUNT OF LINKED STUDENT IS 1 - MEANS GUARDIAN IS ONLY LINKED TO THE STUDENT - WE GO IN THIS CONDITON AND FULLY DELETE GUARDIAN FROM THE SYSTEM.
+            if (linked_stud == 1)
+            {
+            // GET GUARDIANS FULLNAME. 
+                string guardfullname1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).Select(x => x.FullName).FirstOrDefault();
+
+            // LOG EVENT 
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_TypeId = 5,
+                    Org_Event_Name = "Deregistered guardian",
+                    Org_Event_SubjectId = gd_id.ToString(),
+                    Org_Event_SubjectName = guardfullname1,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString()
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+
+
+            // LOG EVENT 
+
+                RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id);
+                db.RegisteredUsers.Remove(remv_g);
+                db.SaveChanges();
+
+           
+            };
+       
             return RedirectToAction("Index");
         }
+
+
+
 
         protected override void Dispose(bool disposing)
         {

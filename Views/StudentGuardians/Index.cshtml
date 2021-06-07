@@ -21,6 +21,9 @@
 			<thead>
 				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 					<th>
+						User ID
+					</th>
+					<th>
 						Full Name
 					</th>
 					<th>
@@ -35,29 +38,32 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Title.TitleName)
-							@Html.DisplayFor(modelItem => item.GuardianFullName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.StudentFullName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.GuardianEmailAddress)
-						</td>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
-									<li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.RegisteredUserId)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Title.TitleName)
+						@Html.DisplayFor(modelItem => item.GuardianFullName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.StudentFullName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.GuardianEmailAddress)
+					</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
+								<li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
 				}
 			</tbody>
 		</table>
