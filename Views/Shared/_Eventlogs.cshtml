@@ -17,7 +17,7 @@
 	</thead>
 	<tbody>
 
-		@foreach (var item in Model)
+		@foreach (var item in Model.OrderByDescending(i => i.Org_Event_Time))
 		{
 		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
 			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">

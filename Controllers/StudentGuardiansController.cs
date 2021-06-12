@@ -206,17 +206,22 @@ namespace Dertrix.Controllers
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
-            // CHECK IF GUARDIAN IS LINKED TO ANY OTHER STUDENT IN THIS ORG - IF NO - DELETE FROM SG /REGUSERORG/ REGUSER - TABLE AND LOG EVENT. CHECK USER IS DELETED FROM GRP LINKED TO CLASS.
-
             // GET GUARDIANS REGUSERID
             var gd_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.RegisteredUserId).FirstOrDefault();
+
+            // GET GUARDIANS FULLNAME. 
+            string guardfullname1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).Select(x => x.FullName).FirstOrDefault();
+
+
+            // CHECK IF GUARDIAN IS LINKED TO ANY OTHER STUDENT IN THIS ORG - IF NO - DELETE FROM SG /REGUSERORG/ REGUSER - TABLE AND LOG EVENT. CHECK USER IS DELETED FROM GRP LINKED TO CLASS.
+
+      
             // COUNT HOW MANY STUDENT GUARDIANS IS LINKED TO IN ORG
             var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i ).Count();
             // IF COUNT OF LINKED STUDENT IS 1 - MEANS GUARDIAN IS ONLY LINKED TO THE STUDENT - WE GO IN THIS CONDITON AND FULLY DELETE GUARDIAN FROM THE SYSTEM.
             if (linked_stud == 1)
             {
-            // GET GUARDIANS FULLNAME. 
-                string guardfullname1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).Select(x => x.FullName).FirstOrDefault();
+       
 
             // LOG EVENT 
                 var orgeventlog = new Org_Events_Log()
@@ -234,15 +239,129 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
 
 
-            // LOG EVENT 
 
                 RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id);
                 db.RegisteredUsers.Remove(remv_g);
                 db.SaveChanges();
+            }
+            else
+            {
+                // GET THE STUD PG IS BEING UNLINKED FROM
+                var stud_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+                // CHECK HOW MANY STU IN ORG PG IS LINKED TO - IF 1 - REMV PG FROM SG / REGUORG - ONLY
+                var mylinkedstudsinorg = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i).Select(x => x.RegisteredUserId).Count();
 
-           
+
+                // COUNT OF mylinkedstudsinorg IS 1 - MEANS PG IS LINKED TO ONLY 1 STUD IN THIS ORG. - REMV PG FROM REGUSERORG / SG / ORGGROUP /TABLE
+                if (mylinkedstudsinorg == 1)
+                {
+                    var getpginreguserorg = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == gd_id).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+
+                    // REMV FROM REGUSERORG
+                    RegisteredUserOrganisation reguserord = db.RegisteredUserOrganisations.Find(getpginreguserorg);
+                    db.RegisteredUserOrganisations.Remove(reguserord);
+                    db.SaveChanges();
+
+
+                    // REMV PG FROM ORGGRP - 
+                    var pginorggrp = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == gd_id).Where(x => x.RegUserOrgId == i).Select(x => x.RegisteredUsersGroupsId).ToList();
+                    var pgingrp = new List<int>(pginorggrp);
+
+                    foreach (var pg in pginorggrp)
+                    {
+                        RegisteredUsersGroups regusrg = db.RegisteredUsersGroups.Find(pg);
+                        db.RegisteredUsersGroups.Remove(regusrg);
+                        db.SaveChanges();
+
+                    }
+                    // LOG EVENT 
+                    var orgeventlog = new Org_Events_Log()
+                    {
+                        Org_Event_TypeId = 5,
+                        Org_Event_Name = "Deregistered guardian",
+                        Org_Event_SubjectId = gd_id.ToString(),
+                        Org_Event_SubjectName = guardfullname1,
+                        Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                        Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                        Org_Event_Time = DateTime.Now,
+                        OrgId = Session["OrgId"].ToString()
+                    };
+                    db.Org_Events_Logs.Add(orgeventlog);
+                    db.SaveChanges();
+
+                    // REMV FROM PG FROM SG
+                    StudentGuardian studgd = db.StudentGuardians.Find(id);
+                    db.StudentGuardians.Remove(studgd);
+                    db.SaveChanges();
+
+                }
+                else
+                {
+                    // GET STUD CLASS GRP ID
+                    var studclassGrpid = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i).Where(x => x.StudentId == stud_id).Select(x => x.Stu_class_Org_Grp_id).FirstOrDefault();
+
+
+                    // COUNT HOW MANY STUDENTS GD IS LINKED TO IN CLASS
+                    var alllinkedstuds = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i).Where(x => x.Stu_class_Org_Grp_id == studclassGrpid).Select(x => x.Stu_class_Org_Grp_id == studclassGrpid).Count();
+
+
+                    // LOOP THRU THE LIST OF STUDENTS PG IS LINKED TO 
+                    var mylinkedstuds = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Select(x => x.StudentGuardianId).ToList();
+                    var linkstudents = new List<int>(mylinkedstuds);
+
+                    // MORE THAN 1 - LOOP THRU LIST OF STUD AND REMV FROM SG
+                    foreach (var std in mylinkedstuds)
+                    {
+                        if (std == id)
+                        {
+
+                    // PG IS LINKED TO ANOTHER STUD IN CLASS - SO WE DNT REMV FROM CLASSGRP
+                            if (alllinkedstuds > 1)
+                            {
+                                // REMV FROM PG FROM SG
+                                StudentGuardian studgd = db.StudentGuardians.Find(id);
+                                db.StudentGuardians.Remove(studgd);
+                                db.SaveChanges();
+
+
+                                //EXIT
+                                return RedirectToAction("Index");
+
+
+                            }
+                   // PG IS LINKED TO JUST THIS STUD IN CLASS - SO WE REMV FROM CLASSGRP AND SG TABLE
+
+                            if (alllinkedstuds == 1)
+                            {
+
+                   // REMV PG FROM ORGGRP - 
+                    var pginorggrp = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == gd_id).Where(x => x.RegUserOrgId == i).Where(X => X.OrgGroupId == studclassGrpid).Select(x => x.RegisteredUsersGroupsId).ToList();
+                                var pgingrp = new List<int>(pginorggrp);
+
+                                foreach (var pg in pginorggrp)
+                                {
+                                    RegisteredUsersGroups regusrg = db.RegisteredUsersGroups.Find(pg);
+                                    db.RegisteredUsersGroups.Remove(regusrg);
+                                    db.SaveChanges();
+                                }
+
+                                // REMV FROM PG FROM SG
+                                StudentGuardian studgd = db.StudentGuardians.Find(id);
+                                db.StudentGuardians.Remove(studgd);
+                                db.SaveChanges();
+
+                            }
+                      
+                        }
+                    }
+
+
+                };
+
+
+                       
             };
-       
+                  
             return RedirectToAction("Index");
         }
 

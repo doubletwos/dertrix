@@ -32,6 +32,9 @@ namespace Dertrix.Models
         public int StudentId { get; set; }
         public string StudentFullName { get; set; }
 
+        public int? Stu_class_Org_Grp_id { get; set; } 
+
+
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }

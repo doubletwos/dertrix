@@ -518,7 +518,28 @@ namespace Dertrix.Controllers
                             string clear = null;
                             registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                             var reguserid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
-                            // ADD GUARDIAN INTO THE STUDENT GUARDIAN TABLE. 
+
+
+                            // LOCATE CLASS GROUP DATA.
+                            var r5 = Session["OrgId"].ToString();
+                            int w_5 = Convert.ToInt32(r5);
+                            var studentclassref_1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
+                            var orggrpref_1 = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref_1 && x.OrgId == w_5).Select(x => x.OrgGroupId).FirstOrDefault();
+                            var orggrptypeid_1 = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref_1 && x.OrgId == w_5).Select(x => x.GroupTypeId).FirstOrDefault();
+                            // ADD GUARDIAN INTO THE CLASSS GROUP.
+                            var regusergrp_1 = new RegisteredUsersGroups
+                            {
+                                RegisteredUserId = reguserid,
+                                OrgGroupId = orggrpref_1,
+                                Email = registeredUser.Email,
+                                RegUserOrgId = i,
+                                GroupTypeId = orggrptypeid_1
+                            };
+                            db.RegisteredUsersGroups.Add(regusergrp_1);
+                            db.SaveChanges();
+
+
+                           // ADD GUARDIAN INTO THE STUDENT GUARDIAN TABLE. 
                             var studentguardian = new StudentGuardian()
                             {
                                 RegisteredUserId = reguserid,
@@ -532,7 +553,8 @@ namespace Dertrix.Controllers
                                 RelationshipId = registeredUser.RelationshipId,
                                 Telephone = registeredUser.Telephone,
                                 DateAdded = DateTime.Now,
-                                OrgId = i
+                                OrgId = i,
+                                Stu_class_Org_Grp_id = orggrpref_1
                             };
                             db.StudentGuardians.Add(studentguardian);
                             db.SaveChanges();
@@ -599,30 +621,17 @@ namespace Dertrix.Controllers
                             };
                             db.RegisteredUserOrganisations.Add(onetomany);
                             db.SaveChanges();
+
+
                             // LOCATE STUDENT AND GUARDIAN DATA - SO IT CAN BE ADDED TO THE STUDENT GUARDIAN TABLE.
                             registeredUser.TempIntHolder = registeredUser.RegisteredUserId;
                             var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
                             string clear = null;
                             registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                             var reguserid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
-                            // ADD GUARDIAN INTO THE STUDENT GUARDIAN TABLE.
-                            var studentguardian = new StudentGuardian()
-                            {
-                                RegisteredUserId = reguserid,
-                                GuardianFirstName = registeredUser.FirstName,
-                                GuardianLastName = registeredUser.LastName,
-                                GuardianFullName = registeredUser.FullName,
-                                GuardianEmailAddress = registeredUser.Email,
-                                StudentId = (int)registeredUser.TempIntHolder,
-                                StudentFullName = studentfullname,
-                                DateAdded = DateTime.Now,
-                                TitleId = registeredUser.TitleId,
-                                RelationshipId = registeredUser.RelationshipId,
-                                Telephone = registeredUser.Telephone,
-                                OrgId = i
-                            };
-                            db.StudentGuardians.Add(studentguardian);
-                            db.SaveChanges();
+
+
+
                             // LOCATE CLASS GROUP DATA.
                             var rrr = Session["OrgId"].ToString();
                             int w = Convert.ToInt32(rrr);
@@ -640,6 +649,28 @@ namespace Dertrix.Controllers
                             };
                             db.RegisteredUsersGroups.Add(regusergrp);
                             db.SaveChanges();
+
+
+                            // ADD GUARDIAN INTO THE STUDENT GUARDIAN TABLE.
+                            var studentguardian = new StudentGuardian()
+                            {
+                                RegisteredUserId = reguserid,
+                                GuardianFirstName = registeredUser.FirstName,
+                                GuardianLastName = registeredUser.LastName,
+                                GuardianFullName = registeredUser.FullName,
+                                GuardianEmailAddress = registeredUser.Email,
+                                StudentId = (int)registeredUser.TempIntHolder,
+                                StudentFullName = studentfullname,
+                                DateAdded = DateTime.Now,
+                                TitleId = registeredUser.TitleId,
+                                RelationshipId = registeredUser.RelationshipId,
+                                Telephone = registeredUser.Telephone,
+                                OrgId = i,
+                                Stu_class_Org_Grp_id = orggrpref
+                            };
+                            db.StudentGuardians.Add(studentguardian);
+                            db.SaveChanges();
+                          
                             // UPON ADDING GUARDIAN - LOG EVENT - LOGGING GUARDIAN IS EVENTTYPEID = 2.                             
                             var orgeventlog = new Org_Events_Log()
                             {
@@ -816,6 +847,26 @@ namespace Dertrix.Controllers
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
+
+
+                    //ADD GUARDIAN - INTO CLASS GROUP.                             
+                    var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
+                    var orggrpref = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.OrgGroupId).FirstOrDefault();
+                    var orggrptypeid = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.GroupTypeId).FirstOrDefault();
+                    var regusergrp = new RegisteredUsersGroups
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgGroupId = orggrpref,
+                        Email = registeredUser.Email,
+                        RegUserOrgId = w,
+                        GroupTypeId = orggrptypeid
+                    };
+                    db.RegisteredUsersGroups.Add(regusergrp);
+                    db.SaveChanges();
+
+
+
+
                     // ADDING GUARDIAN  - INTO STUDENTGUARDIAN TABLE//
                     var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
                     var studentguardian = new StudentGuardian()
@@ -831,7 +882,8 @@ namespace Dertrix.Controllers
                         StudentId = (int)registeredUser.TempIntHolder,
                         StudentFullName = studentfullname,
                         DateAdded = DateTime.Now,
-                        OrgId = w
+                        OrgId = w,
+                        Stu_class_Org_Grp_id = orggrpref
                     };
                     db.StudentGuardians.Add(studentguardian);
                     db.SaveChanges();
@@ -849,20 +901,7 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
-                    var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
-                    var orggrpref = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.OrgGroupId).FirstOrDefault();
-                    var orggrptypeid = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.GroupTypeId).FirstOrDefault();
-                    //ADD GUARDIAN - INTO CLASS GROUP.                             
-                    var regusergrp = new RegisteredUsersGroups
-                    {
-                        RegisteredUserId = registeredUser.RegisteredUserId,
-                        OrgGroupId = orggrpref,
-                        Email = registeredUser.Email,
-                        RegUserOrgId = w,
-                        GroupTypeId = orggrptypeid
-                    };
-                    db.RegisteredUsersGroups.Add(regusergrp);
-                    db.SaveChanges();
+
                     // THEN EXIT
                     return RedirectToAction("Students", "RegisteredUsers");
                 }

@@ -20,6 +20,10 @@ namespace Dertrix.Controllers
             return View(db.Org_Events_Logs.ToList());
         }
 
+
+
+
+
         //  GET: Org_Events_Log/Logs
         [ChildActionOnly]
         public ActionResult Logs()
@@ -29,6 +33,8 @@ namespace Dertrix.Controllers
 
 
             var logs = db.Org_Events_Logs.Where(x => x.OrgId == i.ToString());
+
+
             return PartialView("~/Views/Shared/_Eventlogs.cshtml", logs);
         }
 
