@@ -581,6 +581,61 @@ namespace Dertrix.Controllers
                                 db.RegisteredUsersGroups.Add(regusergrp);
                                 db.SaveChanges();
                             }
+
+
+
+
+
+
+                            // UPDATE STUD'S GUARDIAN COUNT.
+                            var studid = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.RegisteredUserId).FirstOrDefault();
+                            var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
+                            var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.PgCount).FirstOrDefault();
+                            // SET PG TO 0 IF NULL
+                            if (currentcount == null)
+                            {
+                                var zero = 0;
+                                currentcount = zero;
+                            }
+                            var studgaurd = new RegisteredUser
+                            {
+                                RegisteredUserId = locatestud.RegisteredUserId,
+                                RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                                FirstName = locatestud.FirstName,
+                                LastName = locatestud.LastName,
+                                Email = locatestud.Email,
+                                LoginErrorMsg = locatestud.LoginErrorMsg,
+                                Password = locatestud.Password,
+                                ConfirmPassword = locatestud.ConfirmPassword,
+                                Telephone = locatestud.Telephone,
+                                SelectedOrg = locatestud.SelectedOrg,
+                                ClassId = locatestud.ClassId,
+                                GenderId = locatestud.GenderId,
+                                TribeId = locatestud.TribeId,
+                                DateOfBirth = locatestud.DateOfBirth,
+                                EnrolmentDate = locatestud.EnrolmentDate,
+                                ReligionId = locatestud.ReligionId,
+                                PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
+                                SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                                StudentRegFormId = locatestud.StudentRegFormId,
+                                CreatedBy = locatestud.CreatedBy,
+                                RegUserOrgBrand = locatestud.RegUserOrgBrand,
+                                FullName = locatestud.FirstName + " " + locatestud.LastName,
+                                IsTester = locatestud.IsTester,
+                                TempIntHolder = locatestud.TempIntHolder,
+                                TitleId = locatestud.TitleId,
+                                RelationshipId = locatestud.RelationshipId,
+                                ClassRef = locatestud.ClassRef,
+                                PgCount = currentcount + 1
+
+                            };
+                            locatestud = studgaurd;
+                            db.Entry(studgaurd).State = EntityState.Modified;
+                            db.SaveChanges();
+
+
+
+
                             // UPON ADDING GUARDIAN - LOG EVENT - ADDING GUARDIAN IS EVENTTYPEID = 2.                         
                             var orgeventlog = new Org_Events_Log()
                             {
@@ -825,6 +880,7 @@ namespace Dertrix.Controllers
                     registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                     db.RegisteredUsers.Add(registeredUser);
                     db.SaveChanges();
+
                     // ADDING GUARDIAN  - INTO REGUSERORG//
                     var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                     {
@@ -862,6 +918,53 @@ namespace Dertrix.Controllers
                         GroupTypeId = orggrptypeid
                     };
                     db.RegisteredUsersGroups.Add(regusergrp);
+                    db.SaveChanges();
+
+
+                    // UPDATE STUD'S GUARDIAN COUNT.
+                    var studid = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.RegisteredUserId).FirstOrDefault();
+                    var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
+                    var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.PgCount).FirstOrDefault();
+                    // SET PG TO 0 IF NULL
+                    if (currentcount == null)
+                    {
+                        var zero = 0;
+                        currentcount = zero;
+                    }
+                    var studgaurd = new RegisteredUser
+                    {
+                        RegisteredUserId = locatestud.RegisteredUserId,
+                        RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                        FirstName = locatestud.FirstName,
+                        LastName = locatestud.LastName,
+                        Email = locatestud.Email,
+                        LoginErrorMsg = locatestud.LoginErrorMsg,
+                        Password = locatestud.Password,
+                        ConfirmPassword = locatestud.ConfirmPassword,
+                        Telephone = locatestud.Telephone,
+                        SelectedOrg = locatestud.SelectedOrg,
+                        ClassId = locatestud.ClassId,
+                        GenderId = locatestud.GenderId,
+                        TribeId = locatestud.TribeId,
+                        DateOfBirth = locatestud.DateOfBirth,
+                        EnrolmentDate = locatestud.EnrolmentDate,
+                        ReligionId = locatestud.ReligionId,
+                        PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                        StudentRegFormId = locatestud.StudentRegFormId,
+                        CreatedBy = locatestud.CreatedBy,
+                        RegUserOrgBrand = locatestud.RegUserOrgBrand,
+                        FullName = locatestud.FirstName +" "+ locatestud.LastName,
+                        IsTester = locatestud.IsTester,
+                        TempIntHolder = locatestud.TempIntHolder,
+                        TitleId = locatestud.TitleId,
+                        RelationshipId = locatestud.RelationshipId,
+                        ClassRef = locatestud.ClassRef,
+                        PgCount = currentcount + 1
+
+                    };
+                    locatestud = studgaurd;
+                    db.Entry(studgaurd).State = EntityState.Modified;
                     db.SaveChanges();
 
 

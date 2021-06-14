@@ -129,7 +129,10 @@ namespace Dertrix.Models
 
         public int? RegUserOrgBrand { get; set; }
 
-        public int? TempIntHolder { get; set; } 
+        public int? TempIntHolder { get; set; }
+
+        public int? PgCount { get; set; }
+
 
 
 

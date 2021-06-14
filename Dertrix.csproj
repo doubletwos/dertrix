@@ -369,6 +369,10 @@
     <Compile Include="Migrations\202106120719135_Sprint2021.06.03.Designer.cs">
       <DependentUpon>202106120719135_Sprint2021.06.03.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106130948409_Sprint2021.06.04.cs" />
+    <Compile Include="Migrations\202106130948409_Sprint2021.06.04.Designer.cs">
+      <DependentUpon>202106130948409_Sprint2021.06.04.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -967,6 +971,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106120719135_Sprint2021.06.03.resx">
       <DependentUpon>202106120719135_Sprint2021.06.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106130948409_Sprint2021.06.04.resx">
+      <DependentUpon>202106130948409_Sprint2021.06.04.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
