@@ -218,8 +218,8 @@ namespace Dertrix.Controllers
             // CHECK IF GUARDIAN IS LINKED TO ANY OTHER STUDENT IN THIS ORG - IF NO - DELETE FROM SG /REGUSERORG/ REGUSER - TABLE AND LOG EVENT. CHECK USER IS DELETED FROM GRP LINKED TO CLASS.
 
       
-            // COUNT HOW MANY STUDENT GUARDIANS IS LINKED TO IN ORG
-            var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i ).Count();
+            // COUNT HOW MANY STUDENT GUARDIAN IS LINKED TO IN THE DATABASE
+            var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Count();
             // IF COUNT OF LINKED STUDENT IS 1 - MEANS GUARDIAN IS ONLY LINKED TO THE STUDENT - WE GO IN THIS CONDITON AND FULLY DELETE GUARDIAN FROM THE SYSTEM.
             if (linked_stud == 1)
             {
@@ -240,8 +240,51 @@ namespace Dertrix.Controllers
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
 
+                // UPDATE STUD'S GUARDIAN COUNT.
+
+                // GET STUD ID
+                var studid = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+                var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
+                var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == studid).Select(x => x.PgCount).FirstOrDefault();
+
+                var studgaurd = new RegisteredUser
+                {
+                    RegisteredUserId = locatestud.RegisteredUserId,
+                    RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                    FirstName = locatestud.FirstName,
+                    LastName = locatestud.LastName,
+                    Email = locatestud.Email,
+                    LoginErrorMsg = locatestud.LoginErrorMsg,
+                    Password = locatestud.Password,
+                    ConfirmPassword = locatestud.ConfirmPassword,
+                    Telephone = locatestud.Telephone,
+                    SelectedOrg = locatestud.SelectedOrg,
+                    ClassId = locatestud.ClassId,
+                    GenderId = locatestud.GenderId,
+                    TribeId = locatestud.TribeId,
+                    DateOfBirth = locatestud.DateOfBirth,
+                    EnrolmentDate = locatestud.EnrolmentDate,
+                    ReligionId = locatestud.ReligionId,
+                    PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
+                    SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                    StudentRegFormId = locatestud.StudentRegFormId,
+                    CreatedBy = locatestud.CreatedBy,
+                    RegUserOrgBrand = locatestud.RegUserOrgBrand,
+                    FullName = locatestud.FirstName + " " + locatestud.LastName,
+                    IsTester = locatestud.IsTester,
+                    TempIntHolder = locatestud.TempIntHolder,
+                    TitleId = locatestud.TitleId,
+                    RelationshipId = locatestud.RelationshipId,
+                    ClassRef = locatestud.ClassRef,
+                    PgCount = currentcount - 1
+
+                };
+                locatestud = studgaurd;
+                db.Entry(studgaurd).State = EntityState.Modified;
+                db.SaveChanges();
 
 
+                // REMV FROM PG FROM SG
                 RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id);
                 db.RegisteredUsers.Remove(remv_g);
                 db.SaveChanges();
@@ -291,6 +334,51 @@ namespace Dertrix.Controllers
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
 
+
+                    // UPDATE STUD'S GUARDIAN COUNT.
+                    // GET STUD ID
+                    var studid = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+                    var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
+                    var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == studid).Select(x => x.PgCount).FirstOrDefault();
+
+                    var studgaurd = new RegisteredUser
+                    {
+                        RegisteredUserId = locatestud.RegisteredUserId,
+                        RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                        FirstName = locatestud.FirstName,
+                        LastName = locatestud.LastName,
+                        Email = locatestud.Email,
+                        LoginErrorMsg = locatestud.LoginErrorMsg,
+                        Password = locatestud.Password,
+                        ConfirmPassword = locatestud.ConfirmPassword,
+                        Telephone = locatestud.Telephone,
+                        SelectedOrg = locatestud.SelectedOrg,
+                        ClassId = locatestud.ClassId,
+                        GenderId = locatestud.GenderId,
+                        TribeId = locatestud.TribeId,
+                        DateOfBirth = locatestud.DateOfBirth,
+                        EnrolmentDate = locatestud.EnrolmentDate,
+                        ReligionId = locatestud.ReligionId,
+                        PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                        StudentRegFormId = locatestud.StudentRegFormId,
+                        CreatedBy = locatestud.CreatedBy,
+                        RegUserOrgBrand = locatestud.RegUserOrgBrand,
+                        FullName = locatestud.FirstName + " " + locatestud.LastName,
+                        IsTester = locatestud.IsTester,
+                        TempIntHolder = locatestud.TempIntHolder,
+                        TitleId = locatestud.TitleId,
+                        RelationshipId = locatestud.RelationshipId,
+                        ClassRef = locatestud.ClassRef,
+                        PgCount = currentcount - 1
+
+                    };
+                    locatestud = studgaurd;
+                    db.Entry(studgaurd).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+
                     // REMV FROM PG FROM SG
                     StudentGuardian studgd = db.StudentGuardians.Find(id);
                     db.StudentGuardians.Remove(studgd);
@@ -320,7 +408,49 @@ namespace Dertrix.Controllers
                     // PG IS LINKED TO ANOTHER STUD IN CLASS - SO WE DNT REMV FROM CLASSGRP
                             if (alllinkedstuds > 1)
                             {
-                                // REMV FROM PG FROM SG
+                                // UPDATE STUD'S GUARDIAN COUNT.
+                                // GET STUD ID
+                                var studid = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+                                var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
+                                var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == studid).Select(x => x.PgCount).FirstOrDefault();
+
+                                var studgaurd = new RegisteredUser
+                                {
+                                    RegisteredUserId = locatestud.RegisteredUserId,
+                                    RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                                    FirstName = locatestud.FirstName,
+                                    LastName = locatestud.LastName,
+                                    Email = locatestud.Email,
+                                    LoginErrorMsg = locatestud.LoginErrorMsg,
+                                    Password = locatestud.Password,
+                                    ConfirmPassword = locatestud.ConfirmPassword,
+                                    Telephone = locatestud.Telephone,
+                                    SelectedOrg = locatestud.SelectedOrg,
+                                    ClassId = locatestud.ClassId,
+                                    GenderId = locatestud.GenderId,
+                                    TribeId = locatestud.TribeId,
+                                    DateOfBirth = locatestud.DateOfBirth,
+                                    EnrolmentDate = locatestud.EnrolmentDate,
+                                    ReligionId = locatestud.ReligionId,
+                                    PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
+                                    SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                                    StudentRegFormId = locatestud.StudentRegFormId,
+                                    CreatedBy = locatestud.CreatedBy,
+                                    RegUserOrgBrand = locatestud.RegUserOrgBrand,
+                                    FullName = locatestud.FirstName + " " + locatestud.LastName,
+                                    IsTester = locatestud.IsTester,
+                                    TempIntHolder = locatestud.TempIntHolder,
+                                    TitleId = locatestud.TitleId,
+                                    RelationshipId = locatestud.RelationshipId,
+                                    ClassRef = locatestud.ClassRef,
+                                    PgCount = currentcount - 1
+
+                                };
+                                locatestud = studgaurd;
+                                db.Entry(studgaurd).State = EntityState.Modified;
+                                db.SaveChanges();
+
+                               // REMV FROM PG FROM SG
                                 StudentGuardian studgd = db.StudentGuardians.Find(id);
                                 db.StudentGuardians.Remove(studgd);
                                 db.SaveChanges();
@@ -328,7 +458,6 @@ namespace Dertrix.Controllers
 
                                 //EXIT
                                 return RedirectToAction("Index");
-
 
                             }
                    // PG IS LINKED TO JUST THIS STUD IN CLASS - SO WE REMV FROM CLASSGRP AND SG TABLE
@@ -346,6 +475,49 @@ namespace Dertrix.Controllers
                                     db.RegisteredUsersGroups.Remove(regusrg);
                                     db.SaveChanges();
                                 }
+
+                                // UPDATE STUD'S GUARDIAN COUNT.
+                                // GET STUD ID
+                                var studid = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+                                var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
+                                var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == studid).Select(x => x.PgCount).FirstOrDefault();
+
+                                var studgaurd = new RegisteredUser
+                                {
+                                    RegisteredUserId = locatestud.RegisteredUserId,
+                                    RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                                    FirstName = locatestud.FirstName,
+                                    LastName = locatestud.LastName,
+                                    Email = locatestud.Email,
+                                    LoginErrorMsg = locatestud.LoginErrorMsg,
+                                    Password = locatestud.Password,
+                                    ConfirmPassword = locatestud.ConfirmPassword,
+                                    Telephone = locatestud.Telephone,
+                                    SelectedOrg = locatestud.SelectedOrg,
+                                    ClassId = locatestud.ClassId,
+                                    GenderId = locatestud.GenderId,
+                                    TribeId = locatestud.TribeId,
+                                    DateOfBirth = locatestud.DateOfBirth,
+                                    EnrolmentDate = locatestud.EnrolmentDate,
+                                    ReligionId = locatestud.ReligionId,
+                                    PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
+                                    SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                                    StudentRegFormId = locatestud.StudentRegFormId,
+                                    CreatedBy = locatestud.CreatedBy,
+                                    RegUserOrgBrand = locatestud.RegUserOrgBrand,
+                                    FullName = locatestud.FirstName + " " + locatestud.LastName,
+                                    IsTester = locatestud.IsTester,
+                                    TempIntHolder = locatestud.TempIntHolder,
+                                    TitleId = locatestud.TitleId,
+                                    RelationshipId = locatestud.RelationshipId,
+                                    ClassRef = locatestud.ClassRef,
+                                    PgCount = currentcount - 1
+
+                                };
+                                locatestud = studgaurd;
+                                db.Entry(studgaurd).State = EntityState.Modified;
+                                db.SaveChanges();
+
 
                                 // REMV FROM PG FROM SG
                                 StudentGuardian studgd = db.StudentGuardians.Find(id);
