@@ -373,6 +373,10 @@
     <Compile Include="Migrations\202106130948409_Sprint2021.06.04.Designer.cs">
       <DependentUpon>202106130948409_Sprint2021.06.04.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106171824578_Sprint2021.07.01.cs" />
+    <Compile Include="Migrations\202106171824578_Sprint2021.07.01.Designer.cs">
+      <DependentUpon>202106171824578_Sprint2021.07.01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class.cs" />
@@ -386,6 +390,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NurserySchoolUserRole.cs" />
     <Compile Include="Models\Org.cs" />
     <Compile Include="Models\OrgBrand.cs" />
     <Compile Include="Models\OrgEvent.cs" />
@@ -720,7 +725,6 @@
     <Content Include="Views\OrgGroups\Edit.cshtml" />
     <Content Include="Views\OrgGroups\Index.cshtml" />
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup.cshtml" />
     <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
     <Content Include="Views\StudentGuardians\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianStudent.cshtml" />
@@ -784,7 +788,7 @@
     <Content Include="Views\RegisteredUsersGroups\_MyGroups.cshtml" />
     <Content Include="Views\RegisteredUserOrganisations\_MyOrgCount.cshtml" />
     <Content Include="Views\RegisteredUserOrganisations\_MyOrgList.cshtml" />
-    <Content Include="Views\StudentGuardians\_MyGuardians.cshtml" />
+    <Content Include="Views\Shared\_MyGuardians.cshtml" />
     <Content Include="Views\Orgs\Home.cshtml" />
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
@@ -815,6 +819,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddCustomGroup.cshtml" />
     <Content Include="Views\Shared\_Widget_EventLog.cshtml" />
     <Content Include="Views\Shared\_Eventlogs.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianToStudent.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -974,6 +979,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106130948409_Sprint2021.06.04.resx">
       <DependentUpon>202106130948409_Sprint2021.06.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106171824578_Sprint2021.07.01.resx">
+      <DependentUpon>202106171824578_Sprint2021.07.01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

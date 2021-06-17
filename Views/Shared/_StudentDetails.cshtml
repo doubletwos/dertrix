@@ -46,7 +46,7 @@
 			</tr>
 			<tr>
 				<td>
-					<strong>Date Of Birth</strong>	
+					<strong>Date Of Birth</strong>
 				</td>
 				<td>
 					@item.DateOfBirth.ToShortDateString()
@@ -64,7 +64,24 @@
 	}
 }
 <hr />
-<h3>My Guardians</h3>
+@*<div class="container">
+	<div class="row">
+		<div class="col-sm-12">*@
+			@{
+				Html.RenderAction("LinkGuardianToStudent", "RegisteredUsers");
+			}
+
+		@*</div>
+	</div>
+</div>*@
+<hr />
+<h3>Guardians</h3>
 @{
-	Html.RenderAction("MyGuardians", "StudentGuardians");
+Html.RenderAction("MyGuardians", "StudentGuardians");
 }
+		
+
+
+
+
+

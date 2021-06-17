@@ -53,6 +53,7 @@ namespace Dertrix.Models
         public DbSet<OrgImportantDate> OrgImportantDates { get; set; }
         public DbSet<OrgEvent> OrgEvents { get; set; }
         public DbSet<Org_Events_Log> Org_Events_Logs { get; set; }
+        public DbSet<NurserySchoolUserRole> NurserySchoolUserRoles { get; set; }
 
 
 

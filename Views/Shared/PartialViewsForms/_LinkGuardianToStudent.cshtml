@@ -1,0 +1,176 @@
+﻿@model Dertrix.Models.RegisteredUser
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#LinkGuardianToStudent">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+Register Guardian
+</a>
+<div class="modal fade" id="LinkGuardianToStudent">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h4 class="modal-title">Link guardian to <b>@Html.DisplayFor(model => model.FullName)</b></h4>
+			</div>
+			<div class="modal-body">
+				<form id="GuardianForm">
+					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
+					<div class="form-horizontal">
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						@Html.HiddenFor(model => model.RegisteredUserId)
+						<div class="form-group">
+							@Html.LabelFor(model => model.TitleId, "Title", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("TitleId", null, "Please Select", new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.TitleId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.RelationshipId, "Relationship", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownList("RelationshipId", null, "Please Select", new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						@{
+							if ((int)Session["OrgType"] == 3 || (int)Session["OrgType"] == 5)
+							{
+								@Html.DropDownList("PrimarySchoolUserRoleId", null, "Please Select", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
+
+							}
+						}
+						@{
+							if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
+							{
+								@Html.DropDownList("SecondarySchoolUserRoleId", null, "Please Select", new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
+							}
+						}
+
+						<div class="modal-footer">
+							<input type="submit" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
+							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+						</div>
+					</div>
+				</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function () {
+			$("#PrimarySchoolUserRoleId").hide();
+			$("#SecondarySchoolUserRoleId").hide();
+			$("#PrimarySchoolUserRoleId").val("5");
+			$("#SecondarySchoolUserRoleId").val("5");
+
+
+
+
+			$('#GuardianForm').validate({
+				errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+				errorElement: 'div',
+				errorPlacement: function (error, e) {
+					e.parents('.form-group > div').append(error);
+				},
+				highlight: function (e) {
+					$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+					$(e).closest('.help-block').remove();
+				},
+				success: function (e) {
+					e.closest('.form-group').removeClass('has-success has-error');
+					e.closest('.help-block').remove();
+				},
+				rules: {
+					'TitleId': {
+						required: true,
+					},
+					'FirstName': {
+						required: true,
+					},
+					'LastName': {
+						required: true,
+					},
+					'Email': {
+						required: true,
+					},
+					'RelationshipId': {
+						required: true,
+					},
+					'Telephone': {
+						required: true,
+						maxlength: 11,
+					}
+				},
+				messages: {
+					'TitleId': 'Please select title',
+					'FirstName': 'First name is required',
+					'LastName': 'Last name is required',
+					'Email': 'Please enter email address',
+					'RelationshipId': 'Please select relationship',
+					'Telephone': {
+						required: 'Please enter telephone number',
+						maxlength: 'Not more than 11 characters allowed'
+					},
+
+				}
+			});
+
+
+
+
+			$("#addGuardian").on("click", function () {
+				if ($("#GuardianForm").valid()) {
+					var data = $("#GuardianForm").serialize();
+					$.ajax({
+						type: "POST",
+						url: "/RegisteredUsers/Create",
+						data: data,
+						success: function (response) {
+							alert("New Guardian Added");
+							$("#myModal").modal("hide");
+							$("#GuardianForm")[0].reset();
+							window.location.reload();
+						}
+					})
+				}
+			})
+		})
+	</script>
+
+
+
+
+
+
+

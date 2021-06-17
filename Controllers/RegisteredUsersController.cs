@@ -245,6 +245,39 @@ namespace Dertrix.Controllers
             return PartialView("_LinkGuardianStudent");
         }
 
+
+
+        [ChildActionOnly]
+        public ActionResult LinkGuardianToStudent(int? Id)
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var stud1 = db.RegisteredUsers
+                    .Include(c => c.Class)
+                    .Where(x => x.RegisteredUserId == Id)
+                    .FirstOrDefault();
+                ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+                ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+                ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
+                ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
+
+                var stud = new RegisteredUser
+                {
+                    RegisteredUserId = stud1.RegisteredUserId,
+                    FullName = stud1.FullName
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_LinkGuardianToStudent.cshtml", stud);
+
+            }
+
+            return PartialView("_LinkGuardianToStudent");
+        }
+
+
+
+
         public ActionResult EditStaff(int Id)
         {
             if (Id != 0)
