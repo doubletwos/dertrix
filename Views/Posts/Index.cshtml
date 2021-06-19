@@ -6,6 +6,7 @@
 	@{
 		ViewBag.Title = "Posts";
 	}
+
 	<style>
 		.btn-group:hover .dropdown-menu {
 			display: block;
@@ -24,16 +25,31 @@
 			border-style: double;
 			border-color:  @regUserOrgNavBar;
 		}
+		.subject  {
+			color: @regUserOrgNavBar;
+		}
+		.panel-default{
+			border-color:  @regUserOrgNavBar;
+		}
 	</style>
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height:auto">
 	<br />
 	<br />
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
 		<div>
+			<div>
+				@{
+					Html.RenderAction("AddPost1", "Posts");
+				}
+			</div>
 		</div>
 		<hr />
 	</div>
@@ -49,65 +65,71 @@
 		<script src="~/Scripts/summernote/summernote-bs4.js"></script>
 		<script src="~/Scripts/summernote/summernote.js"></script>
 	}
-	<div class="panel panel-default" style="height:70vh; overflow:auto;">
-		<table class="table table-bordered table-condensed  table-responsive" style="background-color:white; ">
-			@foreach (var item in Model)
-			{
-				<tr>
-					<td>
-						<div style="background-color:darkgray; width:auto; background-color:darkgray;">
-							<strong>
-								&nbsp;&nbsp;
-								<u>@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)</u> &nbsp;&nbsp;&nbsp;
-								@Html.DisplayFor(modelItem => item.PostSubject)
-								<br />
-							</strong>
-							&nbsp;&nbsp;@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>@Html.DisplayFor(modelItem => item.PostCreationDate)</i>
-							<hr />
+
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				@foreach (var item in Model)
+				{
+					<div class="container">
+						<h3 class="subject">@Html.DisplayFor(modelItem => item.PostSubject)</h3>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								@Html.DisplayFor(modelItem => item.CreatorFullName) -
+								@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName) - Created:
+								@Html.DisplayFor(modelItem => item.PostCreationDate)
+							</div>
+							<div class="panel-body">
+								@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
+							</div>
+							<div class="panel-footer">
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Action <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" style="background-color:white">
+										<li><a href="#" onclick="EditPost(@item.PostId)">Edit post</a></li>
+										<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete post</a></li>
+										<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Download post</a></li>
+									</ul>
+								</div>
+
+							</div>
 						</div>
-						<div style="background-color:white;">
-							@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-						</div>
-					</td>
-					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" style="background-color:white">
-								<li><a href="#" onclick="EditPost(@item.PostId)">Edit post</a></li>
-								<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete post</a></li>
-								<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Download post</a></li>
-							</ul>
-						</div>
-					</td>
-				</tr>
-			}
-		</table>
+					</div>
+					<hr />
+
+				}
+			</div>
+			<div class="col-lg-4">
+			</div>
+		</div>
 	</div>
+
+</div>
+
+
+
+
+
 	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 	<input type="hidden" id="hiddenPostId" />
 
 	@*<a class="btn btn danger" onclick="SendEmail()">Send email</a>*@
-
-
-
 	@*<script>
-		var SendEmail = function () {
+			var SendEmail = function () {
+				$.ajax({
+					type: "Post",
+					url:  '@Url.Action("SendTestEmail", "Posts")',
+					success: function (data) {
+						alert("Email Sent");
+					}
+				})
 
-			$.ajax({
-
-				type: "Post",
-			    url:  '@Url.Action("SendTestEmail", "Posts")',
-				success: function (data) {
-					alert("Email Sent");
-				}
-			})
-
-		}
-
-
-	</script>*@
+			}
+		</script>*@
 
 
 
@@ -148,8 +170,9 @@
 			</div>
 		</div>
 	</div>
-</div>
-<script>
+
+
+	<script>
 	var ConfirmDelete = function (PostId) {
 		$("#hiddenPostId").val(PostId);
 		$("#PostDeleteModal").modal('show');
@@ -167,31 +190,31 @@
 			}
 		})
 	}
-</script>
-<script>
-	var EditPost = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Posts/EditPost",
-			data: { Id: Id },
-			success: function (response) {
-				$("#postEditBody").html(response);
-				$("#OrgpostEditModal1").modal("show");
-				$("#OrgpostEditModal1").on('shown.bs.modal', function () {
-					$('#PostContent').summernote({
-						height: '300px',
-						dialogsInBody: true,
-					});
-				})
-			}
+	</script>
+	<script>
+		var EditPost = function (Id) {
+			$.ajax({
+				type: "GET",
+				url: "/Posts/EditPost",
+				data: { Id: Id },
+				success: function (response) {
+					$("#postEditBody").html(response);
+					$("#OrgpostEditModal1").modal("show");
+					$("#OrgpostEditModal1").on('shown.bs.modal', function () {
+						$('#PostContent').summernote({
+							height: '300px',
+							dialogsInBody: true,
+						});
+					})
+				}
+			})
+		}
+		$(function () {
+			$("#cancel").on("click", function () {
+			})
 		})
-	}
-	$(function () {
-		$("#cancel").on("click", function () {
-		})
-	})
-</script>
-<script>
+	</script>
+	<script>
 	$("#edtSubmit").click(function () {
 		var data = $("#PostEditForm").serialize();
 		$.ajax({
@@ -206,6 +229,6 @@
 			}
 		})
 	})
-</script>
+	</script>
 
 

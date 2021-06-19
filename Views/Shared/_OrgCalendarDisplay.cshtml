@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Dertrix.Models.OrgSchCalendar>
+
+
+<div class="row">
+
+	<div class="col-md-3">
+		@{
+			Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
+		}
+	</div>
+	<div class="col-md-3" style="padding-top: 0.7em;">
+		Today is :	<b>@DateTime.Now.ToString("dddd, dd MMMM yyyy")</b>
+	</div>
+	<div class="col-md-3">
+	</div>
+	<div class="col-md-3">
+	</div>
+</div>
+
+
+
+
+
+<table class="table" style="height:300px; display: block; overflow-y:scroll; width:3200px;">
+	<thead>
+
+		<tr>
+			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+				@Html.DisplayNameFor(model => model.CalendarCategory.CategoryName)
+			</th>
+
+			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+				@Html.DisplayNameFor(model => model.CreatorFullName)
+			</th>
+		
+			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+				@Html.DisplayNameFor(model => model.EventDate)
+			</th>
+			<th>Days to Event</th>
+
+
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+
+
+		@foreach (var item in Model.OrderBy (i => i.EventDate))
+		{
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
+			</td>
+
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.CreatorFullName)
+			</td>
+
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.EventDate)
+			</td>
+			<td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
+				@{
+					DateTime d1 = DateTime.Now;
+					DateTime? d2 = @item.EventDate;
+					TimeSpan? t = d2 - d1;
+					string NrOfDays = t.Value.Days.ToString();
+				}
+				@if (t.Value.Days == 0)
+				{
+					NrOfDays = "Today";
+				}
+				@NrOfDays
+			</td>
+
+
+			@*<td>
+			@Html.ActionLink("Edit", "Edit", new { id = item.OrgSchCalendarId }) |
+			@Html.ActionLink("Details", "Details", new { id = item.OrgSchCalendarId }) |
+			@Html.ActionLink("Delete", "Delete", new { id = item.OrgSchCalendarId })
+		</td>*@
+		</tr>
+		}
+	</tbody>
+</table>

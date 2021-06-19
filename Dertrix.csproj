@@ -171,6 +171,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccessController.cs" />
+    <Compile Include="Controllers\CalendarCategorysController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\DomainsController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Controllers\OrgGroupsController.cs" />
     <Compile Include="Controllers\OrgImportantDatesController.cs" />
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
+    <Compile Include="Controllers\OrgSchCalendarsController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
     <Compile Include="Controllers\OrgTypesController.cs" />
     <Compile Include="Controllers\Org_Events_LogController.cs" />
@@ -377,8 +379,21 @@
     <Compile Include="Migrations\202106171824578_Sprint2021.07.01.Designer.cs">
       <DependentUpon>202106171824578_Sprint2021.07.01.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106190803530_Sprint2021.07.02.cs" />
+    <Compile Include="Migrations\202106190803530_Sprint2021.07.02.Designer.cs">
+      <DependentUpon>202106190803530_Sprint2021.07.02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106191917223_Sprint2021.07.03.cs" />
+    <Compile Include="Migrations\202106191917223_Sprint2021.07.03.Designer.cs">
+      <DependentUpon>202106191917223_Sprint2021.07.03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106192215076_Sprint2021.07.04.cs" />
+    <Compile Include="Migrations\202106192215076_Sprint2021.07.04.Designer.cs">
+      <DependentUpon>202106192215076_Sprint2021.07.04.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CalendarCategory.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassTeacher.cs" />
     <Compile Include="Models\ClassType.cs" />
@@ -397,6 +412,7 @@
     <Compile Include="Models\OrgGroup.cs" />
     <Compile Include="Models\OrgImportantDate.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
+    <Compile Include="Models\OrgSchCalendar.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\Org_Events_Log.cs" />
     <Compile Include="Models\Post.cs" />
@@ -418,6 +434,7 @@
     <Compile Include="Models\Tribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AddNewOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\AddNewPostViewModel.cs" />
     <Compile Include="ViewModels\NewRegisterUserViewModel.cs" />
   </ItemGroup>
@@ -475,6 +492,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\timepicker\timepicker.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -637,6 +655,7 @@
     <Content Include="Content\BespokeContents\_BespokeLayout1\login.html" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\signup.html" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\style.css" />
+    <Content Include="Scripts\timepicker\timepicker.min.js" />
     <Content Include="Views\EmailTemplates\HtmlPage.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -817,9 +836,15 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddRelationship.cshtml" />
     <Content Include="Views\Access\Logs.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddCustomGroup.cshtml" />
-    <Content Include="Views\Shared\_Widget_EventLog.cshtml" />
     <Content Include="Views\Shared\_Eventlogs.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianToStudent.cshtml" />
+    <Content Include="Views\Shared\_OrgCalendarDisplay.cshtml" />
+    <Content Include="Views\CalendarCategorys\Create.cshtml" />
+    <Content Include="Views\CalendarCategorys\Delete.cshtml" />
+    <Content Include="Views\CalendarCategorys\Details.cshtml" />
+    <Content Include="Views\CalendarCategorys\Edit.cshtml" />
+    <Content Include="Views\CalendarCategorys\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddEventToOrgCalendar.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -835,6 +860,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\OrgSchCalendars\" />
     <Folder Include="Views\Shared\Layouts\" />
   </ItemGroup>
   <ItemGroup>
@@ -982,6 +1008,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106171824578_Sprint2021.07.01.resx">
       <DependentUpon>202106171824578_Sprint2021.07.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106190803530_Sprint2021.07.02.resx">
+      <DependentUpon>202106190803530_Sprint2021.07.02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106191917223_Sprint2021.07.03.resx">
+      <DependentUpon>202106191917223_Sprint2021.07.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106192215076_Sprint2021.07.04.resx">
+      <DependentUpon>202106192215076_Sprint2021.07.04.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -86,7 +86,7 @@
 								<li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
 								<li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
 								<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
-								<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>
+								@*<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>*@
 							</ul>
 						</div>
 					</td>
@@ -141,8 +141,8 @@
 			</div>
 			<div class="modal-body" id="myModalBodyDiv1"></div>
 			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+				@*<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>*@
+				@*<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />*@
 			</div>
 		</div>
 	</div>
@@ -227,7 +227,7 @@
 		})
 	}
 </script>
-<script>
+@*<script>
 	$("#edtSubmit").click(function () {
 		var data = $("#StudentEditForm").serialize();
 		$.ajax({
@@ -245,7 +245,7 @@
 
 
 
-</script>
+</script>*@
 
 @section scripts{
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>

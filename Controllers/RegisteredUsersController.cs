@@ -211,7 +211,8 @@ namespace Dertrix.Controllers
                     FullName = stud1.FullName,
                     CreatedBy = stud1.CreatedBy,
                     RegUserOrgBrand = stud1.RegUserOrgBrand,
-                    ClassRef = stud1.ClassRef
+                    ClassRef = stud1.ClassRef,
+                    PgCount = stud1.PgCount
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditStudent.cshtml", stud);
             }
@@ -220,30 +221,30 @@ namespace Dertrix.Controllers
 
 
 
-        public ActionResult LinkGuardianStudent(int Id)
-        {
-            if (Id != 0)
-            {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
-                var stud1 = db.RegisteredUsers
-                    .Include(c => c.Class)
-                    .Where(x => x.RegisteredUserId == Id)
-                    .FirstOrDefault();
-                ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
-                ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
-                ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
-                ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
+        //public ActionResult LinkGuardianStudent(int Id)
+        //{
+        //    if (Id != 0)
+        //    {
+        //        var rr = Session["OrgId"].ToString();
+        //        int i = Convert.ToInt32(rr);
+        //        var stud1 = db.RegisteredUsers
+        //            .Include(c => c.Class)
+        //            .Where(x => x.RegisteredUserId == Id)
+        //            .FirstOrDefault();
+        //        ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
+        //        ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+        //        ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
+        //        ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
 
 
-                var stud = new RegisteredUser
-                {
-                    RegisteredUserId = stud1.RegisteredUserId,
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_LinkGuardianStudent.cshtml", stud);
-            }
-            return PartialView("_LinkGuardianStudent");
-        }
+        //        var stud = new RegisteredUser
+        //        {
+        //            RegisteredUserId = stud1.RegisteredUserId,
+        //        };
+        //        return PartialView("~/Views/Shared/PartialViewsForms/_LinkGuardianStudent.cshtml", stud);
+        //    }
+        //    return PartialView("_LinkGuardianStudent");
+        //}
 
 
 

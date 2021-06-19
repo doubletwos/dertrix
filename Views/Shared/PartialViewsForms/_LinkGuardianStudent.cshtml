@@ -135,8 +135,8 @@
 
 
 		$("#addGuardian").on("click", function () {
-			if ($("#GuardianForm").valid())
-			{
+			if ($("#GuardianForm").valid()) {
+
 				var data = $("#GuardianForm").serialize();
 				$.ajax({
 					type: "POST",

@@ -9,50 +9,52 @@
 		}
 	</style>
 </head>
-@{
-	var postList = new List<object>();
-	foreach (var item in Model)
-	{
-		postList.Add(item);
-		if (postList.Count() > 2)
+
+	@{
+		var postList = new List<object>();
+
+		foreach (var item in Model)
 		{
-			break;
-		}
-		<div class="panel panel-default" style="width:auto; ">
-			<div class="panel-heading" style="background-color:darkgray;">
-				<strong>	@Html.DisplayFor(modelItem => item.PostSubject)</strong>
-				<br />
-				@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>   @Html.DisplayFor(modelItem => item.PostCreationDate)</i>
-			</div>
-			<hr />
-			<div class="panel-body">
-				@{
-					var maxchar = 150;
-					if (item.PostContent.Length < maxchar)
-					{
-						@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-					}
-					else
-					{
-						var words = item.PostContent.Split(' ');
-						var totalCharacters = 0;
-						var summaryWords = new List<string>();
-						foreach (var word in words)
+			postList.Add(item);
+			if (postList.Count() > 2)
+			{
+				break;
+			}
+			<div class="panel panel-default" style="width:auto; ">
+				<div class="panel-heading" style="background-color:darkgray;">
+					<strong>	@Html.DisplayFor(modelItem => item.PostSubject)</strong>
+					<br />
+					@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>   @Html.DisplayFor(modelItem => item.PostCreationDate)</i>
+				</div>
+				<hr />
+				<div class="panel-body">
+					@{
+						var maxchar = 150;
+						if (item.PostContent.Length < maxchar)
 						{
-							summaryWords.Add(word);
-							totalCharacters += word.Length + 1;
-							if (totalCharacters > 700)
-							{
-								break;
-							}
+							@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
 						}
-						var summary = string.Join(" ", summaryWords) +
-							" ...Read More";
-						summary.ToString();
-						@Html.Raw(HttpUtility.HtmlDecode(summary))
+						else
+						{
+							var words = item.PostContent.Split(' ');
+							var totalCharacters = 0;
+							var summaryWords = new List<string>();
+							foreach (var word in words)
+							{
+								summaryWords.Add(word);
+								totalCharacters += word.Length + 1;
+								if (totalCharacters > 700)
+								{
+									break;
+								}
+							}
+							var summary = string.Join(" ", summaryWords) +
+								" ...Read More";
+							summary.ToString();
+							@Html.Raw(HttpUtility.HtmlDecode(summary))
+						}
 					}
-				}
+				</div>
 			</div>
-		</div>
 	}
-}
+	    }

@@ -1,6 +1,9 @@
 ﻿@model Dertrix.Models.RegisteredUser
 <form id="StudentEditForm">
 	@Html.AntiForgeryToken()
+	@{
+		HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+	}
 	<div class="form-horizontal">
 		<hr />
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -12,9 +15,7 @@
 		@Html.HiddenFor(model => model.ClassRef)
 		@Html.HiddenFor(model => model.CreatedBy)
 		@Html.HiddenFor(model => model.RegUserOrgBrand)
-
-
-
+		@Html.HiddenFor(model => model.PgCount)
 
 
 
@@ -67,18 +68,106 @@
 				@Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
 			</div>
 		</div>
+
+		<div class="modal-footer">
+			<input type="submit" value="Update" class="RegUserOrgButtonColour" id="editstudent" />
+			<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+		</div>
 	</div>
 </form>
+
+
 <script>
 	$(document).ready(function () {
-		$(function () {
+
 			$("#test4").datepicker({
 				dateFormat: "dd-mm-yy",
 				changeMonth: true,
 				changeYear: true,
 				yearRange: "-0:+10",
 			});
+
+
+			$('#StudentEditForm').validate({
+				errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+				errorElement: 'div',
+				errorPlacement: function (error, e) {
+					e.parents('.form-group > div').append(error);
+				},
+				highlight: function (e) {
+					$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+					$(e).closest('.help-block').remove();
+				},
+				success: function (e) {
+					e.closest('.form-group').removeClass('has-success has-error');
+					e.closest('.help-block').remove();
+				},
+				rules: {
+					'FirstName': {
+						required: true,
+					},
+					'LastName': {
+						required: true,
+					},
+					'ClassId': {
+						required: true,
+					},
+					'GenderId': {
+						required: true,
+					},
+					'ReligionId': {
+						required: true,
+					},
+					'TribeId': {
+						required: true,
+					},
+					'DateOfBirth': {
+						required: true,
+					}
+				},
+
+				messages: {
+					'FirstName': 'First name is required',
+					'LastName': 'Last name is required',
+					'ClassId': 'Please select class',
+					'GenderId': 'Please enter gender',
+					'ReligionId': 'Please select religion',
+					'TribeId': 'Please select tribe',
+					'DateOfBirth': 'Please enter date of birth'
+
+				}
+
+
+
+			});
+
+
+
+		$("#editstudent").on("click", function () {
+			if ($("#StudentEditForm").valid()) {
+				var data = $("#StudentEditForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/RegisteredUsers/Edit",
+					data: data,
+					success: function (response) {
+						alert("Student details updated");
+						$("#myModal").modal("hide");
+						$("#StudentEditForm")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
 		})
 
+
+
+
+
+
 	})
+
 </script>
+
+
+

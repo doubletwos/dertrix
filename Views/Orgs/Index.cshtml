@@ -35,47 +35,45 @@
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
-		<div>
-			@{
-				Html.RenderAction("AddPost1", "Posts");
-			}
-		</div>
-
-
+	
 	</div>
 	<br />
 	<br />
+
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-6">
-				@{
-					Html.RenderAction("PostDisplayPanel", "Posts");
-				}
-			</div>
-			<div class="col-lg-6">
-			</div>
-		</div>
-		<div class="row">
 			<div class="col-lg-12">
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="#eventlogs" data-toggle="tab">Event logs</a></li>
-					@*<li role="presentation"><a href="#profile" data-toggle="tab">Coming Soon</a></li>*@
+				<ul id="formtabs" class="nav nav-tabs" style="margin-bottom:10px;">
+					<li class="active"><a data-toggle="tab" href="#tab_form">Event Logs</a></li>
+					<li><a data-toggle="tab" href="#tab_resultat">School Calendar</a></li>
+					@*<li><a data-toggle="tab" href="#tab_formel">Formel</a></li>*@
+					@*<li><a data-toggle="tab" href="#tab_info">Informationer</a></li>*@
 				</ul>
 
-				<div id="myTabContent" class="tab-content">
-					<div class="tab-pane fade active in" id="eventlogs">
-						@Html.Partial("_Widget_EventLog")
+				<div class="tab-content">
+					<div id="tab_form" class="tab-pane active">
+						<div class="panel-body">
+							@{
+								Html.RenderAction("Logs", "Org_Events_Log");
+							}
+						</div>
+					</div>
+					<div id="tab_resultat" class="tab-pane">
+						<div class="panel-body">
+							@{
+								Html.RenderAction("OrgCalendarDisplay", "OrgSchCalendars");
+							}
+						</div>
+					</div>
 
+					@*<div id="tab_formel" class="tab-pane">
+						<div class="panel-body">Formel</div>
 					</div>
-					<div class="tab-pane fade" id="profile">
-						
-					</div>
+
+					<div id="tab_info" class="tab-pane">
+						<div class="panel-body">Information</div>
+					</div>*@
 				</div>
-
-
-
-
-
 			</div>
 		</div>
 	</div>
@@ -90,11 +88,14 @@
 	<script src="~/Scripts/summernote/summernote.min.js"></script>
 	<script src="~/Scripts/summernote/summernote-bs4.js"></script>
 	<script src="~/Scripts/summernote/summernote.js"></script>
+
+	<script src="~/Scripts/timepicker/timepicker.min.js"></script>
+	<link href="~/Content/timepicker/timepicker.min.css" rel="stylesheet" />
 }
 
 <script>
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		var target = $(e.target).attr("href") // activated tab
-		alert(target);
-	});
+
+$(document).ready(function () {
+	$('.nav-tabs a[href="#tab_info"]').tab('show')
+ })
 </script>

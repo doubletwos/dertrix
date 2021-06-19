@@ -1,0 +1,154 @@
+﻿@model Dertrix.ViewModels.AddNewOrgSchCalViewModel
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#mycreateevent">
+	<i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>
+	Add event
+</a>
+<div class="modal fade" id="mycreateevent">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Add New Event</h3>
+			</div>
+			<div class="modal-body">
+				<form id="myCreateEventForm">
+					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
+					<div class="form-horizontal">
+						<h4></h4>
+						<hr />
+						@Html.HiddenFor(model => model.OrgSchCalendar.OrgId)
+						@Html.HiddenFor(model => model.OrgSchCalendar.CreatorId)
+						@Html.HiddenFor(model => model.OrgSchCalendar.CreatorFullName)
+						@Html.HiddenFor(model => model.OrgSchCalendar.CreationDate)
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.CalendarCategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.DropDownListFor(x => x.OrgSchCalendar.CalendarCategoryId, new SelectList(Model.CalendarCategorys, "CalendarCategoryId", "CategoryName"), "Please Select", new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.CalendarCategoryId, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.OrgSchCalendar.Name, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Name, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.OrgSchCalendar.Description, new { htmlAttributes = new { @class = "form-control", @style = "height:180px" } })
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Description, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.EventDate, "Event Date", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.OrgSchCalendar.EventDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventDate, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.OrgSchCalendar.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								<div class="checkbox">
+									@Html.EditorFor(model => model.OrgSchCalendar.IsRecurring)
+									@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.Frequency, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								@Html.EditorFor(model => model.OrgSchCalendar.Frequency, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Frequency, "", new { @class = "text-danger" })
+							</div>
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+							<div class="col-md-10">
+								<div class="checkbox">
+									@Html.EditorFor(model => model.OrgSchCalendar.SendAsEmail)
+									@Html.ValidationMessageFor(model => model.OrgSchCalendar.SendAsEmail, "", new { @class = "text-danger" })
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							@Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
+							<div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
+
+								@for (int i = 0; i < Model.OrgGroups.Count; i++)
+								{
+									@Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
+									@Html.HiddenFor(model => model.OrgGroups[i].GroupName)
+									@:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
+									@:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
+									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
+									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
+									<br />
+								}
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
+							<input type="submit" value="Create Event" class="RegUserOrgButtonColour" id="btnSubmit" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+   </div>
+</div>
+
+
+
+<script>
+$(document).ready(function () {
+
+	$(function () {
+		$(".datepicker").datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true,
+			yearRange: "-0:+35",
+		});
+
+		$(".bs-timepicker").timepicker();
+
+		
+	});
+
+
+	$("#btnSubmit").on("click", function () {
+		if ($("#myCreateEventForm").valid()) {
+			var data = $("#myCreateEventForm").serialize();
+			$.ajax({
+				type: "POST",
+				url: "/OrgSchCalendars/Create",
+
+				data: data,
+				success: function (response) {
+					alert("New event created");
+					$("#mycreateevent").modal("hide");
+					$("#mycreateevent")[0].reset();
+					window.location.reload();
+				}
+			})
+		}
+	})
+});
+
+</script>
