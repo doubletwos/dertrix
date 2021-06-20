@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<Dertrix.Models.Org>
+
+
+
+
 <head>
 	@{
 		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
@@ -35,7 +39,7 @@
 	@Html.Partial("_WidgetDashboard")
 	<div>
 		<hr />
-	
+
 	</div>
 	<br />
 	<br />
@@ -44,21 +48,16 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<ul id="formtabs" class="nav nav-tabs" style="margin-bottom:10px;">
-					<li class="active"><a data-toggle="tab" href="#tab_form">Event Logs</a></li>
-					<li><a data-toggle="tab" href="#tab_resultat">School Calendar</a></li>
+					<li class="active"><a data-toggle="tab" href="#tab_info">School Calendar</a></li>
+					<li><a data-toggle="tab" href="#tab_form">Event Logs</a></li>
 					@*<li><a data-toggle="tab" href="#tab_formel">Formel</a></li>*@
 					@*<li><a data-toggle="tab" href="#tab_info">Informationer</a></li>*@
 				</ul>
 
+
 				<div class="tab-content">
-					<div id="tab_form" class="tab-pane active">
-						<div class="panel-body">
-							@{
-								Html.RenderAction("Logs", "Org_Events_Log");
-							}
-						</div>
-					</div>
-					<div id="tab_resultat" class="tab-pane">
+
+					<div id="tab_info" class="tab-pane active">
 						<div class="panel-body">
 							@{
 								Html.RenderAction("OrgCalendarDisplay", "OrgSchCalendars");
@@ -66,14 +65,28 @@
 						</div>
 					</div>
 
-					@*<div id="tab_formel" class="tab-pane">
-						<div class="panel-body">Formel</div>
+					<div id="tab_form" class="tab-pane">
+						<div class="panel-body">
+							@{
+								Html.RenderAction("Logs", "Org_Events_Log");
+							}
+						</div>
 					</div>
 
-					<div id="tab_info" class="tab-pane">
-						<div class="panel-body">Information</div>
-					</div>*@
+
+
+
+
+					@*<div id="tab_formel" class="tab-pane">
+			<div class="panel-body">Formel</div>
+		</div>
+		<div id="tab_info" class="tab-pane">
+			<div class="panel-body">Information</div>
+
+
+		</div>*@
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -94,8 +107,12 @@
 }
 
 <script>
-
-$(document).ready(function () {
-	$('.nav-tabs a[href="#tab_info"]').tab('show')
- })
+	$(document).ready(function () {
+		$('.nav-tabs a[href="#tab_info"]').tab('show')
+	})
 </script>
+
+
+
+
+

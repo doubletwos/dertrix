@@ -34,7 +34,12 @@ namespace Dertrix.Controllers
         }
 
 
-        [ChildActionOnly]
+      
+
+
+
+
+    [ChildActionOnly]
         public ActionResult AddEventToOrgCalendar()
         {
             var sess = Session["OrgId"].ToString();
@@ -63,10 +68,7 @@ namespace Dertrix.Controllers
         }
 
 
-
-
-
-
+   
 
         // GET: OrgSchCalendars/Details/5
         public ActionResult Details(int? id)
@@ -82,6 +84,26 @@ namespace Dertrix.Controllers
             }
             return View(orgSchCalendar);
         }
+
+
+        // GET: OrgSchCalendars/EventDetails/5
+        public ActionResult EventDetails(int Id)
+        {
+            var calendarevent = db.OrgSchCalendars.Where(x => x.OrgSchCalendarId == Id);
+            ViewBag.OrgSchCalendar = calendarevent;
+
+            return PartialView("_EventDetails");
+        }
+
+
+
+
+
+
+
+
+
+
 
         // GET: OrgSchCalendars/Create
         public ActionResult Create()
@@ -120,35 +142,58 @@ namespace Dertrix.Controllers
             return View(viewModel);
         }
 
-        // GET: OrgSchCalendars/Edit/5
-        public ActionResult Edit(int? id)
+ 
+
+
+
+
+
+        public ActionResult EditCalendarEvent(int Id)
         {
-            if (id == null)
+            if (Id != 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var edtcalevent = db.OrgSchCalendars
+                    .Include(x => x.CalendarCategory)
+                    .Where(x => x.OrgSchCalendarId == Id).FirstOrDefault();
+                OrgSchCalendar orgSchCalendar = db.OrgSchCalendars.Find(Id);
+                var edtcalevnt1 = new OrgSchCalendar
+                {
+                    OrgSchCalendarId = edtcalevent.OrgSchCalendarId,
+                     CalendarCategoryId = edtcalevent.CalendarCategoryId,
+                     OrgId = edtcalevent.OrgId,
+                     Name = edtcalevent.Name,
+                     CreatorId = edtcalevent.CreatorId,
+                     CreatorFullName = edtcalevent.CreatorFullName,
+                     CreationDate =edtcalevent.CreationDate,
+                     IsRecurring = edtcalevent.IsRecurring,
+                     Frequency = edtcalevent.Frequency,
+                     SendAsEmail = edtcalevent.SendAsEmail,
+                     EventDate = edtcalevent.EventDate,
+                     Description = edtcalevent.Description,
+                     EventTime = edtcalevent.EventTime,
+                     OrgGroups = edtcalevent.OrgGroups
+                };
+                ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditCalendarEvent.cshtml", edtcalevnt1);
             }
-            OrgSchCalendar orgSchCalendar = db.OrgSchCalendars.Find(id);
-            if (orgSchCalendar == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", orgSchCalendar.OrgId);
-            return View(orgSchCalendar);
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditCalendarEvent.cshtml");
         }
 
+
         // POST: OrgSchCalendars/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrgSchCalendarId,CalendarCategoryId,OrgId,Name,CreatorId,CreatorFullName,CreationDate,IsRecurring,Frequency,SendAsEmail")] OrgSchCalendar orgSchCalendar)
+        public ActionResult Edit(OrgSchCalendar orgSchCalendar)
         {
-            if (ModelState.IsValid)
+
+            var sess = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(sess);
+
+            if (!(ModelState.IsValid) || ModelState.IsValid)
             {
                 db.Entry(orgSchCalendar).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Orgs", new { id = i });
             }
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", orgSchCalendar.OrgId);
@@ -171,14 +216,17 @@ namespace Dertrix.Controllers
         }
 
         // POST: OrgSchCalendars/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+    
+        public ActionResult DeleteConfirmed(int? Id)
         {
-            OrgSchCalendar orgSchCalendar = db.OrgSchCalendars.Find(id);
+            var sess = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(sess);
+
+            OrgSchCalendar orgSchCalendar = db.OrgSchCalendars.Find(Id);
             db.OrgSchCalendars.Remove(orgSchCalendar);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Index", "Orgs", new { id = i });
         }
 
         protected override void Dispose(bool disposing)
@@ -189,5 +237,10 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+   
+
+
     }
 }

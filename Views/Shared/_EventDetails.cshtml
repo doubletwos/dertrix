@@ -1,0 +1,77 @@
+﻿@model Dertrix.Models.OrgSchCalendar
+@if (ViewBag.OrgSchCalendar != null)
+{
+	foreach (var item in ViewBag.OrgSchCalendar)
+	{
+		<table class="table" style="height:300px; display: block; overflow-y:scroll; width:600px;">
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					<strong>@item.Name</strong>
+				</td>
+			</tr>
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					Created by : <strong>@item.CreatorFullName</strong> on  <strong>@item.CreationDate.ToString("dddd, dd MMMM yyyy")</strong>
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					@Html.DisplayNameFor(model => model.EventDate) : <strong>@item.EventDate.ToString("dddd, dd MMMM yyyy")</strong>
+				</td>
+
+			</tr>
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					@Html.DisplayNameFor(model => model.Description)
+				</td>
+				<td>
+					@item.Description
+				</td>
+			</tr>
+
+
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					@Html.DisplayNameFor(model => model.EventTime) : @item.EventTime
+				</td>
+
+			</tr>
+
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					@Html.DisplayNameFor(model => model.IsRecurring) : @item.IsRecurring
+				</td>
+
+			</tr>
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td>
+					@Html.DisplayNameFor(model => model.Frequency) : @item.Frequency
+				</td>
+
+			</tr>
+
+
+		</table>
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -197,8 +197,6 @@
 				$("#myModalll4").modal("show");
 			}
 		})
-
-
 	}
 </script>
 <script>
@@ -227,25 +225,7 @@
 		})
 	}
 </script>
-@*<script>
-	$("#edtSubmit").click(function () {
-		var data = $("#StudentEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/RegisteredUsers/Edit",
-			data: data,
-			success: function (response) {
-				alert("Student Updated");
-				$("#myModal").modal("hide");
-				$("#StudentEditForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
 
-
-
-</script>*@
 
 @section scripts{
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>

@@ -66,9 +66,15 @@ namespace Dertrix.Controllers
         }
 
 
+ 
+           
 
-        // GET: Orgs/Home/5
-        public ActionResult Home(int? id)
+        
+
+
+
+    // GET: Orgs/Home/5
+    public ActionResult Home(int? id)
         {
             if (Session["OrgId"] == null)
             {

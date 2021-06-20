@@ -845,6 +845,8 @@
     <Content Include="Views\CalendarCategorys\Edit.cshtml" />
     <Content Include="Views\CalendarCategorys\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddEventToOrgCalendar.cshtml" />
+    <Content Include="Views\Shared\_EventDetails.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditCalendarEvent.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

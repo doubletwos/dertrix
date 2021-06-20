@@ -290,30 +290,6 @@ namespace Dertrix.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // GET: Posts/Edit/5
         public ActionResult Edit(int? id)
         {

@@ -35,7 +35,7 @@ namespace Dertrix.Models
         public string Description { get; set; }
 
         [Display(Name = "Event Date")]
-        [DisplayFormat(DataFormatString = "{0:dddd  dd-MMMM-yyyy | H:mm tt}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dddd  dd MMMM yyyy }", ApplyFormatInEditMode = true)]
         public DateTime? EventDate { get; set; }
 
         [Display(Name = "Time")]
