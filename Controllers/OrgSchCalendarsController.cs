@@ -15,16 +15,21 @@ namespace Dertrix.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: OrgSchCalendars
-        public ActionResult Index()
-        {
-            var orgSchCalendars = db.OrgSchCalendars.Include(o => o.CalendarCategory).Include(o => o.Org);
-            return View(orgSchCalendars.ToList());
-        }
+ 
 
         // GET: OrgSchCalendars/Display/
         public ActionResult OrgCalendarDisplay() 
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
+
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
@@ -34,14 +39,24 @@ namespace Dertrix.Controllers
         }
 
 
-      
 
 
 
 
-    [ChildActionOnly]
+
+        [ChildActionOnly]
         public ActionResult AddEventToOrgCalendar()
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
+
             var sess = Session["OrgId"].ToString();
             int i = Convert.ToInt32(sess);
 
@@ -70,25 +85,19 @@ namespace Dertrix.Controllers
 
    
 
-        // GET: OrgSchCalendars/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrgSchCalendar orgSchCalendar = db.OrgSchCalendars.Find(id);
-            if (orgSchCalendar == null)
-            {
-                return HttpNotFound();
-            }
-            return View(orgSchCalendar);
-        }
 
 
         // GET: OrgSchCalendars/EventDetails/5
         public ActionResult EventDetails(int Id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
             var calendarevent = db.OrgSchCalendars.Where(x => x.OrgSchCalendarId == Id);
             ViewBag.OrgSchCalendar = calendarevent;
 
@@ -101,23 +110,19 @@ namespace Dertrix.Controllers
 
 
 
-
-
-
-
-        // GET: OrgSchCalendars/Create
-        public ActionResult Create()
-        {
-            ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName");
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-            return View();
-        }
-
         // POST: OrgSchCalendars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(AddNewOrgSchCalViewModel viewModel)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
 
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
@@ -133,51 +138,113 @@ namespace Dertrix.Controllers
             {
                 db.OrgSchCalendars.Add(viewModel.OrgSchCalendar);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+             var grps = viewModel.OrgGroups.Select(x => x.OrgGroupId).ToList();
+             var grpstolist = new List<int>(grps);
+
+
+             foreach (var grp in grps)
+                {
+                    // GET VALUE OF IS-SELECTED
+                    var isselected = viewModel.OrgGroups.Where(x => grp == x.OrgGroupId).Select(x => x.IsSelected).FirstOrDefault();
+                    if(isselected == true)
+                    {
+                        var orgschcalndrGrps = new OrgSchCalndrGrp()
+                        {
+                            OrgSchCalendarId = viewModel.OrgSchCalendar.OrgSchCalendarId,
+                            OrgGroupId = grp,
+                            OrgId = i,                         
+                        };
+                        db.OrgSchCalndrGrps.Add(orgschcalndrGrps);
+                        db.SaveChanges();
+                    }
+              }
+                return RedirectToAction("Index", "Orgs", new { id = i });
 
             }
-
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", viewModel.OrgSchCalendar.CalendarCategoryId);
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", viewModel.OrgSchCalendar.OrgId);
             return View(viewModel);
         }
 
- 
 
-
-
-
-
-        public ActionResult EditCalendarEvent(int Id)
+        public ActionResult EditOrgSchCal(int Id)
         {
-            if (Id != 0)
+            if (Request.Browser.IsMobileDevice == true)
             {
-                var edtcalevent = db.OrgSchCalendars
-                    .Include(x => x.CalendarCategory)
-                    .Where(x => x.OrgSchCalendarId == Id).FirstOrDefault();
-                OrgSchCalendar orgSchCalendar = db.OrgSchCalendars.Find(Id);
-                var edtcalevnt1 = new OrgSchCalendar
-                {
-                    OrgSchCalendarId = edtcalevent.OrgSchCalendarId,
-                     CalendarCategoryId = edtcalevent.CalendarCategoryId,
-                     OrgId = edtcalevent.OrgId,
-                     Name = edtcalevent.Name,
-                     CreatorId = edtcalevent.CreatorId,
-                     CreatorFullName = edtcalevent.CreatorFullName,
-                     CreationDate =edtcalevent.CreationDate,
-                     IsRecurring = edtcalevent.IsRecurring,
-                     Frequency = edtcalevent.Frequency,
-                     SendAsEmail = edtcalevent.SendAsEmail,
-                     EventDate = edtcalevent.EventDate,
-                     Description = edtcalevent.Description,
-                     EventTime = edtcalevent.EventTime,
-                     OrgGroups = edtcalevent.OrgGroups
-                };
-                ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditCalendarEvent.cshtml", edtcalevnt1);
+                return RedirectToAction("WrongDevice", "Orgs");
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditCalendarEvent.cshtml");
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            var sess = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(sess);
+
+            var edtcalevent = db.OrgSchCalendars
+            .Include(x => x.CalendarCategory)
+            .Where(x => x.OrgSchCalendarId == Id).FirstOrDefault();
+
+
+            var orgschcalendar = new OrgSchCalendar();
+            // Get all the groups from the database
+            var grp = db.OrgGroups.Where(c => c.OrgId == i).ToList();
+
+
+            // Get all the Catergory from the database
+            var calendarcategorys = db.CalendarCategorys.ToList();
+            // Initialize the view model
+            var editeventorgcalviewmodel = new EditOrgSchCalViewModel
+            {
+
+                OrgSchCalendarId = edtcalevent.OrgSchCalendarId,
+                CalendarCategoryId = edtcalevent.CalendarCategoryId,
+                OrgId = edtcalevent.OrgId,
+                Name = edtcalevent.Name,
+                CreatorId = edtcalevent.CreatorId,
+                CreatorFullName = edtcalevent.CreatorFullName,
+                Description = edtcalevent.Description,
+                EventDate = edtcalevent.EventDate,
+                EventTime = edtcalevent.EventTime,
+                CreationDate = edtcalevent.CreationDate,
+                IsRecurring = edtcalevent.IsRecurring,
+                Frequency = edtcalevent.Frequency,
+                SendAsEmail = edtcalevent.SendAsEmail,
+
+                OrgGroups = grp.Select(x  => new OrgGroup()
+                {
+                    OrgGroupId = x.OrgGroupId,
+                    OrgId = x.OrgId,
+                    GroupName = x.GroupName,
+                    IsSelected =   x.IsSelected
+                }).ToList()
+            };
+
+            foreach (var group in editeventorgcalviewmodel.OrgGroups)
+            {
+                int groupCount = editeventorgcalviewmodel.OrgGroups.Count();
+            }
+
+            foreach(var item in editeventorgcalviewmodel.OrgGroups)
+            {
+
+                var isselected = db.OrgSchCalndrGrps.Where(x => x.OrgGroupId == item.OrgGroupId).Where(x => x.OrgSchCalendarId == Id).Where(X => X.OrgId == i).Select(x => x.OrgSchCalndrGrpId).Count();
+                if (isselected == 0)
+                {
+                    item.IsSelected = false;
+                }
+                else
+                {
+                    item.IsSelected = true;
+                }
+
+            }
+
+            ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName");
+            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgSchCal.cshtml", editeventorgcalviewmodel);
         }
+
 
 
         // POST: OrgSchCalendars/Edit/5
@@ -185,9 +252,51 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OrgSchCalendar orgSchCalendar)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
 
             var sess = Session["OrgId"].ToString();
             int i = Convert.ToInt32(sess);
+
+
+            // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
+            var orgschcalid = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalendarId == orgSchCalendar.OrgSchCalendarId).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).ToList();
+            var orgschcalidtolist = new List<int>(orgschcalid);
+            
+            foreach (var recrd in orgschcalid)
+            {
+              var removercrd = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalndrGrpId == recrd).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).FirstOrDefault();
+
+                OrgSchCalndrGrp orgschcalndrgrp = db.OrgSchCalndrGrps.Find(removercrd);
+                db.OrgSchCalndrGrps.Remove(orgschcalndrgrp);
+            }
+
+
+            // LOOP THRU LIST OF GROUPS PROVIDED
+            var grps = orgSchCalendar.OrgGroups.Select(x => x.OrgGroupId).ToList();
+            var grpstolist = new List<int>(grps);
+            foreach (var grp in grps)
+            {
+                // GET VALUE OF IS-SELECTED
+                var isselected = orgSchCalendar.OrgGroups.Where(x => grp == x.OrgGroupId).Select(x => x.IsSelected).FirstOrDefault();
+                if (isselected == true)
+                {
+                    var orgschcalndrGrps = new OrgSchCalndrGrp()
+                    {
+                        OrgSchCalendarId = orgSchCalendar.OrgSchCalendarId,
+                        OrgGroupId = grp,
+                        OrgId = i,
+                    };
+                    db.OrgSchCalndrGrps.Add(orgschcalndrGrps);
+                    db.SaveChanges();
+                }
+            }
 
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
@@ -203,6 +312,15 @@ namespace Dertrix.Controllers
         // GET: OrgSchCalendars/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -219,6 +337,14 @@ namespace Dertrix.Controllers
     
         public ActionResult DeleteConfirmed(int? Id)
         {
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
             var sess = Session["OrgId"].ToString();
             int i = Convert.ToInt32(sess);
 

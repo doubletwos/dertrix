@@ -56,6 +56,8 @@ namespace Dertrix.Models
         public DbSet<NurserySchoolUserRole> NurserySchoolUserRoles { get; set; }
         public DbSet<OrgSchCalendar> OrgSchCalendars { get; set; }
         public DbSet<CalendarCategory> CalendarCategorys { get; set; }
+        public DbSet<OrgSchCalndrGrp> OrgSchCalndrGrps { get; set; } 
+
 
 
 

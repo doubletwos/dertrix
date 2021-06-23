@@ -42,7 +42,10 @@
 				@Html.DisplayNameFor(model => model.EventDate)
 			</th>
 			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-				Days to Event
+				Days To Event
+			</th>
+			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+				Select Action
 			</th>
 
 
@@ -85,7 +88,8 @@
 				@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
 				{
 					<td style="padding-top: 1.8em;">
-						<p>
+						<p>	
+							@*<a href="@Url.Action("AddEventToOrgCalendar", "OrgSchCalendars", new { id = @item.OrgSchCalendarId })">Click Here</a>*@
 							<a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a> &nbsp;
 							<a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a> &nbsp;
 							<a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
@@ -196,7 +200,7 @@
 	var EditEvent = function (Id) {
 		$.ajax({
 			type: "GET",
-			url: "/OrgSchCalendars/EditCalendarEvent",
+			url: "/OrgSchCalendars/EditOrgSchCal",
 			data: { Id: Id },
 			success: function (response) {
 				$("#EditEventModalBody").html(response);

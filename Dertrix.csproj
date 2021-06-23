@@ -391,6 +391,10 @@
     <Compile Include="Migrations\202106192215076_Sprint2021.07.04.Designer.cs">
       <DependentUpon>202106192215076_Sprint2021.07.04.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106221327580_Sprint2021.07.05.cs" />
+    <Compile Include="Migrations\202106221327580_Sprint2021.07.05.Designer.cs">
+      <DependentUpon>202106221327580_Sprint2021.07.05.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -413,6 +417,7 @@
     <Compile Include="Models\OrgImportantDate.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgSchCalendar.cs" />
+    <Compile Include="Models\OrgSchCalndrGrp.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\Org_Events_Log.cs" />
     <Compile Include="Models\Post.cs" />
@@ -436,6 +441,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddNewOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\AddNewPostViewModel.cs" />
+    <Compile Include="ViewModels\EditOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\NewRegisterUserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -846,7 +852,7 @@
     <Content Include="Views\CalendarCategorys\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddEventToOrgCalendar.cshtml" />
     <Content Include="Views\Shared\_EventDetails.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_EditCalendarEvent.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditOrgSchCal.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -862,7 +868,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\OrgSchCalendars\" />
     <Folder Include="Views\Shared\Layouts\" />
   </ItemGroup>
   <ItemGroup>
@@ -1019,6 +1024,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106192215076_Sprint2021.07.04.resx">
       <DependentUpon>202106192215076_Sprint2021.07.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106221327580_Sprint2021.07.05.resx">
+      <DependentUpon>202106221327580_Sprint2021.07.05.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
