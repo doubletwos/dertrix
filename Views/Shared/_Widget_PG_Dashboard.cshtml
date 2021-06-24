@@ -15,10 +15,20 @@
 	<ul class="nav nav-pills" role="tablist">
 		<li role="presentation" class="active" id="MyChildCountWidget" onclick="MychiildListDisplayModal()">
 			<a href="#">
-				<i class="fa fa-users fa-2x" style="color:#FF5733;"  aria-hidden="true"></i>
+				<i class="fa fa-users fa-2x" style="color:#FF5733;" aria-hidden="true"></i>
 				Your Child(ren) <span class="badge">
 					@{
 						Html.RenderAction("MyChildCount", "StudentGuardians");
+					}
+				</span>
+			</a>
+		</li>
+		<li role="presentation" class="active" id="MyclassCountWidget" onclick="DisplayModal3()">
+			<a href="#">
+				<i class="fa fa-exchange fa-2x" aria-hidden="true"></i>
+				Jump to <span class="badge">
+					@{
+						Html.RenderAction("MyOrgCount", "RegisteredUserOrganisations");
 					}
 				</span>
 			</a>

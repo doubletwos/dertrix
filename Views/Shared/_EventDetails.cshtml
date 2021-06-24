@@ -24,17 +24,15 @@
 			</tr>
 			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
 				<td>
-					@Html.DisplayNameFor(model => model.Description)
+					@Html.DisplayNameFor(model => model.Description) : <strong>@item.Description</strong>
 				</td>
-				<td>
-					@item.Description
-				</td>
+			
 			</tr>
 
 
 			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
 				<td>
-					@Html.DisplayNameFor(model => model.EventTime) : @item.EventTime
+					@Html.DisplayNameFor(model => model.EventTime) : <strong>@item.EventTime.ToShortTimeString()</strong>
 				</td>
 
 			</tr>

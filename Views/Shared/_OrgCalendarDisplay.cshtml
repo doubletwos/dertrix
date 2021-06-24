@@ -9,10 +9,13 @@
 <div class="row">
 
 	<div class="col-md-3">
-		@{
-			Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
-		}
-	</div>
+		@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+		{
+			{
+				Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
+			}
+		 }
+		</div>
 	<div class="col-md-3" style="padding-top: 0.7em;">
 		Today is :	<b>@DateTime.Now.ToString("dddd, dd MMMM yyyy")</b>
 	</div>
@@ -44,12 +47,12 @@
 			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
 				Days To Event
 			</th>
-			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-				Select Action
-			</th>
 
 
-			<th></th>
+	
+
+
+
 		</tr>
 	</thead>
 	<tbody>
@@ -57,47 +60,51 @@
 
 		@foreach (var item in Model.OrderBy(i => i.EventDate))
 		{
-			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
-				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-					@Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
-				</td>
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
+			</td>
 
 
 
-				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-					@Html.DisplayFor(modelItem => item.EventDate)
-				</td>
-				<td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
-					@{
-						DateTime d1 = DateTime.Now;
-						DateTime? d2 = @item.EventDate;
-						TimeSpan? t = d2 - d1;
-						string NrOfDays = t.Value.Days.ToString();
-					}
-					@if (t.Value.Days == 0)
-					{
-						NrOfDays = "Today";
-					}
-					@NrOfDays
-				</td>
-
-
-				@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-				{
-					<td style="padding-top: 1.8em;">
-						<p>	
-							@*<a href="@Url.Action("AddEventToOrgCalendar", "OrgSchCalendars", new { id = @item.OrgSchCalendarId })">Click Here</a>*@
-							<a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a> &nbsp;
-							<a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a> &nbsp;
-							<a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-						</p>
-					</td>
+			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+				@Html.DisplayFor(modelItem => item.EventDate)
+			</td>
+			<td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
+				@{
+					DateTime d1 = DateTime.Now;
+					DateTime? d2 = @item.EventDate;
+					TimeSpan? t = d2 - d1;
+					string NrOfDays = t.Value.Days.ToString();
 				}
+				@if (t.Value.Days == 0)
+				{
+					NrOfDays = "Today";
+				}
+				@NrOfDays
+			</td>
+	
 
-			</tr>
+
+			<td style="padding-top: 1.8em;">
+				<p>
+					<a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+
+					@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+					{
+						<a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+
+						<a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+					}
+				</p>
+			</td>
+
+
+
+		</tr>
 		}
 	</tbody>
 </table>

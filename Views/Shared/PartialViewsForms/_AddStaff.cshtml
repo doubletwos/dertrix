@@ -110,7 +110,6 @@
 				var data = $("#AddStaffForm").serialize();
 				$.ajax({
 					type: "POST",
-					//url: "/RegisteredUsers/Create",
 					url: '@Url.Action("Create", "RegisteredUsers")',
 					data: data,
 					success: function (response) {

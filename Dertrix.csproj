@@ -807,7 +807,7 @@
     <Content Include="Views\Shared\_AllClassCount.cshtml" />
     <Content Include="Views\Shared\_AllClassList.cshtml" />
     <Content Include="Views\RegisteredUsers\ClassStudents.cshtml" />
-    <Content Include="Views\Shared\_WidgetDashboard.cshtml" />
+    <Content Include="Views\Shared\_Widget_SchStaff_Dashboard.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup1.cshtml" />
     <Content Include="Views\RegisteredUsersGroups\_MyGroups.cshtml" />
@@ -826,7 +826,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_EventDisplayPanel.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditEvent.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddOrgEvent.cshtml" />
-    <Content Include="Views\Shared\_WidgetDashboard1.cshtml" />
+    <Content Include="Views\Shared\_Widget_PG_Dashboard.cshtml" />
     <Content Include="Views\Shared\_MyChildList.cshtml" />
     <Content Include="Views\Shared\_MyChildCount.cshtml" />
     <Content Include="Views\StudentSubjects\YourChild.cshtml" />

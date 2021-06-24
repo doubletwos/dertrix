@@ -170,10 +170,8 @@ namespace Dertrix.Controllers
             .Where(x => x.RegisteredUserId == Id)
             .Include(x => x.Title)
             .Include(x => x.PrimarySchoolUserRole)
-            .Include(x => x.SecondarySchoolUserRole)
-
-
-            ;
+            .Include(x => x.SecondarySchoolUserRole);
+            
             ViewBag.RegisteredUser = stud;
             return PartialView("_StaffDetails");
         }
