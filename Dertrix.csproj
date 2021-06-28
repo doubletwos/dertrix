@@ -744,10 +744,6 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddSubject.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_UpdateStudentGrade.cshtml" />
     <Content Include="Views\GroupTypes\Index.cshtml" />
-    <Content Include="Views\OrgGroups\Create.cshtml" />
-    <Content Include="Views\OrgGroups\Delete.cshtml" />
-    <Content Include="Views\OrgGroups\Details.cshtml" />
-    <Content Include="Views\OrgGroups\Edit.cshtml" />
     <Content Include="Views\OrgGroups\Index.cshtml" />
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
     <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
@@ -811,10 +807,10 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup1.cshtml" />
     <Content Include="Views\RegisteredUsersGroups\_MyGroups.cshtml" />
-    <Content Include="Views\RegisteredUserOrganisations\_MyOrgCount.cshtml" />
-    <Content Include="Views\RegisteredUserOrganisations\_MyOrgList.cshtml" />
+    <Content Include="Views\Shared\_MyOrgCount.cshtml" />
+    <Content Include="Views\Shared\_MyOrgList.cshtml" />
     <Content Include="Views\Shared\_MyGuardians.cshtml" />
-    <Content Include="Views\Orgs\Home.cshtml" />
+    <Content Include="Views\Orgs\PGSchCentre.cshtml" />
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
@@ -853,6 +849,8 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddEventToOrgCalendar.cshtml" />
     <Content Include="Views\Shared\_EventDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrgSchCal.cshtml" />
+    <Content Include="Views\Orgs\StaffSchCentre1.cshtml" />
+    <Content Include="Views\Orgs\PGSchCentre1.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,16 +12,25 @@
 
 	@foreach (var item in Model)
 	{
-		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.OrgName)
-			</td>
-			<td>
-				@Html.ActionLink("Select", "Index", "Orgs", new { id = item.OrgId }, null)
+<tr>
+	<td>
+		@Html.DisplayFor(modelItem => item.OrgName)
+	</td>
+	@if (Session["IsParent/Guardian"] != null)
+	{
+		<td>
+			@Html.ActionLink("Select", "PGSchCentre1", "Orgs", new { id = item.OrgId }, null)
+		</td>
+	}
+	else
+	{
+		<td>
+			@Html.ActionLink("Select", "StaffSchCentre1", "Orgs", new { id = item.OrgId }, null)
+		</td>
+	}
 
-			</td>
 
-		</tr>
+</tr>
 	}
 
 </table>

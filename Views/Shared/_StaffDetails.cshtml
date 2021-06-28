@@ -1,7 +1,7 @@
-﻿@model Dertrix.Models.RegisteredUser
-@if (ViewBag.RegisteredUser != null)
+﻿@model Dertrix.Models.RegisteredUserOrganisation
+@if (ViewBag.RegisteredUserOrganisation != null)
 {
-	foreach (var item in ViewBag.RegisteredUser)
+	foreach (var item in ViewBag.RegisteredUserOrganisation)
 	{
 <table class="table table-bordered table-striped">
 	<tr>
@@ -13,14 +13,14 @@
 			@item.ContactFullName
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<strong>Tel</strong>
-		</td>
-		<td>
-			@item.Telephone
-		</td>
-	</tr>
+	@*<tr>
+			<td>
+				<strong>Tel</strong>
+			</td>
+			<td>
+				@item.Telephone
+			</td>
+		</tr>*@
 
 	<tr>
 		<td>
@@ -30,6 +30,31 @@
 			@item.Email
 		</td>
 	</tr>
+
+	@if ((int)Session["OrgType"] == 3)
+	{
+		<tr>
+			<td>
+				<strong>Role</strong>
+			</td>
+			<td>
+				@item.PrimarySchoolUserRole.RoleName
+			</td>
+		</tr>
+
+	}
+
+	@if ((int)Session["OrgType"] == 2)
+	{
+		<tr>
+			<td>
+				<strong>Role</strong>
+			</td>
+			<td>
+				@item.SecondarySchoolUserRole.RoleName
+			</td>
+		</tr>
+	}
 </table>
 	}
 }

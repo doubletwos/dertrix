@@ -53,7 +53,6 @@ namespace Dertrix.Controllers
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
 
             var myorgCount = db.RegisteredUserOrganisations
-                .Where(x => x.OrgId == i)
                 .Where(j => j.RegisteredUserId == RegisteredUserId)
                 .ToList();
             return PartialView("_MyOrgCount", myorgCount);

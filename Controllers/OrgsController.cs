@@ -27,6 +27,16 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Org org = db.Orgs.Find(id);
+            if (org == null)
+            {
+                return HttpNotFound();
+            }
+            var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
             var isTester = Convert.ToInt32(Session["IsTester"]);
             if (isTester == 1)
             {
@@ -51,30 +61,110 @@ namespace Dertrix.Controllers
                 var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
                 return View(orgs1.ToList());
             }
-    
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Org org = db.Orgs.Find(id);
-            if (org == null)
-            {
-                return HttpNotFound();
-            }
-            var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+      
             return View(orgs.ToList());
         }
 
 
- 
-           
+        public ActionResult StaffSchCentre1(int? Id)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Org org = db.Orgs.Find(Id);
+            if (org == null)
+            {
+                return HttpNotFound();
+            }
+            if (Request.Browser.IsMobileDevice == true)
+            {
+                return RedirectToAction("WrongDevice", "Orgs");
 
+            }
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+
+            var isTester = Convert.ToInt32(Session["IsTester"]);
+            if (isTester != 1)
+            {
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                Session.Clear();
+                Session["RegisteredUserId"] = RegisteredUserId;
+                Session["OrgId"] = Id;
+                Session["OrgType"] = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgTypeId).FirstOrDefault();
+                Session["OrgName"] = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgName).FirstOrDefault();
+                Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
+                Session["RegisteredUserTypeId"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
+                Session["IsTester"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
+                Session["regUserOrgBrand"] = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgBrandId).FirstOrDefault();
+                var orgbrand = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgBrandId).FirstOrDefault();
+                Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandBar).FirstOrDefault();
+                Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
+                Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
+                Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
+                Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
+                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == RegisteredUserId).Where(x => x.RegUserOrgId == Id).Select(x => x.GroupTypeId).FirstOrDefault();
+                var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+                return View(orgs1.ToList());
+
+            }
+            return View();
+        }
+
+
+        // GET: Orgs/Home/5
+        public ActionResult PGSchCentre1(int? Id)
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Welcome", "Access");
+            }
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Org org = db.Orgs.Find(Id);
+            if (org == null)
+            {
+                return HttpNotFound();
+            }
+            var isTester = Convert.ToInt32(Session["IsTester"]);
+            if (isTester != 1)
+            {
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                Session.Clear();
+                Session["RegisteredUserId"] = RegisteredUserId;
+                Session["OrgId"] = Id;
+                Session["OrgType"] = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgTypeId).FirstOrDefault();
+                Session["OrgName"] = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgName).FirstOrDefault();
+                Session["FullName"] = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
+                Session["RegisteredUserTypeId"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.RegisteredUserTypeId).FirstOrDefault();
+                Session["IsTester"] = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).Select(x => x.IsTester).FirstOrDefault();
+                Session["regUserOrgBrand"] = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgBrandId).FirstOrDefault();
+                var orgbrand = db.Orgs.Where(x => x.OrgId == Id).Select(x => x.OrgBrandId).FirstOrDefault();
+                Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandBar).FirstOrDefault();
+                Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
+                Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
+                Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
+                Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
+                Session["IsParent/Guardian"] = db.StudentGuardians.Where(x => x.RegisteredUserId == RegisteredUserId && x.OrgId == Id).Select(x => x.GuardianEmailAddress).FirstOrDefault();
+                Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == RegisteredUserId).Where(x => x.RegUserOrgId == Id).Select(x => x.GroupTypeId).FirstOrDefault();
         
+                var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
 
 
+            }
 
-    // GET: Orgs/Home/5
-    public ActionResult Home(int? id)
+            return View();
+
+        }
+
+
+        // GET: Orgs/Home/5
+        public ActionResult PGSchCentre(int? id)
         {
             if (Session["OrgId"] == null)
             {
@@ -311,8 +401,7 @@ namespace Dertrix.Controllers
                 Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
-                //var org1 = db.Orgs.Where(s => s.OrgAddress == searchname).Include(t => t.OrgType).ToList();
-                //return View(org1);
+            
             }
             if (Session["OrgId"] == null)
             {

@@ -232,10 +232,13 @@ namespace Dertrix.Controllers
                 if (isselected == 0)
                 {
                     item.IsSelected = false;
+                    editeventorgcalviewmodel.CalendarCategoryId = edtcalevent.CalendarCategoryId;
                 }
                 else
                 {
                     item.IsSelected = true;
+                    editeventorgcalviewmodel.CalendarCategoryId = edtcalevent.CalendarCategoryId;
+
                 }
 
             }
@@ -247,9 +250,77 @@ namespace Dertrix.Controllers
 
 
 
+
         // POST: OrgSchCalendars/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(EditOrgSchCalViewModel orgSchCalendar)
+        //{
+        //    if (Request.Browser.IsMobileDevice == true)
+        //    {
+        //        return RedirectToAction("WrongDevice", "Orgs");
+        //    }
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Signin", "Access");
+        //    }
+
+        //    var sess = Session["OrgId"].ToString();
+        //    int i = Convert.ToInt32(sess);
+
+
+        //    // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
+        //    var orgschcalid = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalendarId == orgSchCalendar.OrgSchCalendarId).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).ToList();
+        //    var orgschcalidtolist = new List<int>(orgschcalid);
+
+        //    foreach (var recrd in orgschcalid)
+        //    {
+        //        var removercrd = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalndrGrpId == recrd).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).FirstOrDefault();
+
+        //        OrgSchCalndrGrp orgschcalndrgrp = db.OrgSchCalndrGrps.Find(removercrd);
+        //        db.OrgSchCalndrGrps.Remove(orgschcalndrgrp);
+        //    }
+
+
+        //    // LOOP THRU LIST OF GROUPS PROVIDED
+        //    var grps = orgSchCalendar.OrgGroups.Select(x => x.OrgGroupId).ToList();
+        //    var grpstolist = new List<int>(grps);
+        //    foreach (var grp in grps)
+        //    {
+        //        // GET VALUE OF IS-SELECTED
+        //        var isselected = orgSchCalendar.OrgGroups.Where(x => grp == x.OrgGroupId).Select(x => x.IsSelected).FirstOrDefault();
+        //        if (isselected == true)
+        //        {
+        //            var orgschcalndrGrps = new OrgSchCalndrGrp()
+        //            {
+        //                OrgSchCalendarId = orgSchCalendar.OrgSchCalendarId,
+        //                OrgGroupId = grp,
+        //                OrgId = i,
+        //            };
+        //            db.OrgSchCalndrGrps.Add(orgschcalndrGrps);
+        //            db.SaveChanges();
+        //        }
+        //    }
+
+        //    if (!(ModelState.IsValid) || ModelState.IsValid)
+        //    {
+        //        db.Entry(orgSchCalendar).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index", "Orgs", new { id = i });
+        //    }
+        //    ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
+        //    ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", orgSchCalendar.OrgId);
+        //    return View(orgSchCalendar);
+        //}
+
+
+
+
+
+        //// POST: OrgSchCalendars/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+
         public ActionResult Edit(OrgSchCalendar orgSchCalendar)
         {
             if (Request.Browser.IsMobileDevice == true)
@@ -268,10 +339,10 @@ namespace Dertrix.Controllers
             // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
             var orgschcalid = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalendarId == orgSchCalendar.OrgSchCalendarId).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).ToList();
             var orgschcalidtolist = new List<int>(orgschcalid);
-            
+
             foreach (var recrd in orgschcalid)
             {
-              var removercrd = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalndrGrpId == recrd).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).FirstOrDefault();
+                var removercrd = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalndrGrpId == recrd).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).FirstOrDefault();
 
                 OrgSchCalndrGrp orgschcalndrgrp = db.OrgSchCalndrGrps.Find(removercrd);
                 db.OrgSchCalndrGrps.Remove(orgschcalndrgrp);

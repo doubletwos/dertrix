@@ -18,14 +18,7 @@
 
 <div class="container">
 	<ul class="nav nav-pills" role="tablist">
-		@*<li role="presentation" class="active">
-			<a href="#">
-				<i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
-				Date <span class="badge">
-					@DateTime.Today.DayOfWeek.ToString() @DateTime.Today.ToShortDateString()
-				</span>
-			</a>
-		</li>*@
+
 		@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
 		{
 
@@ -82,16 +75,7 @@
 				</span>
 			</a>
 		</li>
-		@*<li role="presentation" class="active" id="MyclassCountWidget" onclick="DisplayModal3()">
-			<a href="#">
-				<i class="fa fa-exchange fa-2x" aria-hidden="true"></i>
-				Jump to <span class="badge">
-					@{
-						Html.RenderAction("MyOrgCount", "RegisteredUserOrganisations");
-					}
-				</span>
-			</a>
-		</li>*@
+
 
 	</ul>
 </div>

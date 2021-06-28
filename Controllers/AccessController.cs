@@ -130,7 +130,7 @@ namespace Dertrix.Controllers
 
             if (Session["IsParent/Guardian"] != null)
             {
-                return RedirectToAction("Home", "Orgs", new { id = orgredirect });
+                return RedirectToAction("PGSchCentre", "Orgs", new { id = orgredirect });
             }
             else
             {

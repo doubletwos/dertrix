@@ -163,16 +163,23 @@ namespace Dertrix.Controllers
 
 
 
+
+
         public ActionResult StaffDetails(int? Id)
         {
 
-            var stud = db.RegisteredUsers
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+
+            var stud = db.RegisteredUserOrganisations
             .Where(x => x.RegisteredUserId == Id)
+            .Where(x => x.OrgId == i)
             .Include(x => x.Title)
             .Include(x => x.PrimarySchoolUserRole)
             .Include(x => x.SecondarySchoolUserRole);
-            
-            ViewBag.RegisteredUser = stud;
+
+            ViewBag.RegisteredUserOrganisation = stud;
             return PartialView("_StaffDetails");
         }
 

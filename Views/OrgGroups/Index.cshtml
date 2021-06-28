@@ -63,6 +63,8 @@
 						</td>
 						<td>
 							@Html.DisplayFor(modelItem => item.CreationDate)
+							@Html.HiddenFor(modelItem => item.GroupTypeId)
+
 						</td>
 						<td>
 							<div class="btn-group">
@@ -71,7 +73,16 @@
 								</button>
 								<ul class="dropdown-menu" style="background-color:white">
 									<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
-									@*<li><a href="#" onclick="UsersToGroup(@item.OrgGroupId)">Add Users</a></li>*@
+
+								 @if (item.GroupTypeId == 18)
+								  {
+
+									  if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+									  {
+										<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
+
+									  }
+								  }
 								</ul>
 							</div>
 						</td>
@@ -83,6 +94,30 @@
 	</div>
 	<input type="hidden" id="hiddenOrgGroupId" />
 	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+	@*Delete confirmation Modal*@
+	<div class="modal fade" id="GroupDeleteModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a href="#" class="close" data-dismiss="modal">&times;</a>
+					<h3 class="modal-title">Remove group</h3>
+				</div>
+				<div class="modal-body">
+					<h5>Are you sure you want to remove this group?</h5>
+			
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteGroup()">Confirm</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
 
 
 
@@ -197,6 +232,26 @@
 	})
 </script>
 
+<script>
+	var ConfirmDelete = function (OrgGroupId) {
+		$("#hiddenOrgGroupId").val(OrgGroupId);
+		$("#GroupDeleteModal").modal('show');
+	}
+	var DeleteGroup  = function () {
+		var Sub = $("#hiddenOrgGroupId").val();
+		$.ajax({
+			type: "POST",
+			url: "/OrgGroups/DeleteConfirmed/",
+			data: { id: Sub },
+			success: function (response) {
+				alert("Group deleted");
+				$("#GroupDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+
 
 @section scripts{
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
@@ -212,7 +267,7 @@
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/bundles/custom-validator")
 	@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />*@
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />*@
 
 
 }

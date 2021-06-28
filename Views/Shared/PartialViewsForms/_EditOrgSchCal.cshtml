@@ -41,10 +41,10 @@
 	<br />
 	<br />
 	<div class="form-group">
-		@Html.LabelFor(model => model.OrgSchCalendar.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
+		@Html.LabelFor(model => model.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
 		<div class="col-md-10">
-			@Html.EditorFor(model => model.OrgSchCalendar.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
-			@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
+			@Html.EditorFor(model => model.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
+			@Html.ValidationMessageFor(model => model.EventTime, "", new { @class = "text-danger" })
 		</div>
 	</div>
 	<br />

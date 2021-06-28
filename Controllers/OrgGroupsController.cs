@@ -137,11 +137,13 @@ namespace Dertrix.Controllers
             return View(orgGroup);
         }
 
-        // POST: OrgGroups/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        // POST: OrgGroups/Delete/5     
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            } 
             OrgGroup orgGroup = db.OrgGroups.Find(id);
             db.OrgGroups.Remove(orgGroup);
             db.SaveChanges();

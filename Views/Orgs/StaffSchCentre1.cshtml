@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Dertrix.Models.Org>
+
+
+
+
+<head>
+	@{
+		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
+	}
+	@{
+		ViewBag.Title = "Organisations";
+	}
+	<style>
+		.btn-group:hover .dropdown-menu {
+			display: block;
+		}
+		.note-btn-group.btn-group.note-style,
+		.note-btn-group.btn-group.note-view,
+		.note-btn-group.btn-group.note-table,
+		.note-btn-group.btn-group.note-insert,
+		.note-btn-group.btn-group.note-para,
+		.note-btn.btn.btn-default.btn-sm.dropdown-toggle,
+		.note-btn.btn.btn-default.btn-sm.note-current-color-button {
+			display: none;
+		}
+		.nav-pills > li {
+			float: left;
+			border-style: double;
+			border-color:  @regUserOrgNavBar;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<div class="jumbotron" style="height:100vh;">
+	<br />
+	<br />
+
+	@Html.Partial("_Widget_SchStaff_Dashboard")
+	<div>
+		<hr />
+
+	</div>
+	<br />
+	<br />
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<ul id="formtabs" class="nav nav-tabs" style="margin-bottom:10px;">
+					<li class="active"><a data-toggle="tab" href="#tab_info">School Calendar</a></li>
+					<li><a data-toggle="tab" href="#tab_form">Event Logs</a></li>
+					@*<li><a data-toggle="tab" href="#tab_formel">Formel</a></li>*@
+					@*<li><a data-toggle="tab" href="#tab_info">Informationer</a></li>*@
+				</ul>
+
+
+				<div class="tab-content">
+
+					<div id="tab_info" class="tab-pane active">
+						<div class="panel-body">
+							@{
+								Html.RenderAction("OrgCalendarDisplay", "OrgSchCalendars");
+							}
+						</div>
+					</div>
+
+					<div id="tab_form" class="tab-pane">
+						<div class="panel-body">
+							@{
+								Html.RenderAction("Logs", "Org_Events_Log");
+							}
+						</div>
+					</div>
+
+
+
+
+
+					@*<div id="tab_formel" class="tab-pane">
+							<div class="panel-body">Formel</div>
+						</div>
+						<div id="tab_info" class="tab-pane">
+							<div class="panel-body">Information</div>
+
+
+						</div>*@
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+@section scripts{
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+	<script src="~/Scripts/summernote/summernote.min.js"></script>
+	<script src="~/Scripts/summernote/summernote-bs4.js"></script>
+	<script src="~/Scripts/summernote/summernote.js"></script>
+
+	<script src="~/Scripts/timepicker/timepicker.min.js"></script>
+	<link href="~/Content/timepicker/timepicker.min.css" rel="stylesheet" />
+}
+
+<script>
+	$(document).ready(function () {
+		$('.nav-tabs a[href="#tab_info"]').tab('show')
+	})
+</script>
+
+
+
+
+
