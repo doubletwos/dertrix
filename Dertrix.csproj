@@ -851,6 +851,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditOrgSchCal.cshtml" />
     <Content Include="Views\Orgs\StaffSchCentre1.cshtml" />
     <Content Include="Views\Orgs\PGSchCentre1.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditCustomGroup.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

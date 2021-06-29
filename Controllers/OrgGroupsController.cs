@@ -89,22 +89,32 @@ namespace Dertrix.Controllers
 
         }
 
-        // GET: OrgGroups/Edit/5
-        public ActionResult Edit(int? id)
+
+        public ActionResult EditCustomGroup(int Id) 
         {
-            if (id == null)
+            if (Id != 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var edtcusmgrp = db.OrgGroups.Where(x => x.OrgGroupId == Id).FirstOrDefault();
+                //GroupType grouptype = db.GroupTypes.Find(Id);
+                var edtcusmgrp1 = new OrgGroup
+                {
+                    OrgGroupId = edtcusmgrp.OrgGroupId,
+                    OrgId = edtcusmgrp.OrgGroupId,
+                    GroupName = edtcusmgrp.GroupName,
+                    CreationDate = edtcusmgrp.CreationDate,
+                    GroupOrgTypeId = edtcusmgrp.GroupOrgTypeId,
+                    GroupTypeId = edtcusmgrp.GroupTypeId,
+                    GroupRefNumb = edtcusmgrp.GroupRefNumb,
+                    IsSelected = edtcusmgrp.IsSelected               
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditCustomGroup.cshtml", edtcusmgrp1);
             }
-            OrgGroup orgGroup = db.OrgGroups.Find(id);
-            if (orgGroup == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.GroupTypeId = new SelectList(db.GroupTypes, "GroupTypeId", "GroupTypeName", orgGroup.GroupTypeId);
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", orgGroup.OrgId);
-            return View(orgGroup);
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditCustomGroup.cshtml");
         }
+
+
+
+
 
         // POST: OrgGroups/Edit/5
         [HttpPost]

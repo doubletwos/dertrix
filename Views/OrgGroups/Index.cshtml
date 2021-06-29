@@ -74,15 +74,16 @@
 								<ul class="dropdown-menu" style="background-color:white">
 									<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
 
-								 @if (item.GroupTypeId == 18)
-								  {
+									@if (item.GroupTypeId == 18)
+									{
 
-									  if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-									  {
-										<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
+										if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+										{
+											<li><a href="#" onclick="EditGroup(@item.OrgGroupId)">Edit group</a></li>
+											<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
 
-									  }
-								  }
+										}
+									}
 								</ul>
 							</div>
 						</td>
@@ -106,7 +107,7 @@
 				</div>
 				<div class="modal-body">
 					<h5>Are you sure you want to remove this group?</h5>
-			
+
 				</div>
 				<div class="modal-footer">
 					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
@@ -199,6 +200,26 @@
 </div>
 
 
+@*Edit group Modal*@
+<div class="modal fade" id="GroupEditModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">Edit group</h3>
+			</div>
+			<div class="modal-body" id="groupEditBody"></div>
+			<div class="modal-footer">
+				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 <script>
 	var UsersToGroup = function (Id) {
 		$.ajax({
@@ -237,7 +258,7 @@
 		$("#hiddenOrgGroupId").val(OrgGroupId);
 		$("#GroupDeleteModal").modal('show');
 	}
-	var DeleteGroup  = function () {
+	var DeleteGroup = function () {
 		var Sub = $("#hiddenOrgGroupId").val();
 		$.ajax({
 			type: "POST",
@@ -247,6 +268,20 @@
 				alert("Group deleted");
 				$("#GroupDeleteModal").modal("hide");
 				window.location.reload();
+			}
+		})
+	}
+</script>
+
+<script>
+	var EditGroup = function (Id) {
+		$.ajax({
+			type: "GET",
+			url: "/OrgGroups/EditCustomGroup",
+			data: { Id: Id },
+			success: function (response) {
+				$("#groupEditBody").html(response);
+				$("#GroupEditModal").modal("show");
 			}
 		})
 	}
