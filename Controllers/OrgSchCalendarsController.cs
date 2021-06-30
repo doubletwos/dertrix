@@ -33,7 +33,7 @@ namespace Dertrix.Controllers
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
 
-            var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).ToList();
+            var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == false).ToList();
 
             return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
         }
@@ -105,6 +105,51 @@ namespace Dertrix.Controllers
         }
 
 
+
+       
+        public ActionResult UpdateEvents()
+        {
+            // LOOP THROUGH LIST OF EVENTS IN DB
+            var orgschevnts = db.OrgSchCalendars.Select(x => x.OrgSchCalendarId).ToList();
+            var orgschevntslist = new List<int>(orgschevnts);
+
+            foreach (var evntid in orgschevnts)
+            {
+                // GET EVENT DATE
+                var eventdate = db.OrgSchCalendars.Where(x => x.OrgSchCalendarId == evntid).Select(x => x.EventDate).FirstOrDefault();
+                // GET VALUE OF ISSCHEDULE
+                var eventid = db.OrgSchCalendars.AsNoTracking().Where(x => x.OrgSchCalendarId == evntid).FirstOrDefault();
+                if (eventdate < DateTime.Now)
+                {
+                    var schevnt = new OrgSchCalendar
+                    {
+                        OrgSchCalendarId = eventid.OrgSchCalendarId,
+                        CalendarCategoryId = eventid.CalendarCategoryId,
+                        OrgId = eventid.OrgId,
+                        Name = eventid.Name,
+                        CreatorId = eventid.CreatorId,
+                        CreatorFullName = eventid.CreatorFullName,
+                        CreationDate = eventid.CreationDate,
+                        IsRecurring = eventid.IsRecurring,
+                        Frequency = eventid.Frequency,
+                        SendAsEmail = eventid.SendAsEmail,
+                        EventDate = eventid.EventDate,
+                        Description = eventid.Description,
+                        EventTime = eventid.EventTime,
+                        Isarchived = true
+                    };
+                    eventid = schevnt;
+                    db.Entry(eventid).State = EntityState.Modified;
+                    db.SaveChanges();
+                    
+
+                }
+
+            }
+
+
+            return View();
+        }
 
 
 

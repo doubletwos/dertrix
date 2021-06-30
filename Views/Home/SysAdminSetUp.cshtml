@@ -72,10 +72,13 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-6">
 			<p>@Html.ActionLink("Access logs", "Logs", "Access", "", new { @class = "RegUserOrgButtonColour" })</p>
 		</div>
-	
+		<div class="col-lg-6">
+			<p>@Html.ActionLink("Update event", "UpdateEvents", "OrgSchCalendars", "", new { @class = "RegUserOrgButtonColour" })</p>
+		</div>
+
 	</div>
 </div>
 @section scripts{

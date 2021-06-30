@@ -95,11 +95,10 @@ namespace Dertrix.Controllers
             if (Id != 0)
             {
                 var edtcusmgrp = db.OrgGroups.Where(x => x.OrgGroupId == Id).FirstOrDefault();
-                //GroupType grouptype = db.GroupTypes.Find(Id);
                 var edtcusmgrp1 = new OrgGroup
                 {
                     OrgGroupId = edtcusmgrp.OrgGroupId,
-                    OrgId = edtcusmgrp.OrgGroupId,
+                    OrgId = edtcusmgrp.OrgId,
                     GroupName = edtcusmgrp.GroupName,
                     CreationDate = edtcusmgrp.CreationDate,
                     GroupOrgTypeId = edtcusmgrp.GroupOrgTypeId,

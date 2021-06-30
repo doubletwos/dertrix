@@ -287,6 +287,25 @@
 	}
 </script>
 
+<script>
+	$("#edtSubmit").click(function () {
+		var data = $("#OrgGroupEditForm").serialize();
+		$.ajax({
+			type: "POST",
+			url: "/OrgGroups/Edit",
+			data: data,
+			success: function (response) {
+				alert("Group updated");
+				$("#GroupEditModal").modal("hide");
+				$("#OrgGroupEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>
+
+
+
 
 @section scripts{
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
