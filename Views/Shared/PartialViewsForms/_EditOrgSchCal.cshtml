@@ -1,127 +1,196 @@
 ﻿@model Dertrix.ViewModels.EditOrgSchCalViewModel
-
 <form id="CalendarEventEditForm">
 	@Html.AntiForgeryToken()
-	@Html.HiddenFor(model => model.OrgId)
-	@Html.HiddenFor(model => model.CreatorId)
-	@Html.HiddenFor(model => model.CreatorFullName)
-	@Html.HiddenFor(model => model.CreationDate)
-	@Html.HiddenFor(model => model.OrgSchCalendarId)
-
-	@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.CalendarCategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.DropDownList("CalendarCategoryId", null, htmlAttributes: new { @class = "form-control" })
-			@Html.ValidationMessageFor(model => model.CalendarCategoryId, "", new { @class = "text-danger" })
+	@{
+		HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+	}
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.HiddenFor(model => model.OrgId)
+		@Html.HiddenFor(model => model.CreatorId)
+		@Html.HiddenFor(model => model.CreatorFullName)
+		@Html.HiddenFor(model => model.CreationDate)
+		@Html.HiddenFor(model => model.OrgSchCalendarId)
+		@Html.HiddenFor(model => model.Isarchived)
+		<div class="form-group">
+			@Html.LabelFor(model => model.CalendarCategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("CalendarCategoryId", null, htmlAttributes: new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.CalendarCategoryId, "", new { @class = "text-danger" })
+			</div>
 		</div>
-	</div>
-	<br />
-	<br />
-	<br />
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-			@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+			</div>
 		</div>
-	</div>
-
-	<br />
-	<br />
-	<div class="form-group">
-		@Html.LabelFor(model => model.EventDate, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.EventDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control", @id = "eventdatepicker1", type = "text" } })
-			@Html.ValidationMessageFor(model => model.EventDate, "", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(model => model.EventDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.EventDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control", @id = "eventdatepicker1", type = "text" } })
+				@Html.ValidationMessageFor(model => model.EventDate, "", new { @class = "text-danger" })
+			</div>
 		</div>
-	</div>
-	<br />
-	<br />
-	<div class="form-group">
-		@Html.LabelFor(model => model.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
-			@Html.ValidationMessageFor(model => model.EventTime, "", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(model => model.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
+				@Html.ValidationMessageFor(model => model.EventTime, "", new { @class = "text-danger" })
+			</div>
 		</div>
-	</div>
-	<br />
-	<br />
-	<div class="form-group">
-		@Html.LabelFor(model => model.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			<div class="checkbox">
-				@Html.EditorFor(model => model.IsRecurring)
+		@*<div class="form-group">
+			@Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				<div class="checkbox">
+					@Html.EditorFor(model => model.IsRecurring)
+					@Html.ValidationMessageFor(model => model.IsRecurring, "", new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>*@
+		<div class="form-group">
+			@Html.LabelFor(model => model.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }))
 				@Html.ValidationMessageFor(model => model.IsRecurring, "", new { @class = "text-danger" })
 			</div>
 		</div>
-	</div>
-	<br />
-	<br />
-	<div class="form-group">
-		@Html.LabelFor(model => model.Frequency, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.EditorFor(model => model.Frequency, new { htmlAttributes = new { @class = "form-control" } })
-			@Html.ValidationMessageFor(model => model.Frequency, "", new { @class = "text-danger" })
-		</div>
-	</div>
-	<br />
-	<br />
-	<div class="form-group">
-		@Html.LabelFor(model => model.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			<div class="checkbox">
-				@Html.EditorFor(model => model.SendAsEmail)
-				@Html.ValidationMessageFor(model => model.SendAsEmail, "", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(model => model.Frequency, htmlAttributes: new { @id = "frequency0", @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.Frequency, new { htmlAttributes = new { @id = "frequency1", @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Frequency, "", new { @class = "text-danger" })
 			</div>
 		</div>
-	</div>
-	<br />
-	<br />
-
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { rows = "20", cols = "20", @class = "form-control" } })
-			@Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+		<div class="form-group">
+			@Html.LabelFor(model => model.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				<div class="checkbox">
+					@Html.EditorFor(model => model.SendAsEmail)
+					@Html.ValidationMessageFor(model => model.SendAsEmail, "", new { @class = "text-danger" })
+				</div>
+			</div>
 		</div>
-	</div>
-	<br />
-	<br />
-	<div class="form-group">
-		@Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
-		<div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
-			@for (int i = 0; i < Model.OrgGroups.Count; i++)
-			{
-				@Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
-				@Html.HiddenFor(model => model.OrgGroups[i].GroupName)
-				@:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
-				@:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
-				@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
-				@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
-				<br />
-			}
+		<div class="form-group">
+			@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { rows = "20", cols = "20", @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
+			<div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
+				@for (int i = 0; i < Model.OrgGroups.Count; i++)
+				{
+					@Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
+					@Html.HiddenFor(model => model.OrgGroups[i].GroupName)
+					@:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
+					@:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
+					@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
+					@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
+					<br />
+				}
+			</div>
+		</div>
+		<div class="modal-footer">
+			<input type="submit" value="Update" class="RegUserOrgButtonColour" id="editstudent" />
+			<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
 		</div>
 	</div>
 </form>
-
 <script>
 	$(document).ready(function () {
+
 		$(function () {
+			$("#OrgSchCalendar_IsRecurring").change(function () {
+
+				if ($(this).val() == 'true') {
+					$("#frequency0").slideDown(1000);
+					$("#frequency1").slideDown(1000);
+
+				}
+				if ($(this).val() == 'false') {
+					$("#frequency0").slideUp(1000);
+					$("#frequency1").slideUp(1000);
+
+				}
+
+			});
+		});
+
+
+
+		$(function () {
+			var dateToday = new Date();
 			$("#eventdatepicker1").datepicker({
 				dateFormat: "dd-mm-yy",
 				changeMonth: true,
 				changeYear: true,
-				yearRange: "-0:+10",
+				yearRange: "-0:+15",
+				minDate: dateToday
 			});
 		})
-
 		$(".bs-timepicker").timepicker();
-
-
-
 	})
+</script>
+<script>
+	$(document).ready(function () {
+		$('#CalendarEventEditForm').validate({
+			errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+			errorElement: 'div',
+			errorPlacement: function (error, e) {
+				e.parents('.form-group > div').append(error);
+			},
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+				$(e).closest('.help-block').remove();
+			},
+			success: function (e) {
+				e.closest('.form-group').removeClass('has-success has-error');
+				e.closest('.help-block').remove();
+			},
+			rules: {
+				'CalendarCategoryId': {
+					required: true,
+				},
+				'Name': {
+					required: true,
+				},
+				'EventDate': {
+					required: true,
+				},
+				'IsRecurring': {
+					required: true,
+				},
+				'SendAsEmail': {
+					required: true,
+				}
+			},
+			messages: {
+				'CalendarCategoryId': 'Please select event category',
+				'Name': 'Please enter name',
+				'EventDate': 'Please enter event date',
+				'IsRecurring': 'Please select Yes or No',
+				'SendAsEmail': 'Please select Yes or No'
+			}
+		});
+		$("#editstudent").on("click", function () {
+			if ($("#CalendarEventEditForm").valid()) {
+				var data = $("#CalendarEventEditForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/OrgSchCalendars/Edit",
+					data: data,
+					success: function (response) {
+						alert("Calendar event updated");
+						$("#EditEventModal").modal("hide");
+						$("#CalendarEventEditForm")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+		})
+	});
 </script>

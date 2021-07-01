@@ -54,14 +54,23 @@
 								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
 							</div>
 						</div>
-	
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
+						@*<div class="form-group">
+							@Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new {  @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.DropDownListFor(model => model.OrgSchCalendar.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { @class = "form-control" }))
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
+								<div class="checkbox">
+									@Html.EditorFor(model => model.OrgSchCalendar.IsRecurring, new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }) 
+									@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
+								</div>
 							</div>
-						</div>
+						</div>*@
+
+						<div class="form-group">
+			                @Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new {  @class = "control-label col-md-2" })
+		                	<div class="col-md-10">
+				             @Html.DropDownListFor(model => model.OrgSchCalendar.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }))
+			               	@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
+			              </div>
+		                </div>
 						<div class="form-group">
 							@Html.LabelFor(model => model.OrgSchCalendar.Frequency, htmlAttributes: new { @id = "frequency0", @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -125,8 +134,8 @@
 		$("#frequency0").hide();
 		$("#frequency1").hide();
 	
-	$(function () {
-		$("#IsRecurring").change(function () {
+	  $(function () {
+		  $("#OrgSchCalendar_IsRecurring").change(function () {
 
 			if ($(this).val() == 'true') {
 				$("#frequency0").slideDown(1000);
@@ -139,8 +148,8 @@
 
 			}
 			
-		});
-	});
+		 });
+	  });
 
 		$(function () {
 			var dateToday = new Date();
@@ -148,7 +157,7 @@
 				dateFormat: "dd-mm-yy",
 				changeMonth: true,
 				changeYear: true,
-				yearRange: "-0:+35",
+				yearRange: "-0:+15",
 				minDate : dateToday
 			});
 

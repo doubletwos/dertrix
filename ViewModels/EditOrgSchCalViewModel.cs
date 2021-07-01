@@ -32,6 +32,8 @@ namespace Dertrix.ViewModels
         public OrgSchCalendar OrgSchCalendar { get; set; }
         public List<OrgGroup> OrgGroups { get; set; }
         public bool IsSelected { get; set; }
+        public bool? Isarchived { get; set; }
+
         public IEnumerable<CalendarCategory> CalendarCategorys { get; set; }
     }
 }

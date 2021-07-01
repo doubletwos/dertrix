@@ -257,6 +257,9 @@ namespace Dertrix.Controllers
                 IsRecurring = edtcalevent.IsRecurring,
                 Frequency = edtcalevent.Frequency,
                 SendAsEmail = edtcalevent.SendAsEmail,
+                Isarchived = edtcalevent.Isarchived,
+
+
 
                 OrgGroups = grp.Select(x  => new OrgGroup()
                 {
