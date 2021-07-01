@@ -178,6 +178,8 @@ namespace Dertrix.Controllers
             viewModel.OrgSchCalendar.OrgId = i; 
             viewModel.OrgSchCalendar.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
             viewModel.OrgSchCalendar.CreationDate = DateTime.Now;
+            viewModel.OrgSchCalendar.Isarchived = false;
+
 
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {

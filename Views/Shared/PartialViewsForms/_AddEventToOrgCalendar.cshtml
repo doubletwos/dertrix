@@ -54,32 +54,34 @@
 								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
 							</div>
 						</div>
+	
 						<div class="form-group">
 							@Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								<div class="checkbox">
-									@Html.EditorFor(model => model.OrgSchCalendar.IsRecurring)
-									@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
-								</div>
+								@Html.DropDownListFor(model => model.OrgSchCalendar.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { @class = "form-control" }))
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
 							</div>
 						</div>
 						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.Frequency, htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.OrgSchCalendar.Frequency, htmlAttributes: new { @id = "frequency0", @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(model => model.OrgSchCalendar.Frequency, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.EditorFor(model => model.OrgSchCalendar.Frequency, new { htmlAttributes = new { @id = "frequency1", @class = "control-label col-md-2" } })
 								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Frequency, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="form-group">
 							@Html.LabelFor(model => model.OrgSchCalendar.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								<div class="checkbox">
-									@Html.EditorFor(model => model.OrgSchCalendar.SendAsEmail)
-									@Html.ValidationMessageFor(model => model.OrgSchCalendar.SendAsEmail, "", new { @class = "text-danger" })
-								</div>
+								@Html.DropDownListFor(model => model.OrgSchCalendar.SendAsEmail, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text"))
+								@Html.ValidationMessageFor(model => model.OrgSchCalendar.SendAsEmail, "", new { @class = "text-danger" })
 							</div>
 						</div>
+
+
+
+
+
+
 						<div class="form-group">
 							@Html.LabelFor(model => model.OrgSchCalendar.Description, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
@@ -108,48 +110,118 @@
 							<input type="submit" value="Create Event" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 					</div>
-				</form>
+</form>
 			</div>
 		</div>
-   </div>
+	</div>
 </div>
 
 
 
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
-$(document).ready(function () {
-
+	$(document).ready(function () {
+		$("#frequency0").hide();
+		$("#frequency1").hide();
+	
 	$(function () {
-		$(".datepicker").datepicker({
-			dateFormat: "dd-mm-yy",
-			changeMonth: true,
-			changeYear: true,
-			yearRange: "-0:+35",
+		$("#IsRecurring").change(function () {
+
+			if ($(this).val() == 'true') {
+				$("#frequency0").slideDown(1000);
+				$("#frequency1").slideDown(1000);
+
+			}
+			if ($(this).val() == 'false') {
+				$("#frequency0").slideUp(1000);
+				$("#frequency1").slideUp(1000);
+
+			}
+			
 		});
-
-		$(".bs-timepicker").timepicker();
-
-		
 	});
 
+		$(function () {
+			var dateToday = new Date();
+			$(".datepicker").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-0:+35",
+				minDate : dateToday
+			});
 
-	$("#btnSubmit").on("click", function () {
-		if ($("#myCreateEventForm").valid()) {
-			var data = $("#myCreateEventForm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/OrgSchCalendars/Create",
+			$(".bs-timepicker").timepicker();
 
-				data: data,
-				success: function (response) {
-					alert("New event created");
-					$("#mycreateevent").modal("hide");
-					$("#mycreateevent")[0].reset();
-					window.location.reload();
+		});
+
+		$("#btnSubmit").on("click", function () {
+			if ($("#myCreateEventForm").valid()) {
+				var data = $("#myCreateEventForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: "/OrgSchCalendars/Create",
+
+					data: data,
+					success: function (response) {
+						alert("New event created");
+						$("#mycreateevent").modal("hide");
+						$("#mycreateevent")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+		})
+	});
+
+</script>
+
+<script>
+	$(document).ready(function () {
+		$('#myCreateEventForm').validate({
+			errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+			errorElement: 'div',
+			errorPlacement: function (error, e) {
+				e.parents('.form-group > div').append(error);
+			},
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+				$(e).closest('.help-block').remove();
+			},
+			success: function (e) {
+				e.closest('.form-group').removeClass('has-success has-error');
+				e.closest('.help-block').remove();
+			},
+			rules: {
+				'OrgSchCalendar.CalendarCategoryId': {
+					required: true,
+				},
+				'OrgSchCalendar.Name': {
+					required: true,
+				},
+				'OrgSchCalendar.EventDate': {
+					required: true,
+				
+					
+				},
+				'OrgSchCalendar.IsRecurring': {
+					required: true,
+				},
+				'OrgSchCalendar.SendAsEmail': {
+					required: true,
 				}
-			})
-		}
-	})
-});
+
+			},
+			messages: {
+				'OrgSchCalendar.CalendarCategoryId': 'Please select event category',
+				'OrgSchCalendar.Name': 'Please enter name',
+				'OrgSchCalendar.EventDate': 'Please enter event date',
+				'OrgSchCalendar.IsRecurring': 'Please select Yes or No',
+				'OrgSchCalendar.SendAsEmail': 'Please select Yes or No'
+
+			}
+		});
+	});
 
 </script>
