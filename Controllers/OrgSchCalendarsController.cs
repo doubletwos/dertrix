@@ -15,29 +15,38 @@ namespace Dertrix.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
- 
 
         // GET: OrgSchCalendars/Display/
-        public ActionResult OrgCalendarDisplay() 
+        public ActionResult OrgCalendarDisplay(bool? isarchived)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (isarchived == null)
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == false).ToList();
+                return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
             }
-            if (Session["OrgId"] == null)
+            if (isarchived == true)
             {
-                return RedirectToAction("Signin", "Access");
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var orgcalendardisplayarchived = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == true).ToList();
+                return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
+
+            }
+            if (isarchived == false)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == false).ToList();
+                return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
             }
 
-
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-            var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == false).ToList();
-
-            return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+            return Content("");
         }
 
+
+  
 
 
 

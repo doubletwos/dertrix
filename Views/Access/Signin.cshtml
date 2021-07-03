@@ -4,6 +4,17 @@
 }
 <!DOCTYPE html>
 <html lang="en">
+<head>
+	<style>
+
+		#input #title {
+			background-color: red;
+		}
+
+	</style>
+
+</head>
+
 <body>
 	<div class="container">
 		<div class="row">
@@ -21,14 +32,14 @@
 							<div class="form-group">
 								@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
 								<div class="col-md-10">
-									@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @id = "idsignin", @title= "e.g wilsonwales@dertrix.com", @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 								</div>
 							</div>
 							<div class="form-group">
 								@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
 								<div class="col-md-10">
-									@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+									@Html.EditorFor(model => model.Password, new { htmlAttributes = new {@title="Please keep your password secure. If you have forgotten your password click Forgot Password? or Register to create a new account if this is your first visit.", @class = "form-control" } })
 									@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
 								</div>
 							</div>
@@ -59,3 +70,7 @@
 	<p>@Html.ActionLink("Back Home", "Welcome", "Access", "", new { @class = "btn btn-primary" })</p>
 </body>
 </html>
+
+
+
+

@@ -5,25 +5,31 @@
 		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
 	}
 </head>
-
 <div class="row">
-
 	<div class="col-md-3">
 		@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
 		{
 			{
 				Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
 			}
-		 }
-		</div>
+		}
+	</div>
+
+
+
+
+
+
+
+
 	<div class="col-md-3" style="padding-top: 0.7em;">
 		Today is :	<b>@DateTime.Now.ToString("dddd, dd MMMM yyyy")</b>
 	</div>
-	<div class="col-md-3">
-	</div>
+
 	<div class="col-md-3">
 	</div>
 </div>
+
 
 
 
@@ -49,7 +55,7 @@
 			</th>
 
 
-	
+
 
 
 
@@ -60,51 +66,51 @@
 
 		@foreach (var item in Model.OrderBy(i => i.EventDate))
 		{
-		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
-			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-				@Html.DisplayFor(modelItem => item.Name)
-			</td>
-			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-				@Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
-			</td>
+			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+					@Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
+				</td>
 
 
 
-			<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-				@Html.DisplayFor(modelItem => item.EventDate)
-			</td>
-			<td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
-				@{
-					DateTime d1 = DateTime.Now;
-					DateTime? d2 = @item.EventDate;
-					TimeSpan? t = d2 - d1;
-					string NrOfDays = t.Value.Days.ToString();
-				}
-				@if (t.Value.Days == 0)
-				{
-					NrOfDays = "Today";
-				}
-				@NrOfDays
-			</td>
-	
-
-
-			<td style="padding-top: 1.8em;">
-				<p>
-					<a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-
-					@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-					{
-						<a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-
-						<a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+					@Html.DisplayFor(modelItem => item.EventDate)
+				</td>
+				<td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
+					@{
+						DateTime d1 = DateTime.Now;
+						DateTime? d2 = @item.EventDate;
+						TimeSpan? t = d2 - d1;
+						string NrOfDays = t.Value.Days.ToString();
 					}
-				</p>
-			</td>
+					@if (t.Value.Days == 0)
+					{
+						NrOfDays = "Today";
+					}
+					@NrOfDays
+				</td>
 
 
 
-		</tr>
+				<td style="padding-top: 1.8em;">
+					<p>
+						<a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+
+						@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+						{
+							<a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+
+							<a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+						}
+					</p>
+				</td>
+
+
+
+			</tr>
 		}
 	</tbody>
 </table>
@@ -159,7 +165,6 @@
 			<div class="modal-footer">
 				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
 				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteCalendarEvent()">Confirm</a>
-
 			</div>
 		</div>
 	</div>
@@ -195,10 +200,7 @@
 				<h3 class="modal-title"></h3>
 			</div>
 			<div class="modal-body" id="EditEventModalBody"></div>
-			@*<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
-			</div>*@
+
 		</div>
 	</div>
 </div>
@@ -216,22 +218,77 @@
 		})
 	}
 </script>
-@*<script>
-	$("#edtSubmit").click(function () {
-		var data = $("#CalendarEventEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/OrgSchCalendars/Edit",
-			data: data,
-			success: function (response) {
-				alert("Calendar event updated");
-				$("#EditEventModal").modal("hide");
-				$("#CalendarEventEditForm")[0].reset();
-				window.location.reload();
+
+
+
+<script>
+	var archived = function (isarchived) {
+		$('#mycheckbox').change(function () {
+			var output = $("#mycheckbox").val();
+			var output = $('#mycheckbox').is(':checked') ? $('#mycheckbox').val() : false
+			if (output == false) {
+				$.ajax({
+					type: "POST",
+					url: "/OrgSchCalendars/OrgCalendarDisplay",
+					cache: false,
+					data: { isarchived: output },
+					success: function (response) {
+						$('#tab_info').load('@Url.Action("OrgCalendarDisplay", "OrgSchCalendars", new { isarchived = false })');
+
+					}
+				})
 			}
+
+			else {
+				$.ajax({
+					type: "POST",
+					url: "/OrgSchCalendars/OrgCalendarDisplay",
+					cache: false,
+					data: { isarchived: output },
+					success: function (response) {
+						$('#tab_info').load('@Url.Action("OrgCalendarDisplay", "OrgSchCalendars", new { isarchived = true })');
+
+				
+
+
+					}
+				})
+
+
+
+			}
+
 		})
-	})
-</script>*@
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
