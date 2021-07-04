@@ -295,6 +295,10 @@ namespace Dertrix.Controllers
                     .FirstOrDefault();
                 ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", stud1.TitleId);
                 ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", stud1.ClassId);
+                ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", stud1.PrimarySchoolUserRoleId);
+                ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName", stud1.SecondarySchoolUserRoleId);
+
+
                 var stud = new RegisteredUser
                 {
                     RegisteredUserId = stud1.RegisteredUserId,
@@ -885,6 +889,28 @@ namespace Dertrix.Controllers
                 var chkifusrexist0 = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(x => x.RegisteredUserId).FirstOrDefault();
                 if (registeredUser.StudentRegFormId == null && registeredUser.SelectedOrg != 23 && chkifusrexist0 == 0)
                 {
+
+
+                    // SET ROLE TO NON TEACHING STAFF IF ROLE IS NOT SET.
+                    if(registeredUser.SecondarySchoolUserRoleId == null && registeredUser.PrimarySchoolUserRoleId == null)
+                    {
+                    // ORG IS SECONDARY SCH
+                        if ((int)Session["OrgType"] == 2)
+                        {
+                            registeredUser.SecondarySchoolUserRoleId = 6;
+                        }
+                        // ORG IS PRIMARY SCH
+                        if ((int)Session["OrgType"] == 3)
+                        {
+                            registeredUser.PrimarySchoolUserRoleId = 6;
+                        }
+                        // ORG IS NURSERY SCH
+                        if ((int)Session["OrgType"] == 4)
+                        {
+                        }
+                    }
+
+
                     var rr1 = Session["OrgId"].ToString();
                     int w1 = Convert.ToInt32(rr1);
                     registeredUser.Email = registeredUser.Email;

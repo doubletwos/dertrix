@@ -39,6 +39,9 @@
 
 				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 					<th>
+					 Role Id
+					</th>
+					<th>
 						@Html.DisplayNameFor(model => model.RoleName)
 					</th>
 					<th></th>
@@ -47,22 +50,25 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-					<tr style="border-style: groove;">
-						<td>
-							@Html.DisplayFor(modelItem => item.RoleName)
-						</td>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="EditRole(@item.SecondarySchoolUserRoleId)">Edit role</a></li>
-									<li><a href="#" onclick="ConfirmDelete(@item.SecondarySchoolUserRoleId)">Remove role</a></li>
-								</ul>
-							</div>
-						</td>
-					</tr>
+				<tr style="border-style: groove;">
+					<td>
+						@Html.DisplayFor(modelItem => item.SecondarySchoolUserRoleId)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.RoleName)
+					</td>
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Action <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background-color:white">
+								<li><a href="#" onclick="EditRole(@item.SecondarySchoolUserRoleId)">Edit role</a></li>
+								<li><a href="#" onclick="ConfirmDelete(@item.SecondarySchoolUserRoleId)">Remove role</a></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
 				}
 			</tbody>
 

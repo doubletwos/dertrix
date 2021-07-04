@@ -1,8 +1,4 @@
 ﻿@model IEnumerable<Dertrix.Models.Org>
-
-
-
-
 <head>
 	@{
 		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
@@ -35,53 +31,49 @@
 <div class="jumbotron" style="height:100vh;">
 	<br />
 	<br />
-
 	@Html.Partial("_Widget_SchStaff_Dashboard")
 	<div>
 		<hr />
-
 	</div>
 	<br />
 	<br />
-
 	<div class="container">
+		<div class="col-lg-12">
+			<ul id="formtabs" class="nav nav-tabs" style="margin-bottom:10px;">
+				<li class="active"><a data-toggle="tab" href="#tab_info">School Calendar</a></li>
+				<li><a data-toggle="tab" href="#tab_form">Event Logs</a></li>
+			</ul>
+			<div class="col-md-3">
+				@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+				{
+					{
+						Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
+					}
+				}
+			</div>
+			<div class="col-md-3" style="padding-top: 0.7em;">
+				<label>Display past events</label> &nbsp;&nbsp;
+				@Html.CheckBox("mycheckbox", new { onclick = "archived()" })
+			</div>
 
-
-			<div class="col-lg-12">
-
-
-				<ul id="formtabs" class="nav nav-tabs" style="margin-bottom:10px;">
-					<li class="active"><a data-toggle="tab" href="#tab_info">School Calendar</a></li>
-					<li><a data-toggle="tab" href="#tab_form">Event Logs</a></li>
-				</ul>
-
-
-				<div class="tab-content">
-					<div class="col-md-3" style="padding-top: 0.7em;">
-						<label>Display past events</label> &nbsp;&nbsp;
-						@Html.CheckBox("mycheckbox", new { onclick = "archived()" })
-					</div>
-
-					<div id="tab_info" class="tab-pane active">
-						<div class="panel-body">
-
-							@{
-								Html.RenderAction("OrgCalendarDisplay", "OrgSchCalendars");
-							}
-						</div>
-					</div>
-					<div id="tab_form" class="tab-pane">
-						<div class="panel-body">
-							@{
-								Html.RenderAction("Logs", "Org_Events_Log");
-							}
-						</div>
+			<div class="tab-content">
+				<div id="tab_info" class="tab-pane active">
+					<div class="panel-body">
+						@{
+							Html.RenderAction("OrgCalendarDisplay", "OrgSchCalendars");
+						}
 					</div>
 				</div>
-
+				<div id="tab_form" class="tab-pane">
+					<div class="panel-body">
+						@{
+							Html.RenderAction("Logs", "Org_Events_Log");
+						}
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-
 </div>
 @section scripts{
 	@Scripts.Render("~/bundles/jqueryval")
@@ -92,18 +84,11 @@
 	<script src="~/Scripts/summernote/summernote.min.js"></script>
 	<script src="~/Scripts/summernote/summernote-bs4.js"></script>
 	<script src="~/Scripts/summernote/summernote.js"></script>
-
 	<script src="~/Scripts/timepicker/timepicker.min.js"></script>
 	<link href="~/Content/timepicker/timepicker.min.css" rel="stylesheet" />
 }
-
 <script>
 	$(document).ready(function () {
 		$('.nav-tabs a[href="#tab_info"]').tab('show')
 	})
 </script>
-
-
-
-
-
