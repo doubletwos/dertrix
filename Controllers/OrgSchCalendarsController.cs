@@ -56,16 +56,6 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult AddEventToOrgCalendar()
         {
-            if (Request.Browser.IsMobileDevice == true)
-            {
-                return RedirectToAction("WrongDevice", "Orgs");
-            }
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-
             var sess = Session["OrgId"].ToString();
             int i = Convert.ToInt32(sess);
 
@@ -99,14 +89,7 @@ namespace Dertrix.Controllers
         // GET: OrgSchCalendars/EventDetails/5
         public ActionResult EventDetails(int Id)
         {
-            if (Request.Browser.IsMobileDevice == true)
-            {
-                return RedirectToAction("WrongDevice", "Orgs");
-            }
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
+  
             var calendarevent = db.OrgSchCalendars.Where(x => x.OrgSchCalendarId == Id);
             ViewBag.OrgSchCalendar = calendarevent;
 
@@ -169,9 +152,10 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(AddNewOrgSchCalViewModel viewModel)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
+
             }
             if (Session["OrgId"] == null)
             {
@@ -226,9 +210,10 @@ namespace Dertrix.Controllers
 
         public ActionResult EditOrgSchCal(int Id)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
+
             }
             if (Session["OrgId"] == null)
             {
@@ -382,9 +367,10 @@ namespace Dertrix.Controllers
 
         public ActionResult Edit(OrgSchCalendar orgSchCalendar)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
+
             }
             if (Session["OrgId"] == null)
             {
@@ -442,9 +428,10 @@ namespace Dertrix.Controllers
         // GET: OrgSchCalendars/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
+
             }
             if (Session["OrgId"] == null)
             {
@@ -467,9 +454,10 @@ namespace Dertrix.Controllers
     
         public ActionResult DeleteConfirmed(int? Id)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
+
             }
             if (Session["OrgId"] == null)
             {

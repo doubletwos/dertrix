@@ -18,7 +18,7 @@ namespace Dertrix.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null) 
             {
                 return RedirectToAction("WrongDevice","Orgs");
 
@@ -77,7 +77,7 @@ namespace Dertrix.Controllers
             {
                 return HttpNotFound();
             }
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
 
@@ -378,9 +378,9 @@ namespace Dertrix.Controllers
 
         public ActionResult SystemAdminIndex()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
-                return RedirectToAction("WrongDevice");
+                return RedirectToAction("WrongDevice", "Orgs");
 
             }
             var isTester = Convert.ToInt32(Session["IsTester"]);
