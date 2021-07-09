@@ -180,9 +180,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrgBrandsController.cs" />
-    <Compile Include="Controllers\OrgEventsController.cs" />
     <Compile Include="Controllers\OrgGroupsController.cs" />
-    <Compile Include="Controllers\OrgImportantDatesController.cs" />
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
     <Compile Include="Controllers\OrgSchCalendarsController.cs" />
     <Compile Include="Controllers\OrgsController.cs" />
@@ -416,9 +414,7 @@
     <Compile Include="Models\NurserySchoolUserRole.cs" />
     <Compile Include="Models\Org.cs" />
     <Compile Include="Models\OrgBrand.cs" />
-    <Compile Include="Models\OrgEvent.cs" />
     <Compile Include="Models\OrgGroup.cs" />
-    <Compile Include="Models\OrgImportantDate.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgSchCalendar.cs" />
     <Compile Include="Models\OrgSchCalndrGrp.cs" />
@@ -818,11 +814,9 @@
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
-    <Content Include="Views\OrgImportantDates\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddOrgImpDate.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ImpDateDisplayPanel.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditImpDate.cshtml" />
-    <Content Include="Views\OrgEvents\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EventDisplayPanel.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditEvent.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddOrgEvent.cshtml" />
@@ -832,7 +826,6 @@
     <Content Include="Views\StudentSubjects\YourChild.cshtml" />
     <Content Include="Views\Shared\_MyRegProfile.cshtml" />
     <Content Include="Views\Posts\PostsTable.cshtml" />
-    <Content Include="Views\Orgs\SchCalendar.cshtml" />
     <Content Include="Views\Relationships\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditGuardian.cshtml" />
     <Content Include="Views\Shared\_ClassProfile.cshtml" />
