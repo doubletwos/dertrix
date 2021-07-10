@@ -4,6 +4,9 @@
 <table class="table table-bordered table-responsive table-condensed table-hover">
 	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 		<th>
+			Organisation Id
+		</th>
+		<th>
 			Organisation Name
 		</th>
 
@@ -13,6 +16,11 @@
 	@foreach (var item in Model)
 	{
 <tr>
+	<td>
+		@Html.DisplayFor(modelItem => item.OrgId)
+
+
+	</td>
 	<td>
 		@Html.DisplayFor(modelItem => item.OrgName)
 	</td>

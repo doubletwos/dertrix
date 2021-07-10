@@ -138,9 +138,7 @@ namespace Dertrix.Controllers
                 }
 
             }
-
-
-            return View();
+            return RedirectToAction("SysAdminSetUp", "Home");
         }
 
 

@@ -18,11 +18,11 @@ namespace Dertrix.Controllers
         // GET: Orgs
         public ActionResult Index(int? id)
         {
-            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null) 
-            {
-                return RedirectToAction("WrongDevice","Orgs");
+            //if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null) 
+            //{
+            //    return RedirectToAction("WrongDevice","Orgs");
 
-            }
+            //}
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -77,11 +77,11 @@ namespace Dertrix.Controllers
             {
                 return HttpNotFound();
             }
-            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
-            {
-                return RedirectToAction("WrongDevice", "Orgs");
+            //if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
+            //{
+            //    return RedirectToAction("WrongDevice", "Orgs");
 
-            }
+            //}
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
@@ -107,8 +107,8 @@ namespace Dertrix.Controllers
                 Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == orgbrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                 Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == orgbrand).Select(x => x.Content).FirstOrDefault();
                 Session["IsAdmin"] = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == RegisteredUserId).Where(x => x.RegUserOrgId == Id).Select(x => x.GroupTypeId).FirstOrDefault();
-                var orgs1 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
-                return View(orgs1.ToList());
+                var orgs2 = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
+                return View(orgs2.ToList());
 
             }
             return View();
