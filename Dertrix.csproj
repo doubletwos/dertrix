@@ -812,7 +812,6 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup1.cshtml" />
     <Content Include="Views\RegisteredUsersGroups\_MyGroups.cshtml" />
     <Content Include="Views\Shared\_MyOrgCount.cshtml" />
-    <Content Include="Views\Shared\_MyOrgList.cshtml" />
     <Content Include="Views\Shared\_MyGuardians.cshtml" />
     <Content Include="Views\Orgs\PGSchCentre.cshtml" />
     <Content Include="Views\Titles\Index.cshtml" />
@@ -853,6 +852,7 @@
     <Content Include="Views\Orgs\StaffSchCentre1.cshtml" />
     <Content Include="Views\Orgs\PGSchCentre1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditCustomGroup.cshtml" />
+    <Content Include="Views\Shared\_MyOrgList.cshtml" />
     <None Include="Web.Dertrix-Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

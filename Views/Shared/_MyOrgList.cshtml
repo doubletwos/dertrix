@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Dertrix.Models.RegisteredUserOrganisation>
+﻿
+@model IEnumerable<Dertrix.Models.RegisteredUserOrganisation>
 
 
 <table class="table table-bordered table-responsive table-condensed table-hover">
@@ -15,30 +16,30 @@
 
 	@foreach (var item in Model)
 	{
-<tr>
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgId)
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgId)
 
 
-	</td>
-	<td>
-		@Html.DisplayFor(modelItem => item.OrgName)
-	</td>
-	@if (Session["IsParent/Guardian"] != null)
-	{
-		<td>
-			@Html.ActionLink("Select", "PGSchCentre1", "Orgs", new { id = item.OrgId }, null)
-		</td>
-	}
-	else
-	{
-		<td>
-			@Html.ActionLink("Select", "StaffSchCentre1", "Orgs", new { id = item.OrgId }, null)
-		</td>
-	}
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgName)
+			</td>
+			@if (Session["IsParent/Guardian"] != null)
+			{
+				<td>
+					@Html.ActionLink("Select", "PGSchCentre1", "Orgs", new { id = item.OrgId }, null)
+				</td>
+			}
+			else
+			{
+				<td>
+					@Html.ActionLink("Select", "StaffSchCentre1", "Orgs", new { id = item.OrgId }, null)
+				</td>
+			}
 
 
-</tr>
+		</tr>
 	}
 
 </table>
