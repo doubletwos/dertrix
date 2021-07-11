@@ -197,7 +197,10 @@ namespace Dertrix.Controllers
                         db.SaveChanges();
                     }
               }
-                return RedirectToAction("Index", "Orgs", new { id = i });
+
+                return View(viewModel);
+
+                //return RedirectToAction("Index", "Orgs", new { id = i });
 
             }
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", viewModel.OrgSchCalendar.CalendarCategoryId);
