@@ -214,7 +214,6 @@ namespace Dertrix.Controllers
             {
                 db.Posts.Add(viewmodel.Post);
                 db.SaveChanges();
-                //return RedirectToAction("Index");
             }
 
             // Send Post as email if Send as Email is True
@@ -228,9 +227,10 @@ namespace Dertrix.Controllers
             var selectedgroups = viewmodel.OrgGroups.Where(x => x.IsSelected == true).Select(x => x.OrgGroupId).ToList();
             var selectedgroupid = new List<int>(selectedgroups);
 
-      
+            return RedirectToAction("Index", "Orgs", new { id = i });
 
-            return View(viewmodel);
+
+            //return View(viewmodel);
         }
 
 

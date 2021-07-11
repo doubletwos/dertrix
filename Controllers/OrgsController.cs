@@ -27,15 +27,15 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Org org = db.Orgs.Find(id);
-            if (org == null)
-            {
-                return HttpNotFound();
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Org org = db.Orgs.Find(id);
+            //if (org == null)
+            //{
+            //    return HttpNotFound();
+            //}
             var orgs = db.Orgs.Include(o => o.Domain).Include(o => o.OrgBrand).Include(o => o.OrgType);
             var isTester = Convert.ToInt32(Session["IsTester"]);
             if (isTester == 1)

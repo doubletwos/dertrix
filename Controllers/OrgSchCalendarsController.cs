@@ -197,15 +197,15 @@ namespace Dertrix.Controllers
                         db.SaveChanges();
                     }
               }
+                return Content("");
 
-                return View(viewModel);
-
-                //return RedirectToAction("Index", "Orgs", new { id = i });
 
             }
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", viewModel.OrgSchCalendar.CalendarCategoryId);
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", viewModel.OrgSchCalendar.OrgId);
-            return View(viewModel);
+            return Content("");
+
+            //return View(viewModel);
         }
 
 
@@ -364,7 +364,7 @@ namespace Dertrix.Controllers
 
         //// POST: OrgSchCalendars/Edit/5
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
 
         public ActionResult Edit(OrgSchCalendar orgSchCalendar)
         {

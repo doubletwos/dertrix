@@ -54,15 +54,7 @@
 								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
 							</div>
 						</div>
-						@*<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new {  @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								<div class="checkbox">
-									@Html.EditorFor(model => model.OrgSchCalendar.IsRecurring, new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }) 
-									@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
-								</div>
-							</div>
-						</div>*@
+	
 
 						<div class="form-group">
 			                @Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new {  @class = "control-label col-md-2" })
@@ -133,7 +125,7 @@
 	$(document).ready(function () {
 		$("#frequency0").hide();
 		$("#frequency1").hide();
-	
+
 	  $(function () {
 		  $("#OrgSchCalendar_IsRecurring").change(function () {
 
@@ -147,7 +139,7 @@
 				$("#frequency1").slideUp(1000);
 
 			}
-			
+
 		 });
 	  });
 
@@ -170,14 +162,15 @@
 				var data = $("#myCreateEventForm").serialize();
 				$.ajax({
 					type: "POST",
-					url: "/OrgSchCalendars/Create",
-
+					url: '@Url.Action("Create", "OrgSchCalendars")',
 					data: data,
 					success: function (response) {
+						window.location.reload();
+						@*window.location.href = '@Url.Action("Index", "Orgs")';*@
 						alert("New event created");
 						$("#mycreateevent").modal("hide");
 						$("#mycreateevent")[0].reset();
-						window.location.reload();
+
 					}
 				})
 			}

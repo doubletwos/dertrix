@@ -739,7 +739,6 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditOrg.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\PostTopics\Index.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_AddPost.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_PostDisplayPanel.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
     <Content Include="Views\StudentSubjects\Grades.cshtml" />
