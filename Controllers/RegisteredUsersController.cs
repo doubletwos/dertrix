@@ -145,6 +145,16 @@ namespace Dertrix.Controllers
         }
 
 
+
+        public ActionResult DownloadStudentTemplateFile()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Template_Files/";
+            string fileName = "test.xlsx";
+            return File(path + fileName, "text/plain", "test.xlsx");
+
+        }
+
+
         public ActionResult MyRegProfile(int id)
         {
             var rr = Session["OrgId"].ToString();

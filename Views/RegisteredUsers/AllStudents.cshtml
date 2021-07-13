@@ -26,10 +26,14 @@
 						Html.RenderAction("AddStudent", "RegisteredUsers");
 					}
 				</div>
-			}
+			
 
-			<div class="col-md-3">
-			</div>
+				<div class="col-md-3">
+					<p>@Html.ActionLink("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers", "", new { @class = "RegUserOrgButtonColour" })</p>
+
+				</div>
+
+			}
 			<div class="col-md-3">
 			</div>
 			<div class="col-md-3">
