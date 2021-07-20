@@ -26,10 +26,17 @@
 						Html.RenderAction("AddStudent", "RegisteredUsers");
 					}
 				</div>
-			
+
 
 				<div class="col-md-3">
 					<p>@Html.ActionLink("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers", "", new { @class = "RegUserOrgButtonColour" })</p>
+
+				</div>
+
+				<div class="col-md-3">
+					@{
+						Html.RenderAction("UploadStudents", "RegisteredUsers");
+					}
 
 				</div>
 
@@ -39,8 +46,8 @@
 			<div class="col-md-3">
 			</div>
 		</div>
-		<hr />
-	</div>
+				<hr />
+			</div>
 	<br />
 	<div class="panel panel-default">
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">

@@ -11,6 +11,9 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using Dertrix.Models;
+using System.IO;
+using OfficeOpenXml;
+
 namespace Dertrix.Controllers
 {
     public class RegisteredUsersController : Controller
@@ -88,6 +91,15 @@ namespace Dertrix.Controllers
         }
 
         [ChildActionOnly]
+        public ActionResult UploadStudents() 
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+           
+            return PartialView("~/Views/Shared/PartialViewsForms/_UploadStudents.cshtml");
+        }
+
+        [ChildActionOnly]
         public ActionResult AddStaff()
         {
             ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
@@ -148,9 +160,230 @@ namespace Dertrix.Controllers
 
         public ActionResult DownloadStudentTemplateFile()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Template_Files/";
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Files/Template_Files/";
             string fileName = "test.xlsx";
             return File(path + fileName, "text/plain", "test.xlsx");
+
+        }
+
+
+        [HttpPost]
+        public ActionResult Uploader(HttpPostedFileBase postedFile)
+        {
+
+            try
+            {
+
+
+
+
+                var FileName = System.IO.Path.GetFileName(postedFile.FileName);
+                var filePath = Server.MapPath("~/Files/UploadedFiles/");
+                filePath = filePath + Path.GetFileName(postedFile.FileName);
+                postedFile.SaveAs(filePath);
+                String path = Server.MapPath("~/Files/UploadedFiles/").Select(f => filePath).FirstOrDefault();
+                var package = new ExcelPackage(new System.IO.FileInfo(path));
+                int startColumn = 1;
+                int startRow = 2;
+                int successfulupload = 0;
+
+                ExcelWorksheet workSheet = package.Workbook.Worksheets[1]; // read sheet 1
+                object data = null;
+
+                do
+                {
+                    data = workSheet.Cells[startRow, startColumn].Value; //column No
+                    object firstName = workSheet.Cells[startRow, startColumn].Value;
+                    if( firstName == null)
+                    {
+                       var col7 =  workSheet.Cells[startRow, startColumn + 7].Value = "First Name is required.";
+                        package.Save();
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    object lastName = workSheet.Cells[startRow, startColumn + 1].Value;
+                    if (lastName == null)
+                    {
+                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Last Name is required.";
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    object _class = workSheet.Cells[startRow, startColumn + 2].Value;
+                    if (_class == null)
+                    {
+                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Class is required.";
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    object gender = workSheet.Cells[startRow, startColumn + 3].Value;
+                    if (gender == null)
+                    {
+                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Gender is required.";
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    object religion = workSheet.Cells[startRow, startColumn + 4].Value;
+                    if (religion == null)
+                    {
+                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Religion is required.";
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    object tribe = workSheet.Cells[startRow, startColumn + 5].Value;
+                    if (tribe == null)
+                    {
+                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Tribe is required.";
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    object dateOfBirth = workSheet.Cells[startRow, startColumn + 6].Value;
+                    if (dateOfBirth == null)
+                    {
+                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Date of birth is required.";
+                        startRow++;
+                        data = workSheet.Cells[startRow, startColumn].Value; //column No
+                        continue;
+                    }
+                    if (data != null)
+                    {
+
+
+                        var isSuccess = SaveStudent(firstName.ToString(),
+                            lastName.ToString(),
+                            Convert.ToInt32(_class), 
+                            Convert.ToInt32(gender), 
+                            Convert.ToInt32(religion),
+                            Convert.ToInt32(tribe),
+                            Convert.ToDateTime(dateOfBirth));
+
+                    }
+                    if (data != null)
+                    {
+                        var col1 = workSheet.Cells[startRow, startColumn].Value = "";
+                        var col2 = workSheet.Cells[startRow, startColumn + 1].Value = "";
+                        var col3 = workSheet.Cells[startRow, startColumn + 2].Value = "";
+                        var col4 = workSheet.Cells[startRow, startColumn + 3].Value = "";
+                        var col5 = workSheet.Cells[startRow, startColumn + 4].Value = "";
+                        var col6 = workSheet.Cells[startRow, startColumn + 5].Value = "";
+                        var col7 = workSheet.Cells[startRow, startColumn + 6].Value = "";
+
+                    }
+                    startRow++;
+                    successfulupload++;
+                }
+                while (data != null);
+
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return RedirectToAction("Students", "RegisteredUsers");
+
+
+
+
+
+        }
+
+
+        public bool SaveStudent(string firstName, string lastName, int _class, int gender, int religion, int tribe, DateTime dateofBirth)
+        {
+            var result = false;
+
+            var sess = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(sess);
+           
+            var stud = new RegisteredUser();
+            stud.RegisteredUserTypeId = 2;
+            stud.FirstName = firstName;
+            stud.LastName = lastName;
+            stud.Email = "iamastudent";
+            stud.SelectedOrg = i;
+            stud.ClassId = _class;
+            stud.GenderId = gender;
+            stud.TribeId = tribe;
+            stud.DateOfBirth = dateofBirth;
+            stud.EnrolmentDate = DateTime.Now;
+            stud.ReligionId = religion;
+            stud.StudentRegFormId = 1;
+            stud.CreatedBy = Session["RegisteredUserId"].ToString();
+            stud.FullName = firstName + " " + lastName;
+            stud.ClassRef = db.Classes.Where(x => x.ClassId == stud.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
+            stud.PgCount = 0;
+            result = true;
+
+            db.RegisteredUsers.Add(stud);
+            db.SaveChanges();
+
+
+
+            // UPON ADDING STUDENT - ADD STUDENT TO REGUSERORG
+            var regstudinruo = new RegisteredUserOrganisation()
+            {
+                RegisteredUserId = stud.RegisteredUserId,
+                OrgId = i,
+                FirstName = stud.FirstName,
+                LastName = stud.LastName,
+                OrgName = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgName).FirstOrDefault(),
+                RegUserOrgBrand = stud.RegUserOrgBrand,
+                IsTester = stud.IsTester,
+                RegisteredUserTypeId = stud.RegisteredUserTypeId,
+                EnrolmentDate = DateTime.Now,
+                CreatedBy = Session["RegisteredUserId"].ToString(),
+                FullName = stud.FullName,
+            };
+            db.RegisteredUserOrganisations.Add(regstudinruo);
+            db.SaveChanges();
+            // UPON ADDING STUDENT - LOG EVENT - LOGGING STUDENT IS EVENTTYPEID = 1
+            var logstudregistrtn = new Org_Events_Log()
+            {
+                Org_Event_TypeId = 1,
+                Org_Event_Name = "Registered student",
+                Org_Event_SubjectId = stud.RegisteredUserId.ToString(),
+                Org_Event_SubjectName = stud.FullName,
+                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                Org_Event_Time = DateTime.Now,
+                OrgId = i.ToString()
+            };
+            db.Org_Events_Logs.Add(logstudregistrtn);
+            db.SaveChanges();
+
+            // UPON ADDING STUDENT -  UPDATE CLASS DATA.
+        
+            var getclassid = db.Classes.AsNoTracking().Where(x => x.ClassId == stud.ClassId).FirstOrDefault();
+            var studentcount = db.RegisteredUsers.Where(x => x.ClassId == stud.ClassId && x.SelectedOrg == i).Count();
+            var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == stud.ClassId && x.GenderId == 2 && x.SelectedOrg == i).Count();
+            var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == stud.ClassId && x.GenderId == 1 && x.SelectedOrg == i).Count();
+            var updateclass = new Class
+            {
+                ClassId = getclassid.ClassId,
+                ClassName = getclassid.ClassName,
+                ClassIsActive = getclassid.ClassIsActive,
+                OrgId = getclassid.OrgId,
+                ClassRefNumb = getclassid.ClassRefNumb,
+                TitleId = getclassid.TitleId,
+                ClassTeacherId = getclassid.ClassTeacherId,
+                ClassTeacherFullName = getclassid.ClassTeacherFullName,
+                Students_Count = studentcount,
+                Female_Students_Count = FemStuCount,
+                Male_Students_Count = MaleStudCount
+            };
+            getclassid = updateclass;
+            db.Entry(getclassid).State = EntityState.Modified;
+            db.SaveChanges();
+            // THEN EXIT
+
+            return result;
 
         }
 
@@ -1165,9 +1398,6 @@ namespace Dertrix.Controllers
                     registeredUser.SelectedOrg = w4;
                     var email = "iamanewuser@thisorg.com";
                     registeredUser.Email = email;
-                    var pwd = "iamanewuser";
-                    registeredUser.Password = pwd;
-                    registeredUser.ConfirmPassword = pwd;
                     registeredUser.FullName = registeredUser.ContactFullName;
                     registeredUser.RegisteredUserTypeId = 2;
                     registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();
@@ -1629,7 +1859,7 @@ namespace Dertrix.Controllers
 
 
         protected override void Dispose(bool disposing)
-        {
+         {
             if (disposing)
             {
                 db.Dispose();
