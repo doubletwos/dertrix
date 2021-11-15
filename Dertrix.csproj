@@ -413,6 +413,10 @@
     <Compile Include="Migrations\202107092001555_EmptyMigration.Designer.cs">
       <DependentUpon>202107092001555_EmptyMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107270337543_Sprint2021.08.01.cs" />
+    <Compile Include="Migrations\202107270337543_Sprint2021.08.01.Designer.cs">
+      <DependentUpon>202107270337543_Sprint2021.08.01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -1048,6 +1052,9 @@
     <EmbeddedResource Include="Migrations\202107092001555_EmptyMigration.resx">
       <DependentUpon>202107092001555_EmptyMigration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107270337543_Sprint2021.08.01.resx">
+      <DependentUpon>202107270337543_Sprint2021.08.01.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1112,9 +1119,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49815</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44323/</IISUrl>
+         <IISUrl>https://localhost:44323/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
+          <UseCustomServer>True</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>

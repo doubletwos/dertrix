@@ -122,6 +122,27 @@ namespace Dertrix.Controllers
                 registeredUsersGroups.Email = reguseremail;
                 db.RegisteredUsersGroups.Add(registeredUsersGroups);
                 db.SaveChanges();
+
+                // GET COUNT
+                var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
+                var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
+
+                // UPDATE ORG-GROUP GRP MEMB COUNT
+                var orgdata = new OrgGroup
+                {
+                    OrgGroupId = orggrpid.OrgGroupId,
+                    OrgId = orggrpid.OrgId,
+                    GroupName = orggrpid.GroupName,
+                    CreationDate = orggrpid.CreationDate,
+                    GroupTypeId = orggrpid.GroupTypeId,
+                    GroupRefNumb = orggrpid.GroupRefNumb,
+                    IsSelected = orggrpid.IsSelected,
+                    Group_members_count = getcount,                   
+                };
+                orggrpid = orgdata;
+                db.Entry(orgdata).State = EntityState.Modified;
+                db.SaveChanges();
+
                 return RedirectToAction("Index", "OrgGroups");
             }
             ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName", registeredUsersGroups.OrgGroupId);
@@ -146,7 +167,8 @@ namespace Dertrix.Controllers
         }
 
         // POST: RegisteredUsersGroups/Delete/5
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int grpid)
+
         {
             var user = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == id).Select(j => j.RegisteredUsersGroupsId).FirstOrDefault();
             RegisteredUsersGroups registeredUsersGroups = db.RegisteredUsersGroups.Find(user);

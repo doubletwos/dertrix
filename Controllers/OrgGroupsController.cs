@@ -81,8 +81,9 @@ namespace Dertrix.Controllers
                 orgGroup.OrgId = i;
                 orgGroup.GroupName = orgGroup.GroupName;
                 orgGroup.CreationDate = DateTime.Now;
-                orgGroup.GroupTypeId = 18;         
-                    
+                orgGroup.GroupTypeId = 18;
+                orgGroup.Group_members_count = 0;
+                              
                 db.OrgGroups.Add(orgGroup);
                 db.SaveChanges();
                 return RedirectToAction("Index");

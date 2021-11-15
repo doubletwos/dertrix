@@ -16,38 +16,42 @@
 <div class="panel panel-default" style="height: 210px; width: 550px; overflow: auto; border: double;">
 	<table id="myTable" class="table table-bordered table-responsive table-condensed table-hover">
 
-			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-				<th>
-					Full Name
-				</th>
-				<th>
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>
+				Full Name
+			</th>
+			<th>
 
-				</th>
-				<th>
+			</th>
+			<th>
 
-				</th>
-			
+			</th>
+
+		</tr>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.RegisteredUser.SecondarySchoolUserRole.RoleName)
+					@Html.DisplayFor(modelItem => item.RegisteredUser.PrimarySchoolUserRole.RoleName)
+					@Html.HiddenFor(modelItem => item.RegisteredUsersGroupsId)
+
+
+				</td>
+
+				<td>
+					<p><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId, @item.RegisteredUsersGroupsId)"> <i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
+				</td>
 			</tr>
-			@foreach (var item in Model)
-			{
-	     <tr>
-			 <td>
-			 @Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
-			 </td>
-		<td>
-			@Html.DisplayFor(modelItem => item.RegisteredUser.SecondarySchoolUserRole.RoleName)
-			@Html.DisplayFor(modelItem => item.RegisteredUser.PrimarySchoolUserRole.RoleName)
-
-		</td>
-
-		<td>
-			<p><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)"> <i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
-		</td>
-	</tr>
-			}
+		}
 
 	</table>
 	<input type="hidden" id="hiddenRegisterUserId" />
+	<input type="hidden" id="hiddenRegisterUserGrpsId" />
+
 </div>
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
@@ -68,16 +72,19 @@
 	</div>
 </div>
 <script>
-	var ConfirmDelete = function (RegisteredUserId) {
+	var ConfirmDelete = function (RegisteredUserId, RegisteredUsersGroupsId) {
 		$("#hiddenRegisterUserId").val(RegisteredUserId);
+		$("#hiddenRegisterUserGrpsId").val(RegisteredUsersGroupsId);
 		$("#myModall").modal('show');
 	}
 	var DeleteRegisteredUser = function () {
 		var registeredUserId = $("#hiddenRegisterUserId").val();
+		var regUserGrpId = $("#hiddenRegisterUserGrpsId").val();
+
 		$.ajax({
 			type: "POST",
 			url: "/RegisteredUsersGroups/DeleteConfirmed/",
-			data: { id: registeredUserId },
+			data: { id: registeredUserId, grpid: regUserGrpId  },
 			success: function (response) {
 				alert("User removed");
 				$("#myModall").modal("hide");

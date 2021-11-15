@@ -206,6 +206,7 @@ namespace Dertrix.Controllers
                     if (lastName == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Last Name is required.";
+                        package.Save();
                         startRow++;
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
@@ -214,6 +215,7 @@ namespace Dertrix.Controllers
                     if (_class == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Class is required.";
+                        package.Save();
                         startRow++;
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
@@ -222,6 +224,7 @@ namespace Dertrix.Controllers
                     if (gender == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Gender is required.";
+                        package.Save();
                         startRow++;
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
@@ -230,6 +233,7 @@ namespace Dertrix.Controllers
                     if (religion == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Religion is required.";
+                        package.Save();
                         startRow++;
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
@@ -238,6 +242,7 @@ namespace Dertrix.Controllers
                     if (tribe == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Tribe is required.";
+                        package.Save();
                         startRow++;
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
@@ -246,6 +251,7 @@ namespace Dertrix.Controllers
                     if (dateOfBirth == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Date of birth is required.";
+                        package.Save();
                         startRow++;
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
@@ -272,6 +278,8 @@ namespace Dertrix.Controllers
                         var col5 = workSheet.Cells[startRow, startColumn + 4].Value = "";
                         var col6 = workSheet.Cells[startRow, startColumn + 5].Value = "";
                         var col7 = workSheet.Cells[startRow, startColumn + 6].Value = "";
+                        package.Save();
+
 
                     }
                     startRow++;

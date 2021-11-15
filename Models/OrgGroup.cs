@@ -20,6 +20,8 @@ namespace Dertrix.Models
 
         public int? GroupRefNumb { get; set; }
 
+        public int? Group_members_count { get; set; }  
+
         public string  GroupName { get; set; }
 
         public bool IsSelected { get; set; }
@@ -27,6 +29,8 @@ namespace Dertrix.Models
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? CreationDate { get; set; }
+
+
 
 
     }

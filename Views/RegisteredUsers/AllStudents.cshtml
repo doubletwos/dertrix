@@ -28,15 +28,17 @@
 				</div>
 
 
-				<div class="col-md-3">
-					<p>@Html.ActionLink("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers", "", new { @class = "RegUserOrgButtonColour" })</p>
 
-				</div>
 
 				<div class="col-md-3">
 					@{
 						Html.RenderAction("UploadStudents", "RegisteredUsers");
 					}
+
+				</div>
+				<div class="col-md-3">
+					<p>@Html.ActionLink("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers", "", new { @class = "RegUserOrgButtonColour" })</p>
+					@*<p><a href="@Url.Action("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers")"><i class="fa fa-download  RegUserOrgButtonColour"></i> </a></p>*@
 
 				</div>
 
