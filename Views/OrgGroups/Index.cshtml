@@ -41,54 +41,60 @@
 		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
 			<thead>
 
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 
-					<th>
-						@Html.DisplayNameFor(model => model.GroupName)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.CreationDate)
-					</th>
-					<th>
-						Select Action
-					</th>
-				</tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GroupName)
+                    </th>
+                    <th>
+                        Members Count
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        Select Action
+                    </th>
+                </tr>
 			</thead>
 			<tbody>
 				@foreach (var item in Model)
 				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.GroupName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.CreationDate)
-							@Html.HiddenFor(modelItem => item.GroupTypeId)
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GroupName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Group_members_count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                        @Html.HiddenFor(modelItem => item.GroupTypeId)
 
-						</td>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="background-color:white">
+                                <li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
 
-									@if (item.GroupTypeId == 18)
-									{
+                                @if (item.GroupTypeId == 18)
+                                {
 
-										if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-										{
-											<li><a href="#" onclick="EditGroup(@item.OrgGroupId)">Edit group</a></li>
-											<li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
+                                    if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                    {
+                                        <li><a href="#" onclick="EditGroup(@item.OrgGroupId)">Edit group</a></li>
+                                        <li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
 
-										}
-									}
-								</ul>
-							</div>
-						</td>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </td>
 
-					</tr>
+                </tr>
 				}
 			</tbody>
 		</table>

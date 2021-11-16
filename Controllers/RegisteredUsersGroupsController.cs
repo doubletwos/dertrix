@@ -88,11 +88,7 @@ namespace Dertrix.Controllers
 
 
 
-
-
-
-
-
+        // Show list of registeredusers in a group 
         public ActionResult RegisteredUsersGroupMembers(int id)
         {
             var rr = Session["OrgId"].ToString();
@@ -108,6 +104,9 @@ namespace Dertrix.Controllers
             return PartialView("_RegisteredUsersGroupMembers", membercount);
         }
 
+
+
+
         // POST: RegisteredUsersGroups/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -117,7 +116,6 @@ namespace Dertrix.Controllers
             {
                 var orgid = Convert.ToInt32(Session["OrgId"]);
                 var reguseremail = db.RegisteredUserOrganisations.Where(x => x.OrgId == orgid && x.RegisteredUserId == registeredUsersGroups.RegisteredUserId).Select(x => x.Email).FirstOrDefault();
-
                 registeredUsersGroups.RegUserOrgId = orgid;
                 registeredUsersGroups.Email = reguseremail;
                 db.RegisteredUsersGroups.Add(registeredUsersGroups);
