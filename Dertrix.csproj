@@ -593,8 +593,8 @@
     <Content Include="Content\summernote\font\summernote.woff" />
     <Content Include="Content\summernote\font\summernote.ttf" />
     <Content Include="Content\summernote\font\summernote.eot" />
+    <Content Include="connectionStrings_1.config" />
     <Content Include="connectionStrings.config" />
-    <None Include="connectionStrings_1.config" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -1064,6 +1064,16 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>

@@ -1,26 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dertrix", "Dertrix.csproj", "{DE08D035-A624-4692-861C-29F0B14725BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta|Any CPU = Beta|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Live|Any CPU = Live|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{DE08D035-A624-4692-861C-29F0B14725BF}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Live|Any CPU.ActiveCfg = Live|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Live|Any CPU.Build.0 = Live|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE08D035-A624-4692-861C-29F0B14725BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE08D035-A624-4692-861C-29F0B14725BF}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{DE08D035-A624-4692-861C-29F0B14725BF}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
