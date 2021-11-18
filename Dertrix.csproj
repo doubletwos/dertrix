@@ -858,11 +858,9 @@
     <Content Include="Views\Shared\_Eventlogs.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianToStudent.cshtml" />
     <Content Include="Views\Shared\_OrgCalendarDisplay.cshtml" />
-    <Content Include="Views\CalendarCategorys\Create.cshtml" />
-    <Content Include="Views\CalendarCategorys\Delete.cshtml" />
-    <Content Include="Views\CalendarCategorys\Details.cshtml" />
-    <Content Include="Views\CalendarCategorys\Edit.cshtml" />
-    <Content Include="Views\CalendarCategorys\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddCalendarCategory.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditCalendarCategory.cshtml" />
+    <Content Include="Views\CalendarCategorys\Table.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddEventToOrgCalendar.cshtml" />
     <Content Include="Views\Shared\_EventDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrgSchCal.cshtml" />

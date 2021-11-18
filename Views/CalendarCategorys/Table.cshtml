@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Dertrix.Models.CalendarCategory>
+<head>
+    @{
+        ViewBag.Title = "Calendar Categorys";
+    }
+    <style>
+        .btn-group:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+
+<div class="jumbotron" style="height:100vh;">
+    <br />
+    <br />
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                @{
+                    Html.RenderAction("AddCalendarCategory", "CalendarCategorys");
+                }
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+
+
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        Category Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CalendarCategoryId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditCategory(@item.CalendarCategoryId)">Edit Category</a></li>
+                                </ul>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>
+            <p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenCalendarCategoryId" />
+
+@*Edit Category Modal*@
+<div class="modal fade" id="CategoryEditModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Edit Category</h3>
+            </div>
+            <div class="modal-body" id="categoryEditBody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var EditCategory = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/CalendarCategorys/EditCategory",
+            data: { Id: Id },
+            success: function (response) {
+                $("#categoryEditBody").html(response);
+                $("#CategoryEditModal").modal("show");
+            }
+        })
+    }
+</script>
+<script>
+    $("#edtSubmit").click(function () {
+        var data = $("#CategoryEditForm").serialize();
+        $.ajax({
+            type: "POST",
+            url: "/CalendarCategorys/Edit",
+            data: data,
+            success: function (response) {
+                alert("Category updated");
+                $("#CategoryEditModal").modal("hide");
+                $("#CategoryEditForm")[0].reset();
+                window.location.reload();
+            }
+        })
+    })
+</script>
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom-validator")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                    "ordering": false,
+                }
+            );
+        });
+    </script>
+
+}
+
+
+
+

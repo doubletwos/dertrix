@@ -15,25 +15,18 @@ namespace Dertrix.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: CalendarCategorys
-        public ActionResult Index()
+        public ActionResult Table() 
         {
             return View(db.CalendarCategorys.ToList());
         }
 
-        // GET: CalendarCategorys/Details/5
-        public ActionResult Details(int? id)
+        [ChildActionOnly]
+        public ActionResult AddCalendarCategory()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CalendarCategory calendarCategory = db.CalendarCategorys.Find(id);
-            if (calendarCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(calendarCategory);
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddCalendarCategory.cshtml");
         }
+
+      
 
         // GET: CalendarCategorys/Create
         public ActionResult Create()
@@ -52,25 +45,26 @@ namespace Dertrix.Controllers
             {
                 db.CalendarCategorys.Add(calendarCategory);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Table");
             }
 
             return View(calendarCategory);
         }
 
         // GET: CalendarCategorys/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult EditCategory(int? id)
         {
-            if (id == null)
+            if (id != 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var edtCategory = db.CalendarCategorys.Where(x => x.CalendarCategoryId == id).FirstOrDefault();
+                var edtCategory1 = new CalendarCategory
+                {
+                    CalendarCategoryId = edtCategory.CalendarCategoryId,
+                    CategoryName = edtCategory.CategoryName
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditCalendarCategory.cshtml", edtCategory1);
             }
-            CalendarCategory calendarCategory = db.CalendarCategorys.Find(id);
-            if (calendarCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(calendarCategory);
+            return PartialView("~/Views/Shared/PartialViewsForms/_EditCalendarCategory.cshtml");
         }
 
         // POST: CalendarCategorys/Edit/5
@@ -84,7 +78,7 @@ namespace Dertrix.Controllers
             {
                 db.Entry(calendarCategory).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Table");
             }
             return View(calendarCategory);
         }

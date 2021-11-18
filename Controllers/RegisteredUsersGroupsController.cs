@@ -168,10 +168,32 @@ namespace Dertrix.Controllers
         public ActionResult DeleteConfirmed(int id, int grpid)
 
         {
+            var orgid = Convert.ToInt32(Session["OrgId"]);
             var user = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == id).Select(j => j.RegisteredUsersGroupsId).FirstOrDefault();
             RegisteredUsersGroups registeredUsersGroups = db.RegisteredUsersGroups.Find(user);
             db.RegisteredUsersGroups.Remove(registeredUsersGroups);
             db.SaveChanges();
+
+            // GET COUNT
+            var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
+            var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
+
+            // UPDATE ORG-GROUP GRP MEMB COUNT
+            var orgdata = new OrgGroup
+            {
+                OrgGroupId = orggrpid.OrgGroupId,
+                OrgId = orggrpid.OrgId,
+                GroupName = orggrpid.GroupName,
+                CreationDate = orggrpid.CreationDate,
+                GroupTypeId = orggrpid.GroupTypeId,
+                GroupRefNumb = orggrpid.GroupRefNumb,
+                IsSelected = orggrpid.IsSelected,
+                Group_members_count = getcount,
+            };
+            orggrpid = orgdata;
+            db.Entry(orgdata).State = EntityState.Modified;
+            db.SaveChanges();
+
             return RedirectToAction("Index", "OrgGroups");
         }
 
