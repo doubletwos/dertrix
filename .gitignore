@@ -342,3 +342,7 @@ healthchecksdb
 # Connection Strings
 connectionStrings.config
 connectionStrings_1.config
+Web.config
+Web.Debug.config
+Web.Live.config
+Web.Release.config

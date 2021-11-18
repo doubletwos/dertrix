@@ -593,6 +593,8 @@
     <Content Include="Content\summernote\font\summernote.woff" />
     <Content Include="Content\summernote\font\summernote.ttf" />
     <Content Include="Content\summernote\font\summernote.eot" />
+    <Content Include="connectionStrings.config" />
+    <Content Include="connectionStrings_1.config" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
