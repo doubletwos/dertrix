@@ -173,10 +173,6 @@ namespace Dertrix.Controllers
 
             try
             {
-
-
-
-
                 var FileName = System.IO.Path.GetFileName(postedFile.FileName);
                 var filePath = Server.MapPath("~/Files/UploadedFiles/");
                 filePath = filePath + Path.GetFileName(postedFile.FileName);
@@ -260,7 +256,7 @@ namespace Dertrix.Controllers
                     {
 
 
-                        var isSuccess = SaveStudent(firstName.ToString(),
+                            var isSuccess = SaveStudent(firstName.ToString(),
                             lastName.ToString(),
                             Convert.ToInt32(_class), 
                             Convert.ToInt32(gender), 
@@ -294,11 +290,7 @@ namespace Dertrix.Controllers
                 Console.WriteLine(e);
             }
 
-            return RedirectToAction("Students", "RegisteredUsers");
-
-
-
-
+            return RedirectToAction("AllStudents", "RegisteredUsers");
 
         }
 
@@ -306,7 +298,6 @@ namespace Dertrix.Controllers
         public bool SaveStudent(string firstName, string lastName, int _class, int gender, int religion, int tribe, DateTime dateofBirth)
         {
             var result = false;
-
             var sess = Session["OrgId"].ToString();
             int i = Convert.ToInt32(sess);
            
@@ -333,7 +324,6 @@ namespace Dertrix.Controllers
             db.SaveChanges();
 
 
-
             // UPON ADDING STUDENT - ADD STUDENT TO REGUSERORG
             var regstudinruo = new RegisteredUserOrganisation()
             {
@@ -351,6 +341,8 @@ namespace Dertrix.Controllers
             };
             db.RegisteredUserOrganisations.Add(regstudinruo);
             db.SaveChanges();
+
+
             // UPON ADDING STUDENT - LOG EVENT - LOGGING STUDENT IS EVENTTYPEID = 1
             var logstudregistrtn = new Org_Events_Log()
             {
@@ -366,31 +358,9 @@ namespace Dertrix.Controllers
             db.Org_Events_Logs.Add(logstudregistrtn);
             db.SaveChanges();
 
-            // UPON ADDING STUDENT -  UPDATE CLASS DATA.
-        
-            var getclassid = db.Classes.AsNoTracking().Where(x => x.ClassId == stud.ClassId).FirstOrDefault();
-            var studentcount = db.RegisteredUsers.Where(x => x.ClassId == stud.ClassId && x.SelectedOrg == i).Count();
-            var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == stud.ClassId && x.GenderId == 2 && x.SelectedOrg == i).Count();
-            var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == stud.ClassId && x.GenderId == 1 && x.SelectedOrg == i).Count();
-            var updateclass = new Class
-            {
-                ClassId = getclassid.ClassId,
-                ClassName = getclassid.ClassName,
-                ClassIsActive = getclassid.ClassIsActive,
-                OrgId = getclassid.OrgId,
-                ClassRefNumb = getclassid.ClassRefNumb,
-                TitleId = getclassid.TitleId,
-                ClassTeacherId = getclassid.ClassTeacherId,
-                ClassTeacherFullName = getclassid.ClassTeacherFullName,
-                Students_Count = studentcount,
-                Female_Students_Count = FemStuCount,
-                Male_Students_Count = MaleStudCount
-            };
-            getclassid = updateclass;
-            db.Entry(getclassid).State = EntityState.Modified;
-            db.SaveChanges();
-            // THEN EXIT
 
+
+            // THEN EXIT
             return result;
 
         }
@@ -1453,6 +1423,9 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
+
+
+
                     // UPON ADDING STUDENT -  UPDATE CLASS DATA.
                     var rr6 = Session["OrgId"].ToString();
                     int i6 = Convert.ToInt32(rr6);
