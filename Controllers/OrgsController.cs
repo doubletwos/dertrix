@@ -356,6 +356,40 @@ namespace Dertrix.Controllers
                 db.Entry(changedorg).State = EntityState.Modified;
                 db.SaveChanges();
 
+                //Update RegisteredUserOrganisations.Orgname 
+                var userlinkedtoorg = db.RegisteredUserOrganisations.Where(x => x.OrgId == changedorg.OrgId).Select(p => p.RegisteredUserId).ToList();
+                var listofusers = new List<int>(userlinkedtoorg);
+
+                foreach (var usr in userlinkedtoorg)
+                {
+                    var getuser = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserId == usr).FirstOrDefault();
+
+                    var reguserorg = new RegisteredUserOrganisation
+                    {
+                        RegisteredUserOrganisationId = getuser.RegisteredUserOrganisationId,
+                        RegisteredUserId = getuser.RegisteredUserId,
+                        OrgId = getuser.OrgId,
+                        Email = getuser.Email,
+                        FirstName = getuser.FirstName,
+                        LastName = getuser.LastName,
+                        OrgName = org.OrgName,
+                        RegUserOrgBrand = getuser.RegUserOrgBrand,
+                        IsTester = getuser.IsTester,
+                        RegisteredUserTypeId = getuser.RegisteredUserId,
+                        PrimarySchoolUserRoleId = getuser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = getuser.SecondarySchoolUserRoleId,
+                        EnrolmentDate = getuser.EnrolmentDate,
+                        CreatedBy = getuser.CreatedBy,
+                        FullName = getuser.FullName,
+                        TitleId = getuser.TitleId,
+                        LastLogOn = getuser.LastLogOn,
+                    };
+
+                    getuser = reguserorg;
+                    db.Entry(getuser).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                }
 
                 return RedirectToAction("SystemAdminIndex");
             }

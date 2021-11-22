@@ -95,7 +95,7 @@ namespace Dertrix.Controllers
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-           
+            ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
             return PartialView("~/Views/Shared/PartialViewsForms/_UploadStudents.cshtml");
         }
 
@@ -168,7 +168,7 @@ namespace Dertrix.Controllers
 
 
         [HttpPost]
-        public ActionResult Uploader(HttpPostedFileBase postedFile)
+        public ActionResult Uploader(HttpPostedFileBase postedFile, int? classid)
         {
 
             try
@@ -185,6 +185,9 @@ namespace Dertrix.Controllers
 
                 ExcelWorksheet workSheet = package.Workbook.Worksheets[1]; // read sheet 1
                 object data = null;
+
+
+                var selectedClass = db.Classes.Where(x => x.ClassId == classid).Select(x => x.ClassId).FirstOrDefault();
 
                 do
                 {
@@ -207,16 +210,21 @@ namespace Dertrix.Controllers
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
                     }
-                    object _class = workSheet.Cells[startRow, startColumn + 2].Value;
-                    if (_class == null)
-                    {
-                        var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Class is required.";
-                        package.Save();
-                        startRow++;
-                        data = workSheet.Cells[startRow, startColumn].Value; //column No
-                        continue;
-                    }
-                    object gender = workSheet.Cells[startRow, startColumn + 3].Value;
+
+                    object _class = selectedClass;
+
+                    //object _class = workSheet.Cells[startRow, startColumn + 2].Value;
+                    //if (_class == null)
+                    //{
+                    //    var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Class is required.";
+                    //    package.Save();
+                    //    startRow++;
+                    //    data = workSheet.Cells[startRow, startColumn].Value; //column No
+                    //    continue;
+                    //}
+
+
+                    object gender = workSheet.Cells[startRow, startColumn + 2].Value;
                     if (gender == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Gender is required.";
@@ -225,7 +233,7 @@ namespace Dertrix.Controllers
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
                     }
-                    object religion = workSheet.Cells[startRow, startColumn + 4].Value;
+                    object religion = workSheet.Cells[startRow, startColumn + 3].Value;
                     if (religion == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Religion is required.";
@@ -234,7 +242,7 @@ namespace Dertrix.Controllers
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
                     }
-                    object tribe = workSheet.Cells[startRow, startColumn + 5].Value;
+                    object tribe = workSheet.Cells[startRow, startColumn + 4].Value;
                     if (tribe == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Tribe is required.";
@@ -243,7 +251,7 @@ namespace Dertrix.Controllers
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
                     }
-                    object dateOfBirth = workSheet.Cells[startRow, startColumn + 6].Value;
+                    object dateOfBirth = workSheet.Cells[startRow, startColumn + 5].Value;
                     if (dateOfBirth == null)
                     {
                         var col7 = workSheet.Cells[startRow, startColumn + 7].Value = "Date of birth is required.";
@@ -548,7 +556,7 @@ namespace Dertrix.Controllers
         // GET: RegisteredUsers/AllStudents/
         public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
-            if (Request.Browser.IsMobileDevice == true)
+            if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
 
