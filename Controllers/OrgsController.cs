@@ -383,6 +383,7 @@ namespace Dertrix.Controllers
                         FullName = getuser.FullName,
                         TitleId = getuser.TitleId,
                         LastLogOn = getuser.LastLogOn,
+                        AddedVia = getuser.AddedVia,
                     };
 
                     getuser = reguserorg;

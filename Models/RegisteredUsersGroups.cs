@@ -21,5 +21,7 @@ namespace Dertrix.Models
 
         public int GroupTypeId { get; set; }
 
+        public int? LinkedStudentId { get; set; }
+
     }
 }

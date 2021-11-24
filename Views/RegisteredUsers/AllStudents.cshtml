@@ -79,7 +79,7 @@
 						@Html.DisplayFor(modelItem => item.RegisteredUserId)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.ContactFullName)
+						@Html.DisplayFor(modelItem => item.FullName)
 					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.PgCount)
@@ -94,12 +94,13 @@
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Action <span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu" style="background-color:white">
-								<li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
-								<li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
-								<li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
-								@*<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>*@
-							</ul>
+                            <ul class="dropdown-menu" style="background-color:white">
+                                <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
+                                <li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
+                                <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
+                                <li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
+                                @*<li><a href="#" onclick="LinkGuardian(@item.RegisteredUserId)">Link Guardian to Student</a></li>*@
+                            </ul>
 						</div>
 					</td>
 				</tr>
@@ -159,13 +160,13 @@
 		</div>
 	</div>
 </div>
-@*Link Student to Guardian*@
+@*Change Student's Class*@
 <div class="modal fade" id="myModalls">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Link Student to Guardian</h3>
+				<h3 class="modal-title">Change Student's Class'</h3>
 			</div>
 			<div class="modal-body" id="myModalBodyDivls"></div>
 		</div>
@@ -225,10 +226,10 @@
 	}
 </script>
 <script>
-	var LinkGuardian = function (Id) {
+    var ChangeStudentClass = function (Id) {
 		$.ajax({
 			type: "GET",
-			url: "/RegisteredUsers/LinkGuardianStudent",
+            url: "/RegisteredUsers/ChangeStudentsClass",
 			data: { Id: Id },
 			success: function (response) {
 				$("#myModalBodyDivls").html(response);

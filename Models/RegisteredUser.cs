@@ -36,6 +36,7 @@ namespace Dertrix.Models
 
         public string FullName { get; set; }
 
+
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "email address is required")]
         public string Email { get; set; }

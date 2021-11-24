@@ -8,6 +8,7 @@ namespace Dertrix.Models
 {
     public class RegisteredUserOrganisation
     {
+      
         public int RegisteredUserOrganisationId  { get; set; }
 
         public int RegisteredUserId { get; set; }
@@ -62,6 +63,8 @@ namespace Dertrix.Models
         public string CreatedBy { get; set; }
 
         public string FullName { get; set; }
+
+        public int? AddedVia { get; set; }   
 
 
 
