@@ -1,0 +1,114 @@
+﻿@model Dertrix.Models.RegisteredUserOrganisation
+<form id="ChangeStaffsRoleForm">
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.RegisteredUserOrganisationId)
+        @Html.HiddenFor(model => model.RegisteredUserId)
+        @Html.HiddenFor(model => model.OrgId)
+        @Html.HiddenFor(model => model.OrgName)
+        @Html.HiddenFor(model => model.RegUserOrgBrand)
+        @Html.HiddenFor(model => model.IsTester)
+        @Html.HiddenFor(model => model.RegisteredUserTypeId)
+        @Html.HiddenFor(model => model.EnrolmentDate)
+        @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.FullName)
+        @Html.HiddenFor(model => model.LastLogOn)
+        @Html.HiddenFor(model => model.TitleId)
+        @Html.HiddenFor(model => model.FirstName)
+        @Html.HiddenFor(model => model.LastName)
+        @Html.HiddenFor(model => model.Email)
+
+
+
+
+        @{
+            if ((int)Session["OrgType"] == 3 || (int)Session["OrgType"] == 5)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PrimarySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("PrimarySchoolUserRoleId", null, "", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PrimarySchoolUserRoleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        }
+        @{
+            if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SecondarySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SecondarySchoolUserRoleId", null, "", new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SecondarySchoolUserRoleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        }
+
+
+        <div class="modal-footer">
+            <input type="submit" value="Update" class="RegUserOrgButtonColour" id="editstudentsrole" />
+            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+        </div>
+
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+
+        //$('#ChangeStudentClassForm').validate({
+        //    errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+        //    errorElement: 'div',
+        //    errorPlacement: function (error, e) {
+        //        e.parents('.form-group > div').append(error);
+        //    },
+        //    highlight: function (e) {
+        //        $(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+        //        $(e).closest('.help-block').remove();
+        //    },
+        //    success: function (e) {
+        //        e.closest('.form-group').removeClass('has-success has-error');
+        //        e.closest('.help-block').remove();
+        //    },
+        //    rules: {
+        //        'ClassId': {
+        //            required: true,
+        //        }
+
+        //    },
+        //    messages: {
+        //        'ClassId': 'Please select class',
+        //    }
+        //});
+
+
+
+        $("#editstudentsrole").on("click", function () {
+            //if ($("#ChangeStudentClassForm").valid()) {
+                var data = $("#ChangeStaffsRoleForm").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/RegisteredUsers/ChangeStaffRole",
+                    data: data,
+                    success: function (response) {
+                        alert("Staff's Role Updated");
+                        $("#myModal").modal("hide");
+                        $("#ChangeStaffsRoleForm")[0].reset();
+                        window.location.reload();
+                    }
+                })
+        //    }
+        })
+
+
+
+
+
+
+    })
+
+</script>

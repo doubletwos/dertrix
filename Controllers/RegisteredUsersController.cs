@@ -503,6 +503,49 @@ namespace Dertrix.Controllers
         }
 
 
+        public ActionResult ChangeStaffsRole(int Id) 
+        {
+            if (Id != 0)
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var staff = db.RegisteredUserOrganisations 
+                    .Include(t => t.PrimarySchoolUserRole)
+                    .Include(t => t.SecondarySchoolUserRole)
+                    .Where(x => x.RegisteredUserId == Id)
+                    .FirstOrDefault();
+
+                ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", staff.PrimarySchoolUserRoleId);
+                ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName", staff.SecondarySchoolUserRoleId);
+
+
+                var staff0 = new RegisteredUserOrganisation 
+                {
+                   RegisteredUserOrganisationId = staff.RegisteredUserOrganisationId,
+                   RegisteredUserId = staff.RegisteredUserId,
+                   OrgId = staff.OrgId,
+                   Email = staff.Email,
+                   FirstName = staff.FirstName,
+                   LastName = staff.LastName,
+                   OrgName = staff.OrgName, 
+                   RegUserOrgBrand = staff.RegUserOrgBrand,
+                   IsTester = staff.IsTester,   
+                   RegisteredUserTypeId = staff.RegisteredUserTypeId,   
+                   PrimarySchoolUserRoleId  = staff.PrimarySchoolUserRoleId,
+                   SecondarySchoolUserRoleId   = staff.SecondarySchoolUserRoleId,
+                   EnrolmentDate = staff.EnrolmentDate,
+                   CreatedBy = staff.CreatedBy,
+                   FullName = staff.FullName,
+                   TitleId = staff.TitleId,
+                   LastLogOn = staff.LastLogOn,
+                   AddedVia = staff.AddedVia,
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_ChangeStaffsRole.cshtml", staff0);
+            }
+            return PartialView("_ChangeStaffsRole");
+        }
+
+
 
         //public ActionResult LinkGuardianStudent(int Id)
         //{
@@ -573,9 +616,6 @@ namespace Dertrix.Controllers
                     .Where(x => x.OrgId == i)
                     .FirstOrDefault();
                 ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", stud1.TitleId);
-                ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", stud1.PrimarySchoolUserRoleId);
-                ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName", stud1.SecondarySchoolUserRoleId);
-
 
                 var stud = new RegisteredUserOrganisation
                 {
@@ -1528,6 +1568,124 @@ namespace Dertrix.Controllers
 
 
 
+
+        // POST: RegisteredUsers/UpdateStudentsClass/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeStaffRole(RegisteredUserOrganisation registeredUserOrganisation)  
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            if (!(ModelState.IsValid) || ModelState.IsValid)
+            {
+
+                var locatestaff = db.RegisteredUserOrganisations.AsNoTracking()
+                    .Where(x => x.RegisteredUserId == registeredUserOrganisation.RegisteredUserId)
+                    .Where(x => x.OrgId == i)
+                    .FirstOrDefault();
+
+                // ORG IS SECONDARY SCH
+                if ((int)Session["OrgType"] == 2)
+                {
+                    // Update teachers role to non teaching staff if set as empty
+                    if (registeredUserOrganisation.SecondarySchoolUserRoleId == null)
+                    {
+                        // ORG IS SECONDARY SCH
+                        if ((int)Session["OrgType"] == 2)
+                        {
+                            registeredUserOrganisation.SecondarySchoolUserRoleId = 6;
+                        }
+                       
+                    }
+                    else
+                    {
+                        locatestaff.SecondarySchoolUserRoleId = registeredUserOrganisation.SecondarySchoolUserRoleId;
+                    }
+
+                    var secstaff = new RegisteredUserOrganisation
+                    {
+                        RegisteredUserOrganisationId = locatestaff.RegisteredUserOrganisationId,
+                        RegisteredUserId = locatestaff.RegisteredUserId,
+                        OrgId = locatestaff.OrgId,
+                        Email = locatestaff.Email,
+                        FirstName = locatestaff.FirstName,
+                        LastName = locatestaff.LastName,
+                        OrgName = locatestaff.OrgName,
+                        RegUserOrgBrand = locatestaff.RegUserOrgBrand,
+                        IsTester = locatestaff.IsTester,
+                        RegisteredUserTypeId = locatestaff.RegisteredUserTypeId,
+                        PrimarySchoolUserRoleId = locatestaff.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = registeredUserOrganisation.SecondarySchoolUserRoleId,
+                        EnrolmentDate = locatestaff.EnrolmentDate,
+                        CreatedBy = locatestaff.CreatedBy,
+                        FullName = locatestaff.FullName,
+                        TitleId = locatestaff.TitleId,
+                        LastLogOn = locatestaff.LastLogOn,
+                        AddedVia = locatestaff.AddedVia,
+                        
+                    };
+                    locatestaff = secstaff;
+                    db.Entry(locatestaff).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                // ORG IS PRIMARY SCH
+                if ((int)Session["OrgType"] == 3)
+                {
+                    // Update teachers role to non teaching staff if set as empty
+                    if (registeredUserOrganisation.PrimarySchoolUserRoleId == null )
+                    {                    
+                        // ORG IS PRIMARY SCH
+                        if ((int)Session["OrgType"] == 3)
+                        {
+                            registeredUserOrganisation.PrimarySchoolUserRoleId = 6;
+                        }
+
+                    }
+                    else
+                    {
+                        locatestaff.PrimarySchoolUserRoleId = registeredUserOrganisation.PrimarySchoolUserRoleId;
+                    }
+
+                    var pristaff = new RegisteredUserOrganisation
+                    {
+                        RegisteredUserOrganisationId = locatestaff.RegisteredUserOrganisationId,
+                        RegisteredUserId = locatestaff.RegisteredUserId,
+                        OrgId = locatestaff.OrgId,
+                        Email = locatestaff.Email,
+                        FirstName = locatestaff.FirstName,
+                        LastName = locatestaff.LastName,
+                        OrgName = locatestaff.OrgName,
+                        RegUserOrgBrand = locatestaff.RegUserOrgBrand,
+                        IsTester = locatestaff.IsTester,
+                        RegisteredUserTypeId = locatestaff.RegisteredUserTypeId,
+                        PrimarySchoolUserRoleId = registeredUserOrganisation.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = locatestaff.SecondarySchoolUserRoleId,
+                        EnrolmentDate = locatestaff.EnrolmentDate,
+                        CreatedBy = locatestaff.CreatedBy,
+                        FullName = locatestaff.FullName,
+                        TitleId = locatestaff.TitleId,
+                        LastLogOn = locatestaff.LastLogOn,
+                        AddedVia = locatestaff.AddedVia,
+                    };
+                    locatestaff = pristaff;
+                    db.Entry(locatestaff).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                // ORG IS NURSERY SCH
+                if ((int)Session["OrgType"] == 4)
+                {
+                }
+               return RedirectToAction("Staffs", "RegisteredUsers");
+
+            }
+
+            return RedirectToAction("Staffs", "RegisteredUsers");
+        }
+
+
+
         // POST: RegisteredUsers/UpdateStudentsClass/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1628,6 +1786,9 @@ namespace Dertrix.Controllers
         {
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
                 var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
 
                 var studs = new RegisteredUser
@@ -1636,6 +1797,9 @@ namespace Dertrix.Controllers
                     RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
                     FirstName = registeredUser.FirstName,
                     LastName = registeredUser.LastName,
+                    Password = locatestud.Password,
+                    ConfirmPassword = locatestud.ConfirmPassword,
+                    Telephone = locatestud.Telephone,
                     Email = locatestud.Email,
                     SelectedOrg = locatestud.SelectedOrg,
                     ClassId = locatestud.ClassId,
@@ -1662,29 +1826,8 @@ namespace Dertrix.Controllers
                 foreach (var re in reguseridcount)
                 {
                     var getid = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserOrganisationId == re).FirstOrDefault();
-                    // Update teachers role to non teaching staff if set as empty
-                    if (registeredUser.StudentRegFormId == null && registeredUser.PrimarySchoolUserRoleId == null && registeredUser.SecondarySchoolUserRoleId == null)
-                    {
-                        // ORG IS SECONDARY SCH
-                        if ((int)Session["OrgType"] == 2)
-                        {
-                            getid.SecondarySchoolUserRoleId = 6;
-                        }
-                        // ORG IS PRIMARY SCH
-                        if ((int)Session["OrgType"] == 3)
-                        {
-                            getid.PrimarySchoolUserRoleId = 6;
-                        }
-                        // ORG IS NURSERY SCH
-                        if ((int)Session["OrgType"] == 4)
-                        {
-                        }
-                    }
-                    else
-                    {
-                        getid.SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId;
-                        getid.PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId;
-                    }
+
+                   
                     var reguser = new RegisteredUserOrganisation
                     {
                         RegisteredUserOrganisationId = getid.RegisteredUserOrganisationId,
@@ -1694,8 +1837,6 @@ namespace Dertrix.Controllers
                         RegUserOrgBrand = getid.RegUserOrgBrand,
                         IsTester = getid.IsTester,
                         RegisteredUserTypeId = getid.RegisteredUserTypeId,
-                        PrimarySchoolUserRoleId = getid.PrimarySchoolUserRoleId,
-                        SecondarySchoolUserRoleId = getid.SecondarySchoolUserRoleId,
                         EnrolmentDate = getid.EnrolmentDate,
                         CreatedBy = getid.CreatedBy,
                         Email = registeredUser.Email,
@@ -1703,11 +1844,17 @@ namespace Dertrix.Controllers
                         LastName = registeredUser.LastName,
                         FullName = registeredUser.FirstName + " " + registeredUser.LastName,
                         TitleId = registeredUser.TitleId,
-                        LastLogOn = getid.LastLogOn
+                        LastLogOn = getid.LastLogOn,
+                        PrimarySchoolUserRoleId = getid.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = getid.SecondarySchoolUserRoleId
                     };
                     getid = reguser;
                     db.Entry(getid).State = EntityState.Modified;
                     db.SaveChanges();
+
+
+        
+
                 }
 
                 //If registered user is a teacher, update teacher details in Class Model.
@@ -1745,8 +1892,12 @@ namespace Dertrix.Controllers
                     var updateclasses = UpdateClassProfile();
                 }
 
+                return RedirectToAction("AllStudents", "RegisteredUsers");
+
+
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("AllStudents", "RegisteredUsers");
+
         }
 
 
