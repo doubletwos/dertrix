@@ -48,11 +48,6 @@ namespace Dertrix.Controllers
 
   
 
-
-
-
-
-
         [ChildActionOnly]
         public ActionResult AddEventToOrgCalendar()
         {
@@ -76,8 +71,10 @@ namespace Dertrix.Controllers
                     GroupName = x.GroupName
                 }).ToList()
             };
+
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName");
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+
             return PartialView("~/Views/Shared/PartialViewsForms/_AddEventToOrgCalendar.cshtml", addeventtoorgcalviewmodel);
         }
 
@@ -177,6 +174,23 @@ namespace Dertrix.Controllers
                 db.OrgSchCalendars.Add(viewModel.OrgSchCalendar);
                 db.SaveChanges();
 
+
+                // UPON CREATING A CALNDR EVENT - LOG THE EVENT - EVENT CREATION IS EVENTTYPEID = 7.
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_TypeId = 7,
+                    Org_Event_Name = "Calendar Event Created",
+                    Org_Event_SubjectId = viewModel.OrgSchCalendar.OrgSchCalendarId.ToString(),
+                    Org_Event_SubjectName = viewModel.OrgSchCalendar.Name,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString()
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+
+
              var grps = viewModel.OrgGroups.Select(x => x.OrgGroupId).ToList();
              var grpstolist = new List<int>(grps);
 
@@ -197,10 +211,13 @@ namespace Dertrix.Controllers
                         db.SaveChanges();
                     }
               }
+
                 return Content("");
 
 
             }
+
+
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", viewModel.OrgSchCalendar.CalendarCategoryId);
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", viewModel.OrgSchCalendar.OrgId);
             return Content("");

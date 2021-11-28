@@ -17,100 +17,103 @@
 					@{
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
-					<div class="form-horizontal">
-						<h4></h4>
-						<hr />
-						@Html.HiddenFor(model => model.OrgSchCalendar.OrgId)
-						@Html.HiddenFor(model => model.OrgSchCalendar.CreatorId)
-						@Html.HiddenFor(model => model.OrgSchCalendar.CreatorFullName)
-						@Html.HiddenFor(model => model.OrgSchCalendar.CreationDate)
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.CalendarCategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownListFor(x => x.OrgSchCalendar.CalendarCategoryId, new SelectList(Model.CalendarCategorys, "CalendarCategoryId", "CategoryName"), "Please Select", new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.CalendarCategoryId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.OrgSchCalendar.Name, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Name, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                    <div class="form-horizontal">
+                        <h4></h4>
+                        <hr />
+                        @Html.HiddenFor(model => model.OrgSchCalendar.OrgId)
+                        @Html.HiddenFor(model => model.OrgSchCalendar.CreatorId)
+                        @Html.HiddenFor(model => model.OrgSchCalendar.CreatorFullName)
+                        @Html.HiddenFor(model => model.OrgSchCalendar.CreationDate)
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.EventDate, "Event Date", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.OrgSchCalendar.EventDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventDate, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.OrgSchCalendar.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
-							</div>
-						</div>
-	
+           
 
-						<div class="form-group">
-			                @Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new {  @class = "control-label col-md-2" })
-		                	<div class="col-md-10">
-				             @Html.DropDownListFor(model => model.OrgSchCalendar.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }))
-			               	@Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
-			              </div>
-		                </div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.Frequency, htmlAttributes: new { @id = "frequency0", @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.OrgSchCalendar.Frequency, new { htmlAttributes = new { @id = "frequency1", @class = "control-label col-md-2" } })
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Frequency, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownListFor(model => model.OrgSchCalendar.SendAsEmail, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text"))
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.SendAsEmail, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.CalendarCategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(x => x.OrgSchCalendar.CalendarCategoryId, new SelectList(Model.CalendarCategorys, "CalendarCategoryId", "CategoryName"), "Please Select", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.CalendarCategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.OrgSchCalendar.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.EventDate, "Event Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.OrgSchCalendar.EventDate, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.EventDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.EventTime, "Event Time", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.OrgSchCalendar.EventTime, "{0:d MMM yyyy}", new { htmlAttributes = new { @class = "form-control bs-timepicker", type = "text" } })
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.EventTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
 
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.OrgSchCalendar.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }))
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.Frequency, htmlAttributes: new { @id = "frequency0", @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.OrgSchCalendar.Frequency, new { htmlAttributes = new { @id = "frequency1", @class = "control-label col-md-2" } })
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.Frequency, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.OrgSchCalendar.SendAsEmail, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text"))
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.SendAsEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
 
 
 
-						<div class="form-group">
-							@Html.LabelFor(model => model.OrgSchCalendar.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.TextAreaFor(model => model.OrgSchCalendar.Description, new { htmlAttributes = new { rows = "20", cols = "20", @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.OrgSchCalendar.Description, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
-							<div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
 
-								@for (int i = 0; i < Model.OrgGroups.Count; i++)
-								{
-									@Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
-									@Html.HiddenFor(model => model.OrgGroups[i].GroupName)
-									@:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
-									@:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
-									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
-									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
-									<br />
-								}
-							</div>
-						</div>
-						<div class="modal-footer">
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
-							<input type="submit" value="Create Event" class="RegUserOrgButtonColour" id="btnSubmit" />
-						</div>
-					</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OrgSchCalendar.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.OrgSchCalendar.Description, new { htmlAttributes = new { rows = "20", cols = "20", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.OrgSchCalendar.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
+                            <div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
+
+                                @for (int i = 0; i < Model.OrgGroups.Count; i++)
+                                {
+                                    @Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
+                                    @Html.HiddenFor(model => model.OrgGroups[i].GroupName)
+                                    @:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
+                                    @:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
+                                    @:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
+                                    @:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
+                                    <br />
+                                }
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
+                            <input type="submit" value="Create Event" class="RegUserOrgButtonColour" id="btnSubmit" />
+                        </div>
+                    </div>
 </form>
 			</div>
 		</div>

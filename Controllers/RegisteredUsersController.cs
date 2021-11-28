@@ -547,33 +547,6 @@ namespace Dertrix.Controllers
 
 
 
-        //public ActionResult LinkGuardianStudent(int Id)
-        //{
-        //    if (Id != 0)
-        //    {
-        //        var rr = Session["OrgId"].ToString();
-        //        int i = Convert.ToInt32(rr);
-        //        var stud1 = db.RegisteredUsers
-        //            .Include(c => c.Class)
-        //            .Where(x => x.RegisteredUserId == Id)
-        //            .FirstOrDefault();
-        //        ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
-        //        ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
-        //        ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
-        //        ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
-
-
-        //        var stud = new RegisteredUser
-        //        {
-        //            RegisteredUserId = stud1.RegisteredUserId,
-        //        };
-        //        return PartialView("~/Views/Shared/PartialViewsForms/_LinkGuardianStudent.cshtml", stud);
-        //    }
-        //    return PartialView("_LinkGuardianStudent");
-        //}
-
-
-
         [ChildActionOnly]
         public ActionResult LinkGuardianToStudent(int? Id)
         {
@@ -609,13 +582,18 @@ namespace Dertrix.Controllers
         {
             if (Id != 0)
             {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
+                var rr = Session["OrgId"].ToString(); 
+                int i = Convert.ToInt32(rr); 
                 var stud1 = db.RegisteredUserOrganisations
                     .Where(x => x.RegisteredUserId == Id)
                     .Where(x => x.OrgId == i)
                     .FirstOrDefault();
-                ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", stud1.TitleId);
+
+                ViewBag.TitleId = new SelectList(
+                from x  in db.Titles  select new { x.TitleId, x.TitleName , Name_Id = x.TitleName + " " + "[" + x.TitleId + "]" },
+                "TitleId", "Name_Id", stud1.TitleId);
+
+
 
                 var stud = new RegisteredUserOrganisation
                 {
