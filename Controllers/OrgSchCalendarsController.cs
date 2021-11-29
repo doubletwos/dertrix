@@ -46,7 +46,7 @@ namespace Dertrix.Controllers
         }
 
 
-  
+
 
         [ChildActionOnly]
         public ActionResult AddEventToOrgCalendar()
@@ -79,14 +79,14 @@ namespace Dertrix.Controllers
         }
 
 
-   
+
 
 
 
         // GET: OrgSchCalendars/EventDetails/5
         public ActionResult EventDetails(int Id)
         {
-  
+
             var calendarevent = db.OrgSchCalendars.Where(x => x.OrgSchCalendarId == Id);
             ViewBag.OrgSchCalendar = calendarevent;
 
@@ -95,7 +95,7 @@ namespace Dertrix.Controllers
 
 
 
-       
+
         public ActionResult UpdateEvents()
         {
             // LOOP THROUGH LIST OF EVENTS IN DB
@@ -130,7 +130,7 @@ namespace Dertrix.Controllers
                     eventid = schevnt;
                     db.Entry(eventid).State = EntityState.Modified;
                     db.SaveChanges();
-                    
+
 
                 }
 
@@ -163,7 +163,7 @@ namespace Dertrix.Controllers
             var SessionId = Convert.ToInt32(Session["SessionId"]);
 
             viewModel.OrgSchCalendar.CreatorId = RegisteredUserId;
-            viewModel.OrgSchCalendar.OrgId = i; 
+            viewModel.OrgSchCalendar.OrgId = i;
             viewModel.OrgSchCalendar.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
             viewModel.OrgSchCalendar.CreationDate = DateTime.Now;
             viewModel.OrgSchCalendar.Isarchived = false;
@@ -191,26 +191,26 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
 
 
-             var grps = viewModel.OrgGroups.Select(x => x.OrgGroupId).ToList();
-             var grpstolist = new List<int>(grps);
+                var grps = viewModel.OrgGroups.Select(x => x.OrgGroupId).ToList();
+                var grpstolist = new List<int>(grps);
 
 
-             foreach (var grp in grps)
+                foreach (var grp in grps)
                 {
                     // GET VALUE OF IS-SELECTED
                     var isselected = viewModel.OrgGroups.Where(x => grp == x.OrgGroupId).Select(x => x.IsSelected).FirstOrDefault();
-                    if(isselected == true)
+                    if (isselected == true)
                     {
                         var orgschcalndrGrps = new OrgSchCalndrGrp()
                         {
                             OrgSchCalendarId = viewModel.OrgSchCalendar.OrgSchCalendarId,
                             OrgGroupId = grp,
-                            OrgId = i,                         
+                            OrgId = i,
                         };
                         db.OrgSchCalndrGrps.Add(orgschcalndrGrps);
                         db.SaveChanges();
                     }
-              }
+                }
 
                 return Content("");
 
@@ -271,14 +271,12 @@ namespace Dertrix.Controllers
                 SendAsEmail = edtcalevent.SendAsEmail,
                 Isarchived = edtcalevent.Isarchived,
 
-
-
-                OrgGroups = grp.Select(x  => new OrgGroup()
+                OrgGroups = grp.Select(x => new OrgGroup()
                 {
                     OrgGroupId = x.OrgGroupId,
                     OrgId = x.OrgId,
                     GroupName = x.GroupName,
-                    IsSelected =   x.IsSelected
+                    IsSelected = x.IsSelected
                 }).ToList()
             };
 
@@ -287,7 +285,7 @@ namespace Dertrix.Controllers
                 int groupCount = editeventorgcalviewmodel.OrgGroups.Count();
             }
 
-            foreach(var item in editeventorgcalviewmodel.OrgGroups)
+            foreach (var item in editeventorgcalviewmodel.OrgGroups)
             {
 
                 var isselected = db.OrgSchCalndrGrps.Where(x => x.OrgGroupId == item.OrgGroupId).Where(x => x.OrgSchCalendarId == Id).Where(X => X.OrgId == i).Select(x => x.OrgSchCalndrGrpId).Count();
@@ -309,74 +307,6 @@ namespace Dertrix.Controllers
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgSchCal.cshtml", editeventorgcalviewmodel);
         }
-
-
-
-
-        // POST: OrgSchCalendars/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(EditOrgSchCalViewModel orgSchCalendar)
-        //{
-        //    if (Request.Browser.IsMobileDevice == true)
-        //    {
-        //        return RedirectToAction("WrongDevice", "Orgs");
-        //    }
-        //    if (Session["OrgId"] == null)
-        //    {
-        //        return RedirectToAction("Signin", "Access");
-        //    }
-
-        //    var sess = Session["OrgId"].ToString();
-        //    int i = Convert.ToInt32(sess);
-
-
-        //    // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
-        //    var orgschcalid = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalendarId == orgSchCalendar.OrgSchCalendarId).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).ToList();
-        //    var orgschcalidtolist = new List<int>(orgschcalid);
-
-        //    foreach (var recrd in orgschcalid)
-        //    {
-        //        var removercrd = db.OrgSchCalndrGrps.Where(x => x.OrgSchCalndrGrpId == recrd).Where(x => x.OrgId == i).Select(x => x.OrgSchCalndrGrpId).FirstOrDefault();
-
-        //        OrgSchCalndrGrp orgschcalndrgrp = db.OrgSchCalndrGrps.Find(removercrd);
-        //        db.OrgSchCalndrGrps.Remove(orgschcalndrgrp);
-        //    }
-
-
-        //    // LOOP THRU LIST OF GROUPS PROVIDED
-        //    var grps = orgSchCalendar.OrgGroups.Select(x => x.OrgGroupId).ToList();
-        //    var grpstolist = new List<int>(grps);
-        //    foreach (var grp in grps)
-        //    {
-        //        // GET VALUE OF IS-SELECTED
-        //        var isselected = orgSchCalendar.OrgGroups.Where(x => grp == x.OrgGroupId).Select(x => x.IsSelected).FirstOrDefault();
-        //        if (isselected == true)
-        //        {
-        //            var orgschcalndrGrps = new OrgSchCalndrGrp()
-        //            {
-        //                OrgSchCalendarId = orgSchCalendar.OrgSchCalendarId,
-        //                OrgGroupId = grp,
-        //                OrgId = i,
-        //            };
-        //            db.OrgSchCalndrGrps.Add(orgschcalndrGrps);
-        //            db.SaveChanges();
-        //        }
-        //    }
-
-        //    if (!(ModelState.IsValid) || ModelState.IsValid)
-        //    {
-        //        db.Entry(orgSchCalendar).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index", "Orgs", new { id = i });
-        //    }
-        //    ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
-        //    ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", orgSchCalendar.OrgId);
-        //    return View(orgSchCalendar);
-        //}
-
-
-
 
 
         //// POST: OrgSchCalendars/Edit/5
@@ -436,6 +366,28 @@ namespace Dertrix.Controllers
             {
                 db.Entry(orgSchCalendar).State = EntityState.Modified;
                 db.SaveChanges();
+
+
+
+                //// UPON EDITING A CALNDR EVENT - LOG THE EVENT - EVENT EDITION IS EVENTTYPEID = 8.
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_TypeId = 8,
+                    Org_Event_Name = "Calendar Event Edited",
+                    Org_Event_SubjectId = orgSchCalendar.OrgSchCalendarId.ToString(),
+                    Org_Event_SubjectName = orgSchCalendar.Name,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString()
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+
+
+
+
+
                 return RedirectToAction("Index", "Orgs", new { id = i });
             }
             ViewBag.CalendarCategoryId = new SelectList(db.CalendarCategorys, "CalendarCategoryId", "CategoryName", orgSchCalendar.CalendarCategoryId);
@@ -469,7 +421,7 @@ namespace Dertrix.Controllers
         }
 
         // POST: OrgSchCalendars/Delete/5
-    
+
         public ActionResult DeleteConfirmed(int? Id)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
@@ -488,6 +440,24 @@ namespace Dertrix.Controllers
             db.OrgSchCalendars.Remove(orgSchCalendar);
             db.SaveChanges();
 
+
+            //// UPON DELETING A CALNDR EVENT - LOG THE EVENT - EVENT DELETION IS EVENTTYPEID = 9.
+            var orgeventlog = new Org_Events_Log()
+            {
+                Org_Event_TypeId = 9,
+                Org_Event_Name = "Calendar Event Deleted",
+                Org_Event_SubjectId = orgSchCalendar.OrgSchCalendarId.ToString(),
+                Org_Event_SubjectName = orgSchCalendar.Name,
+                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                Org_Event_Time = DateTime.Now,
+                OrgId = Session["OrgId"].ToString()
+            };
+            db.Org_Events_Logs.Add(orgeventlog);
+            db.SaveChanges();
+
+
+
             return RedirectToAction("Index", "Orgs", new { id = i });
         }
 
@@ -501,7 +471,7 @@ namespace Dertrix.Controllers
         }
 
 
-   
+
 
 
     }
