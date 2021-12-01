@@ -36,10 +36,10 @@ namespace Dertrix.Controllers
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
             var studentGuardians = db.StudentGuardians
-                .Where(e => e.OrgId == i) 
+                .Where(e => e.OrgId == i)
                 .Include(s => s.RegisteredUser)
                 .Include(s => s.Title)
-                .Include(s => s.Relationship);               
+                .Include(s => s.Relationship);
             return View(studentGuardians.ToList());
         }
 
@@ -115,7 +115,7 @@ namespace Dertrix.Controllers
                     OrgId = guardian.OrgId,
                     TitleId = guardian.TitleId,
                     RelationshipId = guardian.RelationshipId,
-                    Telephone = guardian.Telephone          
+                    Telephone = guardian.Telephone
                 };
 
                 ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName", guardian.RelationshipId);
@@ -217,15 +217,15 @@ namespace Dertrix.Controllers
 
             // CHECK IF GUARDIAN IS LINKED TO ANY OTHER STUDENT IN THIS ORG - IF NO - DELETE FROM SG /REGUSERORG/ REGUSER - TABLE AND LOG EVENT. CHECK USER IS DELETED FROM GRP LINKED TO CLASS.
 
-      
+
             // COUNT HOW MANY STUDENT GUARDIAN IS LINKED TO IN THE DATABASE
             var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Count();
             // IF COUNT OF LINKED STUDENT IS 1 - MEANS GUARDIAN IS ONLY LINKED TO THE STUDENT - WE GO IN THIS CONDITON AND FULLY DELETE GUARDIAN FROM THE SYSTEM.
             if (linked_stud == 1)
             {
-       
 
-            // LOG EVENT 
+
+                // LOG EVENT 
                 var orgeventlog = new Org_Events_Log()
                 {
                     Org_Event_TypeId = 5,
@@ -288,6 +288,20 @@ namespace Dertrix.Controllers
                 RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id);
                 db.RegisteredUsers.Remove(remv_g);
                 db.SaveChanges();
+
+                // LOOP THROUGH GROUPS IN ORG AND UPDATE COUNT             
+                var orggrp = db.OrgGroups.Where(x => x.OrgId == i).Select(x => x.OrgGroupId).ToList();
+                var grplist = new List<int>(orggrp);
+
+                foreach (var grp in grplist)
+                {
+                    //UPDATE GROUP COUNT 
+                    var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
+                    var result = otherController.UpdateGroupMemberCount(grp, i);
+
+                }
+
+
             }
             else
             {
@@ -405,7 +419,7 @@ namespace Dertrix.Controllers
                         if (std == id)
                         {
 
-                    // PG IS LINKED TO ANOTHER STUD IN CLASS - SO WE DNT REMV FROM CLASSGRP
+                            // PG IS LINKED TO ANOTHER STUD IN CLASS - SO WE DNT REMV FROM CLASSGRP
                             if (alllinkedstuds > 1)
                             {
                                 // UPDATE STUD'S GUARDIAN COUNT.
@@ -450,7 +464,7 @@ namespace Dertrix.Controllers
                                 db.Entry(studgaurd).State = EntityState.Modified;
                                 db.SaveChanges();
 
-                               // REMV FROM PG FROM SG
+                                // REMV FROM PG FROM SG
                                 StudentGuardian studgd = db.StudentGuardians.Find(id);
                                 db.StudentGuardians.Remove(studgd);
                                 db.SaveChanges();
@@ -460,13 +474,13 @@ namespace Dertrix.Controllers
                                 return RedirectToAction("Index");
 
                             }
-                   // PG IS LINKED TO JUST THIS STUD IN CLASS - SO WE REMV FROM CLASSGRP AND SG TABLE
+                            // PG IS LINKED TO JUST THIS STUD IN CLASS - SO WE REMV FROM CLASSGRP AND SG TABLE
 
                             if (alllinkedstuds == 1)
                             {
 
-                   // REMV PG FROM ORGGRP - 
-                    var pginorggrp = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == gd_id).Where(x => x.RegUserOrgId == i).Where(X => X.OrgGroupId == studclassGrpid).Select(x => x.RegisteredUsersGroupsId).ToList();
+                                // REMV PG FROM ORGGRP - 
+                                var pginorggrp = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == gd_id).Where(x => x.RegUserOrgId == i).Where(X => X.OrgGroupId == studclassGrpid).Select(x => x.RegisteredUsersGroupsId).ToList();
                                 var pgingrp = new List<int>(pginorggrp);
 
                                 foreach (var pg in pginorggrp)
@@ -525,7 +539,7 @@ namespace Dertrix.Controllers
                                 db.SaveChanges();
 
                             }
-                      
+
                         }
                     }
 
@@ -533,9 +547,9 @@ namespace Dertrix.Controllers
                 };
 
 
-                       
+
             };
-                  
+
             return RedirectToAction("Index");
         }
 

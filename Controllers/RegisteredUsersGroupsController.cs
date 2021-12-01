@@ -7,61 +7,62 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
+
+
+
 namespace Dertrix.Controllers
 {
     public class RegisteredUsersGroupsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-
-
         [ChildActionOnly]
         public ActionResult AddMemberToGroup1(int Id)
         {
- 
-          if (Id != 0)
-           {
+
+            if (Id != 0)
+            {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-            var grp1 = db.OrgGroups
-                .Where(x => x.OrgGroupId == Id)
-                .Where(x => x.OrgId == i)
-                .FirstOrDefault();
+                var grp1 = db.OrgGroups
+                    .Where(x => x.OrgGroupId == Id)
+                    .Where(x => x.OrgId == i)
+                    .FirstOrDefault();
 
-            var grp = new RegisteredUsersGroups
-            {
-                OrgGroupId = grp1.OrgGroupId,
-                GroupTypeId = grp1.GroupTypeId
+                var grp = new RegisteredUsersGroups
+                {
+                    OrgGroupId = grp1.OrgGroupId,
+                    GroupTypeId = grp1.GroupTypeId
 
-            };
+                };
 
-            var orgtype = db.OrgOrgTypes.Where(x => x.OrgId == i).Select(x => x.OrgTypeId).FirstOrDefault();
+                var orgtype = db.OrgOrgTypes.Where(x => x.OrgId == i).Select(x => x.OrgTypeId).FirstOrDefault();
 
-            // Secondary School
-            if (orgtype == 2)
-            {
-             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
-             .Where(x => x.OrgId == i)
-             //.Where(k => k.SecondarySchoolUserRoleId != 5)
-             .Where(e => e.SecondarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
-             ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                // Secondary School
+                if (orgtype == 2)
+                {
+                    ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
+                    .Where(x => x.OrgId == i)
+                    //.Where(k => k.SecondarySchoolUserRoleId != 5)
+                    .Where(e => e.SecondarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
+                    ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                }
+
+
+                // Primary School
+                if (orgtype == 3)
+                {
+                    ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
+                    .Where(x => x.OrgId == i)
+                    //.Where(k => k.PrimarySchoolUserRoleId != 5)
+                    .Where(e => e.PrimarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
+                    ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                }
+
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml", grp);
+
             }
-
-
-             // Primary School
-            if (orgtype == 3)
-            {
-             ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
-             .Where(x => x.OrgId == i)
-             //.Where(k => k.PrimarySchoolUserRoleId != 5)
-             .Where(e => e.PrimarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
-             ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
-            }  
-
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml", grp);
-
-          }
             return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml");
 
         }
@@ -121,25 +122,29 @@ namespace Dertrix.Controllers
                 db.RegisteredUsersGroups.Add(registeredUsersGroups);
                 db.SaveChanges();
 
-                // GET COUNT
-                var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
-                var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
 
-                // UPDATE ORG-GROUP GRP MEMB COUNT
-                var orgdata = new OrgGroup
-                {
-                    OrgGroupId = orggrpid.OrgGroupId,
-                    OrgId = orggrpid.OrgId,
-                    GroupName = orggrpid.GroupName,
-                    CreationDate = orggrpid.CreationDate,
-                    GroupTypeId = orggrpid.GroupTypeId,
-                    GroupRefNumb = orggrpid.GroupRefNumb,
-                    IsSelected = orggrpid.IsSelected,
-                    Group_members_count = getcount,                   
-                };
-                orggrpid = orgdata;
-                db.Entry(orgdata).State = EntityState.Modified;
-                db.SaveChanges();
+                var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId, orgid);
+
+
+                //// GET COUNT
+                //var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
+                //var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
+
+                //// UPDATE ORG-GROUP GRP MEMB COUNT
+                //var orgdata = new OrgGroup
+                //{
+                //    OrgGroupId = orggrpid.OrgGroupId,
+                //    OrgId = orggrpid.OrgId,
+                //    GroupName = orggrpid.GroupName,
+                //    CreationDate = orggrpid.CreationDate,
+                //    GroupTypeId = orggrpid.GroupTypeId,
+                //    GroupRefNumb = orggrpid.GroupRefNumb,
+                //    IsSelected = orggrpid.IsSelected,
+                //    Group_members_count = getcount,
+                //};
+                //orggrpid = orgdata;
+                //db.Entry(orgdata).State = EntityState.Modified;
+                //db.SaveChanges();
 
                 return RedirectToAction("Index", "OrgGroups");
             }
@@ -164,6 +169,46 @@ namespace Dertrix.Controllers
             return View(registeredUsersGroups);
         }
 
+
+
+        public ActionResult UpdateGroupMemberCount(int grpid, int? orgid)
+        {
+            //var rr = Session["OrgId"].ToString();
+            //int i = Convert.ToInt32(rr);
+
+            // get group count
+            var grpmembcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == grpid).Where(x => x.RegUserOrgId == orgid).Count();
+
+            // locate recently updated group
+            var orggroup = db.OrgGroups.AsNoTracking().Where(x => x.OrgId == orgid && x.OrgGroupId == grpid).FirstOrDefault();
+
+            var updategroup = new OrgGroup
+            {
+                OrgGroupId = orggroup.OrgGroupId,
+                OrgId = orggroup.OrgId,
+                GroupName = orggroup.GroupName,
+                CreationDate = orggroup.CreationDate,
+                GroupTypeId = orggroup.GroupTypeId,
+                GroupOrgTypeId = orggroup.GroupOrgTypeId,
+                GroupRefNumb = orggroup.GroupRefNumb,
+                IsSelected = orggroup.IsSelected,
+                Group_members_count = grpmembcount,
+            };
+
+            orggroup = updategroup;
+            db.Entry(orggroup).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+
+        }
+
+
+
+
+
+
+
         // POST: RegisteredUsersGroups/Delete/5
         public ActionResult DeleteConfirmed(int id, int grpid)
 
@@ -174,25 +219,28 @@ namespace Dertrix.Controllers
             db.RegisteredUsersGroups.Remove(registeredUsersGroups);
             db.SaveChanges();
 
-            // GET COUNT
-            var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
-            var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
+            //// GET COUNT
+            //var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
+            //var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
 
-            // UPDATE ORG-GROUP GRP MEMB COUNT
-            var orgdata = new OrgGroup
-            {
-                OrgGroupId = orggrpid.OrgGroupId,
-                OrgId = orggrpid.OrgId,
-                GroupName = orggrpid.GroupName,
-                CreationDate = orggrpid.CreationDate,
-                GroupTypeId = orggrpid.GroupTypeId,
-                GroupRefNumb = orggrpid.GroupRefNumb,
-                IsSelected = orggrpid.IsSelected,
-                Group_members_count = getcount,
-            };
-            orggrpid = orgdata;
-            db.Entry(orgdata).State = EntityState.Modified;
-            db.SaveChanges();
+            //// UPDATE ORG-GROUP GRP MEMB COUNT
+            //var orgdata = new OrgGroup
+            //{
+            //    OrgGroupId = orggrpid.OrgGroupId,
+            //    OrgId = orggrpid.OrgId,
+            //    GroupName = orggrpid.GroupName,
+            //    CreationDate = orggrpid.CreationDate,
+            //    GroupTypeId = orggrpid.GroupTypeId,
+            //    GroupRefNumb = orggrpid.GroupRefNumb,
+            //    IsSelected = orggrpid.IsSelected,
+            //    Group_members_count = getcount,
+            //};
+            //orggrpid = orgdata;
+            //db.Entry(orgdata).State = EntityState.Modified;
+            //db.SaveChanges();
+
+            var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId , orgid);
+
 
             return RedirectToAction("Index", "OrgGroups");
         }
