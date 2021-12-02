@@ -79,7 +79,7 @@ namespace Dertrix.Controllers
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-            ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
+            //ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
@@ -88,6 +88,16 @@ namespace Dertrix.Controllers
             ViewBag.StudentRegFormId = new SelectList(db.StudentRegForm, "StudentRegFormId", "Name");
             ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName");
             ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
+
+
+
+            ViewBag.ClassId = new SelectList(
+                            from x in db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList() select new { x.ClassId, x.ClassName, Name_Id = x.ClassName + " " + "[" + x.ClassId + "]" },
+                            "ClassId", "Name_Id");
+
+
+
+
             return PartialView("~/Views/Shared/PartialViewsForms/_AddStudent.cshtml");
         }
 

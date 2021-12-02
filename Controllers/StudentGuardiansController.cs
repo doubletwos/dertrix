@@ -419,7 +419,7 @@ namespace Dertrix.Controllers
                         if (std == id)
                         {
 
-                            // PG IS LINKED TO ANOTHER STUD IN CLASS - SO WE DNT REMV FROM CLASSGRP
+                            // PG IS LINKED TO ANOTHER STUD IN CLASS - SO WE ONLY REMV RECRD OF LINKED STU N PG IN REGUSRORGGRP
                             if (alllinkedstuds > 1)
                             {
                                 // UPDATE STUD'S GUARDIAN COUNT.
@@ -469,6 +469,36 @@ namespace Dertrix.Controllers
                                 db.StudentGuardians.Remove(studgd);
                                 db.SaveChanges();
 
+                                // REMV PG FROM ORGGRP - 
+                                var pginorggrp = db.RegisteredUsersGroups
+                                    .Where(x => x.RegisteredUserId == gd_id)
+                                    .Where(x => x.RegUserOrgId == i)
+                                    .Where(X => X.OrgGroupId == studclassGrpid)
+                                    .Where(x => x.LinkedStudentId == studid)
+                                    .Select(x => x.RegisteredUsersGroupsId).ToList();
+                                var pgingrp = new List<int>(pginorggrp);
+
+                                foreach (var pg in pginorggrp)
+                                {
+                                    RegisteredUsersGroups regusrg = db.RegisteredUsersGroups.Find(pg);
+                                    db.RegisteredUsersGroups.Remove(regusrg);
+                                    db.SaveChanges();
+
+
+                                    // LOOP THROUGH GROUPS IN ORG AND UPDATE COUNT             
+                                    var orggrp = db.OrgGroups.Where(x => x.OrgId == i).Select(x => x.OrgGroupId).ToList();
+                                    var grplist = new List<int>(orggrp);
+
+                                    foreach (var grp in grplist)
+                                    {
+                                        //UPDATE GROUP COUNT 
+                                        var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
+                                        var result = otherController.UpdateGroupMemberCount(grp, i);
+                                    }
+
+
+                                }
+
 
                                 //EXIT
                                 return RedirectToAction("Index");
@@ -480,7 +510,12 @@ namespace Dertrix.Controllers
                             {
 
                                 // REMV PG FROM ORGGRP - 
-                                var pginorggrp = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == gd_id).Where(x => x.RegUserOrgId == i).Where(X => X.OrgGroupId == studclassGrpid).Select(x => x.RegisteredUsersGroupsId).ToList();
+                                var pginorggrp = db.RegisteredUsersGroups
+                                    .Where(x => x.RegisteredUserId == gd_id)
+                                    .Where(x => x.RegUserOrgId == i)
+                                    .Where(X => X.OrgGroupId == studclassGrpid)
+                                    .Select(x => x.RegisteredUsersGroupsId).ToList();
+
                                 var pgingrp = new List<int>(pginorggrp);
 
                                 foreach (var pg in pginorggrp)
@@ -488,6 +523,18 @@ namespace Dertrix.Controllers
                                     RegisteredUsersGroups regusrg = db.RegisteredUsersGroups.Find(pg);
                                     db.RegisteredUsersGroups.Remove(regusrg);
                                     db.SaveChanges();
+
+                                    // LOOP THROUGH GROUPS IN ORG AND UPDATE COUNT             
+                                    var orggrp = db.OrgGroups.Where(x => x.OrgId == i).Select(x => x.OrgGroupId).ToList();
+                                    var grplist = new List<int>(orggrp);
+
+                                    foreach (var grp in grplist)
+                                    {
+                                        //UPDATE GROUP COUNT 
+                                        var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
+                                        var result = otherController.UpdateGroupMemberCount(grp, i);
+                                    }
+
                                 }
 
                                 // UPDATE STUD'S GUARDIAN COUNT.
