@@ -365,17 +365,17 @@ namespace Dertrix.Controllers
             db.SaveChanges();
 
 
-            // UPON ADDING STUDENT - LOG EVENT - LOGGING STUDENT IS EVENTTYPEID = 1
+            // UPON ADDING STUDENT - LOG EVENT - 
             var logstudregistrtn = new Org_Events_Log()
             {
-                Org_Event_TypeId = 1,
-                Org_Event_Name = "Registered student",
                 Org_Event_SubjectId = stud.RegisteredUserId.ToString(),
                 Org_Event_SubjectName = stud.FullName,
                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                 Org_Event_Time = DateTime.Now,
-                OrgId = i.ToString()
+                OrgId = i.ToString(),
+                Org_Events_Types = Org_Events_Types.Registered_Student
+
             };
             db.Org_Events_Logs.Add(logstudregistrtn);
             db.SaveChanges();
@@ -861,17 +861,17 @@ namespace Dertrix.Controllers
                             };
                             db.RegisteredUserOrganisations.Add(onetomany);
                             db.SaveChanges();
-                            // UPON ADDING A STAFF - LOG THE EVENT - ADDING STAFF IS EVENTTYPEID = 3.
+                            // UPON ADDING A STAFF - LOG THE EVENT
                             var orgeventlog = new Org_Events_Log()
                             {
-                                Org_Event_TypeId = 3,
-                                Org_Event_Name = "Registered staff",
                                 Org_Event_SubjectId = registeredUser.RegisteredUserId.ToString(),
                                 Org_Event_SubjectName = registeredUser.FullName,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                 Org_Event_Time = DateTime.Now,
-                                OrgId = Session["OrgId"].ToString()
+                                OrgId = Session["OrgId"].ToString(),
+                                Org_Events_Types = Org_Events_Types.Registered_Staff
+
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
@@ -1028,17 +1028,17 @@ namespace Dertrix.Controllers
 
 
 
-                            // UPON ADDING GUARDIAN - LOG EVENT - ADDING GUARDIAN IS EVENTTYPEID = 2.                         
+                            // UPON ADDING GUARDIAN - LOG EVENT -                       
                             var orgeventlog = new Org_Events_Log()
                             {
-                                Org_Event_TypeId = 2,
-                                Org_Event_Name = "Registered guardian",
+
                                 Org_Event_SubjectId = reguserid.ToString(),
                                 Org_Event_SubjectName = registeredUser.FullName,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                 Org_Event_Time = DateTime.Now,
-                                OrgId = Session["OrgId"].ToString()
+                                OrgId = Session["OrgId"].ToString(),
+                                Org_Events_Types = Org_Events_Types.Registered_Guardian
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
@@ -1166,17 +1166,17 @@ namespace Dertrix.Controllers
                             db.StudentGuardians.Add(studentguardian);
                             db.SaveChanges();
 
-                            // UPON ADDING GUARDIAN - LOG EVENT - LOGGING GUARDIAN IS EVENTTYPEID = 2.                             
+                            // UPON ADDING GUARDIAN - LOG EVENT -                              
                             var orgeventlog = new Org_Events_Log()
                             {
-                                Org_Event_TypeId = 2,
-                                Org_Event_Name = "Registered guardian",
                                 Org_Event_SubjectId = reguserid.ToString(),
                                 Org_Event_SubjectName = registeredUser.FullName,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                 Org_Event_Time = DateTime.Now,
-                                OrgId = Session["OrgId"].ToString()
+                                OrgId = Session["OrgId"].ToString(),
+                                Org_Events_Types = Org_Events_Types.Registered_Guardian
+
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
@@ -1298,17 +1298,16 @@ namespace Dertrix.Controllers
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
-                    // UPON ADDING STAFF - LOG EVENT - LOGGING GUARDIAN IS EVENTTYPEID = 3.                             
+                    // UPON ADDING STAFF - LOG EVENT -                          
                     var orgeventlog = new Org_Events_Log()
                     {
-                        Org_Event_TypeId = 3,
-                        Org_Event_Name = "Registered staff",
                         Org_Event_SubjectId = registeredUser.RegisteredUserId.ToString(),
                         Org_Event_SubjectName = registeredUser.FullName,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
-                        OrgId = Session["OrgId"].ToString()
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Registered_Staff
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
@@ -1461,17 +1460,17 @@ namespace Dertrix.Controllers
                     };
                     db.StudentGuardians.Add(studentguardian);
                     db.SaveChanges();
-                    // UPON ADDING GUARDIAN - LOG EVENT - LOGGING GUARDIAN IS EVENTTYPEID = 2.                             
+                    // UPON ADDING GUARDIAN - LOG EVENT -                             
                     var orgeventlog = new Org_Events_Log()
                     {
-                        Org_Event_TypeId = 2,
-                        Org_Event_Name = "Registered guardian",
+
                         Org_Event_SubjectId = registeredUser.RegisteredUserId.ToString(),
                         Org_Event_SubjectName = registeredUser.FullName,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
-                        OrgId = Session["OrgId"].ToString()
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Registered_Guardian
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
@@ -1526,17 +1525,16 @@ namespace Dertrix.Controllers
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
-                    // UPON ADDING STUDENT - LOG EVENT - LOGGING STUDENT IS EVENTTYPEID = 1
+                    // UPON ADDING STUDENT - LOG EVENT - 
                     var orgeventlog = new Org_Events_Log()
                     {
-                        Org_Event_TypeId = 1,
-                        Org_Event_Name = "Registered student",
                         Org_Event_SubjectId = registeredUser.RegisteredUserId.ToString(),
                         Org_Event_SubjectName = registeredUser.FullName,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
-                        OrgId = w4.ToString()
+                        OrgId = w4.ToString(),
+                        Org_Events_Types = Org_Events_Types.Registered_Student
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
@@ -1984,14 +1982,13 @@ namespace Dertrix.Controllers
                     // BEFORE REMVING STAFF - LOG EVENT. REMOVING STAFF IS EVENTTYPEID = 6
                     var orgeventlog = new Org_Events_Log()
                     {
-                        Org_Event_TypeId = 6,
-                        Org_Event_Name = "Deregistered staff",
                         Org_Event_SubjectId = id.ToString(),
                         Org_Event_SubjectName = stafullname,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
-                        OrgId = Session["OrgId"].ToString()
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Deregistered_Staff
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
@@ -2022,17 +2019,17 @@ namespace Dertrix.Controllers
                             // GET STAFF'S FULLNAME
                             var stafullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.FullName).FirstOrDefault();
 
-                            // UPON REMVING STAFF - LOG EVENT. REMOVING STAFF IS EVENTTYPEID = 6
+                            // UPON REMVING STAFF - LOG EVENT. 
                             var orgeventlog = new Org_Events_Log()
                             {
-                                Org_Event_TypeId = 6,
-                                Org_Event_Name = "Deregistered staff",
+
                                 Org_Event_SubjectId = id.ToString(),
                                 Org_Event_SubjectName = stafullname,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                 Org_Event_Time = DateTime.Now,
-                                OrgId = Session["OrgId"].ToString()
+                                OrgId = Session["OrgId"].ToString(),
+                                Org_Events_Types = Org_Events_Types.Deregistered_Staff
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
@@ -2093,25 +2090,20 @@ namespace Dertrix.Controllers
                             }
 
 
-                            // UPON REMVING GUARD - LOG EVENT. REMOVING GUARD IS EVENTTYPEID = 5
+                            // UPON REMVING GUARD - LOG EVENT.
                             var orgeventlog = new Org_Events_Log()
                             {
-                                Org_Event_TypeId = 5,
-                                Org_Event_Name = "Deregistered guardian",
                                 Org_Event_SubjectId = locateguard.ToString(),
                                 Org_Event_SubjectName = guardfullname,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                 Org_Event_Time = DateTime.Now,
-                                OrgId = Session["OrgId"].ToString()
+                                OrgId = Session["OrgId"].ToString(),
+                                Org_Events_Types = Org_Events_Types.Deregistered_Guardian
+
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
-
-
-
-
-
                         }
                         // GUARDIAN IS LINKED TO MORE THAN 1 STUDENT - WE GO INTO THIS CONDITION. AND LOOP THRU LIST OF ALL STUDENTS TILL WE GET TO THE STUD BEING REMOVED.
                         else
@@ -2155,17 +2147,17 @@ namespace Dertrix.Controllers
 
                                         // GET GUARDIANS FULLNAME 
                                         var guardfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == gdreguserid).Select(x => x.FullName).FirstOrDefault();
-                                        // WE THEN LOG EVENT - REMOVING GUARD IS EVENTTYPEID = 5
+                                        // WE THEN LOG EVENT 
                                         var orgeventlog = new Org_Events_Log()
                                         {
-                                            Org_Event_TypeId = 5,
-                                            Org_Event_Name = "Deregistered guardian",
                                             Org_Event_SubjectId = gdreguserid.ToString(),
                                             Org_Event_SubjectName = guardfullname,
                                             Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                             Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                             Org_Event_Time = DateTime.Now,
-                                            OrgId = Session["OrgId"].ToString()
+                                            OrgId = Session["OrgId"].ToString(),
+                                            Org_Events_Types = Org_Events_Types.Deregistered_Guardian
+
                                         };
                                         db.Org_Events_Logs.Add(orgeventlog);
                                         db.SaveChanges();
@@ -2226,21 +2218,22 @@ namespace Dertrix.Controllers
             db.RegisteredUsers.Remove(registeredUser);
             db.SaveChanges();
 
-            // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT. REMOVING  STUDENT IS EVENTTYPEID = 4
+            // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT. 
             var chkifstud1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
             var studfullname = db.RegisteredUsers.Where(x => x.RelationshipId == id).Select(x => x.FullName).FirstOrDefault();
             if (chkifstud != null)
             {
                 var orgeventlog = new Org_Events_Log()
                 {
-                    Org_Event_TypeId = 4,
-                    Org_Event_Name = "Deregistered student",
+
                     Org_Event_SubjectId = id.ToString(),
                     Org_Event_SubjectName = registeredUser.FullName,
                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                     Org_Event_Time = DateTime.Now,
-                    OrgId = Session["OrgId"].ToString()
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Deregistered_Student
+
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();

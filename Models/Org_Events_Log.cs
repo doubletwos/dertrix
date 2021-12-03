@@ -10,10 +10,6 @@ namespace Dertrix.Models
     {
         public int Org_Events_LogId { get; set; }
 
-        public int Org_Event_TypeId { get; set; } 
-
-        public string Org_Event_Name { get; set; }
-
         public string Org_Event_SubjectId { get; set; }
 
         public string Org_Event_SubjectName { get; set;}
@@ -30,8 +26,14 @@ namespace Dertrix.Models
         [DisplayFormat(DataFormatString = "{0:dddd | dd-MM-yyyy | H:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? Org_Event_Time { get; set; }
 
+        public Org_Events_Types Org_Events_Types { get; set; }
 
-         
+
+
+
+
+
+
     }
 }
 

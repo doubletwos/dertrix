@@ -223,19 +223,17 @@ namespace Dertrix.Controllers
             // IF COUNT OF LINKED STUDENT IS 1 - MEANS GUARDIAN IS ONLY LINKED TO THE STUDENT - WE GO IN THIS CONDITON AND FULLY DELETE GUARDIAN FROM THE SYSTEM.
             if (linked_stud == 1)
             {
-
-
                 // LOG EVENT 
                 var orgeventlog = new Org_Events_Log()
                 {
-                    Org_Event_TypeId = 5,
-                    Org_Event_Name = "Deregistered guardian",
                     Org_Event_SubjectId = gd_id.ToString(),
                     Org_Event_SubjectName = guardfullname1,
                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                     Org_Event_Time = DateTime.Now,
-                    OrgId = Session["OrgId"].ToString()
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Deregistered_Guardian
+
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
@@ -336,14 +334,13 @@ namespace Dertrix.Controllers
                     // LOG EVENT 
                     var orgeventlog = new Org_Events_Log()
                     {
-                        Org_Event_TypeId = 5,
-                        Org_Event_Name = "Deregistered guardian",
                         Org_Event_SubjectId = gd_id.ToString(),
                         Org_Event_SubjectName = guardfullname1,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
-                        OrgId = Session["OrgId"].ToString()
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Deregistered_Guardian
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();

@@ -175,17 +175,16 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
 
 
-                // UPON CREATING A CALNDR EVENT - LOG THE EVENT - EVENT CREATION IS EVENTTYPEID = 7.
+                // UPON CREATING A CALNDR EVENT - LOG THE EVENT 
                 var orgeventlog = new Org_Events_Log()
-                {
-                    Org_Event_TypeId = 7,
-                    Org_Event_Name = "Calendar Event Created",
+                {                   
                     Org_Event_SubjectId = viewModel.OrgSchCalendar.OrgSchCalendarId.ToString(),
                     Org_Event_SubjectName = viewModel.OrgSchCalendar.Name,
                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                     Org_Event_Time = DateTime.Now,
-                    OrgId = Session["OrgId"].ToString()
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Calendar_Event_Created
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
@@ -369,17 +368,17 @@ namespace Dertrix.Controllers
 
 
 
-                //// UPON EDITING A CALNDR EVENT - LOG THE EVENT - EVENT EDITION IS EVENTTYPEID = 8.
+                //// UPON EDITING A CALNDR EVENT - LOG THE EVENT - 
                 var orgeventlog = new Org_Events_Log()
                 {
-                    Org_Event_TypeId = 8,
-                    Org_Event_Name = "Calendar Event Edited",
                     Org_Event_SubjectId = orgSchCalendar.OrgSchCalendarId.ToString(),
                     Org_Event_SubjectName = orgSchCalendar.Name,
                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                     Org_Event_Time = DateTime.Now,
-                    OrgId = Session["OrgId"].ToString()
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Calendar_Event_Edited
+
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
@@ -441,17 +440,18 @@ namespace Dertrix.Controllers
             db.SaveChanges();
 
 
-            //// UPON DELETING A CALNDR EVENT - LOG THE EVENT - EVENT DELETION IS EVENTTYPEID = 9.
+            //// UPON DELETING A CALNDR EVENT - LOG THE EVENT 
             var orgeventlog = new Org_Events_Log()
             {
-                Org_Event_TypeId = 9,
-                Org_Event_Name = "Calendar Event Deleted",
+
                 Org_Event_SubjectId = orgSchCalendar.OrgSchCalendarId.ToString(),
                 Org_Event_SubjectName = orgSchCalendar.Name,
                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                 Org_Event_Time = DateTime.Now,
-                OrgId = Session["OrgId"].ToString()
+                OrgId = Session["OrgId"].ToString(),
+                Org_Events_Types = Org_Events_Types.Calendar_Event_Deleted
+
             };
             db.Org_Events_Logs.Add(orgeventlog);
             db.SaveChanges();

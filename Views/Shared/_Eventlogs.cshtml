@@ -2,37 +2,39 @@
 
 <table class="table" style="height:300px; display: block; overflow-y:scroll; width:3200px;">
 	<thead>
-		<tr>
-			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-				User
-			</th>
-			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-				Action Taken
-			</th>
-			<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-				Date & Time
-			</th>
-		</tr>
+        <tr>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                User
+            </th>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                Action Taken
+            </th>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                Date & Time
+            </th>
+   
+        </tr>
 	</thead>
 	<tbody>
 
 		@foreach (var item in Model.OrderByDescending(i => i.Org_Event_Time))
 		{
-			<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
-				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+        <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+            <td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
 
-					@Html.DisplayFor(modelItem => item.Org_Event_TriggeredbyName)
-				</td>
-				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+                @Html.DisplayFor(modelItem => item.Org_Event_TriggeredbyName)
+            </td>
+            <td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
 
-					@Html.DisplayFor(modelItem => item.Org_Event_Name) 	- @Html.DisplayFor(modelItem => item.Org_Event_SubjectName)
+                <strong> @Html.DisplayFor(modelItem => item.Org_Events_Types)</strong>  @Html.DisplayFor(modelItem => item.Org_Event_SubjectName)
 
-				</td>
-				<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+            </td>
+            <td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
 
-					@Html.DisplayFor(modelItem => item.Org_Event_Time)
-				</td>
-			</tr>
+                @Html.DisplayFor(modelItem => item.Org_Event_Time)
+            </td>
+  
+        </tr>
 
 
 		}

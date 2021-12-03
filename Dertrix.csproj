@@ -426,6 +426,22 @@
     <Compile Include="Migrations\202111241304321_Sprint2021.08.03.designer.cs">
       <DependentUpon>202111241304321_Sprint2021.08.03.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112031905414_Sprint2021.08.04.cs" />
+    <Compile Include="Migrations\202112031905414_Sprint2021.08.04.designer.cs">
+      <DependentUpon>202112031905414_Sprint2021.08.04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112031910373_Sprint2021.08.05.cs" />
+    <Compile Include="Migrations\202112031910373_Sprint2021.08.05.designer.cs">
+      <DependentUpon>202112031910373_Sprint2021.08.05.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112031912066_Sprint2021.08.06.cs" />
+    <Compile Include="Migrations\202112031912066_Sprint2021.08.06.designer.cs">
+      <DependentUpon>202112031912066_Sprint2021.08.06.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112032244118_Sprint2021.08.07.cs" />
+    <Compile Include="Migrations\202112032244118_Sprint2021.08.07.designer.cs">
+      <DependentUpon>202112032244118_Sprint2021.08.07.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -449,6 +465,7 @@
     <Compile Include="Models\OrgSchCalndrGrp.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\Org_Events_Log.cs" />
+    <Compile Include="Models\Org_Events_Types.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\PostTopic.cs" />
     <Compile Include="Models\RegisteredUser.cs" />
@@ -1062,6 +1079,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111241304321_Sprint2021.08.03.resx">
       <DependentUpon>202111241304321_Sprint2021.08.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112031905414_Sprint2021.08.04.resx">
+      <DependentUpon>202112031905414_Sprint2021.08.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112031910373_Sprint2021.08.05.resx">
+      <DependentUpon>202112031910373_Sprint2021.08.05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112031912066_Sprint2021.08.06.resx">
+      <DependentUpon>202112031912066_Sprint2021.08.06.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112032244118_Sprint2021.08.07.resx">
+      <DependentUpon>202112032244118_Sprint2021.08.07.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
