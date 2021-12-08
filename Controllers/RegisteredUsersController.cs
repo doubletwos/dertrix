@@ -524,6 +524,7 @@ namespace Dertrix.Controllers
                     .Include(t => t.PrimarySchoolUserRole)
                     .Include(t => t.SecondarySchoolUserRole)
                     .Where(x => x.RegisteredUserId == Id)
+                    .Where(x => x.OrgId == i)
                     .FirstOrDefault();
 
                 ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", staff.PrimarySchoolUserRoleId);

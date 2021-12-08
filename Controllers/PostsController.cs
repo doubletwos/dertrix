@@ -216,8 +216,26 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
             }
 
+
+            // UPON CREATING A POST - LOG THE EVENT 
+            var orgeventlog = new Org_Events_Log()
+            {
+                Org_Event_SubjectId = viewmodel.Post.PostId.ToString(),
+                Org_Event_SubjectName = viewmodel.Post.PostSubject,
+                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                Org_Event_Time = DateTime.Now,
+                OrgId = Session["OrgId"].ToString(),
+                Org_Events_Types = Org_Events_Types.Post_Created
+            };
+            db.Org_Events_Logs.Add(orgeventlog);
+            db.SaveChanges();
+
+
+
+
             // Send Post as email if Send as Email is True
-            if(viewmodel.Post.SendAsEmail == true)
+            if (viewmodel.Post.SendAsEmail == true)
             {
                 var send = SendTestEmail(viewmodel.Post.PostContent, viewmodel.Post.PostSubject);
 
@@ -277,35 +295,6 @@ namespace Dertrix.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // GET: Posts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = db.Posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
-            ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
-            return View(post);
-        }
         // POST: Posts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -316,12 +305,30 @@ namespace Dertrix.Controllers
                 post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == post.PostCreatorId).Select(x => x.FullName).FirstOrDefault();
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
+
+
+                // UPON EDITING A POST  - LOG THE EVENT 
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_SubjectId = post.PostId.ToString(),
+                    Org_Event_SubjectName = post.PostSubject,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Post_Edited
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
             return View(post);
         }
+
+
         // GET: Posts/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -344,6 +351,22 @@ namespace Dertrix.Controllers
             Post post = db.Posts.Find(id);
             db.Posts.Remove(post);
             db.SaveChanges();
+
+            // UPON DELETING A POST - LOG THE EVENT 
+            var orgeventlog = new Org_Events_Log()
+            {
+                Org_Event_SubjectId = id.ToString(),
+                Org_Event_SubjectName = post.PostSubject,
+                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                Org_Event_Time = DateTime.Now,
+                OrgId = Session["OrgId"].ToString(),
+                Org_Events_Types = Org_Events_Types.Post_Deleted
+            };
+            db.Org_Events_Logs.Add(orgeventlog);
+            db.SaveChanges();
+
+
             return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)

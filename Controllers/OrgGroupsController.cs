@@ -50,7 +50,7 @@ namespace Dertrix.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult AddCustomGroup() 
+        public ActionResult AddCustomGroup()
         {
             ViewBag.GroupTypeId = new SelectList(db.GroupTypes, "GroupTypeId", "GroupTypeName");
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
@@ -61,37 +61,44 @@ namespace Dertrix.Controllers
 
 
 
-        // GET: OrgGroups/Create
-        public ActionResult Create()
-        {
-            ViewBag.GroupTypeId = new SelectList(db.GroupTypes, "GroupTypeId", "GroupTypeName");
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-            return View();
-        }
-
         // POST: OrgGroups/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrgGroup orgGroup)
         {
-           
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
 
-                orgGroup.OrgId = i;
-                orgGroup.GroupName = orgGroup.GroupName;
-                orgGroup.CreationDate = DateTime.Now;
-                orgGroup.GroupTypeId = 18;
-                orgGroup.Group_members_count = 0;
-                              
-                db.OrgGroups.Add(orgGroup);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            orgGroup.OrgId = i;
+            orgGroup.GroupName = orgGroup.GroupName;
+            orgGroup.CreationDate = DateTime.Now;
+            orgGroup.GroupTypeId = 18;
+            orgGroup.Group_members_count = 0;
+            db.OrgGroups.Add(orgGroup);
+            db.SaveChanges();
+
+            // UPON CREATING A GROUP - LOG THE EVENT 
+            var orgeventlog = new Org_Events_Log()
+            {
+                Org_Event_SubjectId = orgGroup.OrgGroupId.ToString(),
+                Org_Event_SubjectName = orgGroup.GroupName,
+                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                Org_Event_Time = DateTime.Now,
+                OrgId = Session["OrgId"].ToString(),
+                Org_Events_Types = Org_Events_Types.Created_Group
+            };
+            db.Org_Events_Logs.Add(orgeventlog);
+            db.SaveChanges();
+
+
+            return RedirectToAction("Index");
 
         }
 
 
-        public ActionResult EditCustomGroup(int Id) 
+        public ActionResult EditCustomGroup(int Id)
         {
             if (Id != 0)
             {
@@ -105,7 +112,8 @@ namespace Dertrix.Controllers
                     GroupOrgTypeId = edtcusmgrp.GroupOrgTypeId,
                     GroupTypeId = edtcusmgrp.GroupTypeId,
                     GroupRefNumb = edtcusmgrp.GroupRefNumb,
-                    IsSelected = edtcusmgrp.IsSelected               
+                    IsSelected = edtcusmgrp.IsSelected,
+                    Group_members_count = edtcusmgrp.Group_members_count
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditCustomGroup.cshtml", edtcusmgrp1);
             }
@@ -119,12 +127,29 @@ namespace Dertrix.Controllers
         // POST: OrgGroups/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( OrgGroup orgGroup)
+        public ActionResult Edit(OrgGroup orgGroup)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(orgGroup).State = EntityState.Modified;
                 db.SaveChanges();
+
+                // UPON CREATING A GROUP - LOG THE EVENT 
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_SubjectId = orgGroup.OrgGroupId.ToString(),
+                    Org_Event_SubjectName = orgGroup.GroupName,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Edited_Group
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+
+
+
                 return RedirectToAction("Index");
             }
             ViewBag.GroupTypeId = new SelectList(db.GroupTypes, "GroupTypeId", "GroupTypeName", orgGroup.GroupTypeId);
@@ -153,10 +178,26 @@ namespace Dertrix.Controllers
             if (Session["OrgId"] == null)
             {
                 return RedirectToAction("Signin", "Access");
-            } 
+            }
             OrgGroup orgGroup = db.OrgGroups.Find(id);
             db.OrgGroups.Remove(orgGroup);
             db.SaveChanges();
+
+            // UPON DELETING A GROUP - LOG THE EVENT 
+            var orgeventlog = new Org_Events_Log()
+            {
+                Org_Event_SubjectId = id.ToString(),
+                Org_Event_SubjectName = orgGroup.GroupName,
+                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                Org_Event_Time = DateTime.Now,
+                OrgId = Session["OrgId"].ToString(),
+                Org_Events_Types = Org_Events_Types.Deleted_Group
+            };
+            db.Org_Events_Logs.Add(orgeventlog);
+            db.SaveChanges();
+
+
             return RedirectToAction("Index");
         }
 

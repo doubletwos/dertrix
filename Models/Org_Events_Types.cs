@@ -15,6 +15,12 @@ namespace Dertrix.Models
         Deregistered_Staff = 6,
         Calendar_Event_Created = 7,
         Calendar_Event_Edited = 8,
-        Calendar_Event_Deleted = 9
+        Calendar_Event_Deleted = 9,
+        Post_Created = 10,
+        Post_Edited = 11,
+        Post_Deleted = 12,
+        Created_Group = 13,
+        Edited_Group = 14,
+        Deleted_Group = 15,
     }
 }

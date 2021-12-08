@@ -2,104 +2,110 @@
 
 
 <table class="table table-bordered table-responsive table-condensed table-hover">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-		<th>
-			Guardian's FullName
-		</th>
-		<th>
-			Email Address
-		</th>
-		<th>
-			Tel
-		</th>
-		<th>
-			Relationship
-		</th>
-		<th>
-			Unlink
-		</th>
+    <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+        <th>
+            Dertrix Id
+        </th>
+        <th>
+            Guardian's FullName
+        </th>
+        <th>
+            Email Address
+        </th>
+        <th>
+            Tel
+        </th>
+        <th>
+            Relationship
+        </th>
+        <th>
+            Unlink
+        </th>
 
 
-	</tr>
+    </tr>
 
-	@if (Model.Count() == 0)
-	{
-		<tr>
-			<td>
-				<i>This student has no guardian registered</i>
-			</td>
+    @if (Model.Count() == 0)
+    {
+        <tr>
+            <td>
+                <i>This student has no guardian registered</i>
+            </td>
 
-		</tr>
-	}
+        </tr>
+    }
 
-	else
-	{
+    else
+    {
 
-		foreach (var item in Model.OrderBy(i => i.GuardianFullName))
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.Title.TitleName)
-					@Html.DisplayFor(modelItem => item.GuardianFullName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.GuardianEmailAddress)
-				</td>
-				<th>
-					@Html.DisplayFor(modelItem => item.Telephone)
-				</th>
-				<td>
-					@Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
-				</td>
-				<td>
-					<p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"> <i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
-				</td>
+        foreach (var item in Model.OrderBy(i => i.GuardianFullName))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredUserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title.TitleName)
+                    @Html.DisplayFor(modelItem => item.GuardianFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
+                </td>
+                <td>
+                    <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"> <i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
+                </td>
 
 
-			</tr>
-		}
-	}
+            </tr>
+        }
+    }
 </table>
 <input type="hidden" id="hiddenRegisterUserId" />
 
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModallG">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Remove Guardian</h3>
-			</div>
-			<div class="modal-body">
-				<h5>Are you sure you want to unlink this guardian from this student?</h5>
-				<hr/>
-				<p style="color:red";><b>Please note</b> :  If this guardian is not linked to any other student in this school, the guardian will be fully <b><u>deregistered</u></b> from the system.</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<a href="#" class="RegUserOrgButtonColour" onclick="UnlinkGuardian()">Confirm</a>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Remove Guardian</h3>
+            </div>
+            <div class="modal-body">
+                <h5>Are you sure you want to unlink this guardian from this student?</h5>
+                <hr />
+                <p style="color:red" ;><b>Please note</b> :  If this guardian is not linked to any other student in this school, the guardian will be fully <b><u>deregistered</u></b> from the system.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                <a href="#" class="RegUserOrgButtonColour" onclick="UnlinkGuardian()">Confirm</a>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
-	var ConfirmDelete = function (RegisteredUserId) {
-		$("#hiddenRegisterUserId").val(RegisteredUserId);
-		$("#myModallG").modal('show');
-	}
-	var UnlinkGuardian = function () {
-		var registeredUserId = $("#hiddenRegisterUserId").val();
-		$.ajax({
-			type: "POST",
-			url: "/StudentGuardians/DeleteConfirmed/",
-			data: { id: registeredUserId },
-			success: function (response) {
-				alert("Guardian unlinked");
-				$("#myModallG").modal("hide");
-				window.location.reload();
-			}
-		})
-	}
+    var ConfirmDelete = function (RegisteredUserId) {
+        $("#hiddenRegisterUserId").val(RegisteredUserId);
+        $("#myModallG").modal('show');
+    }
+    var UnlinkGuardian = function () {
+        var registeredUserId = $("#hiddenRegisterUserId").val();
+        $.ajax({
+            type: "POST",
+            url: "/StudentGuardians/DeleteConfirmed/",
+            data: { id: registeredUserId },
+            success: function (response) {
+                alert("Guardian unlinked");
+                $("#myModallG").modal("hide");
+                window.location.reload();
+            }
+        })
+    }
 </script>
 
 

@@ -42,6 +42,9 @@
 			<thead>
 
                 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                    Group Id
+                    </th>
 
                     <th>
                         @Html.DisplayNameFor(model => model.GroupName)
@@ -61,6 +64,9 @@
 				@foreach (var item in Model)
 				{
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrgGroupId)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.GroupName)
                     </td>

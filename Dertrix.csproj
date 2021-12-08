@@ -898,6 +898,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_UploadStudents.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStudentsClass.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStaffsRole.cshtml" />
+    <Content Include="Views\OrgGroups\Test.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
