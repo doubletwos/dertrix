@@ -64,7 +64,8 @@ namespace Dertrix.Models
 
         public string FullName { get; set; }
 
-        public int? AddedVia { get; set; }   
+
+        public RegistrationFlags RegistrationFlags  { get; set; }
 
 
 

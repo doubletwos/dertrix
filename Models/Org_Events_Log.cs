@@ -28,12 +28,6 @@ namespace Dertrix.Models
 
         public Org_Events_Types Org_Events_Types { get; set; }
 
-
-
-
-
-
-
     }
 }
 

@@ -226,7 +226,7 @@ namespace Dertrix.Controllers
                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                 Org_Event_Time = DateTime.Now,
                 OrgId = Session["OrgId"].ToString(),
-                Org_Events_Types = Org_Events_Types.Post_Created
+                Org_Events_Types = Org_Events_Types.Created_Post
             };
             db.Org_Events_Logs.Add(orgeventlog);
             db.SaveChanges();
@@ -316,7 +316,7 @@ namespace Dertrix.Controllers
                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                     Org_Event_Time = DateTime.Now,
                     OrgId = Session["OrgId"].ToString(),
-                    Org_Events_Types = Org_Events_Types.Post_Edited
+                    Org_Events_Types = Org_Events_Types.Edited_Post
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
@@ -361,7 +361,7 @@ namespace Dertrix.Controllers
                 Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                 Org_Event_Time = DateTime.Now,
                 OrgId = Session["OrgId"].ToString(),
-                Org_Events_Types = Org_Events_Types.Post_Deleted
+                Org_Events_Types = Org_Events_Types.Deleted_Post
             };
             db.Org_Events_Logs.Add(orgeventlog);
             db.SaveChanges();

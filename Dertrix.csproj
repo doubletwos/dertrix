@@ -442,6 +442,10 @@
     <Compile Include="Migrations\202112032244118_Sprint2021.08.07.designer.cs">
       <DependentUpon>202112032244118_Sprint2021.08.07.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112091637283_Sprint2021.09.01.cs" />
+    <Compile Include="Migrations\202112091637283_Sprint2021.09.01.designer.cs">
+      <DependentUpon>202112091637283_Sprint2021.09.01.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -473,6 +477,7 @@
     <Compile Include="Models\RegisteredUserOrganisation.cs" />
     <Compile Include="Models\RegisteredUsersGroups.cs" />
     <Compile Include="Models\RegisteredUserType.cs" />
+    <Compile Include="Models\RegistrationFlags.cs" />
     <Compile Include="Models\RegUsersAccessLog.cs" />
     <Compile Include="Models\Relationship.cs" />
     <Compile Include="Models\Religion.cs" />
@@ -545,6 +550,7 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\timepicker\timepicker.min.css" />
+    <Content Include="dertrix_favcon.ico" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1092,6 +1098,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112032244118_Sprint2021.08.07.resx">
       <DependentUpon>202112032244118_Sprint2021.08.07.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112091637283_Sprint2021.09.01.resx">
+      <DependentUpon>202112091637283_Sprint2021.09.01.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -383,9 +383,8 @@ namespace Dertrix.Controllers
                         FullName = getuser.FullName,
                         TitleId = getuser.TitleId,
                         LastLogOn = getuser.LastLogOn,
-                        AddedVia = getuser.AddedVia,
+                        RegistrationFlags = getuser.RegistrationFlags,
                     };
-
                     getuser = reguserorg;
                     db.Entry(getuser).State = EntityState.Modified;
                     db.SaveChanges();
