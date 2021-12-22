@@ -72,16 +72,18 @@
 		</div>
 	</div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <p>@Html.ActionLink("Access logs", "Logs", "Access", "", new { @class = "RegUserOrgButtonColour" })</p>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <p>@Html.ActionLink("Calendar Event Categories", "Table", "CalendarCategorys", "", new { @class = "RegUserOrgButtonColour" })</p>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <p>@Html.ActionLink("Update event", "UpdateEvents", "OrgSchCalendars", "", new { @class = "RegUserOrgButtonColour" })</p>
         </div>
-
+        <div class="col-lg-3">
+            <p>@Html.ActionLink("Empty Uploaded Files", "EmptyUploadedFiles", "Posts", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
     </div>
 </div>
 @section scripts{

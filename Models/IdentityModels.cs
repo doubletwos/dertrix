@@ -41,7 +41,7 @@ namespace Dertrix.Models
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostTopic> PostTopics { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<StudentSubject> StudentSubject { get; set; }
+        public DbSet<StudentSubjectGrade> StudentSubjectGrades  { get; set; } 
         public DbSet<Job> Jobs { get; set; }
         public DbSet<GroupType> GroupTypes { get; set; }
         public DbSet<OrgGroup> OrgGroups { get; set; }
@@ -55,27 +55,6 @@ namespace Dertrix.Models
         public DbSet<OrgSchCalendar> OrgSchCalendars { get; set; }
         public DbSet<CalendarCategory> CalendarCategorys { get; set; }
         public DbSet<OrgSchCalndrGrp> OrgSchCalndrGrps { get; set; } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

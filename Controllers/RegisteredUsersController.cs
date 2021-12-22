@@ -13,19 +13,14 @@ using System.Web.UI.WebControls;
 using Dertrix.Models;
 using System.IO;
 using OfficeOpenXml;
-
-
 namespace Dertrix.Controllers
 {
     public class RegisteredUsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: RegisteredUsers/Index
         public ActionResult Index(int? id)
         {
-
-
             /* Redirect back to Log in Page if session == null*/
             if (Session["OrgId"] == null)
             {
@@ -49,12 +44,12 @@ namespace Dertrix.Controllers
             }
         }
 
+
         [ChildActionOnly]
         public ActionResult Regs()
         {
             return PartialView("_Secure");
         }
-
         [ChildActionOnly]
         public ActionResult RegisterUser()
         {
@@ -68,12 +63,12 @@ namespace Dertrix.Controllers
             return PartialView("~/Views/Shared/PartialViewsForms/_RegisterUser.cshtml");
         }
 
+
         [ChildActionOnly]
         public ActionResult Nav()
         {
             return PartialView("_Nav");
         }
-
         [ChildActionOnly]
         public ActionResult AddStudent()
         {
@@ -88,18 +83,12 @@ namespace Dertrix.Controllers
             ViewBag.StudentRegFormId = new SelectList(db.StudentRegForm, "StudentRegFormId", "Name");
             ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName");
             ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
-
-
-
             ViewBag.ClassId = new SelectList(
                             from x in db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList() select new { x.ClassId, x.ClassName, Name_Id = x.ClassName + " " + "[" + x.ClassId + "]" },
                             "ClassId", "Name_Id");
-
-
-
-
             return PartialView("~/Views/Shared/PartialViewsForms/_AddStudent.cshtml");
         }
+
 
         [ChildActionOnly]
         public ActionResult UploadStudents()
@@ -109,7 +98,6 @@ namespace Dertrix.Controllers
             ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
             return PartialView("~/Views/Shared/PartialViewsForms/_UploadStudents.cshtml");
         }
-
         [ChildActionOnly]
         public ActionResult AddStaff()
         {
@@ -118,9 +106,9 @@ namespace Dertrix.Controllers
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID != 5), "PrimarySchoolUserRoleId", "RoleName");
             ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles.Where(x => x.SecondarySchoolUserRoleId != 5), "SecondarySchoolUserRoleId", "RoleName");
-
             return PartialView("~/Views/Shared/PartialViewsForms/_AddStaff.cshtml");
         }
+
 
         [ChildActionOnly]
         public ActionResult AddGuardian()
@@ -132,6 +120,7 @@ namespace Dertrix.Controllers
             return PartialView("~/Views/Shared/PartialViewsForms/_AddGuardian.cshtml");
         }
 
+
         [ChildActionOnly]
         public ActionResult AddSysAdmin()
         {
@@ -141,6 +130,7 @@ namespace Dertrix.Controllers
             ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
             return PartialView("~/Views/Shared/PartialViewsForms/_AddSysAdmin.cshtml");
         }
+
 
         [ChildActionOnly]
         public ActionResult StudentCount()
@@ -155,6 +145,7 @@ namespace Dertrix.Controllers
             return PartialView("_StudentCount", studentCount);
         }
 
+
         public ActionResult StudentDetails(int Id)
         {
             var stud = db.RegisteredUsers
@@ -166,40 +157,37 @@ namespace Dertrix.Controllers
             ViewBag.RegisteredUser = stud;
             return PartialView("_StudentDetails");
         }
-
-
-
         public ActionResult DownloadStudentTemplateFile()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "Files/Template_Files/";
             string fileName = "test.xlsx";
             return File(path + fileName, "text/plain", "test.xlsx");
-
         }
 
 
         [HttpPost]
         public ActionResult Uploader(HttpPostedFileBase postedFile, int? classid)
         {
-
             try
             {
-                var FileName = System.IO.Path.GetFileName(postedFile.FileName);
+
                 var filePath = Server.MapPath("~/Files/UploadedFiles/");
+                var FileName = System.IO.Path.GetFileName(postedFile.FileName);
                 filePath = filePath + Path.GetFileName(postedFile.FileName);
                 postedFile.SaveAs(filePath);
+
+
+
+
+
                 String path = Server.MapPath("~/Files/UploadedFiles/").Select(f => filePath).FirstOrDefault();
                 var package = new ExcelPackage(new System.IO.FileInfo(path));
                 int startColumn = 1;
                 int startRow = 2;
                 int successfulupload = 0;
-
                 ExcelWorksheet workSheet = package.Workbook.Worksheets[1]; // read sheet 1
                 object data = null;
-
-
                 var selectedClass = db.Classes.Where(x => x.ClassId == classid).Select(x => x.ClassId).FirstOrDefault();
-
                 do
                 {
                     data = workSheet.Cells[startRow, startColumn].Value; //column No
@@ -221,12 +209,7 @@ namespace Dertrix.Controllers
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
                     }
-
                     object _class = selectedClass;
-
-
-
-
                     object gender = workSheet.Cells[startRow, startColumn + 2].Value;
                     if (gender == null)
                     {
@@ -265,8 +248,6 @@ namespace Dertrix.Controllers
                     }
                     if (data != null)
                     {
-
-
                         var isSuccess = SaveStudent(firstName.ToString(),
                         lastName.ToString(),
                         Convert.ToInt32(_class),
@@ -274,7 +255,6 @@ namespace Dertrix.Controllers
                         Convert.ToInt32(religion),
                         Convert.ToInt32(tribe),
                         Convert.ToDateTime(dateOfBirth));
-
                     }
                     if (data != null)
                     {
@@ -286,31 +266,22 @@ namespace Dertrix.Controllers
                         var col6 = workSheet.Cells[startRow, startColumn + 5].Value = "";
                         var col7 = workSheet.Cells[startRow, startColumn + 6].Value = "";
                         package.Save();
-
-
                     }
                     startRow++;
                     successfulupload++;
                 }
                 while (data != null);
-
                 //////If registered user is a student - update class object
                 if (data == null)
                 {
                     var updateclasses = UpdateClassProfile();
                 }
-
-
-
             }
-
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-
             return RedirectToAction("AllStudents", "RegisteredUsers");
-
         }
 
 
@@ -319,7 +290,6 @@ namespace Dertrix.Controllers
             var result = false;
             var sess = Session["OrgId"].ToString();
             int i = Convert.ToInt32(sess);
-
             var stud = new RegisteredUser();
             stud.RegisteredUserTypeId = 2;
             stud.FirstName = firstName;
@@ -338,14 +308,10 @@ namespace Dertrix.Controllers
             stud.ClassRef = db.Classes.Where(x => x.ClassId == stud.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
             stud.PgCount = 0;
             result = true;
-
             db.RegisteredUsers.Add(stud);
             db.SaveChanges();
-
-
             // UPON ADDING STUDENT - ADD STUDENT TO REGUSERORG
             // Students added via spreadsheet upload logged as 2
-
             var regstudinruo = new RegisteredUserOrganisation()
             {
                 RegisteredUserId = stud.RegisteredUserId,
@@ -363,8 +329,6 @@ namespace Dertrix.Controllers
             };
             db.RegisteredUserOrganisations.Add(regstudinruo);
             db.SaveChanges();
-
-
             // UPON ADDING STUDENT - LOG EVENT - 
             var logstudregistrtn = new Org_Events_Log()
             {
@@ -375,16 +339,11 @@ namespace Dertrix.Controllers
                 Org_Event_Time = DateTime.Now,
                 OrgId = i.ToString(),
                 Org_Events_Types = Org_Events_Types.Registered_Student
-
             };
             db.Org_Events_Logs.Add(logstudregistrtn);
             db.SaveChanges();
-
-
-
             // THEN EXIT
             return result;
-
         }
 
 
@@ -392,39 +351,30 @@ namespace Dertrix.Controllers
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
             var myprofile = db.RegisteredUsers
                 .Where(x => x.RegisteredUserId == id)
                 .Include(x => x.Religion)
                 .Include(x => x.Tribe)
                 .Include(x => x.Class)
                 .FirstOrDefault();
-
             return PartialView("_MyRegProfile", myprofile);
         }
 
 
-
-
-
-
         public ActionResult StaffDetails(int? Id)
         {
-
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
-
             var stud = db.RegisteredUserOrganisations
             .Where(x => x.RegisteredUserId == Id)
             .Where(x => x.OrgId == i)
             .Include(x => x.Title)
             .Include(x => x.PrimarySchoolUserRole)
             .Include(x => x.SecondarySchoolUserRole);
-
             ViewBag.RegisteredUserOrganisation = stud;
             return PartialView("_StaffDetails");
         }
+
 
         public ActionResult EditStudent(int Id)
         {
@@ -462,14 +412,11 @@ namespace Dertrix.Controllers
                     RegUserOrgBrand = stud1.RegUserOrgBrand,
                     ClassRef = stud1.ClassRef,
                     PgCount = stud1.PgCount,
-                   
-                    
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_EditStudent.cshtml", stud);
             }
             return PartialView("_EditStudent");
         }
-
 
 
         public ActionResult ChangeStudentsClass(int Id)
@@ -485,7 +432,6 @@ namespace Dertrix.Controllers
                     .Include(t => t.Tribe)
                     .Where(x => x.RegisteredUserId == Id)
                     .FirstOrDefault();
-
                 ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName", stud1.ClassId);
                 ViewBag.ReligionId = new SelectList(db.Religions, "ReligionId", "ReligionName", stud1.ReligionId);
                 ViewBag.GenderId = new SelectList(db.Genders, "GenderId", "GenderName", stud1.GenderId);
@@ -514,8 +460,6 @@ namespace Dertrix.Controllers
             }
             return PartialView("_ChangeStudentsClass");
         }
-
-
         public ActionResult ChangeStaffsRole(int Id)
         {
             if (Id != 0)
@@ -528,11 +472,8 @@ namespace Dertrix.Controllers
                     .Where(x => x.RegisteredUserId == Id)
                     .Where(x => x.OrgId == i)
                     .FirstOrDefault();
-
                 ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", staff.PrimarySchoolUserRoleId);
                 ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName", staff.SecondarySchoolUserRoleId);
-
-
                 var staff0 = new RegisteredUserOrganisation
                 {
                     RegisteredUserOrganisationId = staff.RegisteredUserOrganisationId,
@@ -558,9 +499,6 @@ namespace Dertrix.Controllers
             }
             return PartialView("_ChangeStaffsRole");
         }
-
-
-
         [ChildActionOnly]
         public ActionResult LinkGuardianToStudent(int? Id)
         {
@@ -576,22 +514,15 @@ namespace Dertrix.Controllers
                 ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
                 ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
                 ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
-
                 var stud = new RegisteredUser
                 {
                     RegisteredUserId = stud1.RegisteredUserId,
                     FullName = stud1.FullName
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_LinkGuardianToStudent.cshtml", stud);
-
             }
-
             return PartialView("_LinkGuardianToStudent");
         }
-
-
-
-
         public ActionResult EditStaff(int Id)
         {
             if (Id != 0)
@@ -602,13 +533,9 @@ namespace Dertrix.Controllers
                     .Where(x => x.RegisteredUserId == Id)
                     .Where(x => x.OrgId == i)
                     .FirstOrDefault();
-
                 ViewBag.TitleId = new SelectList(
                 from x in db.Titles select new { x.TitleId, x.TitleName, Name_Id = x.TitleName + " " + "[" + x.TitleId + "]" },
                 "TitleId", "Name_Id", stud1.TitleId);
-
-
-
                 var stud = new RegisteredUserOrganisation
                 {
                     RegisteredUserOrganisationId = stud1.RegisteredUserOrganisationId,
@@ -634,14 +561,12 @@ namespace Dertrix.Controllers
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditStaff.cshtml");
         }
-
         // GET: RegisteredUsers/AllStudents/
         public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
-
             }
             if (Session["OrgId"] == null)
             {
@@ -652,29 +577,24 @@ namespace Dertrix.Controllers
             if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
             {
                 return View(db.RegisteredUsers.Where(n => n.FullName == searchname).Include(s => s.Class).ToList());
-
             }
             // returns students of org if studentid is provided
             if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
             {
                 int reguserid = Convert.ToInt32(searchid);
                 return View(db.RegisteredUsers.Where(n => n.RegisteredUserId == reguserid).Include(s => s.Class).ToList());
-
             }
             var students = db.RegisteredUsers
            .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid)
            .ToList();
             return View(students);
         }
-
-
         // GET: RegisteredUsers/Staffs/
         public ActionResult Staffs(int? id)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
-
             }
             if (Session["OrgId"] == null)
             {
@@ -695,20 +615,14 @@ namespace Dertrix.Controllers
                 .Include(p => p.PrimarySchoolUserRole)
                 .Include(p => p.SecondarySchoolUserRole)
                 .ToList();
-
             return View(staffs);
         }
-
-
-
-
         // GET: RegisteredUsers/SysAdmins/
         public ActionResult SysAdmins(int? id)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
                 return RedirectToAction("WrongDevice", "Orgs");
-
             }
             if (Session["OrgId"] == null)
             {
@@ -723,12 +637,8 @@ namespace Dertrix.Controllers
             var SysAdmins = db.RegisteredUserOrganisations
                 .Where(j => j.OrgId == 23)
                 .ToList();
-
             return View(SysAdmins);
         }
-
-
-
         // GET: RegisteredUsers/ClassStudents/
         public ActionResult ClassStudents(int? id)
         {
@@ -737,20 +647,12 @@ namespace Dertrix.Controllers
                 return RedirectToAction("Signin", "Access");
             }
             var orgid = (int)Session["OrgId"];
-
             var classref = db.Classes.Where(x => x.ClassId == id).Select(x => x.ClassRefNumb).FirstOrDefault();
-
             var students = db.RegisteredUsers
                 .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid && x.ClassRef == classref && x.ClassId == id)
                 .ToList();
             return View(students);
         }
-
-
-
-
-
-
         // GET: RegisteredUsers/Staffs/
         public ActionResult Guardians(int? id, string searchname, string searchid)
         {
@@ -765,7 +667,6 @@ namespace Dertrix.Controllers
                 int i = Convert.ToInt32(rr);
                 id = i;
             }
-
             if (Session["OrgId"] != null)
             {
                 return View(db.RegisteredUsers.Where(j => j.SecondarySchoolUserRoleId == 5 && j.PrimarySchoolUserRoleId == 5).Where(x => x.SelectedOrg == id).Include(g => g.SecondarySchoolUserRole).Include(o => o.PrimarySchoolUserRole).ToList());
@@ -774,9 +675,6 @@ namespace Dertrix.Controllers
             }
             return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
         }
-
-
-
 
 
         // POST: RegisteredUsers/Create
@@ -788,8 +686,6 @@ namespace Dertrix.Controllers
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
                 /************************************************************THIS IS THE BEGINNNG OF CHECKING IF USER BEING ADDED IS AN EXISTING USER ON THE SYSTEM.**********************************************************/
-
-
                 // CHECKING IF USER USER BEING ADDED ALREADY EXIST ON THE SYSTEM. 
                 var checkemail = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.Email).FirstOrDefault();
                 // IF EMAIL ADDRESS ALREADY EXISTS IN THE DATABASE - THEN WE GO INTO THE CONDITION BELOW TO PICK THE EXISTING USERS DATA.
@@ -810,7 +706,6 @@ namespace Dertrix.Controllers
                     var regUserOrgBrand = db.Orgs.Where(x => x.OrgId == i).Select(x => x.OrgBrandId).FirstOrDefault();
                     int j = Convert.ToInt32(regUserOrgBrand);
                     registeredUser.RegUserOrgBrand = j;
-
                     //EXISTING SCHOOL STAFFS    // CHECKING IF USER IS A GUARDIAN - IF THE USER IS NOT A GUARDIAN THEN WE GO INTO THIS CONDITION - (ONLY SCHOOL STAFFS SHOULD GO INTO THIS CONDITION).
                     if (registeredUser.SecondarySchoolUserRoleId != 5 && registeredUser.PrimarySchoolUserRoleId != 5)
                     {
@@ -837,8 +732,6 @@ namespace Dertrix.Controllers
                             registeredUser.SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId;
                             registeredUser.PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId;
                         }
-
-
                         registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(d => d.RegisteredUserId).FirstOrDefault();
                         // CHECK TO MAKE SURE THE USER DOES NOT ALREADY HAVE AN ACCOUNT AT THIS ORG - IF NO - THEN WE ADD THE USER TO THE REGUSERORG. 
                         var reguserinorg = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Where(x => x.OrgId == i).FirstOrDefault();
@@ -846,7 +739,6 @@ namespace Dertrix.Controllers
                         {
                             var regusrid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
                             var getlastlogon = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == regusrid).Select(x => x.LastLogOn).FirstOrDefault();
-
                             var onetomany = new RegisteredUserOrganisation()
                             {
                                 RegisteredUserId = regusrid,
@@ -865,7 +757,6 @@ namespace Dertrix.Controllers
                                 TitleId = registeredUser.TitleId,
                                 LastLogOn = getlastlogon,
                                 RegistrationFlags = RegistrationFlags.ManuallyAdded
-
                             };
                             db.RegisteredUserOrganisations.Add(onetomany);
                             db.SaveChanges();
@@ -879,7 +770,6 @@ namespace Dertrix.Controllers
                                 Org_Event_Time = DateTime.Now,
                                 OrgId = Session["OrgId"].ToString(),
                                 Org_Events_Types = Org_Events_Types.Registered_Staff
-
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
@@ -887,7 +777,6 @@ namespace Dertrix.Controllers
                             return RedirectToAction("Staffs", "RegisteredUsers");
                         }
                     }
-
                     //EXISTING GUARDIANS     // CHECKING TO SEE IF THE USER BEING ADDED IS A GUARDIAN - (ONLY GUARDIANS SHOULD GO INTO THIS CONDITION).
                     if (registeredUser.PrimarySchoolUserRoleId != 5 || registeredUser.SecondarySchoolUserRoleId != 5)
                     {
@@ -902,8 +791,6 @@ namespace Dertrix.Controllers
                             string clear = null;
                             registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                             var reguserid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
-
-
                             // LOCATE CLASS GROUP DATA.
                             var r5 = Session["OrgId"].ToString();
                             int w_5 = Convert.ToInt32(r5);
@@ -923,8 +810,6 @@ namespace Dertrix.Controllers
                             };
                             db.RegisteredUsersGroups.Add(regusergrp_1);
                             db.SaveChanges();
-
-
                             // ADD GUARDIAN INTO THE STUDENT GUARDIAN TABLE. 
                             var studentguardian = new StudentGuardian()
                             {
@@ -944,22 +829,14 @@ namespace Dertrix.Controllers
                             };
                             db.StudentGuardians.Add(studentguardian);
                             db.SaveChanges();
-
                             // ADD GUARDIAN TO CLASS GROUP.
                             var rrr = Session["OrgId"].ToString();
                             int w = Convert.ToInt32(rrr);
                             var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
                             var orggrpref = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.OrgGroupId).FirstOrDefault();
                             var orggrptypeid = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.GroupTypeId).FirstOrDefault();
-
-
-
                             var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                             var result = otherController.UpdateGroupMemberCount(orggrpref, w);
-
-
-
-
                             // UPDATE STUD'S GUARDIAN COUNT.
                             var studid = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.RegisteredUserId).FirstOrDefault();
                             var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
@@ -1000,19 +877,13 @@ namespace Dertrix.Controllers
                                 RelationshipId = locatestud.RelationshipId,
                                 ClassRef = locatestud.ClassRef,
                                 PgCount = currentcount + 1
-
                             };
                             locatestud = studgaurd;
                             db.Entry(studgaurd).State = EntityState.Modified;
                             db.SaveChanges();
-
-
-
-
                             // UPON ADDING GUARDIAN - LOG EVENT -                       
                             var orgeventlog = new Org_Events_Log()
                             {
-
                                 Org_Event_SubjectId = reguserid.ToString(),
                                 Org_Event_SubjectName = registeredUser.FullName,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
@@ -1029,9 +900,7 @@ namespace Dertrix.Controllers
                         //  IF USER IS NOT LINKED TO ANOTHER STUDENT AT THIS ORG, THAT MEANS USER HAS NO ACC IN THE REGUSERORG TABLE. ADD USER - WE GO INTO THIS CONDITION.
                         else
                         {
-
                             var getlastlogon = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == regusrid).Select(x => x.LastLogOn).FirstOrDefault();
-
                             var onetomany = new RegisteredUserOrganisation()
                             {
                                 RegisteredUserId = regusrid,
@@ -1054,33 +923,47 @@ namespace Dertrix.Controllers
                             db.RegisteredUserOrganisations.Add(onetomany);
                             db.SaveChanges();
 
-
                             // LOCATE STUDENT AND GUARDIAN DATA - SO IT CAN BE ADDED TO THE STUDENT GUARDIAN TABLE.
                             registeredUser.TempIntHolder = registeredUser.RegisteredUserId;
                             var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
                             string clear = null;
                             registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                             var reguserid = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(x => x.RegisteredUserId).FirstOrDefault();
-
-
-
                             // LOCATE CLASS GROUP DATA.
                             var rrr = Session["OrgId"].ToString();
                             int w = Convert.ToInt32(rrr);
                             var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
                             var orggrpref = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.OrgGroupId).FirstOrDefault();
                             var orggrptypeid = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.GroupTypeId).FirstOrDefault();
-                            // ADD GUARDIAN INTO THE CLASSS GROUP.
+
+                            // ADD GUARDIAN INTO THE CLASS GROUP.
                             var regusergrp = new RegisteredUsersGroups
                             {
                                 RegisteredUserId = reguserid,
                                 OrgGroupId = orggrpref,
                                 Email = registeredUser.Email,
                                 RegUserOrgId = i,
-                                GroupTypeId = orggrptypeid
+                                GroupTypeId = orggrptypeid,
+                                LinkedStudentId = (int)registeredUser.TempIntHolder
                             };
                             db.RegisteredUsersGroups.Add(regusergrp);
                             db.SaveChanges();
+
+                            // ADD GUARDIAN INTO THE ALL PARENTS GROUP.
+                            // GET ALL PRNTS GRP TYPE ID
+
+                            var allprgrptyid = db.OrgGroups.Where(x => x.OrgId == i).Where(x => x.GroupTypeId == 5).Select(x => x.OrgGroupId).FirstOrDefault();
+                            var allprntgrp = new RegisteredUsersGroups 
+                            {
+                                RegisteredUserId = reguserid,
+                                OrgGroupId = allprgrptyid,
+                                Email = registeredUser.Email,
+                                RegUserOrgId = i,
+                                GroupTypeId = 5
+                            };
+                            db.RegisteredUsersGroups.Add(allprntgrp);
+                            db.SaveChanges();
+
 
 
                             // UPDATE STUD'S GUARDIAN COUNT.
@@ -1123,14 +1006,10 @@ namespace Dertrix.Controllers
                                 RelationshipId = locatestud.RelationshipId,
                                 ClassRef = locatestud.ClassRef,
                                 PgCount = currentcount + 1
-
                             };
                             locatestud = studgaurd;
                             db.Entry(studgaurd).State = EntityState.Modified;
                             db.SaveChanges();
-
-
-
                             // ADD GUARDIAN INTO THE STUDENT GUARDIAN TABLE.
                             var studentguardian = new StudentGuardian()
                             {
@@ -1150,7 +1029,6 @@ namespace Dertrix.Controllers
                             };
                             db.StudentGuardians.Add(studentguardian);
                             db.SaveChanges();
-
                             // UPON ADDING GUARDIAN - LOG EVENT -                              
                             var orgeventlog = new Org_Events_Log()
                             {
@@ -1161,20 +1039,26 @@ namespace Dertrix.Controllers
                                 Org_Event_Time = DateTime.Now,
                                 OrgId = Session["OrgId"].ToString(),
                                 Org_Events_Types = Org_Events_Types.Registered_Guardian
-
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
+
+
+
+                            // UPDATE GROUPS COUNT
+                            var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
+                            var result = otherController.UpdateGroupMemberCount(orggrpref, w);
+
+                            var otherController1 = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
+                            var result1 = otherController.UpdateGroupMemberCount(allprgrptyid, w);
+
                             // THEN EXIT.
                             return RedirectToAction("Students", "RegisteredUsers");
                         }
                     }
                 }
                 /************************************************************THIS IS THE END OF CHECKING IF USER BEING ADDED IS AN EXISTING USER ON THE SYSTEM.**********************************************************/
-
-
                 /************************************************************THIS IS THE BEGINNING OF ADDING A NEW USER ON THE SYSTEM.***********************************************************************************/
-
                 // NEW DERTRIX USER             // ADDING DERTRIX USER - USER IS A DERTRIX USER - THEN THIS CONDITION IS TRUE - WE GO IN.//
                 if (registeredUser.SelectedOrgList != null)
                 {
@@ -1217,14 +1101,10 @@ namespace Dertrix.Controllers
                     // THEN EXIT.
                     return RedirectToAction("SysAdminSetUp", "Home");
                 }
-
-
                 //NEW SCHOOL STAFF        // ADDING SCHOOL STAFFS - USER IS A SCHOOL STAFF - THEN THIS CONDITION IS TRUE - WE GO IN.//
                 var chkifusrexist0 = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(x => x.RegisteredUserId).FirstOrDefault();
                 if (registeredUser.StudentRegFormId == null && registeredUser.SelectedOrg != 23 && chkifusrexist0 == 0)
                 {
-
-
                     // SET ROLE TO NON TEACHING STAFF IF ROLE IS NOT SET.
                     if (registeredUser.SecondarySchoolUserRoleId == null && registeredUser.PrimarySchoolUserRoleId == null)
                     {
@@ -1243,8 +1123,6 @@ namespace Dertrix.Controllers
                         {
                         }
                     }
-
-
                     var rr1 = Session["OrgId"].ToString();
                     int w1 = Convert.ToInt32(rr1);
                     registeredUser.Email = registeredUser.Email;
@@ -1303,7 +1181,6 @@ namespace Dertrix.Controllers
                 var rr2 = Session["OrgId"].ToString();
                 int w2 = Convert.ToInt32(rr2);
                 var chkifguardianexist1 = db.StudentGuardians.Where(x => x.GuardianEmailAddress == registeredUser.Email).Select(x => x.GuardianEmailAddress).FirstOrDefault();
-
                 // NEW GUARDIAN // ADDING NEW GUARDIAN - USER IS A GUARDIAN  - THEN THIS CONDITION IS TRUE - WE GO IN.//
                 if (chkifguardianexist1 == null && registeredUser.StudentRegFormId == null)
                 {
@@ -1327,8 +1204,6 @@ namespace Dertrix.Controllers
                     registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                     db.RegisteredUsers.Add(registeredUser);
                     db.SaveChanges();
-
-
                     // ADDING GUARDIAN  - INTO REGUSERORG//
                     var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                     {
@@ -1349,11 +1224,9 @@ namespace Dertrix.Controllers
                         FullName = registeredUser.FullName,
                         LastLogOn = null,
                         RegistrationFlags = RegistrationFlags.ManuallyAdded
-
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
-
 
                     //ADD GUARDIAN - INTO CLASS GROUP.                             
                     var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
@@ -1371,18 +1244,33 @@ namespace Dertrix.Controllers
                     db.RegisteredUsersGroups.Add(regusergrp);
                     db.SaveChanges();
 
-
+                    // ADD GUARDIAN INTO THE ALL PARENTS GROUP.
+                    // GET ALL PRNTS GRP TYPE ID
+                    var allprgrptyid = db.OrgGroups.Where(x => x.OrgId == w).Where(x => x.GroupTypeId == 5).Select(x => x.OrgGroupId).FirstOrDefault();
+                    var allprntgrp = new RegisteredUsersGroups
+                    {
+                        RegisteredUserId = registeredUser.RegisteredUserId,
+                        OrgGroupId = allprgrptyid,
+                        Email = registeredUser.Email,
+                        RegUserOrgId = w,
+                        GroupTypeId = 5
+                    };
+                    db.RegisteredUsersGroups.Add(allprntgrp);
+                    db.SaveChanges();
 
                     // UPDATE GROUP COUNT
                     var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                     var result = otherController.UpdateGroupMemberCount(orggrpref, w);
 
 
+                    var otherController1 = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
+                    var result1 = otherController.UpdateGroupMemberCount(allprgrptyid, w);
 
                     // UPDATE STUD'S GUARDIAN COUNT.
                     var studid = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.RegisteredUserId).FirstOrDefault();
                     var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
                     var currentcount = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.PgCount).FirstOrDefault();
+
                     // SET PG TO 0 IF NULL
                     if (currentcount == null)
                     {
@@ -1419,15 +1307,10 @@ namespace Dertrix.Controllers
                         RelationshipId = locatestud.RelationshipId,
                         ClassRef = locatestud.ClassRef,
                         PgCount = currentcount + 1
-
                     };
                     locatestud = studgaurd;
                     db.Entry(studgaurd).State = EntityState.Modified;
                     db.SaveChanges();
-
-
-
-
                     // ADDING GUARDIAN  - INTO STUDENTGUARDIAN TABLE//
                     var studentfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.FullName).FirstOrDefault();
                     var studentguardian = new StudentGuardian()
@@ -1451,7 +1334,6 @@ namespace Dertrix.Controllers
                     // UPON ADDING GUARDIAN - LOG EVENT -                             
                     var orgeventlog = new Org_Events_Log()
                     {
-
                         Org_Event_SubjectId = registeredUser.RegisteredUserId.ToString(),
                         Org_Event_SubjectName = registeredUser.FullName,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
@@ -1462,11 +1344,9 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
-
                     // THEN EXIT
                     return RedirectToAction("Students", "RegisteredUsers");
                 }
-
                 // NEW STUDENT                // ADDING NEW STUDENT - USER IS A STUDENT  - THEN THIS CONDITION IS TRUE - WE GO IN.//
                 if (registeredUser.SelectedOrgList == null && registeredUser.StudentRegFormId != null)
                 {
@@ -1485,8 +1365,8 @@ namespace Dertrix.Controllers
                     registeredUser.ClassRef = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
                     registeredUser.RegUserOrgBrand = j5;
                     registeredUser.PgCount = 0;
-
-
+                    var classid = registeredUser.ClassId;
+                    var classref = registeredUser.ClassRef;
                     db.RegisteredUsers.Add(registeredUser);
                     db.SaveChanges();
 
@@ -1512,6 +1392,9 @@ namespace Dertrix.Controllers
                     };
                     db.RegisteredUserOrganisations.Add(objRegisteredUserOrganisations);
                     db.SaveChanges();
+
+                    var studid = registeredUser.RegisteredUserId;
+
                     // UPON ADDING STUDENT - LOG EVENT - 
                     var orgeventlog = new Org_Events_Log()
                     {
@@ -1525,8 +1408,6 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
-
-
 
                     // UPON ADDING STUDENT -  UPDATE CLASS DATA.
                     var rr6 = Session["OrgId"].ToString();
@@ -1552,16 +1433,22 @@ namespace Dertrix.Controllers
                     getclassid = updateclass;
                     db.Entry(getclassid).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    // UPON ADDING STUDENT -  CREATE STUDENTS MODULES
+                    var otherController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
+                    var result = otherController.CreateStudentModules(classid,studid,classref, i6);
+
+
+
+
+
+
                     return RedirectToAction("Students", "RegisteredUsers");
                     // THEN EXIT
                 }
             }
             return View(registeredUser);
         }
-
-
-
-
         // POST: RegisteredUsers/UpdateStudentsClass/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1569,15 +1456,12 @@ namespace Dertrix.Controllers
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
-
                 var locatestaff = db.RegisteredUserOrganisations.AsNoTracking()
                     .Where(x => x.RegisteredUserId == registeredUserOrganisation.RegisteredUserId)
                     .Where(x => x.OrgId == i)
                     .FirstOrDefault();
-
                 // ORG IS SECONDARY SCH
                 if ((int)Session["OrgType"] == 2)
                 {
@@ -1589,13 +1473,11 @@ namespace Dertrix.Controllers
                         {
                             registeredUserOrganisation.SecondarySchoolUserRoleId = 6;
                         }
-
                     }
                     else
                     {
                         locatestaff.SecondarySchoolUserRoleId = registeredUserOrganisation.SecondarySchoolUserRoleId;
                     }
-
                     var secstaff = new RegisteredUserOrganisation
                     {
                         RegisteredUserOrganisationId = locatestaff.RegisteredUserOrganisationId,
@@ -1616,7 +1498,6 @@ namespace Dertrix.Controllers
                         TitleId = locatestaff.TitleId,
                         LastLogOn = locatestaff.LastLogOn,
                         RegistrationFlags = locatestaff.RegistrationFlags,
-
                     };
                     locatestaff = secstaff;
                     db.Entry(locatestaff).State = EntityState.Modified;
@@ -1633,13 +1514,11 @@ namespace Dertrix.Controllers
                         {
                             registeredUserOrganisation.PrimarySchoolUserRoleId = 6;
                         }
-
                     }
                     else
                     {
                         locatestaff.PrimarySchoolUserRoleId = registeredUserOrganisation.PrimarySchoolUserRoleId;
                     }
-
                     var pristaff = new RegisteredUserOrganisation
                     {
                         RegisteredUserOrganisationId = locatestaff.RegisteredUserOrganisationId,
@@ -1665,32 +1544,24 @@ namespace Dertrix.Controllers
                     db.Entry(locatestaff).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-
                 // ORG IS NURSERY SCH
                 if ((int)Session["OrgType"] == 4)
                 {
                 }
                 return RedirectToAction("Staffs", "RegisteredUsers");
-
             }
-
             return RedirectToAction("Staffs", "RegisteredUsers");
         }
-
-
-
         // POST: RegisteredUsers/UpdateStudentsClass/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangeStudentsClass(RegisteredUser registeredUser)
         {
-
             if (!(ModelState.IsValid) || ModelState.IsValid)
             {
                 var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
                 var classref = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
                 registeredUser.ClassRef = classref;
-
                 var studs = new RegisteredUser
                 {
                     RegisteredUserId = locatestud.RegisteredUserId,
@@ -1716,10 +1587,8 @@ namespace Dertrix.Controllers
                 db.Entry(locatestud).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
             if (registeredUser.StudentRegFormId == 1)
             {
                 var classref = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
@@ -1728,7 +1597,6 @@ namespace Dertrix.Controllers
                     .Where(x => x.LinkedStudentId == registeredUser.RegisteredUserId)
                     .Where(x => x.RegUserOrgId == i)
                     .Select(x => x.RegisteredUsersGroupsId).Count();
-
                 if (linkedguardiancount > 0)
                 {
                     var linkedguardianlist = db.RegisteredUsersGroups
@@ -1736,7 +1604,6 @@ namespace Dertrix.Controllers
                     .Where(x => x.RegUserOrgId == i)
                     .Select(x => x.RegisteredUsersGroupsId).ToList();
                     var linkedguardian = new List<int>(linkedguardianlist);
-
                     foreach (var gd in linkedguardianlist)
                     {
                         var locatenewgrpid = db.OrgGroups
@@ -1758,33 +1625,19 @@ namespace Dertrix.Controllers
                         db.Entry(updaterecrd).State = EntityState.Modified;
                         db.SaveChanges();
                     }
-
                     // LOOP THROUGH GROUPS IN ORG AND UPDATE COUNT             
                     var orggrp = db.OrgGroups.Where(x => x.OrgId == i).Select(x => x.OrgGroupId).ToList();
                     var grplist = new List<int>(orggrp);
-
                     foreach (var grp in grplist)
                     {
                         //UPDATE GROUP COUNT 
                         var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                         var result = otherController.UpdateGroupMemberCount(grp, i);
-
                     }
-
                 }
             }
             return RedirectToAction("Index");
         }
-
-
-
-
-
-
-
-
-
-
         // POST: RegisteredUsers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1794,9 +1647,7 @@ namespace Dertrix.Controllers
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
-
                 var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
-
                 var studs = new RegisteredUser
                 {
                     RegisteredUserId = locatestud.RegisteredUserId,
@@ -1824,16 +1675,12 @@ namespace Dertrix.Controllers
                 locatestud = studs;
                 db.Entry(locatestud).State = EntityState.Modified;
                 db.SaveChanges();
-
-
                 //Updating registered user organisation with changes 
                 var reguseridcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(p => p.RegisteredUserOrganisationId).ToList();
                 var listofreguserid = new List<int>(reguseridcount);
                 foreach (var re in reguseridcount)
                 {
                     var getid = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserOrganisationId == re).FirstOrDefault();
-
-
                     var reguser = new RegisteredUserOrganisation
                     {
                         RegisteredUserOrganisationId = getid.RegisteredUserOrganisationId,
@@ -1858,12 +1705,7 @@ namespace Dertrix.Controllers
                     getid = reguser;
                     db.Entry(getid).State = EntityState.Modified;
                     db.SaveChanges();
-
-
-
-
                 }
-
                 //If registered user is a teacher, update teacher details in Class Model.
                 var teacher = db.Classes.Where(x => x.ClassTeacherId == registeredUser.RegisteredUserId).Select(x => x.ClassId).ToList();
                 var listofteacher = new List<int>(teacher);
@@ -1891,40 +1733,29 @@ namespace Dertrix.Controllers
                         db.SaveChanges();
                     }
                 };
-
-
                 //////If registered user is a student - update class object
                 if (registeredUser.StudentRegFormId != null)
                 {
                     var updateclasses = UpdateClassProfile();
                 }
-
                 return RedirectToAction("AllStudents", "RegisteredUsers");
-
-
             }
             return RedirectToAction("AllStudents", "RegisteredUsers");
-
         }
-
-
         //Update Class profile.
         public ActionResult UpdateClassProfile()
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
             //Number of classes in org.
             var numbofclasses = db.Classes.Where(x => x.OrgId == i).Select(p => p.ClassId).ToList();
             var classestolist = new List<int>(numbofclasses);
-
             foreach (var cl in numbofclasses)
             {
                 var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cl).FirstOrDefault();
                 var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.SelectedOrg == i).Count();
                 var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 2 && x.SelectedOrg == i).Count();
                 var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 1 && x.SelectedOrg == i).Count();
-
                 var updateclass = new Class
                 {
                     ClassId = classid.ClassId,
@@ -1943,13 +1774,8 @@ namespace Dertrix.Controllers
                 db.Entry(classid).State = EntityState.Modified;
                 db.SaveChanges();
             };
-
             return RedirectToAction("Index");
         }
-
-
-
-
         // POST: RegisteredUsers/Delete/5
         public ActionResult DeleteConfirmed(int id)
         {
@@ -1957,10 +1783,8 @@ namespace Dertrix.Controllers
             // LOCATE USERS ROLES
             var chkifPsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.PrimarySchoolUserRoleId).FirstOrDefault();
             var chkifSsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
-
             if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4)
             {
-
                 var staforgcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.RegisteredUserId).Count();
                 // IF COUNT OF ORG IS 1 - WE GO INTO THIS CONDITION - WE DELETE USER FROM REGUSER TABLE / LOG EVENT AND MOVE ON.
                 if (staforgcount == 1)
@@ -1980,13 +1804,10 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
-
                     RegisteredUser removestaff = db.RegisteredUsers.Find(id);
                     db.RegisteredUsers.Remove(removestaff);
                     db.SaveChanges();
-
                     return RedirectToAction("Index");
-
                 }
                 // GET A LIST OF ORGS STAFF IS LINKED TO - LOOP THRU - AND DELETE FROM REGUSERORG TABLE AND LOG EVENT ONCE ON ORG THAT IS SAME AS ACTIVE SESSION.
                 else
@@ -2003,14 +1824,11 @@ namespace Dertrix.Controllers
                             RegisteredUserOrganisation removestaff = db.RegisteredUserOrganisations.Find(getstaff);
                             db.RegisteredUserOrganisations.Remove(removestaff);
                             db.SaveChanges();
-
                             // GET STAFF'S FULLNAME
                             var stafullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.FullName).FirstOrDefault();
-
                             // UPON REMVING STAFF - LOG EVENT. 
                             var orgeventlog = new Org_Events_Log()
                             {
-
                                 Org_Event_SubjectId = id.ToString(),
                                 Org_Event_SubjectName = stafullname,
                                 Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
@@ -2024,14 +1842,8 @@ namespace Dertrix.Controllers
                             return RedirectToAction("Index");
                         }
                     }
-
                 }
-
-
             }
-
-
-
             // CHECK IF USER TO BE DELETED IS A STUDENT - IF YES - WE GO INTO THIS CONDITION.  
             // IF USER BEING DELETED IS A STUDENT - WE NEED TO LOCATE STUD'S GUARDIANS.
             var chkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
@@ -2050,11 +1862,9 @@ namespace Dertrix.Controllers
                         // CHECK IF THIS GUARDIAN IS LINKED TO ANY OTHER STUDENT. IF FALSE - WE REMV BOTH GUARDIAN AND STUDENT.
                         var mylinkedstudents = db.StudentGuardians.Where(x => x.RegisteredUserId == gdreguserid).Select(x => x.StudentId).ToList();
                         var linkedstudents = new List<int>(mylinkedstudents);
-
                         // IF COUNT OF LINKED STUD IS ONLY 1 - REMV GUARD FROM REGUSER/REGUSERORG/STUDGUARDIAN TABLE
                         if (mylinkedstudents.Count == 1)
                         {
-
                             //LOCATE GUARD IN REG USER TABLE AND DELETE.
                             var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
                             var guardfullname = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.GuardianFullName).FirstOrDefault();
@@ -2062,22 +1872,16 @@ namespace Dertrix.Controllers
                             RegisteredUser remvguard = db.RegisteredUsers.Find(locateguard);
                             db.RegisteredUsers.Remove(remvguard);
                             db.SaveChanges();
-
-
                             // LOOP THROUGH GROUPS IN ORG AND UPDATE COUNT
                             var myorgid = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.OrgId).FirstOrDefault();
                             var orggrp = db.OrgGroups.Where(x => x.OrgId == myorgid).Select(x => x.OrgGroupId).ToList();
                             var grplist = new List<int>(orggrp);
-
                             foreach (var grp in grplist)
                             {
                                 //UPDATE GROUP COUNT 
                                 var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                                 var result = otherController.UpdateGroupMemberCount(grp, myorgid);
-
                             }
-
-
                             // UPON REMVING GUARD - LOG EVENT.
                             var orgeventlog = new Org_Events_Log()
                             {
@@ -2088,7 +1892,6 @@ namespace Dertrix.Controllers
                                 Org_Event_Time = DateTime.Now,
                                 OrgId = Session["OrgId"].ToString(),
                                 Org_Events_Types = Org_Events_Types.Deregistered_Guardian
-
                             };
                             db.Org_Events_Logs.Add(orgeventlog);
                             db.SaveChanges();
@@ -2116,8 +1919,6 @@ namespace Dertrix.Controllers
                                         RegisteredUserOrganisation regusrorg = db.RegisteredUserOrganisations.Find(locategd1);
                                         db.RegisteredUserOrganisations.Remove(regusrorg);
                                         db.SaveChanges();
-
-
                                         // LOOP THRU GROUP AND DELETE GUARD FROM ALL GROUP
                                         var guardingrp = db.RegisteredUsersGroups
                                                 .Where(x => x.RegisteredUserId == locateguard)
@@ -2125,14 +1926,12 @@ namespace Dertrix.Controllers
                                                 .Select(x => x.RegisteredUsersGroupsId)
                                                 .ToList();
                                         var guardgrps = new List<int>(guardingrp);
-
                                         foreach (var gd2 in guardingrp)
                                         {
                                             RegisteredUsersGroups remvgdfrmgrp = db.RegisteredUsersGroups.Find(gd2);
                                             db.RegisteredUsersGroups.Remove(remvgdfrmgrp);
                                             db.SaveChanges();
                                         }
-
                                         // GET GUARDIANS FULLNAME 
                                         var guardfullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == gdreguserid).Select(x => x.FullName).FirstOrDefault();
                                         // WE THEN LOG EVENT 
@@ -2145,14 +1944,11 @@ namespace Dertrix.Controllers
                                             Org_Event_Time = DateTime.Now,
                                             OrgId = Session["OrgId"].ToString(),
                                             Org_Events_Types = Org_Events_Types.Deregistered_Guardian
-
                                         };
                                         db.Org_Events_Logs.Add(orgeventlog);
                                         db.SaveChanges();
                                     }
-
                                     // MEANS GUARD IS  LINKED TO MORE THAN 1 STUDENT - WE GO INTO THIS CONDITION - 
-
                                     else
                                     {
                                         // LOCATE GUARDIANS GROUP ID IN STUDGUARD TABLE
@@ -2161,7 +1957,6 @@ namespace Dertrix.Controllers
                                                 .Where(x => x.OrgId == i)
                                                 .Where(x => x.StudentId == id)
                                                 .Select(x => x.Stu_class_Org_Grp_id).FirstOrDefault();
-
                                         // LOCATE GUARDIANS REGUSERGRPID
                                         var guardingrpcount = db.RegisteredUsersGroups
                                                 .Where(x => x.RegisteredUserId == locateguard)
@@ -2169,7 +1964,6 @@ namespace Dertrix.Controllers
                                                 .Where(x => x.RegUserOrgId == i)
                                                 .Where(x => x.LinkedStudentId == id)
                                                 .Select(x => x.RegisteredUsersGroupsId).Count();
-
                                         if (guardingrpcount > 0)
                                         {
                                             var guardingrplist = db.RegisteredUsersGroups
@@ -2178,9 +1972,7 @@ namespace Dertrix.Controllers
                                            .Where(x => x.RegUserOrgId == i)
                                            .Where(x => x.LinkedStudentId == id)
                                            .Select(x => x.RegisteredUsersGroupsId).ToList();
-
                                             var gdingrpid = new List<int>(guardingrplist);
-
                                             foreach (var g in guardingrplist)
                                             {
                                                 RegisteredUsersGroups remvgdfrmgrp = db.RegisteredUsersGroups.Find(g);
@@ -2189,12 +1981,10 @@ namespace Dertrix.Controllers
                                             }
                                         }
                                     }
-
                                     // WE THEN DELETE GUARDIAN & LINKED STUDENT RECORD FROM STUDGUARD TABLE. 
                                     StudentGuardian studentguardian = db.StudentGuardians.Find(gd);
                                     db.StudentGuardians.Remove(studentguardian);
                                     db.SaveChanges();
-
                                 }
                             }
                         }
@@ -2205,7 +1995,6 @@ namespace Dertrix.Controllers
             RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
             db.RegisteredUsers.Remove(registeredUser);
             db.SaveChanges();
-
             // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT. 
             var chkifstud1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
             var studfullname = db.RegisteredUsers.Where(x => x.RelationshipId == id).Select(x => x.FullName).FirstOrDefault();
@@ -2213,7 +2002,6 @@ namespace Dertrix.Controllers
             {
                 var orgeventlog = new Org_Events_Log()
                 {
-
                     Org_Event_SubjectId = id.ToString(),
                     Org_Event_SubjectName = registeredUser.FullName,
                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
@@ -2221,20 +2009,13 @@ namespace Dertrix.Controllers
                     Org_Event_Time = DateTime.Now,
                     OrgId = Session["OrgId"].ToString(),
                     Org_Events_Types = Org_Events_Types.Deregistered_Student
-
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
             }
-
-
-
             var updateclasses = UpdateClassProfile();
             return RedirectToAction("Index");
         }
-
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -113,13 +113,29 @@
 
 
 
+
 		$(function () {
 			$('#Post_PostContent').summernote({
 				height: '300px',
 				dialogsInBody: true,
-				spellCheck: true,
+                toolbar: [
+					['style', ['bold', 'italic', 'underline']],
+					//['fontsize', ['fontsize']],
+                    //['fontname', ['fontname']],
+					['para', ['ul', 'ol']],
+                    ['view', ['fullscreen']]
+				],
+
+				fontNames: ['Arial', 'Arial Black'],
+                fontSizes: ['20']
+
 			});
 		})
+
+
+
+
+
 		$(function () {
 			$("#cancel").on("click", function () {
 				window.location.reload();

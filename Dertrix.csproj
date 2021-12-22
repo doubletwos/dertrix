@@ -62,12 +62,31 @@
       <HintPath>packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.PDF.7.8.9\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=7.8.9.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.PDF.7.8.9\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web.DynamicData" />
@@ -211,7 +230,7 @@
     <Compile Include="Controllers\SecondarySchoolUserRolesController.cs" />
     <Compile Include="Controllers\StudentGuardiansController.cs" />
     <Compile Include="Controllers\StudentRegFormsController.cs" />
-    <Compile Include="Controllers\StudentSubjectsController.cs" />
+    <Compile Include="Controllers\StudentSubjectGradeController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Controllers\TitlesController.cs" />
     <Compile Include="Controllers\TribesController.cs" />
@@ -446,6 +465,22 @@
     <Compile Include="Migrations\202112091637283_Sprint2021.09.01.designer.cs">
       <DependentUpon>202112091637283_Sprint2021.09.01.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112211704087_Sprint2021.09.02.cs" />
+    <Compile Include="Migrations\202112211704087_Sprint2021.09.02.designer.cs">
+      <DependentUpon>202112211704087_Sprint2021.09.02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112211715327_Sprint2021.09.03.cs" />
+    <Compile Include="Migrations\202112211715327_Sprint2021.09.03.designer.cs">
+      <DependentUpon>202112211715327_Sprint2021.09.03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112211753168_Sprint2021.09.04.cs" />
+    <Compile Include="Migrations\202112211753168_Sprint2021.09.04.designer.cs">
+      <DependentUpon>202112211753168_Sprint2021.09.04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112211918178_Sprint2021.09.05.cs" />
+    <Compile Include="Migrations\202112211918178_Sprint2021.09.05.designer.cs">
+      <DependentUpon>202112211918178_Sprint2021.09.05.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -484,7 +519,7 @@
     <Compile Include="Models\SecondarySchoolUserRole.cs" />
     <Compile Include="Models\StudentGuardian.cs" />
     <Compile Include="Models\StudentRegForm.cs" />
-    <Compile Include="Models\StudentSubject.cs" />
+    <Compile Include="Models\StudentSubjectGrade.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Title.cs" />
     <Compile Include="Models\Tribe.cs" />
@@ -791,7 +826,7 @@
     <Content Include="Views\PostTopics\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_PostDisplayPanel.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
-    <Content Include="Views\StudentSubjects\Grades.cshtml" />
+    <Content Include="Views\StudentSubjectGrade\Grades.cshtml" />
     <Content Include="Views\Home\SysSetUp.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_StudentUpdateSubject.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddSubject.cshtml" />
@@ -847,12 +882,12 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditPost.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditSubject.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AssignClassTeacher.cshtml" />
-    <Content Include="Views\StudentSubjects\MyClass.cshtml" />
+    <Content Include="Views\StudentSubjectGrade\MyClass.cshtml" />
     <Content Include="Views\Shared\_MyClassCount.cshtml" />
     <Content Include="Views\Shared\_MyClassList.cshtml" />
     <Content Include="Views\Shared\_MySubjectsCount.cshtml" />
     <Content Include="Views\Shared\_MySubjectsList.cshtml" />
-    <Content Include="Views\StudentSubjects\MySubjects.cshtml" />
+    <Content Include="Views\StudentSubjectGrade\MySubjects.cshtml" />
     <Content Include="Views\Shared\_AllClassCount.cshtml" />
     <Content Include="Views\Shared\_AllClassList.cshtml" />
     <Content Include="Views\RegisteredUsers\ClassStudents.cshtml" />
@@ -875,7 +910,7 @@
     <Content Include="Views\Shared\_Widget_PG_Dashboard.cshtml" />
     <Content Include="Views\Shared\_MyChildList.cshtml" />
     <Content Include="Views\Shared\_MyChildCount.cshtml" />
-    <Content Include="Views\StudentSubjects\YourChild.cshtml" />
+    <Content Include="Views\StudentSubjectGrade\YourChild.cshtml" />
     <Content Include="Views\Shared\_MyRegProfile.cshtml" />
     <Content Include="Views\Posts\PostsTable.cshtml" />
     <Content Include="Views\Relationships\Index.cshtml" />
@@ -1101,6 +1136,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112091637283_Sprint2021.09.01.resx">
       <DependentUpon>202112091637283_Sprint2021.09.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112211704087_Sprint2021.09.02.resx">
+      <DependentUpon>202112211704087_Sprint2021.09.02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112211715327_Sprint2021.09.03.resx">
+      <DependentUpon>202112211715327_Sprint2021.09.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112211753168_Sprint2021.09.04.resx">
+      <DependentUpon>202112211753168_Sprint2021.09.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112211918178_Sprint2021.09.05.resx">
+      <DependentUpon>202112211918178_Sprint2021.09.05.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

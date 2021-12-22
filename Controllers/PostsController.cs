@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
 using Dertrix.ViewModels;
+using Spire.Pdf;
+using Spire.Pdf.HtmlConverter;
 
 namespace Dertrix.Controllers
 {
@@ -29,7 +33,7 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-            if(Session["IsParent/Guardian"] != null)
+            if (Session["IsParent/Guardian"] != null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -42,7 +46,7 @@ namespace Dertrix.Controllers
         }
 
 
-        public ActionResult PostsTable() 
+        public ActionResult PostsTable()
         {
             if (Session["OrgId"] == null)
             {
@@ -57,7 +61,7 @@ namespace Dertrix.Controllers
 
         public ActionResult EditPost(int? Id)
         {
-            if(Id != 0)
+            if (Id != 0)
             {
                 var edtpost = db.Posts
                     .Include(p => p.PostTopic)
@@ -81,6 +85,89 @@ namespace Dertrix.Controllers
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml");
         }
+
+
+        public ActionResult DownloadPostPdf(int? id)
+        {
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+
+            //Get Post 
+            var postbody = db.Posts.Where(x => x.PostId == id)
+                .Where(x => x.OrgId == i)
+                .Select(x => x.PostContent)
+                .FirstOrDefault();
+
+            //Get Post Subject 
+            var postsubject = db.Posts.Where(x => x.PostId == id)
+                .Where(x => x.OrgId == i)
+                .Select(x => x.PostSubject)
+                .FirstOrDefault();
+
+
+
+            PdfDocument pdf = new PdfDocument();
+
+            PdfHtmlLayoutFormat htmlLayoutFormat = new PdfHtmlLayoutFormat();
+
+            htmlLayoutFormat.IsWaiting = false;
+
+            PdfPageSettings setting = new PdfPageSettings();
+
+            setting.Size = PdfPageSize.A4;
+
+            string htmlCode = postbody;
+
+            Thread thread = new Thread(() => { pdf.LoadFromHTML(htmlCode, false, setting, htmlLayoutFormat); });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+
+            var filePath = Server.MapPath("~/Files/UploadedFiles/");
+            var fileName = postsubject + ".pdf";
+
+            filePath = filePath + Path.GetFileName(fileName);
+            pdf.SaveToFile(filePath);
+
+            return File(filePath, "application/pdf", postsubject + ".pdf");
+        }
+
+        // GET: Posts/EmptyUploadedFiles
+        public ActionResult EmptyUploadedFiles()
+        {
+            try
+            {
+
+                var filecount = Server.MapPath("~/Files/UploadedFiles/").Count();
+                var filePath = Server.MapPath("~/Files/UploadedFiles/");
+                string[] filePath1 = Directory.GetFiles(filePath);
+
+
+                if (filecount > 0)
+                {
+                    foreach (var file in filePath1)
+                    {
+                        Console.WriteLine(Path.GetFileName(file));
+                        System.IO.File.Delete((Path.Combine(filePath, file)));
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new HttpStatusCodeResult(204);
+
+
+        }
+
+
+
+
+
+
+
 
 
 
@@ -118,7 +205,7 @@ namespace Dertrix.Controllers
 
             ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName");
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddPost.cshtml" );
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddPost.cshtml");
         }
 
 
@@ -148,10 +235,6 @@ namespace Dertrix.Controllers
             ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
             return PartialView("~/Views/Shared/PartialViewsForms/_AddPost1.cshtml", viewmodel);
         }
-
-
-
-
 
 
 
@@ -196,7 +279,7 @@ namespace Dertrix.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create1( AddNewPostViewModel viewmodel)
+        public ActionResult Create1(AddNewPostViewModel viewmodel)
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
@@ -248,7 +331,6 @@ namespace Dertrix.Controllers
             return RedirectToAction("Index", "Orgs", new { id = i });
 
 
-            //return View(viewmodel);
         }
 
 
@@ -344,8 +426,6 @@ namespace Dertrix.Controllers
             return View(post);
         }
         // POST: Posts/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Post post = db.Posts.Find(id);

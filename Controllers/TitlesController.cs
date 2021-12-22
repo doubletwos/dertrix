@@ -142,8 +142,6 @@ namespace Dertrix.Controllers
         }
 
         // POST: Titles/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Title title = db.Titles.Find(id);

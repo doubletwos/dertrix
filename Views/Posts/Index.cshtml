@@ -11,7 +11,7 @@
 		.btn-group:hover .dropdown-menu {
 			display: block;
 		}
-		.note-btn-group.btn-group.note-style,
+/*		.note-btn-group.btn-group.note-style,
 		.note-btn-group.btn-group.note-view,
 		.note-btn-group.btn-group.note-table,
 		.note-btn-group.btn-group.note-insert,
@@ -19,7 +19,22 @@
 		.note-btn.btn.btn-default.btn-sm.dropdown-toggle,
 		.note-btn.btn.btn-default.btn-sm.note-current-color-button {
 			display: none;
-		}
+		}*/
+
+        .note-editor .note-editable {
+            font-size: 22px !important;
+            text-align: left !important;
+            font-family: 'Arial', 'Helvetica', 'sans-serif' !important;
+			color: #000000 !important;
+			font-weight: bold;
+        }
+
+        .note-editor .note-placeholder {
+          font-size: 22px !important;
+
+        }
+
+
 		.nav-pills > li {
 			float: left;
 			border-style: double;
@@ -90,9 +105,11 @@
 										Action <span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" style="background-color:white">
-										<li><a href="#" onclick="EditPost(@item.PostId)">Edit post</a></li>
-										<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete post</a></li>
-										<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Download post</a></li>
+										<li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
+										<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
+                                        <li>
+                                            @Html.ActionLink("Create Pdf", "DownloadPostPdf", "Posts", new { id = item.PostId }, null)
+                                        </li>
 									</ul>
 								</div>
 

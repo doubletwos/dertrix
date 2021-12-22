@@ -278,8 +278,6 @@ namespace Dertrix.Controllers
                 return RedirectToAction("Signin", "Access");
             }
 
-
-
             Subject subject = db.Subjects.Find(id);
             db.Subjects.Remove(subject);
             db.SaveChanges();

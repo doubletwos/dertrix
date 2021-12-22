@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dertrix.Models.StudentSubject>
+﻿@model IEnumerable<Dertrix.Models.StudentSubjectGrade>
 <head>
 	@{
 		ViewBag.Title = "Grades";
@@ -74,13 +74,13 @@
 							@Html.DisplayFor(modelItem => item.Subject.SubjectName)
 						</td>
 						<td style="text-align: center;">
-							@Html.DisplayFor(modelItem => item.FirstTermStudentGrade)
+							@Html.DisplayFor(modelItem => item.FirstTerm_ExamGrade)
 						</td>
 						<td style="text-align: center;">
-							@Html.DisplayFor(modelItem => item.SecondTermStudentGrade)
+							@Html.DisplayFor(modelItem => item.SecondTerm_ExamGrade)
 						</td>
 						<td style="text-align: center;">
-							@Html.DisplayFor(modelItem => item.ThirdTermStudentGrade)
+							@Html.DisplayFor(modelItem => item.ThirdTerm_ExamGrade)
 						</td>
 
 						<td>
@@ -89,8 +89,8 @@
 									Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>
-									<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>
+									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectGradeId)">Update Student Grade</a></li>
+									<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectGradeId)">Remove Subject</a></li>
 
 
 								</ul>

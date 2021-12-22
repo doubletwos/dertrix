@@ -125,27 +125,6 @@ namespace Dertrix.Controllers
 
                 var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId, orgid);
 
-
-                //// GET COUNT
-                //var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
-                //var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
-
-                //// UPDATE ORG-GROUP GRP MEMB COUNT
-                //var orgdata = new OrgGroup
-                //{
-                //    OrgGroupId = orggrpid.OrgGroupId,
-                //    OrgId = orggrpid.OrgId,
-                //    GroupName = orggrpid.GroupName,
-                //    CreationDate = orggrpid.CreationDate,
-                //    GroupTypeId = orggrpid.GroupTypeId,
-                //    GroupRefNumb = orggrpid.GroupRefNumb,
-                //    IsSelected = orggrpid.IsSelected,
-                //    Group_members_count = getcount,
-                //};
-                //orggrpid = orgdata;
-                //db.Entry(orgdata).State = EntityState.Modified;
-                //db.SaveChanges();
-
                 return RedirectToAction("Index", "OrgGroups");
             }
             ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName", registeredUsersGroups.OrgGroupId);
@@ -173,8 +152,6 @@ namespace Dertrix.Controllers
 
         public ActionResult UpdateGroupMemberCount(int grpid, int? orgid)
         {
-            //var rr = Session["OrgId"].ToString();
-            //int i = Convert.ToInt32(rr);
 
             // get group count
             var grpmembcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == grpid).Where(x => x.RegUserOrgId == orgid).Count();
@@ -219,25 +196,6 @@ namespace Dertrix.Controllers
             db.RegisteredUsersGroups.Remove(registeredUsersGroups);
             db.SaveChanges();
 
-            //// GET COUNT
-            //var getcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).Where(x => x.RegUserOrgId == orgid).Count();
-            //var orggrpid = db.OrgGroups.AsNoTracking().Where(x => x.OrgGroupId == registeredUsersGroups.OrgGroupId).FirstOrDefault();
-
-            //// UPDATE ORG-GROUP GRP MEMB COUNT
-            //var orgdata = new OrgGroup
-            //{
-            //    OrgGroupId = orggrpid.OrgGroupId,
-            //    OrgId = orggrpid.OrgId,
-            //    GroupName = orggrpid.GroupName,
-            //    CreationDate = orggrpid.CreationDate,
-            //    GroupTypeId = orggrpid.GroupTypeId,
-            //    GroupRefNumb = orggrpid.GroupRefNumb,
-            //    IsSelected = orggrpid.IsSelected,
-            //    Group_members_count = getcount,
-            //};
-            //orggrpid = orgdata;
-            //db.Entry(orgdata).State = EntityState.Modified;
-            //db.SaveChanges();
 
             var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId , orgid);
 
