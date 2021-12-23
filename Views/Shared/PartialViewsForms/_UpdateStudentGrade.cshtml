@@ -1,41 +1,40 @@
-﻿@model Dertrix.Models.StudentSubject
+﻿@model Dertrix.Models.StudentSubjectGrade
 <form id="UpdateStudentGradeForm">
-	@Html.AntiForgeryToken()
-	<div class="form-horizontal">
-		<h4> </h4>
-		<hr />
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		@Html.HiddenFor(model => model.StudentSubjectId)
-		@Html.HiddenFor(model => model.RegisteredUserId)
-		@Html.HiddenFor(model => model.SubjectId)
-		@Html.HiddenFor(model => model.SubjectName)
-		@Html.HiddenFor(model => model.ClassId)
-		@Html.HiddenFor(model => model.StudentFullName)
-		@Html.HiddenFor(model => model.OrgId)
-		@Html.HiddenFor(model => model.ClassRef)
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4> </h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.StudentSubjectGradeId)
+        @Html.HiddenFor(model => model.RegisteredUserId)
+        @Html.HiddenFor(model => model.SubjectId)
+        @Html.HiddenFor(model => model.ClassId)
+        @Html.HiddenFor(model => model.OrgId)
+        @Html.HiddenFor(model => model.ClassRef)
 
 
 
-		<div class="form-group">
-			@Html.LabelFor(model => model.FirstTermStudentGrade,"1st Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.FirstTermStudentGrade, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.FirstTermStudentGrade, "", new { @class = "text-danger" })
-			</div>
-		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.SecondTermStudentGrade, "2nd Term Grade",htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.SecondTermStudentGrade, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.SecondTermStudentGrade, "", new { @class = "text-danger" })
-			</div>
-		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.ThirdTermStudentGrade, "3rd Term Grade",htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.ThirdTermStudentGrade, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.ThirdTermStudentGrade, "", new { @class = "text-danger" })
-			</div>
-		</div>
-	</div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstTerm_ExamGrade, "1st Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstTerm_ExamGrade, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstTerm_ExamGrade, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SecondTerm_ExamGrade, "2nd Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SecondTerm_ExamGrade, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SecondTerm_ExamGrade, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ThirdTerm_ExamGrade, "3rd Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ThirdTerm_ExamGrade, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ThirdTerm_ExamGrade, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
 </form>

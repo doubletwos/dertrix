@@ -17,58 +17,82 @@
 					@{
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
-					<div class="form-horizontal">
-						<hr />
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						<div class="form-group">
-							@Html.LabelFor(model => model.SubjectName,"Subject Name", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.SubjectName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.SubjectName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.ClassId, "Class", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("ClassId", null, "Please select", htmlAttributes: new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.ClassTeacherId, "Teacher", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("ClassTeacherId", null, "Please select", htmlAttributes: new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.ClassTeacherId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.FirstTermSubjectGrade, "1st Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.FirstTermSubjectGrade, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.FirstTermSubjectGrade, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                    <div class="form-horizontal">
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubjectName, "Subject Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.SubjectName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SubjectName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ClassId, "Class", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("ClassId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ClassTeacherId, "Teacher", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("ClassTeacherId", null, "Please select", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClassTeacherId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.First_Term_Exam_MaxGrade, "1st Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.First_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.First_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							@Html.LabelFor(model => model.SecondTermSubjectGrade, "2nd Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.SecondTermSubjectGrade, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.SecondTermSubjectGrade, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Second_Term_Exam_MaxGrade, "2nd Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Second_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Second_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							@Html.LabelFor(model => model.ThirdTermSubjectGrade, "3rd Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.ThirdTermSubjectGrade, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.ThirdTermSubjectGrade, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="modal-footer">
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add Subject" class="RegUserOrgButtonColour" id="btnSubmit5" />
-						</div>
-					</div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Third_Term_Exam_MaxGrade, "3rd Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Third_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Third_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.First_Term_Test_MaxGrade, "1st Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.First_Term_Test_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.First_Term_Test_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Second_Term_Test_MaxGrade, "2nd Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Second_Term_Test_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Second_Term_Test_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Third_Term_Test_MaxGrade, "3rd Term Credits", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Third_Term_Test_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Third_Term_Test_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+                            <input type="submit" value="Add Subject" class="RegUserOrgButtonColour" id="btnSubmit5" />
+                        </div>
+                    </div>
 				</form>
 			</div>
 		</div>

@@ -43,26 +43,7 @@ namespace Dertrix.Controllers
 
         }
 
-        // GET: Subjects/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
 
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Subject subject = db.Subjects.Find(id);
-            if (subject == null)
-            {
-                return HttpNotFound();
-            }
-            return View(subject);
-        }
 
 
         [ChildActionOnly]
@@ -93,9 +74,9 @@ namespace Dertrix.Controllers
                       SubjectName = edtsubject.SubjectName,
                       ClassId = edtsubject.ClassId,
                       ClassTeacherId = edtsubject.ClassTeacherId,
-                      FirstTermSubjectGrade = edtsubject.FirstTermSubjectGrade,
-                      SecondTermSubjectGrade = edtsubject.SecondTermSubjectGrade,
-                      ThirdTermSubjectGrade = edtsubject.ThirdTermSubjectGrade,
+                      First_Term_Exam_MaxGrade = edtsubject.First_Term_Exam_MaxGrade,
+                      Second_Term_Exam_MaxGrade = edtsubject.Second_Term_Exam_MaxGrade,
+                      Third_Term_Exam_MaxGrade = edtsubject.Third_Term_Exam_MaxGrade,
                       SubjectOrgId = edtsubject.SubjectOrgId
 
                 };
@@ -109,26 +90,6 @@ namespace Dertrix.Controllers
         }
 
 
-
-
-
-        // GET: Subjects/Create
-        public ActionResult Create()
-        {
-
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName");
-            return View();
-        }
 
         // POST: Subjects/Create
         [HttpPost]
@@ -147,6 +108,10 @@ namespace Dertrix.Controllers
                 subject.SubjectOrgId = (int)Session["OrgId"];
                 db.Subjects.Add(subject);
                 db.SaveChanges();
+
+                // CALL METHOD TO UPDATE EXISTING STUDENTS
+
+
                 return RedirectToAction("Index");
             }
 
@@ -155,9 +120,6 @@ namespace Dertrix.Controllers
             int i = Convert.ToInt32(rr);
 
             ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-
-
-
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
             return View(subject);
         }

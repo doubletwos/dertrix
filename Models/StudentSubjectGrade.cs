@@ -16,6 +16,8 @@ namespace Dertrix.Models
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
 
+        public string SubjectName { get; set; }
+
         public int? ClassId { get; set; }
 
         public int? ClassRef { get; set; }

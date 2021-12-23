@@ -26,12 +26,17 @@ namespace Dertrix.Models
 
         public string TaughtBy { get; set; }
 
+        public decimal? First_Term_Test_MaxGrade { get; set; }
 
-        public decimal? FirstTermSubjectGrade { get; set; }
+        public decimal? Second_Term_Test_MaxGrade { get; set; }
 
-        public decimal? SecondTermSubjectGrade { get; set; }
+        public decimal? Third_Term_Test_MaxGrade { get; set; }  
 
-        public decimal? ThirdTermSubjectGrade { get; set; }
+        public decimal? First_Term_Exam_MaxGrade { get; set; } 
+
+        public decimal? Second_Term_Exam_MaxGrade { get; set; } 
+
+        public decimal? Third_Term_Exam_MaxGrade { get; set; }
 
 
     }

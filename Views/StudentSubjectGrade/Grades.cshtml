@@ -91,13 +91,8 @@
 								<ul class="dropdown-menu" style="background-color:white">
 									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectGradeId)">Update Student Grade</a></li>
 									<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectGradeId)">Remove Subject</a></li>
-
-
 								</ul>
 							</div>
-
-
-
 						</td>
 					</tr>
 				}
@@ -164,7 +159,7 @@
 		var studentSubjectId = $("#hiddenStudentSubjectId").val();
 		$.ajax({
 			type: "POST",
-			url: "/StudentSubjects/DeleteConfirmed/",
+            url: "/StudentSubjectGrade/DeleteConfirmed/",
 			data: { id: studentSubjectId },
 			success: function (response) {
 				alert("Subject Deleted");
@@ -181,7 +176,7 @@
 	var UpdateStudentGrade = function (Id) {
 		$.ajax({
 			type: "GET",
-			url: "/StudentSubjects/UpdateStudentGrade",
+            url: "/StudentSubjectGrade/UpdateStudentGrade",
 			data: { Id: Id },
 			success: function (response) {
 				$("#myModalBodyDiv2").html(response);

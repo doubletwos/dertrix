@@ -1,0 +1,114 @@
+﻿@model Dertrix.ViewModels.UpdateStudentGradesViewModel
+
+<form id="GradeEditForm">
+
+    @Html.AntiForgeryToken()
+    @{
+        HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+    }
+
+    <div class="form-horizontal">
+        <div class="table-responsive">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.RegisteredUser.FullName)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+
+
+
+
+
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th> Subject</th>
+                        <th>1st TTG</th>
+                        <th>2nd TTG</th>
+                        <th>3rd TTG</th>
+                        <th>1st TEG</th>
+                        <th>2nd TEG</th>
+                        <th>3rd TEG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.StudentSubjectGrades.Count; i++)
+                    {
+                    <tr>
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectId)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].RegisteredUserId)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectId)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassId)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassRef)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].OrgId)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].Created_date)
+                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].Last_updated_date)
+
+                        <td>
+                            @Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.StudentSubjectGrades[i].FirstTerm_TestGrade, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.StudentSubjectGrades[i].SecondTerm_TestGrade, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.StudentSubjectGrades[i].ThirdTerm_TestGrade, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.StudentSubjectGrades[i].FirstTerm_ExamGrade, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.StudentSubjectGrades[i].SecondTerm_ExamGrade, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.StudentSubjectGrades[i].ThirdTerm_ExamGrade, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <input type="submit" value="Update" class="RegUserOrgButtonColour" id="updateGrade" />
+        <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+    </div>
+
+</form>
+
+
+<script>
+    $("#updateGrade").click(function () {
+        var data = $("#GradeEditForm").serialize();
+        $.ajax({
+            type: "POST",
+            url: "/StudentSubjectGrade/Edit",
+            data: data,
+            success: function (response) {
+                alert("Grade Updated");
+                $("#myModalUpdateSubject").modal("hide");
+                $("#UpdateStudentGradeForm")[0].reset();
+                window.location.reload();
+            }
+        })
+    })
+</script>
+
+
+
+

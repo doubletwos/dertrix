@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
+using Dertrix.ViewModels;
+
 
 namespace Dertrix.Controllers
 {
@@ -152,7 +154,6 @@ namespace Dertrix.Controllers
         public ActionResult CreateStudentModules(int? classid,int studid,int? classref,int i6) 
         {
 
-
             // Locate list of subjects linked to class
             var subjects = db.Subjects.Where(x => x.ClassId == classid).Where(x => x.SubjectOrgId == i6).Select(x => x.SubjectId).ToList();
             var listofsubjects = new List<int>(subjects);
@@ -167,6 +168,7 @@ namespace Dertrix.Controllers
                         ClassRef = classref,
                         OrgId = i6,
                         SubjectId = sb,
+                        SubjectName = subjectname,
                         FirstTerm_ExamGrade = 00.0m,
                         SecondTerm_ExamGrade = 00.0m,
                         ThirdTerm_ExamGrade = 00.0m,
@@ -182,6 +184,47 @@ namespace Dertrix.Controllers
             return RedirectToAction("Index", "StudentSubjects");
 
         }
+
+        [HttpPost]
+        public ActionResult AddNewSubjectToExistingStudents(int? classid, int studid, int? classref, int i6, int subid) 
+        {
+            //Get all students in class to list
+            var studs = db.RegisteredUsers
+                .Where(x => x.ClassId == classid)
+                .Where(x => x.ClassRef == classref)
+                .Select(x => x.RegisteredUserId).ToList();
+
+            //Create List
+            var studentlist = new List<int>(studs); 
+
+            // Loop through students
+            foreach (var student in studentlist)
+            {
+                var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).Select(c => c.SubjectName).FirstOrDefault();
+                var studentsubjects = new StudentSubjectGrade()
+                {
+                    RegisteredUserId = student,
+                    SubjectId = subid,
+                    ClassId = classid,
+                    ClassRef = classref,
+                    OrgId = i6,
+                    FirstTerm_ExamGrade = 00.0m,
+                    SecondTerm_ExamGrade = 00.0m,
+                    ThirdTerm_ExamGrade = 00.0m,
+                    FirstTerm_TestGrade = 00.0m,
+                    SecondTerm_TestGrade = 00.0m,
+                    ThirdTerm_TestGrade = 00.0m,
+                    Last_updated_date = null,
+                    Created_date = DateTime.Now,
+                    SubjectName = subjectname
+                };
+                db.StudentSubjectGrades.Add(studentsubjects);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "StudentSubjects");
+
+        }
+
 
 
 
@@ -267,7 +310,70 @@ namespace Dertrix.Controllers
         }
 
 
-        public ActionResult UpdateStudentGrade(int Id)
+
+        //[ChildActionOnly]
+        public ActionResult UpdateStudentGrade(int id) 
+        {
+            var sess = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(sess);
+
+            var orgschcalendar = new OrgSchCalendar();
+
+            // Get all the subjects from the database
+            var ssg = db.StudentSubjectGrades
+                .Where(x => x.RegisteredUserId == id)
+                .Include(x => x.Subject)
+                .ToList();
+
+
+            var registereduser = db.RegisteredUsers.Find(id);
+
+
+            var subject = new Subject();
+
+
+
+
+            // Initialize the view model
+            var updatessgviewmodel = new UpdateStudentGradesViewModel
+            {
+            
+                StudentSubjectGrades = ssg.Select(x => new StudentSubjectGrade()
+                {
+                    StudentSubjectGradeId = x.StudentSubjectGradeId,
+                    OrgId = x.OrgId,                   
+                    SubjectId = x.SubjectId,
+                    SubjectName = x.SubjectName,
+                    FirstTerm_ExamGrade = x.FirstTerm_ExamGrade,
+                    SecondTerm_ExamGrade = x.SecondTerm_ExamGrade,
+                    ThirdTerm_ExamGrade = x.ThirdTerm_ExamGrade,
+                    FirstTerm_TestGrade = x.FirstTerm_TestGrade,
+                    SecondTerm_TestGrade = x.SecondTerm_TestGrade,
+                    ThirdTerm_TestGrade = x.ThirdTerm_TestGrade,
+                    RegisteredUserId = x.RegisteredUserId,
+                    Created_date = x.Created_date,
+                    Last_updated_date = x.Last_updated_date,
+                    ClassRef = x.ClassRef,
+                    ClassId = x.ClassId,
+
+
+                }).ToList(),
+
+                RegisteredUser = registereduser,
+
+             
+                
+
+            };
+            return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrades.cshtml", updatessgviewmodel);
+        }
+
+
+
+
+
+
+        public ActionResult UpdateStudentGrade2(int Id)
         {
             if (Id != 0)
             {
@@ -276,7 +382,7 @@ namespace Dertrix.Controllers
                 var stud1 = db.StudentSubjectGrades
                     .Include(s => s.Subject)
                     .Include(r => r.RegisteredUser)
-                    .Where(x => x.StudentSubjectGradeId == Id)
+                    .Where(x => x.RegisteredUserId == Id)
                     .FirstOrDefault();
 
                 var stud = new StudentSubjectGrade
@@ -289,17 +395,20 @@ namespace Dertrix.Controllers
                     SecondTerm_ExamGrade = stud1.SecondTerm_ExamGrade,
                     ThirdTerm_ExamGrade = stud1.ThirdTerm_ExamGrade,
                     FirstTerm_TestGrade = stud1.FirstTerm_TestGrade,
-                    SecondTerm_TestGrade= stud1.SecondTerm_TestGrade,
+                    SecondTerm_TestGrade = stud1.SecondTerm_TestGrade,
                     ThirdTerm_TestGrade = stud1.ThirdTerm_TestGrade,
                     OrgId = stud1.OrgId,
                     ClassRef = stud1.ClassRef
 
 
                 };
+
                 return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrade.cshtml", stud);
             }
             return PartialView("_UpdateStudentGrade");
         }
+
+
 
 
 
@@ -348,17 +457,15 @@ namespace Dertrix.Controllers
         // POST: StudentSubjects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(StudentSubjectGrade studentSubject)
+        public ActionResult Edit(UpdateStudentGradesViewModel viewmodel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(studentSubject).State = EntityState.Modified;
+                db.Entry(viewmodel).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Grades");
             }
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentSubject.RegisteredUserId);
-            ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName", studentSubject.SubjectId);
-            return View(studentSubject);
+            return View(viewmodel);
         }
 
         // GET: StudentSubjects/Delete/5
