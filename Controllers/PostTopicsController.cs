@@ -16,40 +16,65 @@ namespace Dertrix.Controllers
         // GET: PostTopics
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.PostTopics.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.PostTopics.ToList());
         }
 
         [ChildActionOnly]
         public ActionResult AddPostTopic()
         {
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddPostTopic.cshtml");
+            try
+            {
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddPostTopic.cshtml");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
 
         public ActionResult EditPostTopic(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtPostTopic = db.PostTopics.Where(x => x.PostTopicId == Id).FirstOrDefault();
-                var edtPostTopic1 = new PostTopic
+                if (Id != 0)
                 {
-                    PostTopicId = edtPostTopic.PostTopicId,
-                    PostTopicName = edtPostTopic.PostTopicName
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditPostTopic.cshtml", edtPostTopic1);
+                    var edtPostTopic = db.PostTopics.Where(x => x.PostTopicId == Id).FirstOrDefault();
+                    var edtPostTopic1 = new PostTopic
+                    {
+                        PostTopicId = edtPostTopic.PostTopicId,
+                        PostTopicName = edtPostTopic.PostTopicName
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditPostTopic.cshtml", edtPostTopic1);
+                }
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditPostTopic.cshtml");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
 
@@ -59,13 +84,21 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PostTopic postTopic)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.PostTopics.Add(postTopic);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.PostTopics.Add(postTopic);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            return View(postTopic);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
         // POST: PostTopics/Edit/5
@@ -73,22 +106,38 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PostTopic postTopic)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(postTopic).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(postTopic).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            return View(postTopic);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
   
         public ActionResult DeleteConfirmed(int id)
         {
-            PostTopic postTopic = db.PostTopics.Find(id);
-            db.PostTopics.Remove(postTopic);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                PostTopic postTopic = db.PostTopics.Find(id);
+                db.PostTopics.Remove(postTopic);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -15,54 +15,87 @@ namespace Dertrix.Controllers
         // GET: PrimarySchoolUserRoles
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.PrimarySchoolUserRoles.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.PrimarySchoolUserRoles.ToList());
         }
 
         [ChildActionOnly]
         public ActionResult AddPriSchRole()
         {
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddPriSchRole.cshtml");
+            try
+            {
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddPriSchRole.cshtml");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
         public ActionResult EditPriSchRole(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtprischrl = db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID == Id).FirstOrDefault();
-                var edtprischrl1 = new PrimarySchoolUserRole
+                if (Id != 0)
                 {
-                    PrimarySchoolUserRoleID = edtprischrl.PrimarySchoolUserRoleID,
-                    RoleName = edtprischrl.RoleName
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditPriSchRole.cshtml", edtprischrl1);
+                    var edtprischrl = db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID == Id).FirstOrDefault();
+                    var edtprischrl1 = new PrimarySchoolUserRole
+                    {
+                        PrimarySchoolUserRoleID = edtprischrl.PrimarySchoolUserRoleID,
+                        RoleName = edtprischrl.RoleName
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditPriSchRole.cshtml", edtprischrl1);
+                }
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditPriSchRole.cshtml");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
+
 
         // POST: PrimarySchoolUserRoles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(PrimarySchoolUserRole primarySchoolUserRole)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.PrimarySchoolUserRoles.Add(primarySchoolUserRole);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.PrimarySchoolUserRoles.Add(primarySchoolUserRole);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            return View(primarySchoolUserRole);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
         // POST: PrimarySchoolUserRoles/Edit/5
@@ -70,23 +103,24 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PrimarySchoolUserRole primarySchoolUserRole)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(primarySchoolUserRole).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(primarySchoolUserRole).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            return View(primarySchoolUserRole);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
-        // POST: PrimarySchoolUserRoles/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            PrimarySchoolUserRole primarySchoolUserRole = db.PrimarySchoolUserRoles.Find(id);
-            db.PrimarySchoolUserRoles.Remove(primarySchoolUserRole);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -96,5 +130,22 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //// POST: PrimarySchoolUserRoles/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    try
+        //    {
+        //        PrimarySchoolUserRole primarySchoolUserRole = db.PrimarySchoolUserRoles.Find(id);
+        //        db.PrimarySchoolUserRoles.Remove(primarySchoolUserRole);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        return Redirect("~/ErrorHandler.html");
+        //    }
+        //}
     }
 }

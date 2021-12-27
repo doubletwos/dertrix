@@ -16,19 +16,28 @@ namespace Dertrix.Controllers
         // GET: OrgTypes
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.OrgTypes.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.OrgTypes.ToList());
+      
         }
 
 
@@ -40,19 +49,27 @@ namespace Dertrix.Controllers
 
         public ActionResult EditOrgType(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtorgtype = db.OrgTypes
-                    .Where(x => x.OrgTypeId == Id)
-                    .FirstOrDefault();
-                var edtorgtype1 = new OrgType
+                if (Id != 0)
                 {
-                    OrgTypeId = edtorgtype.OrgTypeId,
-                    OrgTypeName = edtorgtype.OrgTypeName
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml", edtorgtype1);
+                    var edtorgtype = db.OrgTypes
+                        .Where(x => x.OrgTypeId == Id)
+                        .FirstOrDefault();
+                    var edtorgtype1 = new OrgType
+                    {
+                        OrgTypeId = edtorgtype.OrgTypeId,
+                        OrgTypeName = edtorgtype.OrgTypeName
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml", edtorgtype1);
+                }
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgType.cshtml");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }          
+            return new HttpStatusCodeResult(204);
         }
 
         // POST: OrgTypes/Create
@@ -60,13 +77,21 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrgType orgType)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.OrgTypes.Add(orgType);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.OrgTypes.Add(orgType);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(orgType);
             }
-            return View(orgType);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
         // POST: OrgTypes/Edit/5
@@ -74,23 +99,26 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(OrgType orgType)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(orgType).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(orgType).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(orgType);
             }
-            return View(orgType);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
 
 
-        public ActionResult DeleteConfirmed(int id)
-        {
-            OrgType orgType = db.OrgTypes.Find(id);
-            db.OrgTypes.Remove(orgType);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -99,5 +127,13 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    OrgType orgType = db.OrgTypes.Find(id);
+        //    db.OrgTypes.Remove(orgType);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
     }
 }

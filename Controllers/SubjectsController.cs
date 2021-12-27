@@ -39,7 +39,7 @@ namespace Dertrix.Controllers
 
             else
 
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
         }
 
@@ -77,7 +77,12 @@ namespace Dertrix.Controllers
                       First_Term_Exam_MaxGrade = edtsubject.First_Term_Exam_MaxGrade,
                       Second_Term_Exam_MaxGrade = edtsubject.Second_Term_Exam_MaxGrade,
                       Third_Term_Exam_MaxGrade = edtsubject.Third_Term_Exam_MaxGrade,
-                      SubjectOrgId = edtsubject.SubjectOrgId
+                      First_Term_Test_MaxGrade = edtsubject.First_Term_Test_MaxGrade,
+                      Second_Term_Test_MaxGrade = edtsubject.Second_Term_Test_MaxGrade,
+                      Third_Term_Test_MaxGrade = edtsubject.Third_Term_Test_MaxGrade,
+                      SubjectOrgId = edtsubject.SubjectOrgId,
+                      Created_date = edtsubject.Created_date,
+                      Creator_Id = edtsubject.Creator_Id,
 
                 };
 
@@ -96,33 +101,45 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Subject subject)
         {
-
-            if (Session["OrgId"] == null)
+            try
             {
-                return RedirectToAction("Signin", "Access");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if (ModelState.IsValid)
+                {
+                    var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
+                    subject.TaughtBy = taughtby;
+                    var classref = db.Classes.Where(x => x.ClassId == subject.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
+                    var orgid = subject.SubjectOrgId = (int)Session["OrgId"];
+                    subject.Creator_Id = (int)Session["RegisteredUserId"];
+                    subject.Created_date = DateTime.Now;
+                    db.Subjects.Add(subject);
+                    db.SaveChanges();
+                    var classid = subject.ClassId;
+                    var subid = subject.SubjectId;
+
+                    // CALL METHOD TO UPDATE EXISTING STUDENTS
+                    var otherController1 = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
+                    var result1 = otherController1.AddNewSubjectToExistingStudents(classid, orgid, subid, classref);
+
+                    return RedirectToAction("Index");
+                }
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+                ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
             }
-            if (ModelState.IsValid)
+
+            catch (Exception e)
             {
-                var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
-                subject.TaughtBy = taughtby;
-                subject.SubjectOrgId = (int)Session["OrgId"];
-                db.Subjects.Add(subject);
-                db.SaveChanges();
-
-                // CALL METHOD TO UPDATE EXISTING STUDENTS
-
-
-                return RedirectToAction("Index");
+                Console.WriteLine(e);
             }
-
-
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
             return View(subject);
         }
+
 
 
 
@@ -196,14 +213,22 @@ namespace Dertrix.Controllers
             {
                 return RedirectToAction("Signin", "Access");
             }
-
-
             if (ModelState.IsValid)
             {
                 var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
                 subject.TaughtBy = taughtby;
+
                 db.Entry(subject).State = EntityState.Modified;
                 db.SaveChanges();
+
+                var orgid = subject.SubjectOrgId;
+                var subid = subject.SubjectId;
+                var classid = subject.ClassId;
+
+                // Call Method to update students linked to subject
+                var foreignController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
+                var result = foreignController.UpdateStudentSubjectData(subid,classid,orgid);
+
                 return RedirectToAction("Index");
             }
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);

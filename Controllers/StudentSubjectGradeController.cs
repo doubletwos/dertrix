@@ -18,7 +18,7 @@ namespace Dertrix.Controllers
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: StudentSubjects/Grades
+        // GET: StudentSubjectGrade/Grades
         public ActionResult Grades()
         {
             if (Request.Browser.IsMobileDevice == true)
@@ -56,7 +56,7 @@ namespace Dertrix.Controllers
 
 
 
-        // GET: StudentSubjects/MySubjects
+        // GET: StudentSubjectGrade/MySubjects
         public ActionResult MySubjects(int? id, int? ij, string searchname, string searchid)
         {
             if (Session["OrgId"] == null)
@@ -96,7 +96,7 @@ namespace Dertrix.Controllers
             return View(studentSubject.ToList());
         }
 
-        // GET: StudentSubjects/Details/5
+        // GET: StudentSubjectGrade/Details/5
         public ActionResult Details(int? id)
         {
             if (Session["OrgId"] == null)
@@ -149,7 +149,7 @@ namespace Dertrix.Controllers
 
 
 
-         
+        // Create subjects and Grades for newly added students 
         [HttpPost]
         public ActionResult CreateStudentModules(int? classid,int studid,int? classref,int i6) 
         {
@@ -186,41 +186,52 @@ namespace Dertrix.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddNewSubjectToExistingStudents(int? classid, int studid, int? classref, int i6, int subid) 
+        public ActionResult AddNewSubjectToExistingStudents(int? classid,int? orgid,int subid, int? classref)  
         {
-            //Get all students in class to list
-            var studs = db.RegisteredUsers
-                .Where(x => x.ClassId == classid)
-                .Where(x => x.ClassRef == classref)
-                .Select(x => x.RegisteredUserId).ToList();
 
-            //Create List
-            var studentlist = new List<int>(studs); 
-
-            // Loop through students
-            foreach (var student in studentlist)
+            try
             {
-                var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).Select(c => c.SubjectName).FirstOrDefault();
-                var studentsubjects = new StudentSubjectGrade()
+                //Get all students in class to list
+                var studs = db.RegisteredUsers
+                    .Where(x => x.ClassId == classid)
+                    .Select(x => x.RegisteredUserId).ToList();
+
+                //Create List
+                var studentlist = new List<int>(studs);
+
+                // Loop through students
+                foreach (var student in studentlist)
                 {
-                    RegisteredUserId = student,
-                    SubjectId = subid,
-                    ClassId = classid,
-                    ClassRef = classref,
-                    OrgId = i6,
-                    FirstTerm_ExamGrade = 00.0m,
-                    SecondTerm_ExamGrade = 00.0m,
-                    ThirdTerm_ExamGrade = 00.0m,
-                    FirstTerm_TestGrade = 00.0m,
-                    SecondTerm_TestGrade = 00.0m,
-                    ThirdTerm_TestGrade = 00.0m,
-                    Last_updated_date = null,
-                    Created_date = DateTime.Now,
-                    SubjectName = subjectname
-                };
-                db.StudentSubjectGrades.Add(studentsubjects);
-                db.SaveChanges();
+                    var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).Select(c => c.SubjectName).FirstOrDefault();
+                    var studentsubjects = new StudentSubjectGrade()
+                    {
+                        RegisteredUserId = student,
+                        SubjectId = subid,
+                        ClassId = classid,
+                        ClassRef = classref,
+                        OrgId = orgid,
+                        FirstTerm_ExamGrade = 00.0m,
+                        SecondTerm_ExamGrade = 00.0m,
+                        ThirdTerm_ExamGrade = 00.0m,
+                        FirstTerm_TestGrade = 00.0m,
+                        SecondTerm_TestGrade = 00.0m,
+                        ThirdTerm_TestGrade = 00.0m,
+                        Last_updated_date = null,
+                        Created_date = DateTime.Now,
+                        SubjectName = subjectname
+                    };
+                    db.StudentSubjectGrades.Add(studentsubjects);
+                    db.SaveChanges();
+                }
+
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+
+
             return RedirectToAction("Index", "StudentSubjects");
 
         }
@@ -228,55 +239,7 @@ namespace Dertrix.Controllers
 
 
 
-        //classref list
-        //var classreflist = db.Classes.Where(x => x.ClassRefNumb == classid).Where(o => o.OrgId == orgid).Select(p => p.ClassId).ToList();
-        //var listofclasses = new List<int>(classreflist);
-
-
-
-        //var classref = db.Classes.Where(x => x.ClassRefNumb == classid).Where(o => o.OrgId == orgid).Select(p => p.ClassRefNumb).FirstOrDefault();
-        //foreach (var cr in classreflist)
-        //{
-        //    //subject ids
-        //    var subjectid = db.Subjects.Where(s => s.ClassId == cr).Select(c => c.SubjectId).FirstOrDefault();
-        //    //student list
-        //    var students = db.RegisteredUsers.Where(x => x.ClassId == cr).Where(p => p.SelectedOrg == orgid).Where(s => s.StudentRegFormId != null).Select(k => k.RegisteredUserId).ToList();
-        //    var studentid = new List<int>(students);
-        //    //subject list
-        //    var subjects = db.Subjects.Where(x => x.ClassId == cr).Select(c => c.SubjectId).ToList();
-        //    var subject = new List<int>(subjects);
-        //    foreach (var stu in students)
-        //    {
-        //        foreach (var sb in subjects)
-        //        {
-        //            var subjectexistcheck = db.StudentSubjectGrades.Where(x => x.RegisteredUserId == stu && x.SubjectId == sb).FirstOrDefault();
-        //            if (subjectexistcheck == null)
-        //            {
-        //                var subjectname = db.Subjects.Where(s => s.ClassId == cr).Where(x => x.SubjectId == sb).Select(c => c.SubjectName).FirstOrDefault();
-        //                var fullname = db.RegisteredUsers.Where(s => s.RegisteredUserId == stu).Select(f => f.FullName).FirstOrDefault();
-        //                var studentsubjects = new StudentSubjectGrade()
-        //                {
-        //                    RegisteredUserId = stu,
-        //                    ClassId = cr,
-        //                    ClassRef = classref,
-        //                    OrgId = orgid,
-        //                    SubjectId = sb,
-        //                    FirstTerm_ExamGrade = 00.0m,
-        //                    SecondTerm_ExamGrade = 00.0m,
-        //                    ThirdTerm_ExamGrade = 00.0m,
-        //                    FirstTerm_TestGrade = 00.0m,
-        //                    SecondTerm_TestGrade= 00.0m,
-        //                    ThirdTerm_TestGrade = 00.0m
-        //                };
-        //                db.StudentSubjectGrades.Add(studentsubjects);
-        //                db.SaveChanges();
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
+  
         public ActionResult MyClass(int? id)
         {
             if (Session["OrgId"] == null)
@@ -285,14 +248,15 @@ namespace Dertrix.Controllers
             }
             var OrgId = (int)Session["OrgId"];
 
-
             var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
             var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId && x.ClassId == id).Select(x => x.ClassId).FirstOrDefault();
-            var mystudents = db.StudentSubjectGrades.Where(x => x.ClassId == id && x.ClassId == myclasses)
-                .Include(s => s.Subject).Include(r => r.RegisteredUser).ToList();
+            var mystudents = db.StudentSubjectGrades
+                .Where(x => x.ClassId == id && x.ClassId == myclasses)
+                .Include(s => s.Subject)
+                .Include(r => r.RegisteredUser)
+                .ToList();
 
             return View(mystudents);
-
         }
 
 
@@ -311,61 +275,113 @@ namespace Dertrix.Controllers
 
 
 
-        //[ChildActionOnly]
-        public ActionResult UpdateStudentGrade(int id) 
+
+        //Update students Grades
+        public ActionResult UpdateStudentGrade(int id)
         {
-            var sess = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(sess);
-
-            var orgschcalendar = new OrgSchCalendar();
-
-            // Get all the subjects from the database
-            var ssg = db.StudentSubjectGrades
-                .Where(x => x.RegisteredUserId == id)
-                .Include(x => x.Subject)
-                .ToList();
-
-
-            var registereduser = db.RegisteredUsers.Find(id);
-
-
-            var subject = new Subject();
-
-
-
-
-            // Initialize the view model
-            var updatessgviewmodel = new UpdateStudentGradesViewModel
+            try
             {
-            
-                StudentSubjectGrades = ssg.Select(x => new StudentSubjectGrade()
+                var sess = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(sess);
+                var orgschcalendar = new OrgSchCalendar();
+                // Get all the subjects from the database
+                var ssg = db.StudentSubjectGrades
+                    .Where(x => x.RegisteredUserId == id)
+                    .Include(x => x.Subject)
+                    .ToList();
+                var registereduser = db.RegisteredUsers.Find(id);
+                var subject = new Subject();
+                // Initialize the view model
+                var updatessgviewmodel = new UpdateStudentGradesViewModel
                 {
-                    StudentSubjectGradeId = x.StudentSubjectGradeId,
-                    OrgId = x.OrgId,                   
-                    SubjectId = x.SubjectId,
-                    SubjectName = x.SubjectName,
-                    FirstTerm_ExamGrade = x.FirstTerm_ExamGrade,
-                    SecondTerm_ExamGrade = x.SecondTerm_ExamGrade,
-                    ThirdTerm_ExamGrade = x.ThirdTerm_ExamGrade,
-                    FirstTerm_TestGrade = x.FirstTerm_TestGrade,
-                    SecondTerm_TestGrade = x.SecondTerm_TestGrade,
-                    ThirdTerm_TestGrade = x.ThirdTerm_TestGrade,
-                    RegisteredUserId = x.RegisteredUserId,
-                    Created_date = x.Created_date,
-                    Last_updated_date = x.Last_updated_date,
-                    ClassRef = x.ClassRef,
-                    ClassId = x.ClassId,
+                    StudentSubjectGrades = ssg.Select(x => new StudentSubjectGrade()
+                    {
+                        StudentSubjectGradeId = x.StudentSubjectGradeId,
+                        OrgId = x.OrgId,
+                        SubjectId = x.SubjectId,
+                        SubjectName = x.SubjectName,
+                        FirstTerm_ExamGrade = x.FirstTerm_ExamGrade,
+                        SecondTerm_ExamGrade = x.SecondTerm_ExamGrade,
+                        ThirdTerm_ExamGrade = x.ThirdTerm_ExamGrade,
+                        FirstTerm_TestGrade = x.FirstTerm_TestGrade,
+                        SecondTerm_TestGrade = x.SecondTerm_TestGrade,
+                        ThirdTerm_TestGrade = x.ThirdTerm_TestGrade,
+                        RegisteredUserId = x.RegisteredUserId,
+                        Created_date = x.Created_date,
+                        Last_updated_date = x.Last_updated_date,
+                        ClassRef = x.ClassRef,
+                        ClassId = x.ClassId,
+                    }).ToList(),
+                    RegisteredUser = registereduser,
 
 
-                }).ToList(),
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrades.cshtml", updatessgviewmodel);
 
-                RegisteredUser = registereduser,
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return RedirectToAction("Index", "StudentSubjects");
 
-             
-                
+        }
 
-            };
-            return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrades.cshtml", updatessgviewmodel);
+
+        // Update Subject Name on StudentSubjectGrade records for all students
+        public ActionResult UpdateStudentSubjectData(int subid, int classid, int? orgid) 
+        {
+            try
+            {
+                //Get all students in class to list
+                var studs = db.StudentSubjectGrades
+                    .Where(x => x.ClassId == classid)
+                    .Where(x => x.SubjectId == subid)
+                    .Select(x => x.StudentSubjectGradeId).ToList();
+
+                //Create List
+                var studentlist = new List<int>(studs);
+
+                //Get Subject Name
+                var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).Select(c => c.SubjectName).FirstOrDefault();
+
+                foreach (var stud in studs) 
+                {
+                    // locate student 
+                    var student = db.StudentSubjectGrades.AsNoTracking().Where(x => x.StudentSubjectGradeId == stud && x.SubjectId == subid).FirstOrDefault();
+                    // class ref
+                    var classref = db.Classes.Where(x => x.ClassId == classid).Select(x => x.ClassRefNumb).FirstOrDefault();
+
+                    var updateStudent = new StudentSubjectGrade
+                    {
+                        StudentSubjectGradeId = student.StudentSubjectGradeId,
+                        RegisteredUserId = student.RegisteredUserId,
+                        SubjectId = subid,
+                        ClassId = classid,
+                        ClassRef = classref,
+                        OrgId = orgid,
+                        FirstTerm_ExamGrade = student.FirstTerm_ExamGrade,
+                        SecondTerm_ExamGrade = student.SecondTerm_ExamGrade,
+                        ThirdTerm_ExamGrade = student.ThirdTerm_ExamGrade,
+                        FirstTerm_TestGrade = student.FirstTerm_TestGrade,
+                        SecondTerm_TestGrade = student.SecondTerm_TestGrade,
+                        ThirdTerm_TestGrade = student.ThirdTerm_TestGrade,
+                        Last_updated_date = student.Last_updated_date,
+                        Created_date = student.Created_date,
+                        SubjectName = subjectname
+                    };
+                    student = updateStudent;
+                    db.Entry(student).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return new HttpStatusCodeResult(204);
         }
 
 

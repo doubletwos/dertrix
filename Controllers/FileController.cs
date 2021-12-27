@@ -13,8 +13,17 @@ namespace Dertrix.Controllers
         // GET: File
         public ActionResult Index(int id)
         {
-            var fileToRetrieve = db.Files.Find(id);
-            return File(fileToRetrieve.Content, fileToRetrieve.ContentType);
+            try
+            {
+                var fileToRetrieve = db.Files.Find(id);
+                return File(fileToRetrieve.Content, fileToRetrieve.ContentType);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
     }
 }

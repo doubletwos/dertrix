@@ -485,6 +485,10 @@
     <Compile Include="Migrations\202112231632378_Sprint2021.09.06.designer.cs">
       <DependentUpon>202112231632378_Sprint2021.09.06.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112240957255_Sprint2021.09.07.cs" />
+    <Compile Include="Migrations\202112240957255_Sprint2021.09.07.designer.cs">
+      <DependentUpon>202112240957255_Sprint2021.09.07.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -536,6 +540,7 @@
     <Compile Include="ViewModels\UpdateStudentGradesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="404.html" />
     <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -591,6 +596,7 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\timepicker\timepicker.min.css" />
     <Content Include="dertrix_favcon.ico" />
+    <Content Include="ErrorHandler.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -974,6 +980,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202011301710180_Initial.resx">
       <DependentUpon>202011301710180_Initial.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011301719018_17183011.resx">
       <DependentUpon>202011301719018_17183011.cs</DependentUpon>
@@ -1157,6 +1164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112231632378_Sprint2021.09.06.resx">
       <DependentUpon>202112231632378_Sprint2021.09.06.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112240957255_Sprint2021.09.07.resx">
+      <DependentUpon>202112240957255_Sprint2021.09.07.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

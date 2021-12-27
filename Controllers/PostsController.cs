@@ -24,112 +24,128 @@ namespace Dertrix.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if (Session["IsParent/Guardian"] != null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
 
+                var posts = db.Posts
+                    .Where(x => x.OrgId == i)
+                    .Include(p => p.Org)
+                    .Include(p => p.PostTopic);
+
+                return View(posts.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if (Session["IsParent/Guardian"] != null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            }
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-            var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
-            return View(posts.ToList());
         }
 
 
-        public ActionResult PostsTable()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-            var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
-            return View(posts.ToList());
-        }
+        //public ActionResult PostsTable()
+        //{
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Signin", "Access");
+        //    }
+        //    var rr = Session["OrgId"].ToString();
+        //    int i = Convert.ToInt32(rr);
+        //    var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
+        //    return View(posts.ToList());
+        //}
 
         public ActionResult EditPost(int? Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtpost = db.Posts
-                    .Include(p => p.PostTopic)
-                    .Where(x => x.PostId == Id).FirstOrDefault();
-                Post Post = db.Posts.Find(Id);
-                var edtpost1 = new Post
+                if (Id != 0)
                 {
-                    PostId = edtpost.PostId,
-                    PostTopicId = edtpost.PostId,
-                    OrgId = edtpost.OrgId,
-                    PostSubject = edtpost.PostSubject,
-                    PostCreatorId = edtpost.PostCreatorId,
-                    CreatorFullName = edtpost.CreatorFullName,
-                    PostCreationDate = edtpost.PostCreationDate,
-                    PostExpirtyDate = edtpost.PostExpirtyDate,
-                    PostContent = edtpost.PostContent
-                };
-                ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", Post.PostTopicId);
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml", edtpost1);
+                    var edtpost = db.Posts
+                        .Include(p => p.PostTopic)
+                        .Where(x => x.PostId == Id).FirstOrDefault();
+                    Post Post = db.Posts.Find(Id);
+                    var edtpost1 = new Post
+                    {
+                        PostId = edtpost.PostId,
+                        PostTopicId = edtpost.PostId,
+                        OrgId = edtpost.OrgId,
+                        PostSubject = edtpost.PostSubject,
+                        PostCreatorId = edtpost.PostCreatorId,
+                        CreatorFullName = edtpost.CreatorFullName,
+                        PostCreationDate = edtpost.PostCreationDate,
+                        PostExpirtyDate = edtpost.PostExpirtyDate,
+                        PostContent = edtpost.PostContent
+                    };
+                    ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", Post.PostTopicId);
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml", edtpost1);
 
+                }
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
 
         public ActionResult DownloadPostPdf(int? id)
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
 
-            //Get Post 
-            var postbody = db.Posts.Where(x => x.PostId == id)
-                .Where(x => x.OrgId == i)
-                .Select(x => x.PostContent)
-                .FirstOrDefault();
+                //Get Post 
+                var postbody = db.Posts.Where(x => x.PostId == id)
+                    .Where(x => x.OrgId == i)
+                    .Select(x => x.PostContent)
+                    .FirstOrDefault();
 
-            //Get Post Subject 
-            var postsubject = db.Posts.Where(x => x.PostId == id)
-                .Where(x => x.OrgId == i)
-                .Select(x => x.PostSubject)
-                .FirstOrDefault();
+                //Get Post Subject 
+                var postsubject = db.Posts.Where(x => x.PostId == id)
+                    .Where(x => x.OrgId == i)
+                    .Select(x => x.PostSubject)
+                    .FirstOrDefault();
 
+                PdfDocument pdf = new PdfDocument();
+                PdfHtmlLayoutFormat htmlLayoutFormat = new PdfHtmlLayoutFormat();
+                htmlLayoutFormat.IsWaiting = false;
+                PdfPageSettings setting = new PdfPageSettings();
+                setting.Size = PdfPageSize.A4;
+                string htmlCode = postbody;
+                Thread thread = new Thread(() => { pdf.LoadFromHTML(htmlCode, false, setting, htmlLayoutFormat); });
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+                thread.Join();
 
+                var filePath = Server.MapPath("~/Files/UploadedFiles/");
+                var fileName = postsubject + ".pdf";
 
-            PdfDocument pdf = new PdfDocument();
-
-            PdfHtmlLayoutFormat htmlLayoutFormat = new PdfHtmlLayoutFormat();
-
-            htmlLayoutFormat.IsWaiting = false;
-
-            PdfPageSettings setting = new PdfPageSettings();
-
-            setting.Size = PdfPageSize.A4;
-
-            string htmlCode = postbody;
-
-            Thread thread = new Thread(() => { pdf.LoadFromHTML(htmlCode, false, setting, htmlLayoutFormat); });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
-
-            var filePath = Server.MapPath("~/Files/UploadedFiles/");
-            var fileName = postsubject + ".pdf";
-
-            filePath = filePath + Path.GetFileName(fileName);
-            pdf.SaveToFile(filePath);
-
-            return File(filePath, "application/pdf", postsubject + ".pdf");
+                filePath = filePath + Path.GetFileName(fileName);
+                pdf.SaveToFile(filePath);
+                return File(filePath, "application/pdf", postsubject + ".pdf");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
         // GET: Posts/EmptyUploadedFiles
@@ -137,11 +153,9 @@ namespace Dertrix.Controllers
         {
             try
             {
-
                 var filecount = Server.MapPath("~/Files/UploadedFiles/").Count();
                 var filePath = Server.MapPath("~/Files/UploadedFiles/");
                 string[] filePath1 = Directory.GetFiles(filePath);
-
 
                 if (filecount > 0)
                 {
@@ -156,84 +170,45 @@ namespace Dertrix.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                return Redirect("~/ErrorHandler.html");
             }
             return new HttpStatusCodeResult(204);
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-        // GET: Posts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = db.Posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
-        }
-        // GET: Posts/Create
-        public ActionResult Create()
-        {
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-            ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName");
-            return View();
-        }
-        //  GET: Posts/CreatePost
-        [ChildActionOnly]
-        public ActionResult AddPost()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-
-
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-            ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName");
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddPost.cshtml");
         }
 
 
         [ChildActionOnly]
         public ActionResult AddPost1()
         {
-            var sess = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(sess);
-            var post = new Post();
-            // Get all the groups from the database
-            var grp = db.OrgGroups.Where(c => c.OrgId == i).ToList();
-            // Get all the posttopics from the database
-            var posttopics = db.PostTopics.ToList();
-            // Initialize the view model
-            var viewmodel = new AddNewPostViewModel
+            try
             {
-                Post = post,
-                PostTopics = posttopics,
-                OrgGroups = grp.Select(x => new OrgGroup()
+                var sess = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(sess);
+                var post = new Post();
+                // Get all the groups from the database
+                var grp = db.OrgGroups.Where(c => c.OrgId == i).ToList();
+                // Get all the posttopics from the database
+                var posttopics = db.PostTopics.ToList();
+                // Initialize the view model
+                var viewmodel = new AddNewPostViewModel
                 {
-                    OrgGroupId = x.OrgGroupId,
-                    OrgId = x.OrgId,
-                    GroupName = x.GroupName
-                }).ToList()
-            };
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
-            ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddPost1.cshtml", viewmodel);
+                    Post = post,
+                    PostTopics = posttopics,
+                    OrgGroups = grp.Select(x => new OrgGroup()
+                    {
+                        OrgGroupId = x.OrgGroupId,
+                        OrgId = x.OrgId,
+                        GroupName = x.GroupName
+                    }).ToList()
+                };
+                ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
+                ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddPost1.cshtml", viewmodel);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
 
@@ -243,34 +218,18 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult PostDisplayPanel()
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
-            return PartialView("~/Views/Shared/PartialViewsForms/_PostDisplayPanel.cshtml", posts);
-        }
-
-
-        // POST: Posts/Create
-        [HttpPost]
-        [ValidateInput(false)]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Post post)
-        {
-            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-            var OrgId = Convert.ToInt32(Session["OrgId"]);
-            post.PostCreatorId = RegisteredUserId;
-            post.OrgId = OrgId;
-            post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
-            post.PostCreationDate = DateTime.Now;
-            if (!(ModelState.IsValid) || ModelState.IsValid)
+            try
             {
-                db.Posts.Add(post);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
+                return PartialView("~/Views/Shared/PartialViewsForms/_PostDisplayPanel.cshtml", posts);
             }
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
-            ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
-            return View(post);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
 
@@ -281,72 +240,73 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create1(AddNewPostViewModel viewmodel)
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-            var SessionId = Convert.ToInt32(Session["SessionId"]);
-
-            viewmodel.Post.PostCreatorId = RegisteredUserId;
-            viewmodel.Post.OrgId = i;
-            viewmodel.Post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
-            viewmodel.Post.PostCreationDate = DateTime.Now;
-
-
-            // Adding / Saving the Post
-            if (!(ModelState.IsValid) || ModelState.IsValid)
+            try
             {
-                db.Posts.Add(viewmodel.Post);
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                var SessionId = Convert.ToInt32(Session["SessionId"]);
+
+                viewmodel.Post.PostCreatorId = RegisteredUserId;
+                viewmodel.Post.OrgId = i;
+                viewmodel.Post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
+                viewmodel.Post.PostCreationDate = DateTime.Now;
+
+
+                // Adding / Saving the Post
+                if (!(ModelState.IsValid) || ModelState.IsValid)
+                {
+                    db.Posts.Add(viewmodel.Post);
+                    db.SaveChanges();
+                }
+
+                // UPON CREATING A POST - LOG THE EVENT 
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_SubjectId = viewmodel.Post.PostId.ToString(),
+                    Org_Event_SubjectName = viewmodel.Post.PostSubject,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Created_Post
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
+                // Send Post as email if Send as Email is True
+                if (viewmodel.Post.SendAsEmail == true)
+                {
+                    var send = SendTestEmail(viewmodel.Post.PostContent, viewmodel.Post.PostSubject);
+
+                }
+                //selected org list
+                var selectedgroups = viewmodel.OrgGroups.Where(x => x.IsSelected == true).Select(x => x.OrgGroupId).ToList();
+                var selectedgroupid = new List<int>(selectedgroups);
+
+                return RedirectToAction("Index", "Orgs", new { id = i });
             }
-
-
-            // UPON CREATING A POST - LOG THE EVENT 
-            var orgeventlog = new Org_Events_Log()
+            catch (Exception e)
             {
-                Org_Event_SubjectId = viewmodel.Post.PostId.ToString(),
-                Org_Event_SubjectName = viewmodel.Post.PostSubject,
-                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
-                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
-                Org_Event_Time = DateTime.Now,
-                OrgId = Session["OrgId"].ToString(),
-                Org_Events_Types = Org_Events_Types.Created_Post
-            };
-            db.Org_Events_Logs.Add(orgeventlog);
-            db.SaveChanges();
-
-
-
-
-            // Send Post as email if Send as Email is True
-            if (viewmodel.Post.SendAsEmail == true)
-            {
-                var send = SendTestEmail(viewmodel.Post.PostContent, viewmodel.Post.PostSubject);
-
-            }
-
-            //selected org list
-            var selectedgroups = viewmodel.OrgGroups.Where(x => x.IsSelected == true).Select(x => x.OrgGroupId).ToList();
-            var selectedgroupid = new List<int>(selectedgroups);
-
-            return RedirectToAction("Index", "Orgs", new { id = i });
-
-
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            } 
         }
 
 
         public JsonResult SendTestEmail(string postcontent, string postsubject)
         {
-            string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/HtmlPage.html"));
-            Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
-            Body = Body.Replace("var(--white)", Session["regUserOrgNavBar"].ToString());
-            Body = Body.Replace("#Body#", postcontent);
-            Body = Body.Replace("#Subject#", postsubject);
+           
+                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/HtmlPage.html"));
+                Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+                Body = Body.Replace("var(--white)", Session["regUserOrgNavBar"].ToString());
+                Body = Body.Replace("#Body#", postcontent);
+                Body = Body.Replace("#Subject#", postsubject);
 
-            bool result = false;
-            result = SendEmail("epiphany04203@hotmail.com", postsubject, Body);
-            //result = SendEmail("wilsonwales@gmail.com", postsubject, Body);
-
-            return Json(result, JsonRequestBehavior.AllowGet);
+                bool result = false;
+                //result = SendEmail("epiphany04203@hotmail.com", postsubject, Body);
+                result = SendEmail("wilsonwales@gmail.com", postsubject, Body);
+                return Json(result, JsonRequestBehavior.AllowGet);
+            
         }
 
 
@@ -382,73 +342,75 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Post post)
         {
-            if (ModelState.IsValid)
+            try
             {
-                post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == post.PostCreatorId).Select(x => x.FullName).FirstOrDefault();
-                db.Entry(post).State = EntityState.Modified;
+                if (ModelState.IsValid)
+                {
+                    post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == post.PostCreatorId).Select(x => x.FullName).FirstOrDefault();
+                    db.Entry(post).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    // UPON EDITING A POST  - LOG THE EVENT 
+                    var orgeventlog = new Org_Events_Log()
+                    {
+                        Org_Event_SubjectId = post.PostId.ToString(),
+                        Org_Event_SubjectName = post.PostSubject,
+                        Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                        Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                        Org_Event_Time = DateTime.Now,
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Edited_Post
+                    };
+                    db.Org_Events_Logs.Add(orgeventlog);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
+                ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
+                return View(post);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
+        }
+
+
+
+        // POST: Posts/Delete/5
+        public ActionResult DeleteConfirmed(int id)
+        {
+            try
+            {
+                Post post = db.Posts.Find(id);
+                db.Posts.Remove(post);
                 db.SaveChanges();
 
-
-                // UPON EDITING A POST  - LOG THE EVENT 
+                // UPON DELETING A POST - LOG THE EVENT 
                 var orgeventlog = new Org_Events_Log()
                 {
-                    Org_Event_SubjectId = post.PostId.ToString(),
+                    Org_Event_SubjectId = id.ToString(),
                     Org_Event_SubjectName = post.PostSubject,
                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                     Org_Event_Time = DateTime.Now,
                     OrgId = Session["OrgId"].ToString(),
-                    Org_Events_Types = Org_Events_Types.Edited_Post
+                    Org_Events_Types = Org_Events_Types.Deleted_Post
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
-
                 return RedirectToAction("Index");
             }
-            ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
-            ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
-            return View(post);
-        }
-
-
-        // GET: Posts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
+            catch (Exception e)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            Post post = db.Posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
         }
-        // POST: Posts/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Post post = db.Posts.Find(id);
-            db.Posts.Remove(post);
-            db.SaveChanges();
 
-            // UPON DELETING A POST - LOG THE EVENT 
-            var orgeventlog = new Org_Events_Log()
-            {
-                Org_Event_SubjectId = id.ToString(),
-                Org_Event_SubjectName = post.PostSubject,
-                Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
-                Org_Event_TriggeredbyName = Session["FullName"].ToString(),
-                Org_Event_Time = DateTime.Now,
-                OrgId = Session["OrgId"].ToString(),
-                Org_Events_Types = Org_Events_Types.Deleted_Post
-            };
-            db.Org_Events_Logs.Add(orgeventlog);
-            db.SaveChanges();
-
-
-            return RedirectToAction("Index");
-        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

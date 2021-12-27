@@ -84,8 +84,12 @@ namespace Dertrix.Controllers
             ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName");
             ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
             ViewBag.ClassId = new SelectList(
-                            from x in db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList() select new { x.ClassId, x.ClassName, Name_Id = x.ClassName + " " + "[" + x.ClassId + "]" },
+                            from x in db.Classes
+                            .Where(x => x.OrgId == i)
+                            .OrderBy(w => w.ClassRefNumb)
+                            .ToList() select new { x.ClassId, x.ClassName, Name_Id = x.ClassName + " " + "[" + x.ClassId + "]" },
                             "ClassId", "Name_Id");
+
             return PartialView("~/Views/Shared/PartialViewsForms/_AddStudent.cshtml");
         }
 
@@ -95,7 +99,11 @@ namespace Dertrix.Controllers
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-            ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
+            ViewBag.ClassId = new SelectList(db.Classes
+                .Where(x => x.OrgId == i)
+                .OrderBy(w => w.ClassRefNumb)
+                .ToList(), "ClassId", "ClassName");
+
             return PartialView("~/Views/Shared/PartialViewsForms/_UploadStudents.cshtml");
         }
         [ChildActionOnly]
@@ -175,10 +183,6 @@ namespace Dertrix.Controllers
                 var FileName = System.IO.Path.GetFileName(postedFile.FileName);
                 filePath = filePath + Path.GetFileName(postedFile.FileName);
                 postedFile.SaveAs(filePath);
-
-
-
-
 
                 String path = Server.MapPath("~/Files/UploadedFiles/").Select(f => filePath).FirstOrDefault();
                 var package = new ExcelPackage(new System.IO.FileInfo(path));

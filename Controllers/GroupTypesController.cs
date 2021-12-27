@@ -12,23 +12,6 @@ namespace Dertrix.Controllers
     public class GroupTypesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: GroupTypes
-        public ActionResult Index()
-        {
-            if (Request.Browser.IsMobileDevice == true)
-            {
-                return RedirectToAction("WrongDevice", "Orgs");
-            }
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.GroupTypes.ToList());
-        }
 
         [ChildActionOnly]
         public ActionResult AddGroupType()
@@ -36,38 +19,67 @@ namespace Dertrix.Controllers
             return PartialView("~/Views/Shared/PartialViewsForms/_AddGroupType.cshtml");
         }
 
-        public ActionResult EditGroupType(int Id)
-        {
-            if (Id != 0)
-            {
-                var edtgrptye = db.GroupTypes.Where(x => x.GroupTypeId == Id).FirstOrDefault();
-                GroupType grouptype = db.GroupTypes.Find(Id);
-                var edtgrptye1 = new GroupType
-                {
-                    GroupTypeId = edtgrptye.GroupTypeId,
-                    GroupOrgTypeId = edtgrptye.GroupOrgTypeId,
-                    GroupRefNumb = edtgrptye.GroupRefNumb,
-                    GroupTypeName = edtgrptye.GroupTypeName,
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditGroupType.cshtml", edtgrptye1);
-            }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditGroupType.cshtml");
-        }
-
         // POST: GroupTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(GroupType groupType)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.GroupTypes.Add(groupType);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["OrgId"] == 23)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.GroupTypes.Add(groupType);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
             }
-            return View(groupType);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
+        // POST: GroupTypes/Delete/5
+        public ActionResult DeleteConfirmed(int id)
+        {
+            try
+            {
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["OrgId"] == 23)
+                {
+                    GroupType groupType = db.GroupTypes.Find(id);
+                    db.GroupTypes.Remove(groupType);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
+        }
 
 
         // POST: GroupTypes/Edit/5
@@ -75,24 +87,103 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(GroupType groupType)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(groupType).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["OrgId"] == 23)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(groupType).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
             }
-            return View(groupType);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
 
-        // POST: GroupTypes/Delete/5
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult EditGroupType(int Id)
         {
-            GroupType groupType = db.GroupTypes.Find(id);
-            db.GroupTypes.Remove(groupType);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["OrgId"] == 23)
+                {
+                    if (Id != 0)
+                    {
+                        var edtgrptye = db.GroupTypes.Where(x => x.GroupTypeId == Id).FirstOrDefault();
+                        GroupType grouptype = db.GroupTypes.Find(Id);
+                        var edtgrptye1 = new GroupType
+                        {
+                            GroupTypeId = edtgrptye.GroupTypeId,
+                            GroupOrgTypeId = edtgrptye.GroupOrgTypeId,
+                            GroupRefNumb = edtgrptye.GroupRefNumb,
+                            GroupTypeName = edtgrptye.GroupTypeName,
+                        };
+                        return PartialView("~/Views/Shared/PartialViewsForms/_EditGroupType.cshtml", edtgrptye1);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
+
+
+        // GET: GroupTypes
+        public ActionResult Index()
+        {
+            try
+            {
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["OrgId"] == 23)
+                {
+                    return View(db.GroupTypes.ToList());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
