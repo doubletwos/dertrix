@@ -15,36 +15,61 @@ namespace Dertrix.Controllers
         // GET: Tribes
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.Tribes.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.Tribes.ToList());
+
         }
         [ChildActionOnly]
         public ActionResult AddTribe()
         {
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddTribe.cshtml");
+            try
+            {
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddTribe.cshtml");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
         public ActionResult EditTribe(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edttrb = db.Tribes.Where(x => x.TribeId == Id).FirstOrDefault();
-                var edttrb1 = new Tribe
+                if (Id != 0)
                 {
-                    TribeId = edttrb.TribeId,
-                    TribeName = edttrb.TribeName
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditTribe.cshtml", edttrb1);
+                    var edttrb = db.Tribes.Where(x => x.TribeId == Id).FirstOrDefault();
+                    var edttrb1 = new Tribe
+                    {
+                        TribeId = edttrb.TribeId,
+                        TribeName = edttrb.TribeName
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditTribe.cshtml", edttrb1);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditTribe.cshtml");
         }
@@ -53,35 +78,48 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Tribe tribe)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Tribes.Add(tribe);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Tribes.Add(tribe);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
             return View(tribe);
         }
+
         // POST: Tribes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Tribe tribe)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(tribe).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tribe).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
             return View(tribe);
         }
-        // POST: Tribes/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Tribe tribe = db.Tribes.Find(id);
-            db.Tribes.Remove(tribe);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -90,5 +128,14 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // POST: Tribes/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Tribe tribe = db.Tribes.Find(id);
+        //    db.Tribes.Remove(tribe);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
     }
 }

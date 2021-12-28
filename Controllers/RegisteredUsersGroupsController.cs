@@ -19,49 +19,56 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult AddMemberToGroup1(int Id)
         {
-
-            if (Id != 0)
+            try
             {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
-
-                var grp1 = db.OrgGroups
-                    .Where(x => x.OrgGroupId == Id)
-                    .Where(x => x.OrgId == i)
-                    .FirstOrDefault();
-
-                var grp = new RegisteredUsersGroups
+                if (Id != 0)
                 {
-                    OrgGroupId = grp1.OrgGroupId,
-                    GroupTypeId = grp1.GroupTypeId
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
 
-                };
+                    var grp1 = db.OrgGroups
+                        .Where(x => x.OrgGroupId == Id)
+                        .Where(x => x.OrgId == i)
+                        .FirstOrDefault();
 
-                var orgtype = db.OrgOrgTypes.Where(x => x.OrgId == i).Select(x => x.OrgTypeId).FirstOrDefault();
+                    var grp = new RegisteredUsersGroups
+                    {
+                        OrgGroupId = grp1.OrgGroupId,
+                        GroupTypeId = grp1.GroupTypeId
 
-                // Secondary School
-                if (orgtype == 2)
-                {
-                    ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
-                    .Where(x => x.OrgId == i)
-                    //.Where(k => k.SecondarySchoolUserRoleId != 5)
-                    .Where(e => e.SecondarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
-                    ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                    };
+
+                    var orgtype = db.OrgOrgTypes.Where(x => x.OrgId == i).Select(x => x.OrgTypeId).FirstOrDefault();
+
+                    // Secondary School
+                    if (orgtype == 2)
+                    {
+                        ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
+                        .Where(x => x.OrgId == i)
+                        //.Where(k => k.SecondarySchoolUserRoleId != 5)
+                        .Where(e => e.SecondarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
+                        ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                    }
+
+
+                    // Primary School
+                    if (orgtype == 3)
+                    {
+                        ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
+                        .Where(x => x.OrgId == i)
+                        //.Where(k => k.PrimarySchoolUserRoleId != 5)
+                        .Where(e => e.PrimarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
+                        ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                    }
+
+                    return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml", grp);
+
                 }
-
-
-                // Primary School
-                if (orgtype == 3)
-                {
-                    ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
-                    .Where(x => x.OrgId == i)
-                    //.Where(k => k.PrimarySchoolUserRoleId != 5)
-                    .Where(e => e.PrimarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
-                    ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
-                }
-
-                return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml", grp);
-
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_AddMemberToGroup1.cshtml");
 
@@ -74,15 +81,24 @@ namespace Dertrix.Controllers
 
         public ActionResult MyGroups(int id)
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
 
-            var Mygroups = db.RegisteredUsersGroups
-                .Where(x => x.RegisteredUserId == id && x.RegUserOrgId == i)
-                .Include(x => x.OrgGroup)
-                .ToList();
+                var Mygroups = db.RegisteredUsersGroups
+                    .Where(x => x.RegisteredUserId == id && x.RegUserOrgId == i)
+                    .Include(x => x.OrgGroup)
+                    .ToList();
 
-            return PartialView("_MyGroups", Mygroups);
+                return PartialView("_MyGroups", Mygroups);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+ 
         }
 
 
@@ -92,17 +108,26 @@ namespace Dertrix.Controllers
         // Show list of registeredusers in a group 
         public ActionResult RegisteredUsersGroupMembers(int id)
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
 
-            var membercount = db.RegisteredUsersGroups
-                .Where(x => x.OrgGroupId == id)
-                .Where(x => x.RegUserOrgId == i)
-                .Include(r => r.RegisteredUser)
-                .Include(l => l.RegisteredUser.SecondarySchoolUserRole)
-                .Include(l => l.RegisteredUser.PrimarySchoolUserRole)
-                .ToList();
-            return PartialView("_RegisteredUsersGroupMembers", membercount);
+                var membercount = db.RegisteredUsersGroups
+                    .Where(x => x.OrgGroupId == id)
+                    .Where(x => x.RegUserOrgId == i)
+                    .Include(r => r.RegisteredUser)
+                    .Include(l => l.RegisteredUser.SecondarySchoolUserRole)
+                    .Include(l => l.RegisteredUser.PrimarySchoolUserRole)
+                    .ToList();
+                return PartialView("_RegisteredUsersGroupMembers", membercount);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
 
 
@@ -113,71 +138,97 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RegisteredUsersGroups registeredUsersGroups)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var orgid = Convert.ToInt32(Session["OrgId"]);
-                var reguseremail = db.RegisteredUserOrganisations.Where(x => x.OrgId == orgid && x.RegisteredUserId == registeredUsersGroups.RegisteredUserId).Select(x => x.Email).FirstOrDefault();
-                registeredUsersGroups.RegUserOrgId = orgid;
-                registeredUsersGroups.Email = reguseremail;
-                db.RegisteredUsersGroups.Add(registeredUsersGroups);
-                db.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    var orgid = Convert.ToInt32(Session["OrgId"]);
+                    var reguseremail = db.RegisteredUserOrganisations
+                        .Where(x => x.OrgId == orgid && x.RegisteredUserId == registeredUsersGroups.RegisteredUserId)
+                        .Select(x => x.Email)
+                        .FirstOrDefault();
 
+                    registeredUsersGroups.RegUserOrgId = orgid;
+                    registeredUsersGroups.Email = reguseremail;
+                    db.RegisteredUsersGroups.Add(registeredUsersGroups);
+                    db.SaveChanges();
+                    var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId, orgid);
 
-                var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId, orgid);
-
-                return RedirectToAction("Index", "OrgGroups");
+                    return RedirectToAction("Index", "OrgGroups");
+                }
+                ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName", registeredUsersGroups.OrgGroupId);
+                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", registeredUsersGroups.RegisteredUserId);
+                return View(registeredUsersGroups);
             }
-            ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName", registeredUsersGroups.OrgGroupId);
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", registeredUsersGroups.RegisteredUserId);
-            return View(registeredUsersGroups);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
+
+
 
         // POST: RegisteredUsersGroups/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(RegisteredUsersGroups registeredUsersGroups)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(registeredUsersGroups).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(registeredUsersGroups).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName", registeredUsersGroups.OrgGroupId);
+                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", registeredUsersGroups.RegisteredUserId);
+                return View(registeredUsersGroups);
             }
-            ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName", registeredUsersGroups.OrgGroupId);
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", registeredUsersGroups.RegisteredUserId);
-            return View(registeredUsersGroups);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
 
 
         public ActionResult UpdateGroupMemberCount(int grpid, int? orgid)
         {
-
-            // get group count
-            var grpmembcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == grpid).Where(x => x.RegUserOrgId == orgid).Count();
-
-            // locate recently updated group
-            var orggroup = db.OrgGroups.AsNoTracking().Where(x => x.OrgId == orgid && x.OrgGroupId == grpid).FirstOrDefault();
-
-            var updategroup = new OrgGroup
+            try
             {
-                OrgGroupId = orggroup.OrgGroupId,
-                OrgId = orggroup.OrgId,
-                GroupName = orggroup.GroupName,
-                CreationDate = orggroup.CreationDate,
-                GroupTypeId = orggroup.GroupTypeId,
-                GroupOrgTypeId = orggroup.GroupOrgTypeId,
-                GroupRefNumb = orggroup.GroupRefNumb,
-                IsSelected = orggroup.IsSelected,
-                Group_members_count = grpmembcount,
-            };
+                // get group count
+                var grpmembcount = db.RegisteredUsersGroups.Where(x => x.OrgGroupId == grpid).Where(x => x.RegUserOrgId == orgid).Count();
 
-            orggroup = updategroup;
-            db.Entry(orggroup).State = EntityState.Modified;
-            db.SaveChanges();
+                // locate recently updated group
+                var orggroup = db.OrgGroups.AsNoTracking().Where(x => x.OrgId == orgid && x.OrgGroupId == grpid).FirstOrDefault();
 
-            return RedirectToAction("Index");
+                var updategroup = new OrgGroup
+                {
+                    OrgGroupId = orggroup.OrgGroupId,
+                    OrgId = orggroup.OrgId,
+                    GroupName = orggroup.GroupName,
+                    CreationDate = orggroup.CreationDate,
+                    GroupTypeId = orggroup.GroupTypeId,
+                    GroupOrgTypeId = orggroup.GroupOrgTypeId,
+                    GroupRefNumb = orggroup.GroupRefNumb,
+                    IsSelected = orggroup.IsSelected,
+                    Group_members_count = grpmembcount,
+                };
 
+                orggroup = updategroup;
+                db.Entry(orggroup).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+      
         }
 
 
@@ -188,19 +239,23 @@ namespace Dertrix.Controllers
 
         // POST: RegisteredUsersGroups/Delete/5
         public ActionResult DeleteConfirmed(int id, int grpid)
-
         {
-            var orgid = Convert.ToInt32(Session["OrgId"]);
-            var user = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == id).Select(j => j.RegisteredUsersGroupsId).FirstOrDefault();
-            RegisteredUsersGroups registeredUsersGroups = db.RegisteredUsersGroups.Find(user);
-            db.RegisteredUsersGroups.Remove(registeredUsersGroups);
-            db.SaveChanges();
+            try
+            {
+                var orgid = Convert.ToInt32(Session["OrgId"]);
+                var user = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == id).Select(j => j.RegisteredUsersGroupsId).FirstOrDefault();
+                RegisteredUsersGroups registeredUsersGroups = db.RegisteredUsersGroups.Find(user);
+                db.RegisteredUsersGroups.Remove(registeredUsersGroups);
+                db.SaveChanges();
+                var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId, orgid);
+                return RedirectToAction("Index", "OrgGroups");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
 
-
-            var updateclasses = UpdateGroupMemberCount(registeredUsersGroups.OrgGroupId , orgid);
-
-
-            return RedirectToAction("Index", "OrgGroups");
         }
 
         protected override void Dispose(bool disposing)

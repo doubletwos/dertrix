@@ -15,73 +15,102 @@ namespace Dertrix.Controllers
         // GET: Religions
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.Religions.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.Religions.ToList());
+
+
         }
         [ChildActionOnly]
         public ActionResult AddReligion()
         {
             return PartialView("~/Views/Shared/PartialViewsForms/_AddReligion.cshtml");
         }
+
         public ActionResult EditReligion(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtrlg = db.Religions.Where(x => x.ReligionId == Id).FirstOrDefault();
-                var edtrlg1 = new Religion
+                if (Id != 0)
                 {
-                    ReligionId = edtrlg.ReligionId,
-                    ReligionName = edtrlg.ReligionName
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditReligion.cshtml", edtrlg1);
+                    var edtrlg = db.Religions.Where(x => x.ReligionId == Id).FirstOrDefault();
+                    var edtrlg1 = new Religion
+                    {
+                        ReligionId = edtrlg.ReligionId,
+                        ReligionName = edtrlg.ReligionName
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditReligion.cshtml", edtrlg1);
+                }
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditReligion.cshtml");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
         // POST: Religions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Religion religion)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Religions.Add(religion);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Religions.Add(religion);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(religion);
             }
-            return View(religion);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
         // POST: Religions/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Religion religion)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(religion).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(religion).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(religion);
             }
-            return View(religion);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
-        // POST: Religions/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Religion religion = db.Religions.Find(id);
-            db.Religions.Remove(religion);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -90,5 +119,14 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //// POST: Religions/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Religion religion = db.Religions.Find(id);
+        //    db.Religions.Remove(religion);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
     }
 }

@@ -15,23 +15,32 @@ namespace Dertrix.Controllers
         // GET: StudentRegForms
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["RegisteredUserTypeId"] != 1)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.StudentRegForm.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if ((int)Session["RegisteredUserTypeId"] != 1)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.StudentRegForm.ToList());
+
         }
         [ChildActionOnly]
         public ActionResult AddStudentType()
@@ -40,15 +49,23 @@ namespace Dertrix.Controllers
         }
         public ActionResult EditStudentType(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtstutyp = db.StudentRegForm.Where(x => x.StudentRegFormId == Id).FirstOrDefault();
-                var edtstutyp1 = new StudentRegForm
+                if (Id != 0)
                 {
-                    StudentRegFormId = edtstutyp.StudentRegFormId,
-                    Name = edtstutyp.Name
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditStudentType.cshtml", edtstutyp1);
+                    var edtstutyp = db.StudentRegForm.Where(x => x.StudentRegFormId == Id).FirstOrDefault();
+                    var edtstutyp1 = new StudentRegForm
+                    {
+                        StudentRegFormId = edtstutyp.StudentRegFormId,
+                        Name = edtstutyp.Name
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditStudentType.cshtml", edtstutyp1);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditStudentType.cshtml");
         }
@@ -57,35 +74,48 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(StudentRegForm studentRegForm)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.StudentRegForm.Add(studentRegForm);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.StudentRegForm.Add(studentRegForm);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             return View(studentRegForm);
         }
+
+
         // POST: StudentRegForms/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StudentRegForm studentRegForm)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(studentRegForm).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(studentRegForm).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             return View(studentRegForm);
         }
-        // POST: StudentRegForms/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            StudentRegForm studentRegForm = db.StudentRegForm.Find(id);
-            db.StudentRegForm.Remove(studentRegForm);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -94,5 +124,14 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //// POST: StudentRegForms/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    StudentRegForm studentRegForm = db.StudentRegForm.Find(id);
+        //    db.StudentRegForm.Remove(studentRegForm);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
     }
 }

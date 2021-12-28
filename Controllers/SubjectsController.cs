@@ -17,30 +17,33 @@ namespace Dertrix.Controllers
         // GET: Subjects
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
-
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    var rr = (int)Session["OrgId"];
+                    int i = Convert.ToInt32(rr);
+                    var subjects = db.Subjects
+                        .Where(s => s.SubjectOrgId == rr)
+                        .Include(s => s.Class);
+                    return View(subjects.ToList());
+                }
+                else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-
-            if ((int)Session["OrgId"] != 23)
-            {
-                var rr = (int)Session["OrgId"];
-                int i = Convert.ToInt32(rr);
-                var subjects = db.Subjects
-                    .Where(s => s.SubjectOrgId == rr)
-                    .Include(s => s.Class);                    
-                return View(subjects.ToList());
-            }
-
-            else
-
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
         }
 
 
@@ -49,47 +52,67 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult AddSubject()
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
 
-            ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-            ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName");
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
+                    .Where(x => x.OrgId == i)
+                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i)
+                    .OrderBy(w => w.ClassRefNumb)
+                    .ToList(), "ClassId", "ClassName");
 
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddSubject.cshtml");
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddSubject.cshtml");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
 
         }
 
         public ActionResult EditSubject(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
-
-                var edtsubject = db.Subjects.Where(x => x.SubjectId == Id).FirstOrDefault();
-
-                var edtsubject1 = new Subject
+                if (Id != 0)
                 {
-                      SubjectId = edtsubject.SubjectId,
-                      SubjectName = edtsubject.SubjectName,
-                      ClassId = edtsubject.ClassId,
-                      ClassTeacherId = edtsubject.ClassTeacherId,
-                      First_Term_Exam_MaxGrade = edtsubject.First_Term_Exam_MaxGrade,
-                      Second_Term_Exam_MaxGrade = edtsubject.Second_Term_Exam_MaxGrade,
-                      Third_Term_Exam_MaxGrade = edtsubject.Third_Term_Exam_MaxGrade,
-                      First_Term_Test_MaxGrade = edtsubject.First_Term_Test_MaxGrade,
-                      Second_Term_Test_MaxGrade = edtsubject.Second_Term_Test_MaxGrade,
-                      Third_Term_Test_MaxGrade = edtsubject.Third_Term_Test_MaxGrade,
-                      SubjectOrgId = edtsubject.SubjectOrgId,
-                      Created_date = edtsubject.Created_date,
-                      Creator_Id = edtsubject.Creator_Id,
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
 
-                };
+                    var edtsubject = db.Subjects.Where(x => x.SubjectId == Id).FirstOrDefault();
 
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName" , edtsubject1.ClassTeacherId) ;
-                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName", edtsubject.ClassId);
+                    var edtsubject1 = new Subject
+                    {
+                        SubjectId = edtsubject.SubjectId,
+                        SubjectName = edtsubject.SubjectName,
+                        ClassId = edtsubject.ClassId,
+                        ClassTeacherId = edtsubject.ClassTeacherId,
+                        First_Term_Exam_MaxGrade = edtsubject.First_Term_Exam_MaxGrade,
+                        Second_Term_Exam_MaxGrade = edtsubject.Second_Term_Exam_MaxGrade,
+                        Third_Term_Exam_MaxGrade = edtsubject.Third_Term_Exam_MaxGrade,
+                        First_Term_Test_MaxGrade = edtsubject.First_Term_Test_MaxGrade,
+                        Second_Term_Test_MaxGrade = edtsubject.Second_Term_Test_MaxGrade,
+                        Third_Term_Test_MaxGrade = edtsubject.Third_Term_Test_MaxGrade,
+                        SubjectOrgId = edtsubject.SubjectOrgId,
+                        Created_date = edtsubject.Created_date,
+                        Creator_Id = edtsubject.Creator_Id,
 
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml", edtsubject1);
+                    };
+
+                    ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", edtsubject1.ClassTeacherId);
+                    ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i).OrderBy(w => w.ClassRefNumb).ToList(), "ClassId", "ClassName", edtsubject.ClassId);
+
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml", edtsubject1);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml");
         }
@@ -146,30 +169,48 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult MySubjectsCount()
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
 
-            var mysubjectsCount = db.Subjects
-                .Where(x => x.SubjectOrgId == i)
-                .Where(j => j.ClassTeacherId == RegisteredUserId)
-                .ToList();
-            return PartialView("_MySubjectsCount", mysubjectsCount);
+                var mysubjectsCount = db.Subjects
+                    .Where(x => x.SubjectOrgId == i)
+                    .Where(j => j.ClassTeacherId == RegisteredUserId)
+                    .ToList();
+                return PartialView("_MySubjectsCount", mysubjectsCount);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+ 
         }
 
 
         public ActionResult MySubjectsList()
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
 
-            var mysubjectsCount = db.Subjects
-                .Where(x => x.SubjectOrgId == i)
-                .Where(j => j.ClassTeacherId == RegisteredUserId)
-                .Include(s => s.Class)
-                .ToList();
-            return PartialView("_MySubjectsList", mysubjectsCount);
+                var mysubjectsCount = db.Subjects
+                    .Where(x => x.SubjectOrgId == i)
+                    .Where(j => j.ClassTeacherId == RegisteredUserId)
+                    .Include(s => s.Class)
+                    .ToList();
+                return PartialView("_MySubjectsList", mysubjectsCount);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
 
 
@@ -177,99 +218,50 @@ namespace Dertrix.Controllers
 
 
 
-        // GET: Subjects/Edit/5
-        public ActionResult Edit(int? id)
-        {
 
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Subject subject = db.Subjects.Find(id);
-            if (subject == null)
-            {
-                return HttpNotFound();
-            }
-
-
-         
-            ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
-            return View(subject);
-        }
 
         // POST: Subjects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Subject subject)
         {
-
-            if (Session["OrgId"] == null)
+            try
             {
-                return RedirectToAction("Signin", "Access");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if (ModelState.IsValid)
+                {
+                    var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
+                    subject.TaughtBy = taughtby;
+
+                    db.Entry(subject).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    var orgid = subject.SubjectOrgId;
+                    var subid = subject.SubjectId;
+                    var classid = subject.ClassId;
+
+                    // Call Method to update students linked to subject
+                    var foreignController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
+                    var result = foreignController.UpdateStudentSubjectData(subid, classid, orgid);
+
+                    return RedirectToAction("Index");
+                }
             }
-            if (ModelState.IsValid)
+            catch (Exception e)
             {
-                var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
-                subject.TaughtBy = taughtby;
-
-                db.Entry(subject).State = EntityState.Modified;
-                db.SaveChanges();
-
-                var orgid = subject.SubjectOrgId;
-                var subid = subject.SubjectId;
-                var classid = subject.ClassId;
-
-                // Call Method to update students linked to subject
-                var foreignController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
-                var result = foreignController.UpdateStudentSubjectData(subid,classid,orgid);
-
-                return RedirectToAction("Index");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
             ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
             return View(subject);
         }
 
-        // GET: Subjects/Delete/5
-        public ActionResult Delete(int? id)
-        {
-
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
 
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Subject subject = db.Subjects.Find(id);
-            if (subject == null)
-            {
-                return HttpNotFound();
-            }
-            return View(subject);
-        }
 
-        // POST: Subjects/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            Subject subject = db.Subjects.Find(id);
-            db.Subjects.Remove(subject);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -279,5 +271,19 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //// POST: Subjects/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Signin", "Access");
+        //    }
+
+        //    Subject subject = db.Subjects.Find(id);
+        //    db.Subjects.Remove(subject);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
     }
 }

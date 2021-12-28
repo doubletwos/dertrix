@@ -1,49 +1,49 @@
 ﻿@model IEnumerable<Dertrix.Models.OrgGroup>
 <head>
-	@{
-		ViewBag.Title = "Groups";
-	}
-	<style>
+    @{
+        ViewBag.Title = "Groups";
+    }
+    <style>
 
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-	</style>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        .btn-group:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <div class="jumbotron" style="height:100vh;">
-	<br />
-	<br />
-	@Html.Partial("_Widget_SchStaff_Dashboard")
-	<div>
-		<hr />
-		<div class="row">
-			@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-			{
-				<div class="col-md-3">
-					@{
-						Html.RenderAction("AddCustomGroup", "OrgGroups");
-					}
-				</div>
-			}
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-		</div>
-	</div>
-	<hr />
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
+    <br />
+    <br />
+    @Html.Partial("_Widget_SchStaff_Dashboard")
+    <div>
+        <hr />
+        <div class="row">
+            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+            {
+                <div class="col-md-3">
+                    @{
+                        Html.RenderAction("AddCustomGroup", "OrgGroups");
+                    }
+                </div>
+            }
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
 
                 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
                     <th>
-                    Group Id
+                        Group Id
                     </th>
 
                     <th>
@@ -59,113 +59,113 @@
                         Select Action
                     </th>
                 </tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrgGroupId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GroupName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Group_members_count)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreationDate)
-                        @Html.HiddenFor(modelItem => item.GroupTypeId)
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgGroupId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GroupName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Group_members_count)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                            @Html.HiddenFor(modelItem => item.GroupTypeId)
 
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Action <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="background-color:white">
-                                <li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="GrpMembersCount(@item.OrgGroupId)">Members</a></li>
 
-                                @if (item.GroupTypeId == 18)
-                                {
-
-                                    if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                    @if (item.GroupTypeId == 18)
                                     {
-                                        <li><a href="#" onclick="EditGroup(@item.OrgGroupId)">Edit group</a></li>
-                                        <li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
 
+                                        if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                        {
+                                            <li><a href="#" onclick="EditGroup(@item.OrgGroupId)">Edit group</a></li>
+                                            <li><a href="#" onclick="ConfirmDelete(@item.OrgGroupId)">Delete group</a></li>
+
+                                        }
                                     }
-                                }
-                            </ul>
-                        </div>
-                    </td>
+                                </ul>
+                            </div>
+                        </td>
 
-                </tr>
-				}
-			</tbody>
-		</table>
-	</div>
-	<input type="hidden" id="hiddenOrgGroupId" />
-	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="hiddenOrgGroupId" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+  
 
+    @*Delete confirmation Modal*@
+    <div class="modal fade" id="GroupDeleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Remove group</h3>
+                </div>
+                <div class="modal-body">
+                    <h5>Are you sure you want to remove this group?</h5>
 
-	@*Delete confirmation Modal*@
-	<div class="modal fade" id="GroupDeleteModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Remove group</h3>
-				</div>
-				<div class="modal-body">
-					<h5>Are you sure you want to remove this group?</h5>
-
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteGroup()">Confirm</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                    <a href="#" class="RegUserOrgButtonColour" onclick="DeleteGroup()">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
 
 
 
-	@*View GroupMembers Modal*@
-	<div class="modal fade" id="Grpmembersmodal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title">Group Members</h3>
 
-				</div>
-				<div class="modal-body" id="Grpmembersmodalbody"></div>
-				<div class="modal-footer">
-					<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				</div>
-			</div>
-		</div>
-	</div>
+    @*View GroupMembers Modal*@
+    <div class="modal fade" id="Grpmembersmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Group Members</h3>
+
+                </div>
+                <div class="modal-body" id="Grpmembersmodalbody"></div>
+                <div class="modal-footer">
+                    <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <script>
-	var GrpMembersCount = function (Id) {
-		$.ajax({
-			type: "POST",
-			url: "/RegisteredUsersGroups/RegisteredUsersGroupMembers",
-			data: { Id: Id },
-			success: function (response) {
-				$("#Grpmembersmodalbody").html(response);
-				$("#Grpmembersmodal").modal("show");
-			}
-		})
-	}
+    var GrpMembersCount = function (Id) {
+        $.ajax({
+            type: "POST",
+            url: "/RegisteredUsersGroups/RegisteredUsersGroupMembers",
+            data: { Id: Id },
+            success: function (response) {
+                $("#Grpmembersmodalbody").html(response);
+                $("#Grpmembersmodal").modal("show");
+            }
+        })
+    }
 </script>
 
 
@@ -174,166 +174,163 @@
 
 @*Load Add users to group Form*@
 <div class="modal fade" id="AddUsersToGrpsmodal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add Users</h3>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Add Users</h3>
 
-			</div>
-			<div class="modal-body" id="AddGrpuserssmodalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Add User" class="RegUserOrgButtonColour" id="adduser" />
+            </div>
+            <div class="modal-body" id="AddGrpuserssmodalbody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Add User" class="RegUserOrgButtonColour" id="adduser" />
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @*Load Add users to group Form1*@
 <div class="modal fade" id="Addusertogroup1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add Users</h3>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Add Users</h3>
 
-			</div>
-			<div class="modal-body" id="AddGrpuserssmodalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Add User" class="RegUserOrgButtonColour" id="adduser" />
+            </div>
+            <div class="modal-body" id="AddGrpuserssmodalbody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Add User" class="RegUserOrgButtonColour" id="adduser" />
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @*Edit group Modal*@
 <div class="modal fade" id="GroupEditModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit group</h3>
-			</div>
-			<div class="modal-body" id="groupEditBody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Edit group</h3>
+            </div>
+            <div class="modal-body" id="groupEditBody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+            </div>
+        </div>
+    </div>
 </div>
 
 
 
 
 <script>
-	var UsersToGroup = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/RegisteredUsersGroups/AddMemberToGroup",
-			data: { Id: Id },
-			success: function (response) {
-				$("#AddGrpuserssmodalbody").html(response);
-				$("#AddUsersToGrpsmodal").modal("show");
-			}
-		})
-	}
+    var UsersToGroup = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/RegisteredUsersGroups/AddMemberToGroup",
+            data: { Id: Id },
+            success: function (response) {
+                $("#AddGrpuserssmodalbody").html(response);
+                $("#AddUsersToGrpsmodal").modal("show");
+            }
+        })
+    }
 </script>
 
 <script>
-	$("#adduser").click(function () {
-		var data = $("#AddusersToGrpForm").serialize();
+    $("#adduser").click(function () {
+        var data = $("#AddusersToGrpForm").serialize();
 
-		$.ajax({
-			type: "POST",
-			url: "/RegisteredUsersGroups/Create",
-			data: data,
-			success: function (response) {
-				alert("User Added To Group");
-				$("#AddUsersToGrpsmodal").modal("hide");
-				$("#AddusersToGrpForm")[0].reset();
-				window.location.reload();
-			}
-		})
+        $.ajax({
+            type: "POST",
+            url: "/RegisteredUsersGroups/Create",
+            data: data,
+            success: function (response) {
+                alert("User Added To Group");
+                $("#AddUsersToGrpsmodal").modal("hide");
+                $("#AddusersToGrpForm")[0].reset();
+                window.location.reload();
+            }
+        })
 
-	})
+    })
 </script>
 
 <script>
-	var ConfirmDelete = function (OrgGroupId) {
-		$("#hiddenOrgGroupId").val(OrgGroupId);
-		$("#GroupDeleteModal").modal('show');
-	}
-	var DeleteGroup = function () {
-		var Sub = $("#hiddenOrgGroupId").val();
-		$.ajax({
-			type: "POST",
-			url: "/OrgGroups/DeleteConfirmed/",
-			data: { id: Sub },
-			success: function (response) {
-				alert("Group deleted");
-				$("#GroupDeleteModal").modal("hide");
-				window.location.reload();
-			}
-		})
-	}
+    var ConfirmDelete = function (OrgGroupId) {
+        $("#hiddenOrgGroupId").val(OrgGroupId);
+        $("#GroupDeleteModal").modal('show');
+    }
+    var DeleteGroup = function () {
+        var Sub = $("#hiddenOrgGroupId").val();
+        $.ajax({
+            type: "POST",
+            url: "/OrgGroups/DeleteConfirmed/",
+            data: { id: Sub },
+            success: function (response) {
+                alert("Group deleted");
+                $("#GroupDeleteModal").modal("hide");
+                window.location.reload();
+            }
+        })
+    }
 </script>
 
 <script>
-	var EditGroup = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/OrgGroups/EditCustomGroup",
-			data: { Id: Id },
-			success: function (response) {
-				$("#groupEditBody").html(response);
-				$("#GroupEditModal").modal("show");
-			}
-		})
-	}
+    var EditGroup = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/OrgGroups/EditCustomGroup",
+            data: { Id: Id },
+            success: function (response) {
+                $("#groupEditBody").html(response);
+                $("#GroupEditModal").modal("show");
+            }
+        })
+    }
 </script>
 
 <script>
-	$("#edtSubmit").click(function () {
-		var data = $("#OrgGroupEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/OrgGroups/Edit",
-			data: data,
-			success: function (response) {
-				alert("Group updated");
-				$("#GroupEditModal").modal("hide");
-				$("#OrgGroupEditForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
+    $("#edtSubmit").click(function () {
+        var data = $("#OrgGroupEditForm").serialize();
+        $.ajax({
+            type: "POST",
+            url: "/OrgGroups/Edit",
+            data: data,
+            success: function (response) {
+                alert("Group updated");
+                $("#GroupEditModal").modal("hide");
+                $("#OrgGroupEditForm")[0].reset();
+                window.location.reload();
+            }
+        })
+    })
 </script>
 
 
 
 
 @section scripts{
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#myTable').DataTable(
-				{
-					"ordering": false,
-				}
-			);
-		});
-	</script>
-	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/custom-validator")
-	@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />*@
-
-
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                    "ordering": false,
+                }
+            );
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom-validator")
+ 
 }

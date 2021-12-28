@@ -124,21 +124,7 @@ namespace Dertrix.Controllers
         }
 
   
-        public ActionResult DeleteConfirmed(int id)
-        {
-            try
-            {
-                PostTopic postTopic = db.PostTopics.Find(id);
-                db.PostTopics.Remove(postTopic);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
-            }
-        }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -148,5 +134,21 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    try
+        //    {
+        //        PostTopic postTopic = db.PostTopics.Find(id);
+        //        db.PostTopics.Remove(postTopic);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        return Redirect("~/ErrorHandler.html");
+        //    }
+        //}
     }
 }

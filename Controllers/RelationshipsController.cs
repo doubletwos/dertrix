@@ -17,19 +17,27 @@ namespace Dertrix.Controllers
         // GET: Relationships
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                return View(db.Relationships.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(db.Relationships.ToList());
         }
 
         [ChildActionOnly]
@@ -37,48 +45,28 @@ namespace Dertrix.Controllers
         {
             return PartialView("~/Views/Shared/PartialViewsForms/_AddRelationship.cshtml");
         }
+
         public ActionResult EditRelationship(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var edtrls = db.Relationships.Where(x => x.RelationshipId == Id).FirstOrDefault();
-                var edtrls1 = new Relationship
+                if (Id != 0)
                 {
-                    RelationshipId = edtrls.RelationshipId,
-                    RelationshipName = edtrls.RelationshipName
-                };
-                return PartialView("~/Views/Shared/PartialViewsForms/_EditRelationship.cshtml", edtrls1);
+                    var edtrls = db.Relationships.Where(x => x.RelationshipId == Id).FirstOrDefault();
+                    var edtrls1 = new Relationship
+                    {
+                        RelationshipId = edtrls.RelationshipId,
+                        RelationshipName = edtrls.RelationshipName
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditRelationship.cshtml", edtrls1);
+                }
             }
-            return PartialView("~/Views/Shared/PartialViewsForms/_EditRelationship.cshtml");
-        }
-
-        // GET: Relationships/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            catch (Exception e)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
             }
-            Relationship relationship = db.Relationships.Find(id);
-            if (relationship == null)
-            {
-                return HttpNotFound();
-            }
-            return View(relationship);
-        }
-
-        // GET: Relationships/Create
-        public ActionResult Create()
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            if ((int)Session["OrgId"] != 23)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View();
+            return new HttpStatusCodeResult(204);
         }
 
         // POST: Relationships/Create
@@ -96,58 +84,32 @@ namespace Dertrix.Controllers
             return View(relationship);
         }
 
-        // GET: Relationships/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Relationship relationship = db.Relationships.Find(id);
-            if (relationship == null)
-            {
-                return HttpNotFound();
-            }
-            return View(relationship);
-        }
 
         // POST: Relationships/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RelationshipId,RelationshipName")] Relationship relationship)
+        public ActionResult Edit(Relationship relationship)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(relationship).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(relationship).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(relationship);
             }
-            return View(relationship);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
-        // GET: Relationships/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Relationship relationship = db.Relationships.Find(id);
-            if (relationship == null)
-            {
-                return HttpNotFound();
-            }
-            return View(relationship);
-        }
 
-        // POST: Relationships/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Relationship relationship = db.Relationships.Find(id);
-            db.Relationships.Remove(relationship);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -157,5 +119,23 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //// POST: Relationships/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    try
+        //    {
+        //        Relationship relationship = db.Relationships.Find(id);
+        //        db.Relationships.Remove(relationship);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        return Redirect("~/ErrorHandler.html");
+        //    }
+
+        //}
     }
 }

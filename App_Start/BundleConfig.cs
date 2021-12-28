@@ -15,6 +15,11 @@ namespace Dertrix
                         "~/Scripts/jquery.validate.js",
                         "~/Scripts/jquery.validate.unobtrusive.js"));
 
+            // JQuery toastr.   
+            bundles.Add(new ScriptBundle("~/bundles/toastr").Include(
+            "~/Scripts/toastr.js"));
+
+
             // JQuery validator.   
             bundles.Add(new ScriptBundle("~/bundles/custom-validator").Include(
                                   "~/Scripts/script-custom-validator.js"));
@@ -33,7 +38,8 @@ namespace Dertrix
             
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
-                      "~/Content/site.css"
+                      "~/Content/site.css",
+                      "~/Content/toastr.css"
                       ));
         }
     }

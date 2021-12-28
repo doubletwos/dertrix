@@ -21,121 +21,56 @@ namespace Dertrix.Controllers
         // GET: StudentSubjectGrade/Grades
         public ActionResult Grades()
         {
-            if (Request.Browser.IsMobileDevice == true)
+            try
             {
-                return RedirectToAction("WrongDevice", "Orgs");
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
 
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var studentSubject = db.StudentSubjectGrades
+                    .Where(p => p.OrgId == i)
+                    .Include(s => s.RegisteredUser)
+                    .Include(s => s.Subject);
+
+                return View(studentSubject.ToList());
             }
-            if (Session["OrgId"] == null)
+            catch (Exception e)
             {
-                return RedirectToAction("Signin", "Access");
-            }
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-
-            var studentSubject = db.StudentSubjectGrades.Where(p => p.OrgId == i).Include(s => s.RegisteredUser).Include(s => s.Subject);
-            return View(studentSubject.ToList());
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }        
         }
 
 
         public ActionResult YourChild(int id)
         {
-            if (Session["OrgId"] == null)
+            try
             {
-                return RedirectToAction("Signin", "Access");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var yourchild = db.StudentSubjectGrades.Where(p => p.OrgId == i).Where(x => x.RegisteredUserId == id);
+                return View(yourchild.ToList());
             }
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-
-            var yourchild = db.StudentSubjectGrades.Where(p => p.OrgId == i).Where(x => x.RegisteredUserId == id);
-            return View(yourchild.ToList());
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
-
-
-        // GET: StudentSubjectGrade/MySubjects
-        public ActionResult MySubjects(int? id, int? ij, string searchname, string searchid)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-
-
-            string subjectid = id.ToString();
-
-            // returns students of org if class is selected
-            if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(subjectid)))
-            {
-                return View(db.StudentSubjectGrades.Where(p => p.SubjectId == id && p.OrgId == i).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
-            }
-
-            // returns students of org if fullname is provided
-            if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
-            {
-
-            }
-
-            // returns students of org if studentid is provided
-            if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
-            {
-                int reguserid = Convert.ToInt32(searchid);
-                return View(db.StudentSubjectGrades.Where(n => n.RegisteredUserId == reguserid).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
-
-            }
-
-
-            var studentSubject = db.StudentSubjectGrades.Where(p => p.SubjectId == id).Include(s => s.RegisteredUser).Include(s => s.Subject);
-            return View(studentSubject.ToList());
-        }
-
-        // GET: StudentSubjectGrade/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentSubjectGrade studentSubject = db.StudentSubjectGrades.Find(id);
-            if (studentSubject == null)
-            {
-                return HttpNotFound();
-            }
-            return View(studentSubject);
-        }
-
-        // GET: StudentSubjects/Create
-        public ActionResult Create()
-        {
-
-            if (Session["OrgId"] == null)
-            {
-                return RedirectToAction("Signin", "Access");
-            }
-
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
-
-
-
-
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName");
-            ViewBag.SelectedSubjects = new MultiSelectList(db.Subjects, "SubjectId", "SubjectName");
-
-
-            return View();
-        }
 
 
         [ChildActionOnly]
@@ -143,7 +78,6 @@ namespace Dertrix.Controllers
         {
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
-
             return PartialView("~/Views/Shared/PartialViewsForms/_StudentUpdateSubject.cshtml");
         }
 
@@ -153,13 +87,14 @@ namespace Dertrix.Controllers
         [HttpPost]
         public ActionResult CreateStudentModules(int? classid,int studid,int? classref,int i6) 
         {
+            try
+            {
+                // Locate list of subjects linked to class
+                var subjects = db.Subjects.Where(x => x.ClassId == classid).Where(x => x.SubjectOrgId == i6).Select(x => x.SubjectId).ToList();
+                var listofsubjects = new List<int>(subjects);
 
-            // Locate list of subjects linked to class
-            var subjects = db.Subjects.Where(x => x.ClassId == classid).Where(x => x.SubjectOrgId == i6).Select(x => x.SubjectId).ToList();
-            var listofsubjects = new List<int>(subjects);
-
-            foreach (var sb in subjects)
-            {             
+                foreach (var sb in subjects)
+                {
                     var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == sb).Select(c => c.SubjectName).FirstOrDefault();
                     var studentsubjects = new StudentSubjectGrade()
                     {
@@ -179,16 +114,20 @@ namespace Dertrix.Controllers
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
                     db.SaveChanges();
-             }
-
-            return RedirectToAction("Index", "StudentSubjects");
-
+                    return RedirectToAction("Index", "StudentSubjects");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
         }
 
         [HttpPost]
         public ActionResult AddNewSubjectToExistingStudents(int? classid,int? orgid,int subid, int? classref)  
         {
-
             try
             {
                 //Get all students in class to list
@@ -229,9 +168,6 @@ namespace Dertrix.Controllers
             {
                 Console.WriteLine(e);
             }
-
-
-
             return RedirectToAction("Index", "StudentSubjects");
 
         }
@@ -242,35 +178,53 @@ namespace Dertrix.Controllers
   
         public ActionResult MyClass(int? id)
         {
-            if (Session["OrgId"] == null)
+            try
             {
-                return RedirectToAction("Signin", "Access");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                var OrgId = (int)Session["OrgId"];
+
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId && x.ClassId == id).Select(x => x.ClassId).FirstOrDefault();
+                var mystudents = db.StudentSubjectGrades
+                    .Where(x => x.ClassId == id && x.ClassId == myclasses)
+                    .Include(s => s.Subject)
+                    .Include(r => r.RegisteredUser)
+                    .ToList();
+
+                return View(mystudents);
             }
-            var OrgId = (int)Session["OrgId"];
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
 
-            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-            var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId && x.ClassId == id).Select(x => x.ClassId).FirstOrDefault();
-            var mystudents = db.StudentSubjectGrades
-                .Where(x => x.ClassId == id && x.ClassId == myclasses)
-                .Include(s => s.Subject)
-                .Include(r => r.RegisteredUser)
-                .ToList();
-
-            return View(mystudents);
         }
 
 
         public ActionResult ClassProfile(int id)
         {
-            var rr = Session["OrgId"].ToString();
-            int i = Convert.ToInt32(rr);
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
 
-            var classprofile = db.Classes
-                .Where(x => x.ClassId == id)
-                .Include(x => x.Title)
-                .ToList();
+                var classprofile = db.Classes
+                    .Where(x => x.ClassId == id)
+                    .Include(x => x.Title)
+                    .ToList();
 
-            return PartialView("_ClassProfile", classprofile);
+                return PartialView("_ClassProfile", classprofile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
         }
 
 
@@ -391,46 +345,43 @@ namespace Dertrix.Controllers
 
         public ActionResult UpdateStudentGrade2(int Id)
         {
-            if (Id != 0)
+            try
             {
-                var rr = Session["OrgId"].ToString();
-                int i = Convert.ToInt32(rr);
-                var stud1 = db.StudentSubjectGrades
-                    .Include(s => s.Subject)
-                    .Include(r => r.RegisteredUser)
-                    .Where(x => x.RegisteredUserId == Id)
-                    .FirstOrDefault();
-
-                var stud = new StudentSubjectGrade
+                if (Id != 0)
                 {
-                    StudentSubjectGradeId = stud1.StudentSubjectGradeId,
-                    RegisteredUserId = stud1.RegisteredUserId,
-                    SubjectId = stud1.SubjectId,
-                    ClassId = stud1.ClassId,
-                    FirstTerm_ExamGrade = stud1.FirstTerm_ExamGrade,
-                    SecondTerm_ExamGrade = stud1.SecondTerm_ExamGrade,
-                    ThirdTerm_ExamGrade = stud1.ThirdTerm_ExamGrade,
-                    FirstTerm_TestGrade = stud1.FirstTerm_TestGrade,
-                    SecondTerm_TestGrade = stud1.SecondTerm_TestGrade,
-                    ThirdTerm_TestGrade = stud1.ThirdTerm_TestGrade,
-                    OrgId = stud1.OrgId,
-                    ClassRef = stud1.ClassRef
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
+                    var stud1 = db.StudentSubjectGrades
+                        .Include(s => s.Subject)
+                        .Include(r => r.RegisteredUser)
+                        .Where(x => x.RegisteredUserId == Id)
+                        .FirstOrDefault();
 
-
-                };
-
-                return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrade.cshtml", stud);
+                    var stud = new StudentSubjectGrade
+                    {
+                        StudentSubjectGradeId = stud1.StudentSubjectGradeId,
+                        RegisteredUserId = stud1.RegisteredUserId,
+                        SubjectId = stud1.SubjectId,
+                        ClassId = stud1.ClassId,
+                        FirstTerm_ExamGrade = stud1.FirstTerm_ExamGrade,
+                        SecondTerm_ExamGrade = stud1.SecondTerm_ExamGrade,
+                        ThirdTerm_ExamGrade = stud1.ThirdTerm_ExamGrade,
+                        FirstTerm_TestGrade = stud1.FirstTerm_TestGrade,
+                        SecondTerm_TestGrade = stud1.SecondTerm_TestGrade,
+                        ThirdTerm_TestGrade = stud1.ThirdTerm_TestGrade,
+                        OrgId = stud1.OrgId,
+                        ClassRef = stud1.ClassRef
+                    };
+                    return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrade.cshtml", stud);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }         
             return PartialView("_UpdateStudentGrade");
         }
-
-
-
-
-
-
-
-
 
 
         // POST: StudentSubjects/Create
@@ -438,75 +389,56 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(StudentSubjectGrade studentSubject)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (ModelState.IsValid)
+                {
 
-                db.StudentSubjectGrades.Add(studentSubject);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    db.StudentSubjectGrades.Add(studentSubject);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentSubject.RegisteredUserId);
+                ViewBag.SelectedSubjects = new MultiSelectList(db.Subjects, "SubjectId", "SubjectName");
+
+                ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName", studentSubject.SubjectId);
+                return View(studentSubject);
             }
-
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentSubject.RegisteredUserId);
-            ViewBag.SelectedSubjects = new MultiSelectList(db.Subjects, "SubjectId", "SubjectName");
-
-            ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName", studentSubject.SubjectId);
-            return View(studentSubject);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
         }
 
-        // GET: StudentSubjects/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentSubjectGrade studentSubject = db.StudentSubjectGrades.Find(id);
-            if (studentSubject == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.RegisteredUserId = new SelectList(db.RegisteredUsers, "RegisteredUserId", "FirstName", studentSubject.RegisteredUserId);
-            ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName", studentSubject.SubjectId);
-            return View(studentSubject);
-        }
+
 
         // POST: StudentSubjects/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UpdateStudentGradesViewModel viewmodel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(viewmodel).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Grades");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(viewmodel).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Grades");
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
             return View(viewmodel);
         }
 
-        // GET: StudentSubjects/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            StudentSubjectGrade studentSubject = db.StudentSubjectGrades.Find(id);
-            if (studentSubject == null)
-            {
-                return HttpNotFound();
-            }
-            return View(studentSubject);
-        }
 
-        // POST: StudentSubjects/Delete/5
-        public ActionResult DeleteConfirmed(int id)
-        {
-            StudentSubjectGrade studentSubject = db.StudentSubjectGrades.Find(id);
-            db.StudentSubjectGrades.Remove(studentSubject);
-            db.SaveChanges();
-            return RedirectToAction("Grades");
-        }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -516,5 +448,56 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+        // Method not in use
+        //// GET: StudentSubjectGrade/MySubjects
+        //public ActionResult MySubjects(int? id, int? ij, string searchname, string searchid)
+        //{
+        //    if (Session["OrgId"] == null)
+        //    {
+        //        return RedirectToAction("Signin", "Access");
+        //    }
+        //    var rr = Session["OrgId"].ToString();
+        //    int i = Convert.ToInt32(rr);
+
+        //    var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+
+        //    string subjectid = id.ToString();
+
+        //    // returns students of org if class is selected
+        //    if (string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid) && (!string.IsNullOrWhiteSpace(subjectid)))
+        //    {
+        //        return View(db.StudentSubjectGrades.Where(p => p.SubjectId == id && p.OrgId == i).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
+        //    }
+
+        //    // returns students of org if fullname is provided
+        //    if (!string.IsNullOrWhiteSpace(searchname) && string.IsNullOrWhiteSpace(searchid))
+        //    {
+
+        //    }
+
+        //    // returns students of org if studentid is provided
+        //    if (string.IsNullOrWhiteSpace(searchname) && !string.IsNullOrWhiteSpace(searchid))
+        //    {
+        //        int reguserid = Convert.ToInt32(searchid);
+        //        return View(db.StudentSubjectGrades.Where(n => n.RegisteredUserId == reguserid).Include(s => s.Subject).Include(r => r.RegisteredUser).ToList());
+
+        //    }
+
+
+        //    var studentSubject = db.StudentSubjectGrades.Where(p => p.SubjectId == id).Include(s => s.RegisteredUser).Include(s => s.Subject);
+        //    return View(studentSubject.ToList());
+        //}
+
+        // POST: StudentSubjects/Delete/5
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    StudentSubjectGrade studentSubject = db.StudentSubjectGrades.Find(id);
+        //    db.StudentSubjectGrades.Remove(studentSubject);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Grades");
+        //}
     }
 }
