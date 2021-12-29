@@ -57,9 +57,18 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
-                    .Where(x => x.OrgId == i)
-                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+                //ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
+                //    .Where(x => x.OrgId == i)
+                //    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+
+                ViewBag.ClassTeacherId = new SelectList(
+                from x in db.RegisteredUserOrganisations
+                .Where(x => x.OrgId == i)
+                .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4))
+                select new { x.RegisteredUserId, x.FullName, Name_Id = x.FullName + " " + "[" + x.RegisteredUserId + "]" },
+                "RegisteredUserId", "Name_Id");
+
+
                 ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i)
                     .OrderBy(w => w.ClassRefNumb)
                     .ToList(), "ClassId", "ClassName");

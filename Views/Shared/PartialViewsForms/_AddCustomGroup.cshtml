@@ -35,7 +35,7 @@
                     </div>
                     <div class="modal-footer">
                         <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-                        <input type="submit" value="Add Group" class="RegUserOrgButtonColour" id="addgroup" />
+                        <input type="button" value="Add Group" class="RegUserOrgButtonColour" id="addgroup" />
                     </div>
                 </form>
             </div>
@@ -46,7 +46,6 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 }
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
 	$(document).ready(function () {
@@ -54,21 +53,40 @@
 		$("#addgroup").on("click", function () {
 			if ($("#AddCustomGrp").valid()) {
 				var data = $("#AddCustomGrp").serialize();
-				$.ajax({
-					type: "POST",
-					//url: "/RegisteredUsers/Create",
-					url: '@Url.Action("Create", "OrgGroups")',
-					data: data,
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Create", "OrgGroups")',
+                    data: data,
                     success: function (response) {
-                        toastr.success("Test");
-						//alert("New group added");
-						//$("#myGroupModal").modal("hide");
-						//$("#AddCustomGrp")[0].reset();
-						//window.location.reload();
-					}
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 100;
+                        toastr.options.fadeOut = 100;
+                        toastr.options.tapToDismiss = false;
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.success("Group added successfully");
+                        $("#myGroupModal").modal("hide");
+                        $("#AddCustomGrp")[0].reset();
 
-				})
+                    }
+                });
+
+
+
+
+
+				
 			}
-		})
+        })
+
+
+
+
+
+
+
+
+
 	})
 </script>
