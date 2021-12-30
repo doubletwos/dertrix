@@ -68,10 +68,18 @@ namespace Dertrix.Controllers
                 select new { x.RegisteredUserId, x.FullName, Name_Id = x.FullName + " " + "[" + x.RegisteredUserId + "]" },
                 "RegisteredUserId", "Name_Id");
 
+                ViewBag.ClassId = new SelectList(
+                from x in db.Classes
+                .Where(x => x.OrgId == i)
+                .OrderBy(w => w.ClassRefNumb)
+                .ToList()
+                select new { x.ClassId, x.ClassName, Name_Id = x.ClassName + " " + "[" + x.ClassId + "]" },
+                "ClassId", "Name_Id");
 
-                ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i)
-                    .OrderBy(w => w.ClassRefNumb)
-                    .ToList(), "ClassId", "ClassName");
+
+                //ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i)
+                //    .OrderBy(w => w.ClassRefNumb)
+                //    .ToList(), "ClassId", "ClassName");
 
                 return PartialView("~/Views/Shared/PartialViewsForms/_AddSubject.cshtml");
             }

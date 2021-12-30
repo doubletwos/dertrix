@@ -40,6 +40,8 @@ namespace Dertrix.Models
 
         public DateTime? Created_date { get; set; }
 
+        public int? Updater_Id { get; set; }  
+
 
 
     }

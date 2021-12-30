@@ -102,6 +102,7 @@ namespace Dertrix.Controllers
                 ViewBag.StudentRegFormId = new SelectList(db.StudentRegForm, "StudentRegFormId", "Name");
                 ViewBag.TribeId = new SelectList(db.Tribes, "TribeId", "TribeName");
                 ViewBag.SubjectId = new SelectList(db.Subjects, "SubjectId", "SubjectName");
+
                 ViewBag.ClassId = new SelectList(
                                 from x in db.Classes
                                 .Where(x => x.OrgId == i)

@@ -111,10 +111,11 @@ namespace Dertrix.Controllers
                         SecondTerm_TestGrade = 00.0m,
                         ThirdTerm_TestGrade = 00.0m,
                         Created_date = DateTime.Now,
+                        Updater_Id = null,
+                        Last_updated_date = null
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
                     db.SaveChanges();
-                    return RedirectToAction("Index", "StudentSubjects");
                 }
             }
             catch (Exception e)
@@ -157,7 +158,8 @@ namespace Dertrix.Controllers
                         ThirdTerm_TestGrade = 00.0m,
                         Last_updated_date = null,
                         Created_date = DateTime.Now,
-                        SubjectName = subjectname
+                        SubjectName = subjectname,
+                        Updater_Id = null,
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
                     db.SaveChanges();
@@ -265,6 +267,7 @@ namespace Dertrix.Controllers
                         Last_updated_date = x.Last_updated_date,
                         ClassRef = x.ClassRef,
                         ClassId = x.ClassId,
+                        Updater_Id = x.Updater_Id,
                     }).ToList(),
                     RegisteredUser = registereduser,
 
@@ -322,7 +325,8 @@ namespace Dertrix.Controllers
                         ThirdTerm_TestGrade = student.ThirdTerm_TestGrade,
                         Last_updated_date = student.Last_updated_date,
                         Created_date = student.Created_date,
-                        SubjectName = subjectname
+                        SubjectName = subjectname,
+                        Updater_Id = student.Updater_Id,
                     };
                     student = updateStudent;
                     db.Entry(student).State = EntityState.Modified;
