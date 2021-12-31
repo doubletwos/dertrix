@@ -1369,8 +1369,8 @@ a {
 }
 
 	a:hover, a:focus {
-		color: #158cba;
-		text-decoration: underline
+		color: #000;
+		text-decoration: none;
 	}
 
 	a:focus {
@@ -3806,7 +3806,7 @@ tbody.collapse.in {
 		height: 1px;
 		margin: 9px 0;
 		overflow: hidden;
-		background-color: #eeeeee
+		background-color: #999999;
 	}
 
 	.dropdown-menu > li > a {
@@ -3819,6 +3819,15 @@ tbody.collapse.in {
 		white-space: nowrap
 	}
 
+
+
+
+
+
+
+
+
+
 		.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
 			color: #333333;
 			text-decoration: none;
@@ -3826,15 +3835,20 @@ tbody.collapse.in {
 		}
 
 	.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
-		color: #ffffff;
+		color: #999999;
 		text-decoration: none;
-		background-color: #158cba;
-		outline: 0
+		background-color: #fff;
+		outline: 0;
+		font-size: 15px;
+		font-weight: bold;
 	}
 
-	.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
-		color: #eeeeee
-	}
+
+
+
+		.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
+			color: #eeeeee
+		}
 
 		.dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
 			text-decoration: none;
@@ -4659,7 +4673,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 	}
 
 		.navbar-nav .open .dropdown-menu > li > a, .navbar-nav .open .dropdown-menu .dropdown-header {
-			padding: 5px 15px 5px 25px
+			padding: 5px 15px 5px 25px;
 		}
 
 		.navbar-nav .open .dropdown-menu > li > a {
@@ -4683,7 +4697,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 
 			.navbar-nav > li > a {
 				padding-top: 15px;
-				padding-bottom: 15px
+				padding-bottom: 15px;
 			}
 }
 
@@ -4779,7 +4793,9 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 .navbar-nav > li > .dropdown-menu {
 	margin-top: 0;
 	border-top-left-radius: 0;
-	border-top-right-radius: 0
+	border-top-right-radius: 0;
+	background-color: #fff;
+	border-color: #999999;
 }
 
 .navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {
@@ -4853,12 +4869,13 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 	}
 
 	.navbar-default .navbar-nav > li > a {
-		color: #000000;
+				color: #000000;
+
 	}
 
 		.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
 			color: #e2e2e2;
-			background-color: transparent
+			background-color: transparent;
 		}
 
 	.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
@@ -4938,6 +4955,10 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 	/*border-color: #e6e6e6*/
 }
 
+
+
+
+
 	.navbar-inverse .navbar-brand {
 		color: #999999
 	}
@@ -4948,11 +4969,14 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 		}
 
 	.navbar-inverse .navbar-text {
-		color: #999999
+		color: #000;
 	}
 
 	.navbar-inverse .navbar-nav > li > a {
-		color: #999999
+		color: #999999;
+		font-weight: bold;
+		font-size: 16px;
+		padding-top: 25px;
 	}
 
 		.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
@@ -5105,10 +5129,10 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 
 	.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
 		z-index: 3;
-		color: #ffffff;
+		color: #000;
 		cursor: default;
-		background-color: #158cba;
-		border-color: #127ba3
+		background-color: #e2e2e2;
+		border-color: #e2e2e2;
 	}
 
 	.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {

@@ -1,110 +1,178 @@
 ﻿<!DOCTYPE html>
 <html>
-
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="~/dertrix_favcon.ico"/>
-
-	@Styles.Render("~/Content/css")
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/dertrix_favcon.ico" />
     <link href="~/Content/toastr.css" rel="stylesheet" />
-	@Scripts.Render("~/bundles/modernizr")
-	@if (Session["OrgId"] != null)
-	{
-		var regOrgBrandButtonColour = Session["regOrgBrandButtonColour"].ToString();
-		<style>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @if (Session["OrgId"] != null)
+    {
+        var regOrgBrandButtonColour = Session["regOrgBrandButtonColour"].ToString();
+        <style>
 			.RegUserOrgButtonColour {
 				background-color: @regOrgBrandButtonColour;
-
 			}
-		</style>
 
-	}
 
+
+        </style>
+    }
 </head>
-
-
-<body style="background-color: #e2e2e2">
-
-	@if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
-	{
-		var regUserOrgBrandBar = Session["regUserOrgBrandBar"].ToString();
-
-
-		<div class="navbar navbar-inverse navbar-fixed-top" style="background-color:@regUserOrgBrandBar;">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-
-					@if (Session["OrgId"] != null && Session["regOrgLogo"] == null)
-					{
-						<img src="~/Content/Images/DertrixHorizontal.png" alt="logo" width="190" />
-					}
-					else
-					{
-						var sessionLogo = Session["regOrgLogo"];
-						byte[] bfoo = (byte[])sessionLogo;
-						var base64 = Convert.ToBase64String(bfoo);
-						var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
-						<img src="@imgsrc" />
-					}
-				</div>
-				<div class="navbar-collapse collapse">
-				
-					<ul class="nav navbar-nav" style="background-color:@regUserOrgBrandBar;">
-
-						@{
-							Html.RenderAction("Nav", "RegisteredUsers");
-						}			
-					</ul>
-				</div>
-			</div>
-
-		
-		</div>
-		<br />
-		<br />
-		<hr/>
-
-
-	}
-
-
-<div class="container body-content">
-	@RenderBody()
-
-	<hr/>
-
-	<footer>
-		<div class="der-container">
-			<div class="row">
-				<div class="col-sm-6">
-					<div style="font-size:13px;">
-						@*<a href="http://www.dertrix.com/Access/Welcome/" style="text-decoration:none !important; color:inherit;">Powered by <b>Dertrix</b></a>*@
-						<p>Powered by <b>Dertrix</b></p>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div style="font-size:13px;"><b>© 2020‐2022 Dertrix.com Ltd,</b> All Rights Reserved.</div>
-					<div style="font-size:13px;"><b>Version:</b> 2021.10</div>
-				</div>
-
-			</div>
-		</div>
-	</footer>
-
-
-</div>
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/bootstrap")
+@*<body style="background-color: #e2e2e2">*@
+<body>
+    @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
+    {
+        var regOrgBrandButtonColour = Session["regOrgBrandButtonColour"].ToString();
+        <div class="navbar navbar-inverse navbar-fixed-top">
+        @*<div class="navbar navbar-inverse navbar-fixed-top">*@
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @if (Session["OrgId"] != null && Session["regOrgLogo"] == null)
+                    {
+                        <img src="~/Content/Images/DertrixHorizontal.png" alt="logo" width="190" class="navbar-left" />
+                    }
+                    else
+                    {
+                        var sessionLogo = Session["regOrgLogo"];
+                        byte[] bfoo = (byte[])sessionLogo;
+                        var base64 = Convert.ToBase64String(bfoo);
+                        var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                        var session = ((int)Session["OrgId"]).ToString();
+                        <a href="@Url.Action("Index", "Orgs", new { id = session})" class="navbar-left">
+                            <img src="@imgsrc" />
+                        </a>
+                    }
+                </div>
+                @*Dertrix System Admins*@
+                <div class="navbar-collapse collapse">
+                    @*<ul class="nav navbar-nav" style="background-color:@regUserOrgBrandBar;">*@
+                    <ul class="nav navbar-nav">
+                        @if ((int)Session["OrgId"] == 23)
+                        {
+                            <li>@Html.ActionLink("Home", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation" class="active">@Html.ActionLink("Staffs", "SysAdmins", "RegisteredUsers")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SetUp<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation" class="active">@Html.ActionLink("Portal Set Up", "SysAdminSetUp", "Home")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li role="presentation" class="active">@Html.ActionLink("Organisation Management", "SystemAdminIndex", "Orgs")</li>
+                                </ul>
+                            </li>
+                        }
+                        @*School Staff Users*@
+                        @if ((int)Session["OrgId"] != 23 && Session["IsParent/Guardian"] == null)
+                        {
+                            var session = ((int)Session["OrgId"]).ToString();
+                            <li>@Html.ActionLink("Home", "Index", "Orgs", new { id = session }, null)</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Postings <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation" class="active">@Html.ActionLink("All postings", "Index", "Posts")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation" class="active">@Html.ActionLink("Staffs", "Staffs", "RegisteredUsers")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li role="presentation" class="active">@Html.ActionLink("All Students", "AllStudents", "RegisteredUsers")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li role="presentation" class="active">@Html.ActionLink("Guardians", "Index", "StudentGuardians")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SetUp<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    @if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+                                    {
+                                        <li role="presentation" class="active">@Html.ActionLink("Subjects", "Index", "Subjects")</li>
+                                        <li role="separator" class="divider"></li>
+                                    }
+                                    <li role="presentation" class="active">@Html.ActionLink("Student Grades", "Grades", "StudentSubjectGrade")</li>
+                                    <li role="separator" class="divider"></li>
+                                    @if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+                                    {
+                                        <li role="presentation" class="active">@Html.ActionLink("Classes", "Index", "Class", new { id = session }, null)</li>
+                                        <li role="separator" class="divider"></li>
+                                    }
+                                    <li role="presentation" class="active">@Html.ActionLink("Groups", "Index", "OrgGroups")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li role="presentation" class="active">@Html.ActionLink("Config", "SysSetUp", "Home")</li>
+                                </ul>
+                            </li>
+                        }
+                        @if ((int)Session["OrgId"] != 23 && Session["IsParent/Guardian"] != null)
+                        {
+                            var session = ((int)Session["OrgId"]).ToString();
+                            <li>@Html.ActionLink(Session["OrgName"].ToString(), "PGSchCentre", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation" class="active">@Html.ActionLink("Welcome Page", "PGSchCentre", "Orgs", new { id = session }, null)</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parents Guide<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation" class="active">@Html.ActionLink("All Posts", "PostsTable", "Posts")</li>
+                                </ul>
+                            </li>
+                        }
+                        @{
+                            var isTester = Convert.ToInt32(Session["IsTester"]);
+                            var currentsession = HttpContext.Current.Session.SessionID.ToString();
+                        }
+                        @if (isTester == 1 && ((int)Session["OrgId"] != 23))
+                        {
+                            <li>@Html.ActionLink("Back to Dertrix", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
+                        }
+                    </ul>
+                    @{
+                        Html.RenderAction("Nav", "RegisteredUsers");
+                    }
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <hr />
+    }
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <div class="der-container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div style="font-size:13px;">
+                            @*<a href="http://www.dertrix.com/Access/Welcome/" style="text-decoration:none !important; color:inherit;">Powered by <b>Dertrix</b></a>*@
+                            <p>Powered by <b>Dertrix</b></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="font-size:13px;"><b>© 2020‐2022 Dertrix.com Ltd,</b> All Rights Reserved.</div>
+                        <div style="font-size:13px;"><b>Version:</b> 2021.10</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/toastr.js"></script>
-	@RenderSection("scripts", required: false)
-
-
+    @RenderSection("scripts", required: false)
 </body>
-					
 </html>
