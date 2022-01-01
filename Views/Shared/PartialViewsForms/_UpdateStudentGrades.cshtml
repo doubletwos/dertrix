@@ -26,6 +26,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
+                        <th> Id</th>
                         <th> Subject</th>
                         <th>1st TTG</th>
                         <th>2nd TTG</th>
@@ -39,9 +40,7 @@
                     @for (int i = 0; i < Model.StudentSubjectGrades.Count; i++)
                     {
                     <tr>
-                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectId)
                         @Html.HiddenFor(model => model.StudentSubjectGrades[i].RegisteredUserId)
-                        @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectId)
                         @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassId)
                         @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassRef)
                         @Html.HiddenFor(model => model.StudentSubjectGrades[i].OrgId)
@@ -49,7 +48,12 @@
                         @Html.HiddenFor(model => model.StudentSubjectGrades[i].Last_updated_date)
 
                         <td>
+                            [@Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectId, new { htmlAttributes = new { @class = "form-control" } })]
+                        </td>
+
+                        <td>
                             @Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName, new { htmlAttributes = new { @class = "form-control" } })
+                            
                         </td>
 
                         <td>

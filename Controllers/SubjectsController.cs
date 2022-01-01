@@ -57,10 +57,6 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-                //ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
-                //    .Where(x => x.OrgId == i)
-                //    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
-
                 ViewBag.ClassTeacherId = new SelectList(
                 from x in db.RegisteredUserOrganisations
                 .Where(x => x.OrgId == i)
@@ -149,11 +145,13 @@ namespace Dertrix.Controllers
                 }
                 if (ModelState.IsValid)
                 {
+                    //throw new HttpException(400, "A custom message for an application specific exception");
+
                     var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
                     subject.TaughtBy = taughtby;
                     var classref = db.Classes.Where(x => x.ClassId == subject.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
                     var orgid = subject.SubjectOrgId = (int)Session["OrgId"];
-                    subject.Creator_Id = (int)Session["RegisteredUserId"];
+                    subject.Creator_Id = Session["RegisteredUserId"].ToString();
                     subject.Created_date = DateTime.Now;
                     db.Subjects.Add(subject);
                     db.SaveChanges();
@@ -164,20 +162,25 @@ namespace Dertrix.Controllers
                     var otherController1 = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
                     var result1 = otherController1.AddNewSubjectToExistingStudents(classid, orgid, subid, classref);
 
-                    return RedirectToAction("Index");
                 }
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+
+                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers
+                    .Where(x => x.SelectedOrg == i)
+                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
                 ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
+
             }
 
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return View(subject);
             }
-            return View(subject);
+            return new HttpStatusCodeResult(204);
+
         }
 
 

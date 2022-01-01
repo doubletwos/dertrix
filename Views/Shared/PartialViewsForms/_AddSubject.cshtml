@@ -90,7 +90,7 @@
 
                         <div class="modal-footer">
                             <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-                            <input type="submit" value="Add Subject" class="RegUserOrgButtonColour" id="btnSubmit5" />
+                            <input type="button" value="Add Subject" class="RegUserOrgButtonColour" id="btnSubmit5" />
                         </div>
                     </div>
 				</form>
@@ -107,24 +107,45 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <script>
-	$(document).ready(function () {
 
-	$("#btnSubmit5").on("click", function () {
-			if ($("#mySubjectForm").valid()) {
-				var data = $("#mySubjectForm").serialize();
-				$.ajax({
-					type: "POST",
-					url: "/Subjects/Create",
-					data: data,
+    $(document).ready(function () {
+        $("#btnSubmit5").on("click", function () {
+            if ($("#mySubjectForm").valid()) {
+                var data = $("#mySubjectForm").serialize();
+                $.ajax({
+                    type: "POST",
+                    //url: "/Subjects/Create",
+                    url: '@Url.Action("Create", "Subjects")',
+
+                    data: data,
                     success: function (response) {
-						alert("New subject created");
-						$("#myModalAddSubject").modal("hide");
-						$("#mySubjectForm")[0].reset();
-						window.location.reload();
-					}
-				})
-
-			}
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 900;
+                        toastr.options.tapToDismiss = false;
+                        //toastr.options.onHidden = function () {
+                        //window.location.reload();
+                        //}
+                        toastr.success("Subject added successfully");
+                        $("#myModalAddSubject").modal("hide");
+                        $("#mySubjectForm")[0].reset();
+                    },
+                    error: function (response) {
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 900;
+                        toastr.options.tapToDismiss = false;
+                        //toastr.options.onHidden = function () {
+                        //    window.location.reload();
+                        //}
+                        toastr.error("Oops there has been a problem, the system admins have been notified.");
+                        $("#myModalAddSubject").modal("hide");
+                        $("#mySubjectForm")[0].reset();
+                    }
+               })
+            }
 		})
-	});
+   });
 </script>

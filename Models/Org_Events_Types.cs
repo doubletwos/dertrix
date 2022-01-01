@@ -22,5 +22,6 @@ namespace Dertrix.Models
         Created_Group = 13,
         Edited_Group = 14,
         Deleted_Group = 15,
+        Changed_Class = 16
     }
 }

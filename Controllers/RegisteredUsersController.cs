@@ -1723,7 +1723,7 @@ namespace Dertrix.Controllers
  
             return RedirectToAction("Staffs", "RegisteredUsers");
         }
-        // POST: RegisteredUsers/UpdateStudentsClass/5
+        // POST: RegisteredUsers/ChangeStudentsClass/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangeStudentsClass(RegisteredUser registeredUser)
@@ -1759,6 +1759,21 @@ namespace Dertrix.Controllers
                     locatestud = studs;
                     db.Entry(locatestud).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    // UPON CHANGING STUDENT'S CLASS - LOG THE EVENT 
+                    var orgeventlog = new Org_Events_Log()
+                    {
+                        Org_Event_SubjectId = locatestud.RegisteredUserId.ToString(),
+                        Org_Event_SubjectName = registeredUser.FirstName + " " + registeredUser.LastName,
+                        Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                        Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                        Org_Event_Time = DateTime.Now,
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Changed_Class
+                    };
+                    db.Org_Events_Logs.Add(orgeventlog);
+                    db.SaveChanges();
+
                 }
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);

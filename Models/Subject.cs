@@ -40,7 +40,7 @@ namespace Dertrix.Models
 
         public DateTime? Created_date { get; set; }
 
-        public int? Creator_Id { get; set; } 
+        public string Creator_Id { get; set; } 
 
 
 

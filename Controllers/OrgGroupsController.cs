@@ -93,7 +93,6 @@ namespace Dertrix.Controllers
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
-                //return RedirectToAction("Index");
             }
             catch (Exception e)
             {
@@ -101,7 +100,6 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
             return new HttpStatusCodeResult(204);
-            //return Content("");
 
         }
 

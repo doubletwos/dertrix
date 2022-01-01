@@ -49,11 +49,7 @@ namespace Dertrix.Controllers
                 {
                     return RedirectToAction("Signin", "Access");
                 }
-                if ((int)Session["OrgId"] != 23)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                if ((int)Session["OrgId"] == 23)
+                else
                 {
                     return View();
                 }
@@ -63,7 +59,6 @@ namespace Dertrix.Controllers
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
             }
-            return new HttpStatusCodeResult(204);
         }
     }
 }
