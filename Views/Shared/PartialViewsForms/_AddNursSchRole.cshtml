@@ -1,0 +1,72 @@
+﻿@model Dertrix.Models.NurserySchoolUserRole
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addnurschrolemodal">
+	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+	New Role
+</a>
+
+<div class="modal fade" id="addnurschrolemodal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a href="#" class="close" data-dismiss="modal">&times;</a>
+				<h3 class="modal-title">New Role</h3>
+			</div>
+			<div class="modal-body">
+				<form id="AddNurSchRole">
+					@Html.AntiForgeryToken()
+					@{
+						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+					}
+
+					<div class="form-horizontal">
+						<hr />
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						<div class="form-group">
+							<div class="col-md-10">
+								@Html.LabelFor(model => model.RoleName, "Role Name")
+								@Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control" } })
+								@Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="modal-footer">
+							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+							<input type="button" value="Add Role" class="RegUserOrgButtonColour" id="btnSubmit" />
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$("#btnSubmit").on("click", function () {
+			if ($("#AddNurSchRole").valid()) {
+
+                var data = $("#AddNurSchRole").serialize();
+			$.ajax({
+				type: "POST",
+                url: "/NurserySchoolUserRoles/Create",
+				data: data,
+				success: function (response) {
+					alert("New role created");
+                    $("#addnurschrolemodal").modal("hide");
+                    $("#AddNurSchRole")[0].reset();
+					window.location.reload();
+				}
+			})
+			}
+		})
+
+	});
+</script>

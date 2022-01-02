@@ -22,7 +22,6 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
                 return PartialView("~/Views/Shared/PartialViewsForms/_AddOrgClass.cshtml");
             }
             catch (Exception e)
@@ -166,7 +165,6 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
-                ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers.Where(x => x.SelectedOrg == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
 
                 return RedirectToAction("SystemAdminIndex");
             }
@@ -210,7 +208,7 @@ namespace Dertrix.Controllers
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
                 ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers
                     .Where(x => x.SelectedOrg == i)
-                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3)), "RegisteredUserId", "FullName");
                 return View(@Class);
             }
             catch (Exception e)

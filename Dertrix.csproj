@@ -211,6 +211,7 @@
     <Compile Include="Controllers\GroupTypesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NurserySchoolUserRolesController.cs" />
     <Compile Include="Controllers\OrgBrandsController.cs" />
     <Compile Include="Controllers\OrgGroupsController.cs" />
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
@@ -496,6 +497,14 @@
     <Compile Include="Migrations\202201010906542_Sprint2022.10.01.cs" />
     <Compile Include="Migrations\202201010906542_Sprint2022.10.01.designer.cs">
       <DependentUpon>202201010906542_Sprint2022.10.01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201020947012_Sprint2022.10.02.cs" />
+    <Compile Include="Migrations\202201020947012_Sprint2022.10.02.designer.cs">
+      <DependentUpon>202201020947012_Sprint2022.10.02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201022048193_Sprint2022.10.03.cs" />
+    <Compile Include="Migrations\202201022048193_Sprint2022.10.03.designer.cs">
+      <DependentUpon>202201022048193_Sprint2022.10.03.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -965,6 +974,9 @@
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStaffsRole.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_UpdateStudentGrades.cshtml" />
     <Content Include="Views\Shared\_Nav1.cshtml" />
+    <Content Include="Views\NurserySchoolUserRoles\Index.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddNursSchRole.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_EditNursSchRole.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1186,6 +1198,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201010906542_Sprint2022.10.01.resx">
       <DependentUpon>202201010906542_Sprint2022.10.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201020947012_Sprint2022.10.02.resx">
+      <DependentUpon>202201020947012_Sprint2022.10.02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201022048193_Sprint2022.10.03.resx">
+      <DependentUpon>202201022048193_Sprint2022.10.03.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

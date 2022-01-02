@@ -155,6 +155,8 @@ namespace Dertrix.Controllers
                 ViewBag.RegisteredUserTypeId = new SelectList(db.RegisteredUserTypes, "RegisteredUserTypeId", "RegisteredUserTypeName");
                 ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID != 5), "PrimarySchoolUserRoleId", "RoleName");
                 ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles.Where(x => x.SecondarySchoolUserRoleId != 5), "SecondarySchoolUserRoleId", "RoleName");
+                ViewBag.NurserySchoolUserRoleId = new SelectList(db.NurserySchoolUserRoles.Where(x => x.NurserySchoolUserRoleId != 5), "NurserySchoolUserRoleId", "RoleName");
+
                 return PartialView("~/Views/Shared/PartialViewsForms/_AddStaff.cshtml");
             }
             catch (Exception e)
@@ -867,10 +869,10 @@ namespace Dertrix.Controllers
                         int j = Convert.ToInt32(regUserOrgBrand);
                         registeredUser.RegUserOrgBrand = j;
                         //EXISTING SCHOOL STAFFS    // CHECKING IF USER IS A GUARDIAN - IF THE USER IS NOT A GUARDIAN THEN WE GO INTO THIS CONDITION - (ONLY SCHOOL STAFFS SHOULD GO INTO THIS CONDITION).
-                        if (registeredUser.SecondarySchoolUserRoleId != 5 && registeredUser.PrimarySchoolUserRoleId != 5)
+                        if (registeredUser.SecondarySchoolUserRoleId != 5 && registeredUser.PrimarySchoolUserRoleId != 5 && registeredUser.NurserySchoolUserRoleId != 5)
                         {
                             // SET ROLE TO NON TEACHING STAFF IF ROLE IS NOT SET.
-                            if (registeredUser.SecondarySchoolUserRoleId == null && registeredUser.PrimarySchoolUserRoleId == null)
+                            if (registeredUser.SecondarySchoolUserRoleId == null && registeredUser.PrimarySchoolUserRoleId == null && registeredUser.NurserySchoolUserRoleId == null)
                             {
                                 // ORG IS SECONDARY SCH
                                 if ((int)Session["OrgType"] == 2)
@@ -885,12 +887,14 @@ namespace Dertrix.Controllers
                                 // ORG IS NURSERY SCH
                                 if ((int)Session["OrgType"] == 4)
                                 {
+                                    registeredUser.NurserySchoolUserRoleId = 6;
                                 }
                             }
                             else
                             {
                                 registeredUser.SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId;
                                 registeredUser.PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId;
+                                registeredUser.NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId;
                             }
                             registeredUser.RegisteredUserId = db.RegisteredUsers.Where(x => x.Email == registeredUser.Email).Select(d => d.RegisteredUserId).FirstOrDefault();
                             // CHECK TO MAKE SURE THE USER DOES NOT ALREADY HAVE AN ACCOUNT AT THIS ORG - IF NO - THEN WE ADD THE USER TO THE REGUSERORG. 
@@ -910,7 +914,8 @@ namespace Dertrix.Controllers
                                     RegUserOrgBrand = registeredUser.RegUserOrgBrand,
                                     RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                                     PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
-                                    SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                                    SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId, 
+                                    NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                                     EnrolmentDate = DateTime.Now,
                                     CreatedBy = Session["RegisteredUserId"].ToString(),
                                     FullName = registeredUser.FullName,
@@ -938,7 +943,7 @@ namespace Dertrix.Controllers
                             }
                         }
                         //EXISTING GUARDIANS     // CHECKING TO SEE IF THE USER BEING ADDED IS A GUARDIAN - (ONLY GUARDIANS SHOULD GO INTO THIS CONDITION).
-                        if (registeredUser.PrimarySchoolUserRoleId != 5 || registeredUser.SecondarySchoolUserRoleId != 5)
+                        if (registeredUser.PrimarySchoolUserRoleId != 5 || registeredUser.SecondarySchoolUserRoleId != 5 || registeredUser.NurserySchoolUserRoleId != 5)
                         {
                             // CHECKING TO MAKE SURE THE USER DOES NOT ALREADY HAVE AN ACCOUNT AT THIS ORG. IF NO, THEN ADD THE  USER TO THE REGUSERORG.
                             var reguserinorg1 = db.RegisteredUserOrganisations.Where(x => x.Email == registeredUser.Email).Where(x => x.OrgId == i).FirstOrDefault();
@@ -1027,6 +1032,7 @@ namespace Dertrix.Controllers
                                     ReligionId = locatestud.ReligionId,
                                     PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
                                     SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                                    NurserySchoolUserRoleId = locatestud.NurserySchoolUserRoleId,
                                     StudentRegFormId = locatestud.StudentRegFormId,
                                     CreatedBy = locatestud.CreatedBy,
                                     RegUserOrgBrand = locatestud.RegUserOrgBrand,
@@ -1073,6 +1079,7 @@ namespace Dertrix.Controllers
                                     RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                                     PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
                                     SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                                    NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                                     EnrolmentDate = DateTime.Now,
                                     CreatedBy = Session["RegisteredUserId"].ToString(),
                                     FullName = registeredUser.FullName,
@@ -1156,6 +1163,7 @@ namespace Dertrix.Controllers
                                     ReligionId = locatestud.ReligionId,
                                     PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
                                     SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                                    NurserySchoolUserRoleId = locatestud.NurserySchoolUserRoleId,
                                     StudentRegFormId = locatestud.StudentRegFormId,
                                     CreatedBy = locatestud.CreatedBy,
                                     RegUserOrgBrand = locatestud.RegUserOrgBrand,
@@ -1251,6 +1259,7 @@ namespace Dertrix.Controllers
                             RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                             PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
                             FullName = registeredUser.FullName,
@@ -1266,7 +1275,7 @@ namespace Dertrix.Controllers
                     if (registeredUser.StudentRegFormId == null && registeredUser.SelectedOrg != 23 && chkifusrexist0 == 0)
                     {
                         // SET ROLE TO NON TEACHING STAFF IF ROLE IS NOT SET.
-                        if (registeredUser.SecondarySchoolUserRoleId == null && registeredUser.PrimarySchoolUserRoleId == null)
+                        if (registeredUser.SecondarySchoolUserRoleId == null && registeredUser.PrimarySchoolUserRoleId == null && registeredUser.NurserySchoolUserRoleId == null)
                         {
                             // ORG IS SECONDARY SCH
                             if ((int)Session["OrgType"] == 2)
@@ -1281,6 +1290,7 @@ namespace Dertrix.Controllers
                             // ORG IS NURSERY SCH
                             if ((int)Session["OrgType"] == 4)
                             {
+                                registeredUser.NurserySchoolUserRoleId = 6;
                             }
                         }
                         var rr1 = Session["OrgId"].ToString();
@@ -1313,6 +1323,7 @@ namespace Dertrix.Controllers
                             RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                             PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
                             FullName = registeredUser.FullName,
@@ -1379,6 +1390,7 @@ namespace Dertrix.Controllers
                             RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                             PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
                             FullName = registeredUser.FullName,
@@ -1457,6 +1469,7 @@ namespace Dertrix.Controllers
                             ReligionId = locatestud.ReligionId,
                             PrimarySchoolUserRoleId = locatestud.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = locatestud.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = locatestud.NurserySchoolUserRoleId,
                             StudentRegFormId = locatestud.StudentRegFormId,
                             CreatedBy = locatestud.CreatedBy,
                             RegUserOrgBrand = locatestud.RegUserOrgBrand,
@@ -1544,6 +1557,7 @@ namespace Dertrix.Controllers
                             RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                             PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                             EnrolmentDate = DateTime.Now,
                             CreatedBy = Session["RegisteredUserId"].ToString(),
                             FullName = registeredUser.FullName,
@@ -2002,7 +2016,11 @@ namespace Dertrix.Controllers
                 // LOCATE USERS ROLES
                 var chkifPsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.PrimarySchoolUserRoleId).FirstOrDefault();
                 var chkifSsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
-                if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4)
+                var chkifNsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.NurserySchoolUserRoleId).FirstOrDefault();
+
+                if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4
+                    || chkifNsStaff == 1 || chkifNsStaff == 2 || chkifNsStaff == 3 || chkifNsStaff == 4)
+                    
                 {
                     var staforgcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.RegisteredUserId).Count();
                     // IF COUNT OF ORG IS 1 - WE GO INTO THIS CONDITION - WE DELETE USER FROM REGUSER TABLE / LOG EVENT AND MOVE ON.

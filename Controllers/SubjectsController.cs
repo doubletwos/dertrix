@@ -169,7 +169,7 @@ namespace Dertrix.Controllers
 
                 ViewBag.ClassTeacherId = new SelectList(db.RegisteredUsers
                     .Where(x => x.SelectedOrg == i)
-                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName");
+                    .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3)), "RegisteredUserId", "FullName");
                 ViewBag.ClassId = new SelectList(db.Classes, "ClassId", "ClassName", subject.ClassId);
 
             }

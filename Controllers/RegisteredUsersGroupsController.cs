@@ -119,6 +119,7 @@ namespace Dertrix.Controllers
                     .Include(r => r.RegisteredUser)
                     .Include(l => l.RegisteredUser.SecondarySchoolUserRole)
                     .Include(l => l.RegisteredUser.PrimarySchoolUserRole)
+                    .Include(l => l.RegisteredUser.NurserySchoolUserRole)
                     .ToList();
                 return PartialView("_RegisteredUsersGroupMembers", membercount);
             }

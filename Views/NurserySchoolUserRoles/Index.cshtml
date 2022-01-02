@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Dertrix.Models.NurserySchoolUserRole>
+<head>
+    @{
+        ViewBag.Title = "Roles";
+    }
+    <style>
+        .btn-group:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<div class="jumbotron" style="height:100vh;">
+    <br />
+    <br />
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                @{
+                    Html.RenderAction("AddNursSchRole", "NurserySchoolUserRoles");
+                }
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-responsive table-condensed">
+            <thead>
+
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        Role Id
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RoleName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="border-style: groove;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NurserySchoolUserRoleId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoleName)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditRole(@item.NurserySchoolUserRoleId	)">Edit role</a></li>
+                                    @*<li><a href="#" onclick="ConfirmDelete(@item.SecondarySchoolUserRoleId)">Remove role</a></li>*@
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+        <div>
+            <p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<input type="hidden" id="hiddenNurSchRoleId" />
+
+
+@*Delete confirmation Modal*@
+<div class="modal fade" id="NurSchRoleDeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Remove role</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure you want to remove this role?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                <a href="#" class="RegUserOrgButtonColour" onclick="DeleteRole()">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+@*Edit SecSchRole Modal*@
+<div class="modal fade" id="NurSchRoleEditModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Edit role</h3>
+            </div>
+            <div class="modal-body" id="NurSchRoleEditBody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ConfirmDelete = function (NurSchRoleId) {
+        $("#hiddenNurSchRoleId").val(NurSchRoleId);
+        $("#NurSchRoleDeleteModal").modal('show');
+	}
+	var DeleteRole = function () {
+        var SecSchRole = $("#hiddenNurSchRoleId").val();
+		$.ajax({
+			type: "POST",
+            url: "/NurserySchoolUserRoles/DeleteConfirmed/",
+            data: { id: SecSchRole },
+			success: function (response) {
+				alert("Role deleted");
+                $("#NurSchRoleDeleteModal").modal("hide");
+				window.location.reload();
+			}
+		})
+	}
+</script>
+<script>
+	var EditRole = function (Id) {
+		$.ajax({
+			type: "GET",
+            url: "/NurserySchoolUserRoles/EditNursSchRole",
+			data: { Id: Id },
+			success: function (response) {
+                $("#NurSchRoleEditBody").html(response);
+                $("#NurSchRoleEditModal").modal("show");
+			}
+		})
+	}
+</script>
+<script>
+	$("#edtSubmit").click(function () {
+        var data = $("#NurSchRoleEditForm").serialize();
+		$.ajax({
+			type: "POST",
+            url: "/NurserySchoolUserRoles/Edit",
+			data: data,
+			success: function (response) {
+				alert("Role updated");
+                $("#NurSchRoleEditModal").modal("hide");
+                $("#NurSchRoleEditForm")[0].reset();
+				window.location.reload();
+			}
+		})
+	})
+</script>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom-validator")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+
+    <script>
+		$(document).ready(function () {
+			$('#myTable').DataTable(
+				{
+					"ordering": false,
+				}
+			);
+		});
+    </script>
+
+}

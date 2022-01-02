@@ -73,7 +73,11 @@ namespace Dertrix.Models
 
         public int? SecondarySchoolUserRoleId { get; set; }
         [Display(Name = "Role ")]
-        public SecondarySchoolUserRole SecondarySchoolUserRole { get; set; } 
+        public SecondarySchoolUserRole SecondarySchoolUserRole { get; set; }
+
+        public int? NurserySchoolUserRoleId { get; set; }
+        [Display(Name = "Role ")]
+        public NurserySchoolUserRole NurserySchoolUserRole { get; set; }
 
 
 

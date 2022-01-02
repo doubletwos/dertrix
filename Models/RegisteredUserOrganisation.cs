@@ -50,6 +50,9 @@ namespace Dertrix.Models
         public int? SecondarySchoolUserRoleId { get; set; }
         public SecondarySchoolUserRole SecondarySchoolUserRole { get; set; }
 
+        public int? NurserySchoolUserRoleId { get; set; }
+        public NurserySchoolUserRole NurserySchoolUserRole { get; set; }
+
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0: dddd | dd-MM-yyyy}", ApplyFormatInEditMode = true)]

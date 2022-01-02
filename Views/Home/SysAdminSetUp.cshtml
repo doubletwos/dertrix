@@ -8,69 +8,9 @@
 
 
 <div class="jumbotron" style="height:100vh;">
-	<br />
-	<br />
+    <br />
+    <br />
 
-	<div class="row">
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Organisation Classes", "SystemAdminIndex", "Class", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Organisation Types", "Index", "OrgTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Organisation Brands", "Index", "OrgBrands", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Organisation Domains", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-3">
-			<p>@Html.ActionLink("System User Types", "Index", "RegisteredUserTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Tribes", "Index", "Tribes", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Religion", "Index", "Religions", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Genders", "Index", "Genders", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-3">
-			<p>
-				@{
-					Html.RenderAction("RegisterUser", "RegisteredUsers");
-				}
-			</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Student Type", "Index", "StudentRegForms", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Secondary School Roles", "Index", "SecondarySchoolUserRoles", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Primary School Roles", "Index", "PrimarySchoolUserRoles", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Post Topics", "Index", "PostTopics", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Group Types", "Index", "GroupTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Titles", "Index", "Titles", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-		<div class="col-md-3">
-			<p>@Html.ActionLink("Relationships", "Index", "Relationships", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-	</div>
     <div class="row">
         <div class="col-lg-3">
             <p>@Html.ActionLink("Access logs", "Logs", "Access", "", new { @class = "RegUserOrgButtonColour" })</p>
@@ -79,14 +19,90 @@
             <p>@Html.ActionLink("Calendar Event Categories", "Table", "CalendarCategorys", "", new { @class = "RegUserOrgButtonColour" })</p>
         </div>
         <div class="col-lg-3">
-            <p>@Html.ActionLink("Update event", "UpdateEvents", "OrgSchCalendars", "", new { @class = "RegUserOrgButtonColour" })</p>
-        </div>
-        <div class="col-lg-3">
             <p>@Html.ActionLink("Empty Uploaded Files", "EmptyUploadedFiles", "Posts", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Genders", "Index", "Genders", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Group Types", "Index", "GroupTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>
+                @{
+                    Html.RenderAction("RegisterUser", "RegisteredUsers");
+                }
+            </p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Nursery School Roles", "Index", "NurserySchoolUserRoles", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Organisation Brands", "Index", "OrgBrands", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Organisation Classes", "SystemAdminIndex", "Class", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Organisation Domains", "Index", "Domains", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Organisation Types", "Index", "OrgTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Post Topics", "Index", "PostTopics", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Primary School Roles", "Index", "PrimarySchoolUserRoles", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Relationships", "Index", "Relationships", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Religion", "Index", "Religions", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Secondary School Roles", "Index", "SecondarySchoolUserRoles", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Student Type", "Index", "StudentRegForms", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("System User Types", "Index", "RegisteredUserTypes", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Titles", "Index", "Titles", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("Tribes", "Index", "Tribes", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-3">
+            <p>@Html.ActionLink("Update event", "UpdateEvents", "OrgSchCalendars", "", new { @class = "RegUserOrgButtonColour" })</p>
         </div>
     </div>
 </div>
-@section scripts{
-	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/custom-validator")
-}
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/custom-validator")
+    }

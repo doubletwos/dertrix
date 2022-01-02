@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
+
 namespace Dertrix.Controllers
 {
-    public class SecondarySchoolUserRolesController : Controller
+    public class NurserySchoolUserRolesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: SecondarySchoolUserRoles
+
+        // GET: NurserySchoolUserRoles
         public ActionResult Index()
         {
             try
@@ -29,35 +31,34 @@ namespace Dertrix.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                return View(db.SecondarySchoolUserRoles.ToList());
+                return View(db.NurserySchoolUserRoles.ToList());
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
             }
- 
         }
 
         [ChildActionOnly]
-        public ActionResult AddSecSchRole()
+        public ActionResult AddNursSchRole()
         {
-            return PartialView("~/Views/Shared/PartialViewsForms/_AddSecSchRole.cshtml");
+            return PartialView("~/Views/Shared/PartialViewsForms/_AddNursSchRole.cshtml");
         }
 
-        public ActionResult EditSecSchRole(int Id)
+        public ActionResult EditNursSchRole(int Id)
         {
             try
             {
                 if (Id != 0)
                 {
-                    var edtsecschrl = db.SecondarySchoolUserRoles.Where(x => x.SecondarySchoolUserRoleId == Id).FirstOrDefault();
-                    var edtsecschrl1 = new SecondarySchoolUserRole
+                    var edtsecschrl = db.NurserySchoolUserRoles.Where(x => x.NurserySchoolUserRoleId == Id).FirstOrDefault();
+                    var edtsecschrl1 = new NurserySchoolUserRole
                     {
-                        SecondarySchoolUserRoleId = edtsecschrl.SecondarySchoolUserRoleId,
+                        NurserySchoolUserRoleId = edtsecschrl.NurserySchoolUserRoleId,
                         RoleName = edtsecschrl.RoleName
                     };
-                    return PartialView("~/Views/Shared/PartialViewsForms/_EditSecSchRole.cshtml", edtsecschrl1);
+                    return PartialView("~/Views/Shared/PartialViewsForms/_EditNursSchRole.cshtml", edtsecschrl1);
                 }
             }
             catch (Exception e)
@@ -69,43 +70,48 @@ namespace Dertrix.Controllers
         }
 
 
-        // POST: SecondarySchoolUserRoles/Create
+
+
+
+        // POST: NurserySchoolUserRoles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SecondarySchoolUserRole secondarySchoolUserRole)
+        public ActionResult Create(NurserySchoolUserRole nurserySchoolUserRole)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.SecondarySchoolUserRoles.Add(secondarySchoolUserRole);
+                    db.NurserySchoolUserRoles.Add(nurserySchoolUserRole);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                return View(secondarySchoolUserRole);
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
             }
+            return View(nurserySchoolUserRole);
         }
 
 
-        // POST: SecondarySchoolUserRoles/Edit/5
+
+        // POST: NurserySchoolUserRoles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(SecondarySchoolUserRole secondarySchoolUserRole)
+        public ActionResult Edit(NurserySchoolUserRole nurserySchoolUserRole)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(secondarySchoolUserRole).State = EntityState.Modified;
+                    db.Entry(nurserySchoolUserRole).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                return View(secondarySchoolUserRole);
+                return View(nurserySchoolUserRole);
             }
             catch (Exception e)
             {
@@ -123,11 +129,13 @@ namespace Dertrix.Controllers
             base.Dispose(disposing);
         }
 
-        // POST: SecondarySchoolUserRoles/Delete/5
+        //// POST: NurserySchoolUserRoles/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         //public ActionResult DeleteConfirmed(int id)
         //{
-        //    SecondarySchoolUserRole secondarySchoolUserRole = db.SecondarySchoolUserRoles.Find(id);
-        //    db.SecondarySchoolUserRoles.Remove(secondarySchoolUserRole);
+        //    NurserySchoolUserRole nurserySchoolUserRole = db.NurserySchoolUserRoles.Find(id);
+        //    db.NurserySchoolUserRoles.Remove(nurserySchoolUserRole);
         //    db.SaveChanges();
         //    return RedirectToAction("Index");
         //}
