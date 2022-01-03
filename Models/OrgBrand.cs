@@ -11,12 +11,6 @@ namespace Dertrix.Models
 
         public string OrgBrandName { get; set; }
 
-        public string OrgBrandBar { get; set; }
-
-        public string OrgNavigationBar { get; set; }
-
-        public string OrgNavBarTextColour { get; set; }
-
         public string OrgBrandButtonColour { get; set; } 
 
         public virtual ICollection<File> Files { get; set; }

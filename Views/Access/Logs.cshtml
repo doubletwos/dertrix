@@ -1,84 +1,72 @@
 ﻿@model IEnumerable<Dertrix.Models.RegUsersAccessLog>
 <head>
-	@{
-		ViewBag.Title = "All staffs";
-	}
-	<style>
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-	</style>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    @{
+        ViewBag.Title = "All staffs";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
+    <div>
+        <hr />
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        User Id
+                    </th>
+                    <th>
+                        Org Id
+                    </th>
+                    <th>
+                        Full Name
+                    </th>
+                    <th>
+                        Log in date & time
+                    </th>
+                    <th>
+                        Log out date & time
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegUserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LogInTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LogOutTime)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
 
 
-<div class="jumbotron" style="height:100vh;">
-	<div>	
-	<hr />
-	</div>
-	<hr />
-	<br />
-	<div class="panel panel-default">
-
-
-
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
-
-
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-					<th>
-						User Id
-					</th>
-					<th>
-						Org Id
-					</th>
-					<th>
-						Full Name
-					</th>
-					<th>
-						Log in date & time
-					</th>
-					<th>
-						Log out date & time
-
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-
-
-				@foreach (var item in Model)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.RegUserId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.OrgId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.UserFullName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.LogInTime)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.LogOutTime)
-						</td>
-
-					</tr>
-				}
-			</tbody>
-
-
-		</table>
-		<div>
-			<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-	</div>
+        </table>
+        <div>
+            <p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
 
 </div>
 

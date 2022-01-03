@@ -14,19 +14,17 @@
 			.RegUserOrgButtonColour {
 				background-color: @regOrgBrandButtonColour;
 			}
-
-
-
+            .btn-group:hover .dropdown-menu {
+                display: block;
+            }
         </style>
     }
 </head>
-@*<body style="background-color: #e2e2e2">*@
 <body>
     @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
     {
-        ; var regOrgBrandButtonColour = Session["regOrgBrandButtonColour"].ToString();
+        var regOrgBrandButtonColour = Session["regOrgBrandButtonColour"].ToString();
         <div class="navbar navbar-inverse navbar-fixed-top">
-        @*<div class="navbar navbar-inverse navbar-fixed-top">*@
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -50,6 +48,7 @@
                         </a>
                     }
                 </div>
+
                 @*Dertrix System Admins*@
                 <div class="navbar-collapse collapse">
                     @*<ul class="nav navbar-nav" style="background-color:@regUserOrgBrandBar;">*@
@@ -72,6 +71,7 @@
                                 </ul>
                             </li>
                         }
+
                         @*School Staff Users*@
                         @if ((int)Session["OrgId"] != 23 && Session["IsParent/Guardian"] == null)
                         {

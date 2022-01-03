@@ -90,9 +90,6 @@ namespace Dertrix.Controllers
                         {
                             OrgBrandId = edtorgbrand.OrgBrandId,
                             OrgBrandName = edtorgbrand.OrgBrandName,
-                            OrgBrandBar = edtorgbrand.OrgBrandBar,
-                            OrgNavigationBar = edtorgbrand.OrgNavigationBar,
-                            OrgNavBarTextColour = edtorgbrand.OrgNavBarTextColour,
                             OrgBrandButtonColour = edtorgbrand.OrgBrandButtonColour,
                         };
                         return PartialView("~/Views/Shared/PartialViewsForms/_EditOrgBrand.cshtml", edtorgBrand1);
@@ -176,9 +173,6 @@ namespace Dertrix.Controllers
                     {
                         var orgBrandInDb = db.OrgBrands.Include(f => f.Files).Single(c => c.OrgBrandId == orgBrand.OrgBrandId);
                         orgBrandInDb.OrgBrandName = orgBrand.OrgBrandName;
-                        orgBrandInDb.OrgBrandBar = orgBrand.OrgBrandBar;
-                        orgBrandInDb.OrgNavigationBar = orgBrand.OrgNavigationBar;
-                        orgBrandInDb.OrgNavBarTextColour = orgBrand.OrgNavBarTextColour;
                         orgBrandInDb.OrgBrandButtonColour = orgBrand.OrgBrandButtonColour;
                         if (Logo != null && Logo.ContentLength > 0)
                         {

@@ -298,7 +298,7 @@ namespace Dertrix.Controllers
            
                 string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/HtmlPage.html"));
                 Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
-                Body = Body.Replace("var(--white)", Session["regUserOrgNavBar"].ToString());
+                Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
                 Body = Body.Replace("#Body#", postcontent);
                 Body = Body.Replace("#Subject#", postsubject);
 

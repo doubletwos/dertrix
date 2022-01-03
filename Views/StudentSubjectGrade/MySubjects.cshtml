@@ -1,33 +1,20 @@
-﻿@model IEnumerable<Dertrix.Models.StudentSubject>
+﻿<!--@model IEnumerable<Dertrix.Models.StudentSubjectGrade>
 <head>
 	@{
-		ViewBag.Title = "Index";
+        ViewBag.Title = "Index";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
 	}
 
-	<style>
-
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-	</style>
 </head>
 
-
-
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> style="height:100vh;">
 	<br />
 	<br />
 	@Html.Partial("_Widget_SchStaff_Dashboard")
 
 	<div>
-
-
-
 		<br />
 		<br />
-
-
-
 		<div class="panel panel-default">
 			<table class="table table-bordered table-condensed table-striped table-hover table-responsive ">
 				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
@@ -82,11 +69,11 @@
 									Action <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>
+									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectId)">Update Student Grade</a></li>-->
 									@*<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectId)">Remove Subject</a></li>*@
 
 
-								</ul>
+								<!--</ul>
 							</div>
 
 
@@ -103,12 +90,12 @@
 		<input type="hidden" id="hiddenStudentSubjectId" />
 
 	</div>
-</div>
+</div>-->
 
 
 
 @*Delete Subject confirmation Modal*@
-<div class="modal fade" id="myModalsubject">
+<!--<div class="modal fade" id="myModalsubject">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -124,11 +111,11 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 
 
 @*Edit Student Details Modal*@
-<div class="modal fade" id="myModalUpdateSubject">
+<!--<div class="modal fade" id="myModalUpdateSubject">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -201,6 +188,6 @@
 				}
 			})
 		})
-</script>
+</script>-->
 
 

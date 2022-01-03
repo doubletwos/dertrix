@@ -109,9 +109,6 @@ namespace Dertrix.Controllers
                     Session["OrgId"] = orgredirect;
                     Session["OrgName"] = reguserorg;
                     Session["regUserOrgBrand"] = regUserOrgBrand;
-                    Session["regUserOrgBrandBar"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgBrandBar).FirstOrDefault();
-                    Session["regUserOrgNavBar"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgNavigationBar).FirstOrDefault();
-                    Session["regUserOrgNavTextColor"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgNavBarTextColour).FirstOrDefault();
                     Session["regOrgBrandButtonColour"] = db.OrgBrands.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.OrgBrandButtonColour).FirstOrDefault();
                     Session["regOrgLogo"] = db.Files.Where(x => x.OrgBrandId == regUserOrgBrand).Select(x => x.Content).FirstOrDefault();
                     Session["IsTester"] = reguserdetails.IsTester;

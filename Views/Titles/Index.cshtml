@@ -1,89 +1,87 @@
 ﻿@model IEnumerable<Dertrix.Models.Title>
 
 @{
-	ViewBag.Title = "Titles table";
+    ViewBag.Title = "Titles table";
+    var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
 }
+
 <head>
-	<style>
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-	</style>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
-<div class="jumbotron" style="height:100vh;">
-	<br />
-	<br />
-	<div>
-		<hr />
-		<div class="row">
-			<div class="col-md-3">
-				@{
-					Html.RenderAction("AddTitle", "Titles");
-				}
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
+    <br />
+    <br />
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                @{
+                    Html.RenderAction("AddTitle", "Titles");
+                }
 
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-		</div>
-	</div>
-	<hr />
-	<br />
-
-
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
 
 
-	<div class="panel panel-default">
-
-		<table id="myTable" class="table table-bordered table-responsive table-condensed">
-			<thead>
-
-				<tr>
-					<th>
-						@Html.DisplayNameFor(model => model.TitleName)
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
 
 
-				@foreach (var item in Model)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.TitleName)
-						</td>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="EditTitle(@item.TitleId)">Edit title </a></li>
-									@*<li><a href="#" onclick="ConfirmDelete(@item.TitleId)">Remove title</a></li>*@
-								</ul>
-							</div>
+    <div class="panel panel-default">
 
-						</td>
-					</tr>
-				}
-			</tbody>
+        <table id="myTable" class="table table-bordered table-responsive table-condensed">
+            <thead>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TitleName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
 
 
-		</table>
-		<div>
-			<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TitleName)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditTitle(@item.TitleId)">Edit title </a></li>
+                                    @*<li><a href="#" onclick="ConfirmDelete(@item.TitleId)">Remove title</a></li>*@
+                                </ul>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
 
-	</div>
+        </table>
+        <div>
+            <p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+
+
+    </div>
 </div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -91,86 +89,86 @@
 
 @*Delete confirmation Modal*@
 <div class="modal fade" id="TitleDeleteModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Remove title</h3>
-			</div>
-			<div class="modal-body">
-				<h3>Are you sure you want to remove this title?</h3>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteTitle()">Confirm</a>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Remove title</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure you want to remove this title?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                <a href="#" class="RegUserOrgButtonColour" onclick="DeleteTitle()">Confirm</a>
+            </div>
+        </div>
+    </div>
 </div>
 @*Edit group Modal*@
 <div class="modal fade" id="TitleEditModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit title</h3>
-			</div>
-			<div class="modal-body" id="titleEditBody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Edit title</h3>
+            </div>
+            <div class="modal-body" id="titleEditBody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-	var ConfirmDelete = function (GroupId) {
-		$("#hiddenTitleId").val(GroupId);
-		$("#TitleDeleteModal").modal('show');
-	}
-	var DeleteTitle = function () {
-		var grp = $("#hiddenTitleId").val();
-		$.ajax({
-			type: "POST",
-			url: "/Titles/DeleteConfirmed/",
-			data: { id: grp },
-			success: function (response) {
-				alert("Title deleted");
-				$("#TitleDeleteModal").modal("hide");
-				window.location.reload();
-			}
-		})
-	}
+    var ConfirmDelete = function (GroupId) {
+        $("#hiddenTitleId").val(GroupId);
+        $("#TitleDeleteModal").modal('show');
+    }
+    var DeleteTitle = function () {
+        var grp = $("#hiddenTitleId").val();
+        $.ajax({
+            type: "POST",
+            url: "/Titles/DeleteConfirmed/",
+            data: { id: grp },
+            success: function (response) {
+                alert("Title deleted");
+                $("#TitleDeleteModal").modal("hide");
+                window.location.reload();
+            }
+        })
+    }
 </script>
 <script>
-	var EditTitle = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/Titles/EditTitle",
-			data: { Id: Id },
-			success: function (response) {
-				$("#titleEditBody").html(response);
-				$("#TitleEditModal").modal("show");
-			}
-		})
-	}
+    var EditTitle = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/Titles/EditTitle",
+            data: { Id: Id },
+            success: function (response) {
+                $("#titleEditBody").html(response);
+                $("#TitleEditModal").modal("show");
+            }
+        })
+    }
 </script>
 <script>
-	$("#edtSubmit").click(function () {
-		var data = $("#TitleEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/Titles/Edit",
-			data: data,
-			success: function (response) {
-				alert("Title updated");
-				$("#TitleEditModal").modal("hide");
-				$("#TitleEditForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
+    $("#edtSubmit").click(function () {
+        var data = $("#TitleEditForm").serialize();
+        $.ajax({
+            type: "POST",
+            url: "/Titles/Edit",
+            data: data,
+            success: function (response) {
+                alert("Title updated");
+                $("#TitleEditModal").modal("hide");
+                $("#TitleEditForm")[0].reset();
+                window.location.reload();
+            }
+        })
+    })
 </script>
 
 
@@ -178,20 +176,20 @@
 
 
 @section scripts{
-	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/custom-validator")
-	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom-validator")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
 
-	<script>
-		$(document).ready(function () {
-			$('#myTable').DataTable(
-				{
-					"ordering": false,
-				}
-			);
-		});
-	</script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                    "ordering": false,
+                }
+            );
+        });
+    </script>
 
 }
 

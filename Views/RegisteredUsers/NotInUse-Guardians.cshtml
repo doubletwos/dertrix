@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<Dertrix.Models.RegisteredUser>
 <head>
-	<style>
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-	</style>
+    @{
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
+
 </head>
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
 	<br />
 	<br />
 	<div>

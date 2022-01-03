@@ -1,10 +1,12 @@
-﻿@model IEnumerable<Dertrix.Models.StudentSubject>
+﻿@model IEnumerable<Dertrix.Models.StudentSubjectGrade>
 
 @{
-	ViewBag.Title = "YourChild";
+    ViewBag.Title = "YourChild";
+    var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+
 }
 
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
 	<br />
 	<br />
 	@Html.Partial("_Widget_PG_Dashboard")

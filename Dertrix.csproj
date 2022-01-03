@@ -506,6 +506,10 @@
     <Compile Include="Migrations\202201022048193_Sprint2022.10.03.designer.cs">
       <DependentUpon>202201022048193_Sprint2022.10.03.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201030916369_Sprint2022.10.04.cs" />
+    <Compile Include="Migrations\202201030916369_Sprint2022.10.04.designer.cs">
+      <DependentUpon>202201030916369_Sprint2022.10.04.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -830,7 +834,6 @@
     <Content Include="Views\Orgs\Index.cshtml" />
     <Content Include="Views\Shared\_Secure.cshtml" />
     <Content Include="Views\Orgs\SystemAdminIndex.cshtml" />
-    <Content Include="Views\Shared\_Nav.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddStaff.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddOrg.cshtml" />
     <Content Include="Views\Class\SystemAdminIndex.cshtml" />
@@ -867,7 +870,7 @@
     <Content Include="Views\GroupTypes\Index.cshtml" />
     <Content Include="Views\OrgGroups\Index.cshtml" />
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
-    <Content Include="Views\RegisteredUsers\Guardians.cshtml" />
+    <Content Include="Views\RegisteredUsers\NotInUse-Guardians.cshtml" />
     <Content Include="Views\StudentGuardians\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianStudent.cshtml" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\Flaticon.eot" />
@@ -973,7 +976,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStudentsClass.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStaffsRole.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_UpdateStudentGrades.cshtml" />
-    <Content Include="Views\Shared\_Nav1.cshtml" />
+    <Content Include="Views\Shared\_Nav.cshtml" />
     <Content Include="Views\NurserySchoolUserRoles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddNursSchRole.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditNursSchRole.cshtml" />
@@ -1204,6 +1207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201022048193_Sprint2022.10.03.resx">
       <DependentUpon>202201022048193_Sprint2022.10.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201030916369_Sprint2022.10.04.resx">
+      <DependentUpon>202201030916369_Sprint2022.10.04.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

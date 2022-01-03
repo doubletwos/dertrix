@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<Dertrix.Models.Post>
 <head>
 	@{
-		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
+        ViewBag.Title = "Posts";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
 	}
-	@{
-		ViewBag.Title = "Posts";
-	}
+
 	<style>
 		.btn-group:hover .dropdown-menu {
 			display: block;
@@ -27,7 +26,7 @@
 	</style>
 	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
 	<br />
 	<br />
 	@Html.Partial("_Widget_PG_Dashboard")

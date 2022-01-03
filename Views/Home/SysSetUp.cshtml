@@ -1,37 +1,36 @@
 ﻿<head>
-	@{
-		ViewBag.Title = "System Config";
-	}
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    @{
+        ViewBag.Title = "System Config";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
 
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height:100vh;">
-	<br />
-	<br />
-	@Html.Partial("_Widget_SchStaff_Dashboard")
-	<div>
-		<hr />
-		<div class="row">
-			<div class="col-md-4">
-				<p>
-					@{
-						Html.RenderAction("StudentUpdateSubject", "StudentSubjectGrade");
-					}
-				</p>
-			</div>
-			<div class="col-md-4">
-				@*<p>@Html.ActionLink( "Important Dates", "Index", "OrgImportantDates", "", new { @class = "RegUserOrgButtonColour " })</p>*@
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
+    <br />
+    <br />
+    @Html.Partial("_Widget_SchStaff_Dashboard")
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <p>
+                    @{
+                        Html.RenderAction("StudentUpdateSubject", "StudentSubjectGrade");
+                    }
+                </p>
+            </div>
+            <div class="col-md-4">
 
-			</div>
-			<div class="col-md-4">
-				@*<p>@Html.ActionLink("Events", "Index", "OrgEvents", "", new { @class = "RegUserOrgButtonColour" })</p>*@
+            </div>
+            <div class="col-md-4">
 
-			</div>
-			
-		</div>
-	</div>
-	<hr />
-	<br />
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <br />
 
 </div>
 

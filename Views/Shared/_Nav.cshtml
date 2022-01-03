@@ -1,145 +1,23 @@
-﻿@model IEnumerable<Dertrix.Models.RegisteredUserOrganisation>
+﻿
+@model IEnumerable<Dertrix.Models.RegisteredUserOrganisation>
 @if (Session["OrgId"] != null && Session["regUserOrgBrand"] != null)
 {
-	var sessionNavbarTextColor = Session["regUserOrgNavTextColor"].ToString();
-	var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
-	<head>
-		<style>
-			.navbar-default .navbar-nav > li > a {
-				color: @sessionNavbarTextColor;
-				font-family: Arial;
-				font-weight: bold;
-			}
-			.navbar .navbar-default {
-			background-color: @regUserOrgNavBar
-			}
-			.dropdown:hover .dropdown-menu {
-				display: block;
-			}
-		</style>
-	</head>
-
-	<div class="navbar navbar-default">
-		<div class="container">
-			<div class="container-fluid">
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-left">
-						@if ((int)Session["OrgId"] == 23)
-						{
-							var session = ((int)Session["OrgId"]).ToString();
-							@*<li>@Html.ActionLink(Session["OrgName"].ToString(), "SystemAdminIndex", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>*@
-							<li>@Html.ActionLink("HOME", "SystemAdminIndex", "Orgs", new { id = 23 }, null)</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li role="presentation" class="active">@Html.ActionLink("Staffs", "SysAdmins", "RegisteredUsers")</li>
-									<li role="separator" class="divider"></li>
-								</ul>
-							</li>
-
-						}
-						@if ((int)Session["OrgId"] != 23 && Session["IsParent/Guardian"] == null)
-						{
-							var session = ((int)Session["OrgId"]).ToString();
-							@*<li>@Html.ActionLink(Session["OrgName"].ToString(), "Index", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>*@
-							<li>@Html.ActionLink("HOME", "Index", "Orgs", new { id = session }, null)</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">POSTINGS <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li role="presentation" class="active">@Html.ActionLink("All postings", "Index", "Posts")</li>
-									<li role="separator" class="divider"></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USERS<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("Staffs", "Staffs", "RegisteredUsers")</li>
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("All Students", "AllStudents", "RegisteredUsers")</li>
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("Guardians", "Index", "StudentGuardians")</li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETUP<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									@*<li role="presentation" class="active">@Html.ActionLink("Stats", "Staffs", "RegisteredUsers")</li>*@
-									@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
-									{
-										<li role="separator" class="divider"></li>
-										<li role="presentation" class="active">@Html.ActionLink("Subjects", "Index", "Subjects")</li>
-									}
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("Student Grades", "Grades", "StudentSubjectGrade")</li>
-									@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
-									{
-										<li role="separator" class="divider"></li>
-										<li role="presentation" class="active">@Html.ActionLink("Classes", "Index", "Class", new { id = session }, null)</li>
-									}
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("Groups", "Index", "OrgGroups")</li>
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("Config", "SysSetUp", "Home")</li>
-								</ul>
-							</li>
-							{
-								Html.RenderAction("Regs", "RegisteredUsers");
-							}
-
-						}
-						@if ((int)Session["OrgId"] == 23)
-						{
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SETUP<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li role="presentation" class="active">@Html.ActionLink("Portal Set Up", "SysAdminSetUp", "Home")</li>
-									<li role="separator" class="divider"></li>
-									<li role="presentation" class="active">@Html.ActionLink("Organisation Management", "SystemAdminIndex", "Orgs")</li>
-									<li role="separator" class="divider"></li>
-								</ul>
-							</li>
-
-							{
-								Html.RenderAction("Regs", "RegisteredUsers");
-							}
-
-						}
+    var currentsession = HttpContext.Current.Session.SessionID.ToString();
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("Hello " + @Session["FullName"] + "!", "Index", "Posts", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li>
+            @Html.ActionLink("LogOff", "LogOut", "Access", new { id = @currentsession }, htmlAttributes: new { @class = "navbar-right" })
+        </li>
+    </ul>
 
 
-
-
-
-						@if ((int)Session["OrgId"] != 23 && Session["IsParent/Guardian"] != null)
-						{
-							var session = ((int)Session["OrgId"]).ToString();
-							<li>@Html.ActionLink(Session["OrgName"].ToString(), "PGSchCentre", "Orgs", new { id = session }, new { @class = "navbar-brand" })</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HOME<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li role="presentation" class="active">@Html.ActionLink("Welcome Page", "PGSchCentre", "Orgs", new { id = session }, null)</li>
-									<li role="separator" class="divider"></li>
-									@*<li role="presentation" class="active">@Html.ActionLink("School Staff", "Index", "Posts")</li>*@
-									<li role="separator" class="divider"></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">PARENTS GUIDE<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li role="presentation" class="active">@Html.ActionLink("All Posts", "PostsTable", "Posts")</li>
-									<li role="separator" class="divider"></li>
-									@*<li role="presentation" class="active">@Html.ActionLink("School Services", "PGSchCentre", "Orgs")</li>*@
-									<li role="separator" class="divider"></li>
-								</ul>
-							</li>
-
-							{
-								Html.RenderAction("Regs", "RegisteredUsers");
-							}
-						}
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+        <li>@Html.ActionLink("Log in", "Signin", "Access", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
 }

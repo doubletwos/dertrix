@@ -1,17 +1,15 @@
 ﻿@model IEnumerable<Dertrix.Models.OrgType>
 <head>
-	@{
-		ViewBag.Title = "OrgTypes table";
-	}
-	<style>
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-	</style>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    @{
+        ViewBag.Title = "OrgTypes table";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
 	<br />
 	<br />
 	<div>

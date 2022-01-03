@@ -83,9 +83,7 @@ namespace Dertrix.Controllers
         [ChildActionOnly]
         public ActionResult Nav()
         {
-            //return PartialView("_Nav");
-            return PartialView("_Nav1");
-
+            return PartialView("_Nav");
         }
 
         [ChildActionOnly]

@@ -1,18 +1,15 @@
 ﻿@model IEnumerable<Dertrix.Models.Org>
 <head>
-	<link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    @{
+        ViewBag.Title = "Home";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
 
 </head>
 
-@{
-	ViewBag.Title = "Home";
-}
-
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
 	<br />
 	<br />
 	@Html.Partial("_Widget_PG_Dashboard")

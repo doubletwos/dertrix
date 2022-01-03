@@ -1,13 +1,11 @@
-﻿@{
-	ViewBag.Title = "SysAdminSetUp";
-}
+﻿<head>
+    @{
+        ViewBag.Title = "SysAdminSetUp";
+        var regUserOrgBrand = Session["regOrgBrandButtonColour"].ToString();
+    }
 
-
-
-
-
-
-<div class="jumbotron" style="height:100vh;">
+</head>
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgBrand; border-style:solid; border-width:medium;">
     <br />
     <br />
 

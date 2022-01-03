@@ -1,35 +1,15 @@
 ﻿@model IEnumerable<Dertrix.Models.StudentSubjectGrade>
-
 <head>
-	@{
-		var regUserOrgNavBar = Session["regUserOrgNavBar"].ToString();
-	}
+    @{
+        ViewBag.Title = "My Class";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
 
-	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
-
-
-	@{
-		ViewBag.Title = "My Class";
-	}
-	<style>
-		.btn-group:hover .dropdown-menu {
-			display: block;
-		}
-		.nav-pills > li {
-			float: left;
-			border-style: double;
-			border-color:  @regUserOrgNavBar;
-
-		}
-	</style>
-
-
-
-
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
 </head>
 
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
 	<br />
 	<br />
 	@Html.Partial("_Widget_SchStaff_Dashboard")

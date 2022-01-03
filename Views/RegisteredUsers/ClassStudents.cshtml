@@ -3,16 +3,12 @@
 <head>
     @{
         ViewBag.Title = "Class students";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-    <style>
-        .btn-group:hover .dropdown-menu {
-            display: block;
-        }
-    </style>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
 </head>
-<div class="jumbotron" style="height:100vh;">
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
     <br />
     <br />
     @Html.Partial("_Widget_SchStaff_Dashboard")
