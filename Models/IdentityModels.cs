@@ -55,6 +55,7 @@ namespace Dertrix.Models
         public DbSet<OrgSchCalendar> OrgSchCalendars { get; set; }
         public DbSet<CalendarCategory> CalendarCategorys { get; set; }
         public DbSet<OrgSchCalndrGrp> OrgSchCalndrGrps { get; set; } 
+        public DbSet<Students_Grades_Log> Students_Grades_Logs { get; set; }
 
 
 

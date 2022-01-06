@@ -18,5 +18,8 @@ namespace Dertrix.ViewModels
 
         public List<StudentSubjectGrade> StudentSubjectGrades { get; set; }
 
+        public List<Subject> Subject { get; set; }
+
+
     }
 }

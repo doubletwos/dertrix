@@ -111,7 +111,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
-                            <input type="submit" value="Create Event" class="RegUserOrgButtonColour" id="btnSubmit" />
+                            <input type="button" value="Create Event" class="RegUserOrgButtonColour" id="btnSubmit" />
                         </div>
                     </div>
 </form>
@@ -168,15 +168,31 @@
 					url: '@Url.Action("Create", "OrgSchCalendars")',
 					data: data,
 					success: function (response) {
-						window.location.reload();
-						@*window.location.href = '@Url.Action("Index", "Orgs")';*@
-						alert("New event created");
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+						}
+						toastr.options.positionClass = "toast-top-left";
+						toastr.options.progressBar = true;
+                        toastr.options.timeout = 1000;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+						toastr.options.tapToDismiss = false;
+						toastr.success("Event added successfully");
 						$("#mycreateevent").modal("hide");
 						$("#mycreateevent")[0].reset();
-
-					}
-					
-					
+					},
+					error: function (response) {
+                        toastr.options.positionClass = "toast-top-left";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 900;
+                        toastr.options.tapToDismiss = false;
+						toastr.error("Oops there has been a problem, the system admins have been notified.");
+						$("#mycreateevent").modal("hide");
+                        $("#mycreateevent")[0].reset();
+                    }
+				
 				})
 			}
 		})

@@ -114,32 +114,30 @@
                 var data = $("#mySubjectForm").serialize();
                 $.ajax({
                     type: "POST",
-                    //url: "/Subjects/Create",
                     url: '@Url.Action("Create", "Subjects")',
 
                     data: data,
                     success: function (response) {
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.options.positionClass = "toast-top-left";
                         toastr.options.progressBar = true;
-                        toastr.options.timeout = 0;
+                        toastr.options.timeout = 1000;
                         toastr.options.extendedTimeOut = 0;
-                        toastr.options.fadeOut = 900;
+                        toastr.options.fadeOut = 500;
                         toastr.options.tapToDismiss = false;
-                        //toastr.options.onHidden = function () {
-                        //window.location.reload();
-                        //}
                         toastr.success("Subject added successfully");
                         $("#myModalAddSubject").modal("hide");
                         $("#mySubjectForm")[0].reset();
                     },
                     error: function (response) {
+                        toastr.options.positionClass = "toast-top-left";
                         toastr.options.progressBar = true;
                         toastr.options.timeout = 0;
                         toastr.options.extendedTimeOut = 0;
                         toastr.options.fadeOut = 900;
                         toastr.options.tapToDismiss = false;
-                        //toastr.options.onHidden = function () {
-                        //    window.location.reload();
-                        //}
                         toastr.error("Oops there has been a problem, the system admins have been notified.");
                         $("#myModalAddSubject").modal("hide");
                         $("#mySubjectForm")[0].reset();

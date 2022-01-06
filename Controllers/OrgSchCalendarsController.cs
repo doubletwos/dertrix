@@ -181,6 +181,8 @@ namespace Dertrix.Controllers
                 {
                     return RedirectToAction("Signin", "Access");
                 }
+
+
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
@@ -240,7 +242,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(viewModel);
             }
         }
 

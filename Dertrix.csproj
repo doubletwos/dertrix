@@ -510,6 +510,10 @@
     <Compile Include="Migrations\202201030916369_Sprint2022.10.04.designer.cs">
       <DependentUpon>202201030916369_Sprint2022.10.04.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201061113234_Sprint2022.10.05.cs" />
+    <Compile Include="Migrations\202201061113234_Sprint2022.10.05.designer.cs">
+      <DependentUpon>202201061113234_Sprint2022.10.05.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -546,9 +550,11 @@
     <Compile Include="Models\Relationship.cs" />
     <Compile Include="Models\Religion.cs" />
     <Compile Include="Models\SecondarySchoolUserRole.cs" />
+    <Compile Include="Models\StudentClassChangeType.cs" />
     <Compile Include="Models\StudentGuardian.cs" />
     <Compile Include="Models\StudentRegForm.cs" />
     <Compile Include="Models\StudentSubjectGrade.cs" />
+    <Compile Include="Models\Students_Grades_Log.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Title.cs" />
     <Compile Include="Models\Tribe.cs" />
@@ -1210,6 +1216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201030916369_Sprint2022.10.04.resx">
       <DependentUpon>202201030916369_Sprint2022.10.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201061113234_Sprint2022.10.05.resx">
+      <DependentUpon>202201061113234_Sprint2022.10.05.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

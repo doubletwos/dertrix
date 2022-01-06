@@ -239,14 +239,23 @@ namespace Dertrix.Controllers
             {
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);
-                var orgschcalendar = new OrgSchCalendar();
+
+
+                var sub = db.StudentSubjectGrades
+                    .Where(x => x.RegisteredUserId == id)
+                    .Include(x => x.Subject)
+                    .ToList();
+
+
                 // Get all the subjects from the database
                 var ssg = db.StudentSubjectGrades
                     .Where(x => x.RegisteredUserId == id)
                     .Include(x => x.Subject)
                     .ToList();
                 var registereduser = db.RegisteredUsers.Find(id);
+
                 var subject = new Subject();
+
                 // Initialize the view model
                 var updatessgviewmodel = new UpdateStudentGradesViewModel
                 {
@@ -268,10 +277,10 @@ namespace Dertrix.Controllers
                         ClassRef = x.ClassRef,
                         ClassId = x.ClassId,
                         Updater_Id = x.Updater_Id,
+
                     }).ToList(),
+
                     RegisteredUser = registereduser,
-
-
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrades.cshtml", updatessgviewmodel);
 
@@ -425,12 +434,38 @@ namespace Dertrix.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                foreach (var grade in viewmodel.StudentSubjectGrades) 
                 {
-                    db.Entry(viewmodel).State = EntityState.Modified;
+                    // Locate record 
+                    var grade_id = db.StudentSubjectGrades.AsNoTracking()
+                        .Where(x => x.StudentSubjectGradeId == grade.StudentSubjectGradeId).FirstOrDefault();
+
+                    var updategrade = new StudentSubjectGrade
+                    {
+                        StudentSubjectGradeId = grade.StudentSubjectGradeId,
+                        RegisteredUserId = grade.RegisteredUserId,
+                        SubjectId = grade.SubjectId,
+                        ClassId = grade.ClassId,
+                        ClassRef = grade.ClassRef,
+                        OrgId = grade.OrgId,
+                        FirstTerm_ExamGrade = grade.FirstTerm_ExamGrade,
+                        SecondTerm_ExamGrade = grade.SecondTerm_ExamGrade,
+                        ThirdTerm_ExamGrade = grade.ThirdTerm_ExamGrade,
+                        FirstTerm_TestGrade = grade.FirstTerm_TestGrade,
+                        SecondTerm_TestGrade = grade.SecondTerm_TestGrade,
+                        ThirdTerm_TestGrade = grade.ThirdTerm_TestGrade,
+                        Last_updated_date = DateTime.Now,
+                        Created_date = grade.Created_date,
+                        SubjectName = grade.SubjectName,
+                        Updater_Id = (int)Session["RegisteredUserId"]
+                    };
+
+                    grade_id = updategrade;
+                    db.Entry(grade_id).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Grades");
                 }
+                return RedirectToAction("Grades");
+
             }
             catch (Exception e)
             {
@@ -438,7 +473,6 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
 
-            return View(viewmodel);
         }
 
 

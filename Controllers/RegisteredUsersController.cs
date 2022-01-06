@@ -443,6 +443,13 @@ namespace Dertrix.Controllers
                 };
                 db.Org_Events_Logs.Add(logstudregistrtn);
                 db.SaveChanges();
+
+
+                 
+                // THEN -  CREATE STUDENTS MODULES
+                var otherController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
+                var fire = otherController.CreateStudentModules(_class, stud.RegisteredUserId, stud.ClassRef, i);
+
                 // THEN EXIT
                 return result;
             }
