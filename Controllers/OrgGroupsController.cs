@@ -72,6 +72,7 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
+
                 orgGroup.OrgId = i;
                 orgGroup.GroupName = orgGroup.GroupName;
                 orgGroup.CreationDate = DateTime.Now;
@@ -97,7 +98,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(orgGroup);
             }
             return new HttpStatusCodeResult(204);
 

@@ -125,12 +125,31 @@
 			type: "POST",
 			url: "/Class/Edit",
 			data: data,
-			success: function (response) {
-				alert("Teacher assigned");
-				$("#AssignTeacherModal").modal("hide");
-				$("#AssignClassTeacherForm")[0].reset();
-				window.location.reload();
-			}
+            success: function (response) {
+                toastr.options.onHidden = function () {
+                    window.location.reload();
+                }
+                toastr.options.positionClass = "toast-bottom-full-width";
+                toastr.options.progressBar = true;
+                toastr.options.timeout = 1000;
+                toastr.options.extendedTimeOut = 0;
+                toastr.options.fadeOut = 500;
+                toastr.options.tapToDismiss = false;
+                toastr.success("Teacher assigned successfully");
+                $("#AssignTeacherModal").modal("hide");
+                $("#AssignClassTeacherForm")[0].reset();
+            },
+            error: function (response) {
+                toastr.options.positionClass = "toast-bottom-full-width";
+                toastr.options.progressBar = true;
+                toastr.options.timeout = 0;
+                toastr.options.extendedTimeOut = 0;
+                toastr.options.fadeOut = 900;
+                toastr.options.tapToDismiss = false;
+                toastr.error("Oops, There has been a problem, the system adminstrators have been notified");
+                $("#AssignTeacherModal").modal("hide");
+                $("#AssignClassTeacherForm")[0].reset();
+            }
 		})
 	})
 </script>

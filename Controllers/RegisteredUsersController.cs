@@ -849,6 +849,7 @@ namespace Dertrix.Controllers
         {
             try
             {
+
                 /*Accepting all state of model*/
                 if (!(ModelState.IsValid) || ModelState.IsValid)
                 {
@@ -1625,7 +1626,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(registeredUser);
             }
             return View(registeredUser);
         }

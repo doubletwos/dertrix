@@ -58,14 +58,27 @@
                     url: '@Url.Action("Create", "OrgGroups")',
                     data: data,
                     success: function (response) {
-                        toastr.options.progressBar = true;
-                        toastr.options.timeout = 100;
-                        toastr.options.fadeOut = 100;
-                        toastr.options.tapToDismiss = false;
                         toastr.options.onHidden = function () {
                             window.location.reload();
                         }
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 1000;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
                         toastr.success("Group added successfully");
+                        $("#myGroupModal").modal("hide");
+                        $("#AddCustomGrp")[0].reset();
+                    },
+                    error: function (response) {
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
                         $("#myGroupModal").modal("hide");
                         $("#AddCustomGrp")[0].reset();
                     }

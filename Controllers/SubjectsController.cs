@@ -145,8 +145,6 @@ namespace Dertrix.Controllers
                 }
                 if (ModelState.IsValid)
                 {
-                    //throw new HttpException(400, "A custom message for an application specific exception");
-
                     var taughtby = db.RegisteredUsers.Where(x => x.RegisteredUserId == subject.ClassTeacherId).Select(x => x.FullName).FirstOrDefault();
                     subject.TaughtBy = taughtby;
                     var classref = db.Classes.Where(x => x.ClassId == subject.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();

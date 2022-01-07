@@ -77,6 +77,7 @@ namespace Dertrix.Controllers
         // This action is used at school level to assign teachers to class
         public ActionResult AssignClassTeacher(int? id)
         {
+
             try
             {
                 if (id != 0)
@@ -109,7 +110,7 @@ namespace Dertrix.Controllers
                     };
                     ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
                         .Where(x => x.OrgId == i)
-                        .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
+                        .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3 )), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
 
                     return PartialView("~/Views/Shared/PartialViewsForms/_AssignClassTeacher.cshtml", cr);
                 }
@@ -117,7 +118,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(id);
             }
             return new HttpStatusCodeResult(204);
         }
@@ -171,7 +172,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(@Class);
             }
         }
 
@@ -214,7 +215,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(@Class);
             }
 
         }

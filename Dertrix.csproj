@@ -943,12 +943,10 @@
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_AddOrgImpDate.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ImpDateDisplayPanel.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditImpDate.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EventDisplayPanel.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditEvent.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_AddOrgEvent.cshtml" />
     <Content Include="Views\Shared\_Widget_PG_Dashboard.cshtml" />
     <Content Include="Views\Shared\_MyChildList.cshtml" />
     <Content Include="Views\Shared\_MyChildCount.cshtml" />

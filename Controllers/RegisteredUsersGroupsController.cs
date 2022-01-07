@@ -45,7 +45,6 @@ namespace Dertrix.Controllers
                     {
                         ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
                         .Where(x => x.OrgId == i)
-                        //.Where(k => k.SecondarySchoolUserRoleId != 5)
                         .Where(e => e.SecondarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
                         ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
                     }
@@ -56,8 +55,16 @@ namespace Dertrix.Controllers
                     {
                         ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
                         .Where(x => x.OrgId == i)
-                        //.Where(k => k.PrimarySchoolUserRoleId != 5)
                         .Where(e => e.PrimarySchoolUserRoleId != null), "RegisteredUserId", "FullName");
+                        ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
+                    }
+
+                    // Nursery School
+                    if (orgtype == 4)
+                    {
+                        ViewBag.RegisteredUserId = new SelectList(db.RegisteredUserOrganisations
+                        .Where(x => x.OrgId == i)
+                        .Where(e => e.NurserySchoolUserRoleId != null), "RegisteredUserId", "FullName");
                         ViewBag.OrgGroupId = new SelectList(db.OrgGroups, "OrgGroupId", "GroupName");
                     }
 
@@ -164,7 +171,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(registeredUsersGroups);
             }
         }
 

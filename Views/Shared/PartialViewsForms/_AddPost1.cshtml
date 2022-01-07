@@ -79,7 +79,6 @@
 									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
 									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
 
-
 									<br />
 								}
 
@@ -91,7 +90,7 @@
 						<br />
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
-							<input type="submit" value="Create Post" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="button" value="Create Post" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 					</div>
 
@@ -111,30 +110,19 @@
 			});
 		})
 
-
-
-
 		$(function () {
 			$('#Post_PostContent').summernote({
 				height: '300px',
 				dialogsInBody: true,
                 toolbar: [
 					['style', ['bold', 'italic', 'underline']],
-					//['fontsize', ['fontsize']],
-                    //['fontname', ['fontname']],
 					['para', ['ul', 'ol']],
                     ['view', ['fullscreen']]
 				],
-
 				fontNames: ['Arial', 'Arial Black'],
                 fontSizes: ['20']
-
 			});
 		})
-
-
-
-
 
 		$(function () {
 			$("#cancel").on("click", function () {
@@ -148,15 +136,32 @@
 				$.ajax({
 					type: "POST",
 					url: "/Posts/Create1",
-
 					data: data,
-					success: function (response) {
-						window.location.reload();
-						alert("New Post created");
-						$("#mycreatepost1").modal("hide");
-						$("#myCreatePostForm1")[0].reset();
-						//window.location.reload();
-					}
+                    success: function (response) {
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 1000;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.success("Post added successfully");
+                        $("#mycreatepost1").modal("hide");
+                        $("#myCreatePostForm1")[0].reset();
+                    },
+                    error: function (response) {
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 900;
+                        toastr.options.tapToDismiss = false;
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified");
+                        $("#mycreatepost1").modal("hide");
+                        $("#myCreatePostForm1")[0].reset();
+                    }
 				})
 			}
 		})
@@ -202,7 +207,6 @@
 				'Post.PostSubject': 'Please enter subject',
 				'Post.PostContent': 'Post can not be empty',
 				'Post.SendAsEmail': 'Please select an option',
-
 			}
 		});
 	});

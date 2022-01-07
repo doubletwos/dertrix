@@ -121,9 +121,9 @@
                         toastr.options.onHidden = function () {
                             window.location.reload();
                         }
-                        toastr.options.positionClass = "toast-top-left";
+                        toastr.options.positionClass = "toast-bottom-full-width";
                         toastr.options.progressBar = true;
-                        toastr.options.timeout = 1000;
+                        toastr.options.timeout = 0;
                         toastr.options.extendedTimeOut = 0;
                         toastr.options.fadeOut = 500;
                         toastr.options.tapToDismiss = false;
@@ -132,13 +132,13 @@
                         $("#mySubjectForm")[0].reset();
                     },
                     error: function (response) {
-                        toastr.options.positionClass = "toast-top-left";
+                        toastr.options.positionClass = "toast-bottom-full-width";
                         toastr.options.progressBar = true;
                         toastr.options.timeout = 0;
                         toastr.options.extendedTimeOut = 0;
-                        toastr.options.fadeOut = 900;
+                        toastr.options.fadeOut = 500;
                         toastr.options.tapToDismiss = false;
-                        toastr.error("Oops there has been a problem, the system admins have been notified.");
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
                         $("#myModalAddSubject").modal("hide");
                         $("#mySubjectForm")[0].reset();
                     }
