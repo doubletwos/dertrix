@@ -20,7 +20,7 @@ namespace Dertrix.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
 
-   //     GET: RegisteredUsers/AllStudents/
+        //     GET: RegisteredUsers/AllStudents/
         public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
@@ -445,7 +445,7 @@ namespace Dertrix.Controllers
                 db.SaveChanges();
 
 
-                 
+
                 // THEN -  CREATE STUDENTS MODULES
                 var otherController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
                 var fire = otherController.CreateStudentModules(_class, stud.RegisteredUserId, stud.ClassRef, i);
@@ -559,7 +559,7 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
 
- 
+
             return new HttpStatusCodeResult(204);
         }
 
@@ -661,7 +661,7 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
 
-           
+
             return PartialView("_ChangeStaffsRole");
         }
         [ChildActionOnly]
@@ -744,7 +744,7 @@ namespace Dertrix.Controllers
             }
             return new HttpStatusCodeResult(204);
         }
-        
+
         // GET: RegisteredUsers/Staffs/
         public ActionResult Staffs(int? id)
         {
@@ -781,7 +781,7 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
 
- 
+
         }
         // GET: RegisteredUsers/SysAdmins/
         public ActionResult SysAdmins(int? id)
@@ -920,7 +920,7 @@ namespace Dertrix.Controllers
                                     RegUserOrgBrand = registeredUser.RegUserOrgBrand,
                                     RegisteredUserTypeId = registeredUser.RegisteredUserTypeId,
                                     PrimarySchoolUserRoleId = registeredUser.PrimarySchoolUserRoleId,
-                                    SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId, 
+                                    SecondarySchoolUserRoleId = registeredUser.SecondarySchoolUserRoleId,
                                     NurserySchoolUserRoleId = registeredUser.NurserySchoolUserRoleId,
                                     EnrolmentDate = DateTime.Now,
                                     CreatedBy = Session["RegisteredUserId"].ToString(),
@@ -1740,7 +1740,7 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
 
- 
+
             return RedirectToAction("Staffs", "RegisteredUsers");
         }
         // POST: RegisteredUsers/ChangeStudentsClass/5
@@ -1752,6 +1752,8 @@ namespace Dertrix.Controllers
             {
                 if (!(ModelState.IsValid) || ModelState.IsValid)
                 {
+                    var orgid = (int)Session["OrgId"];
+
                     var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
                     var classref = db.Classes.Where(x => x.ClassId == registeredUser.ClassId).Select(x => x.ClassRefNumb).FirstOrDefault();
                     registeredUser.ClassRef = classref;
@@ -1778,6 +1780,96 @@ namespace Dertrix.Controllers
                     };
                     locatestud = studs;
                     db.Entry(locatestud).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    //CHECK IF STUD HAS ANY GRADES IN CURRENT CLASS
+                    var checkgrades = db.StudentSubjectGrades.Where(x => x.RegisteredUserId == locatestud.RegisteredUserId).Count();
+
+                    // IF GRADES COUNT > 0, LOG THE GRADES IN Students_Grades_LogController
+                    if (checkgrades > 0)
+                    {
+                        // GET LIST OF GRADES
+                        var grades = db.StudentSubjectGrades
+                                .Where(x => x.RegisteredUserId == locatestud.RegisteredUserId)
+                                .Where(x => x.OrgId == orgid)
+                                .Select(x => x.StudentSubjectGradeId)
+                                .ToList();
+                        var listofsubjects = new List<int>(grades);
+
+                        foreach (var grade in grades)
+                        {
+                            var currentgrade = db.StudentSubjectGrades
+                                .Where(x => x.StudentSubjectGradeId == grade)
+                                .Where(x => x.OrgId == orgid)
+                                .FirstOrDefault();
+
+                            var currentsubject = db.Subjects
+                                .Where(x => x.SubjectId == currentgrade.SubjectId)
+                                .Where(x => x.SubjectOrgId == orgid)
+                                .FirstOrDefault();
+
+                            var gradeslog = new Students_Grades_Log
+                            {
+                                RegisteredUserId = locatestud.RegisteredUserId,
+                                SubjectId = currentgrade.SubjectId,
+                                ClassId = (int)currentgrade.ClassId,
+                                ClassRef = (int)currentgrade.ClassRef,
+                                OrgId = (int)currentgrade.OrgId,
+                                FirstTerm_ExamGrade = currentgrade.FirstTerm_ExamGrade,
+                                SecondTerm_ExamGrade = currentgrade.SecondTerm_ExamGrade,
+                                ThirdTerm_ExamGrade = currentgrade.ThirdTerm_ExamGrade,
+                                FirstTerm_TestGrade = currentgrade.FirstTerm_TestGrade,
+                                SecondTerm_TestGrade = currentgrade.SecondTerm_TestGrade,
+                                ThirdTerm_TestGrade = currentgrade.ThirdTerm_TestGrade,
+                                Last_updated_date = currentgrade.Last_updated_date,
+                                First_Term_Exam_MaxGrade = currentsubject.First_Term_Exam_MaxGrade,
+                                Second_Term_Exam_MaxGrade = currentsubject.Second_Term_Exam_MaxGrade,
+                                Third_Term_Exam_MaxGrade = currentsubject.Third_Term_Exam_MaxGrade,
+                                First_Term_Test_MaxGrade = currentsubject.First_Term_Test_MaxGrade,
+                                Second_Term_Test_MaxGrade = currentsubject.Second_Term_Test_MaxGrade,
+                                Third_Term_Test_MaxGrade = currentsubject.Third_Term_Test_MaxGrade,
+                                Updater_Id = (int)currentgrade.Updater_Id,
+                                StudentClassChangeType = StudentClassChangeType.Change_of_class,
+                                ClassTeacherId = currentsubject.ClassTeacherId,
+                                Created_date = DateTime.Now,
+                               
+                            };
+                            db.Students_Grades_Logs.Add(gradeslog);
+                            db.SaveChanges();
+
+                            // REMOVE RECORD FROM STUSUBGRADS TABLE 
+                            db.StudentSubjectGrades.Remove(currentgrade);
+                            db.SaveChanges();
+                        }
+                    }
+
+                    // CALL METHOD TO CREATE SUBJECTS FOR NEW CLASS
+                    // UPON ADDING STUDENT -  CREATE STUDENTS MODULES
+                    var otherController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
+                    var result = otherController.CreateStudentModules(registeredUser.ClassId, locatestud.RegisteredUserId, classref, orgid);
+
+                    //UPDATE CLASS DATA
+                    var getclassid = db.Classes.AsNoTracking().Where(x => x.ClassId == registeredUser.ClassId).FirstOrDefault();
+                    var studentcount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.SelectedOrg == orgid).Count();
+                    var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.GenderId == 2 && x.SelectedOrg == orgid).Count();
+                    var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == registeredUser.ClassId && x.GenderId == 1 && x.SelectedOrg == orgid).Count();
+                    var updateclass = new Class
+                    {
+                        ClassId = getclassid.ClassId,
+                        ClassName = getclassid.ClassName,
+                        ClassIsActive = getclassid.ClassIsActive,
+                        OrgId = getclassid.OrgId,
+                        ClassRefNumb = getclassid.ClassRefNumb,
+                        TitleId = getclassid.TitleId,
+                        ClassTeacherId = getclassid.ClassTeacherId,
+                        ClassTeacherFullName = getclassid.ClassTeacherFullName,
+                        Students_Count = studentcount,
+                        Female_Students_Count = FemStuCount,
+                        Male_Students_Count = MaleStudCount
+                    };
+                    getclassid = updateclass;
+                    db.Entry(getclassid).State = EntityState.Modified;
                     db.SaveChanges();
 
                     // UPON CHANGING STUDENT'S CLASS - LOG THE EVENT 
@@ -1964,7 +2056,7 @@ namespace Dertrix.Controllers
             {
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
-            }          
+            }
             return RedirectToAction("AllStudents", "RegisteredUsers");
         }
 
@@ -2026,7 +2118,7 @@ namespace Dertrix.Controllers
 
                 if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4
                     || chkifNsStaff == 1 || chkifNsStaff == 2 || chkifNsStaff == 3 || chkifNsStaff == 4)
-                    
+
                 {
                     var staforgcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.RegisteredUserId).Count();
                     // IF COUNT OF ORG IS 1 - WE GO INTO THIS CONDITION - WE DELETE USER FROM REGUSER TABLE / LOG EVENT AND MOVE ON.

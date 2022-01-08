@@ -111,8 +111,8 @@ namespace Dertrix.Controllers
                         SecondTerm_TestGrade = 00.0m,
                         ThirdTerm_TestGrade = 00.0m,
                         Created_date = DateTime.Now,
-                        Updater_Id = null,
-                        Last_updated_date = null
+                        Updater_Id = 0,
+                        Last_updated_date = DateTime.Now,
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
                     db.SaveChanges();
@@ -156,10 +156,10 @@ namespace Dertrix.Controllers
                         FirstTerm_TestGrade = 00.0m,
                         SecondTerm_TestGrade = 00.0m,
                         ThirdTerm_TestGrade = 00.0m,
-                        Last_updated_date = null,
+                        Last_updated_date = DateTime.Now,
                         Created_date = DateTime.Now,
                         SubjectName = subjectname,
-                        Updater_Id = null,
+                        Updater_Id = 0,
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
                     db.SaveChanges();

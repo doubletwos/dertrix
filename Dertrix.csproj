@@ -232,6 +232,7 @@
     <Compile Include="Controllers\StudentGuardiansController.cs" />
     <Compile Include="Controllers\StudentRegFormsController.cs" />
     <Compile Include="Controllers\StudentSubjectGradeController.cs" />
+    <Compile Include="Controllers\Students_Grades_LogController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Controllers\TitlesController.cs" />
     <Compile Include="Controllers\TribesController.cs" />
@@ -513,6 +514,10 @@
     <Compile Include="Migrations\202201061113234_Sprint2022.10.05.cs" />
     <Compile Include="Migrations\202201061113234_Sprint2022.10.05.designer.cs">
       <DependentUpon>202201061113234_Sprint2022.10.05.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201081540366_Sprint2022.10.06.cs" />
+    <Compile Include="Migrations\202201081540366_Sprint2022.10.06.designer.cs">
+      <DependentUpon>202201081540366_Sprint2022.10.06.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -992,6 +997,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Files\UploadedFiles\" />
     <Folder Include="Views\Shared\Layouts\" />
+    <Folder Include="Views\Students_Grades_Log\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -1217,6 +1223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201061113234_Sprint2022.10.05.resx">
       <DependentUpon>202201061113234_Sprint2022.10.05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201081540366_Sprint2022.10.06.resx">
+      <DependentUpon>202201081540366_Sprint2022.10.06.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
