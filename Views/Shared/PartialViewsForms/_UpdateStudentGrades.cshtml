@@ -51,11 +51,6 @@
                         @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectName)
 
 
-
-
-
-
-
                         <td>
                             <strong>@Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName, new { htmlAttributes = new { @class = "form-control" } })</strong>
 
@@ -110,7 +105,7 @@
             success: function (response) {
                 alert("Grade Updated");
                 $("#myModalUpdateSubject").modal("hide");
-                $("#UpdateStudentGradeForm")[0].reset();
+                $("#GradeEditForm")[0].reset();
                 window.location.reload();
             }
         })

@@ -1,11 +1,22 @@
 ﻿@model IEnumerable<Dertrix.Models.Post>
 <head>
-    @{
+	@{
         ViewBag.Title = "Posts";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
-    }
-    <style>
+	}
+	<style>
+        .note-editor .note-editable {
+            font-size: 22px !important;
+            text-align: left !important;
+            font-family: 'Arial', 'Helvetica', 'sans-serif' !important;
+			color: #000000 !important;
+			font-weight: bold;
+        }
 
+        .note-editor .note-placeholder {
+          font-size: 22px !important;
+
+        }
 		.nav-pills > li {
 			float: left;
 			border-style: double;
@@ -17,93 +28,81 @@
 		.panel-default{
 			border-color:  @regUserOrgNavBar;
 		}
-
-    </style>
-
-
-   
-
-
-
-
-
+  
+	</style>
+<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
-    <br />
-    <br />
-    @Html.Partial("_Widget_SchStaff_Dashboard")
-    <div>
-        <hr />
-        <div>
-            <div>
-                @{
-                    Html.RenderAction("AddPost1", "Posts");
-                }
-            </div>
-        </div>
-        <hr />
-    </div>
-    <br />
-    <br />
-
-    @section scripts{
-
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/custom-validator")
-        <script src="~/Content/wysiwyg-editor-bootstrap/src/js/wysiwyg.js"></script>
-        <link href="~/Content/wysiwyg-editor-bootstrap/dist/css/wysiwyg.css" rel="stylesheet" />
-
-        <link href="~/Content/wysiwyg-editor-bootstrap/dist/css/highlight.min.css" rel="stylesheet" />
-        @*<script src="~/Content/wysiwyg-editor-bootstrap/dist/js/highlight.min.js"></script>*@
-
-        <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-        <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-    }
+<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
+	<br />
+	<br />
+	@Html.Partial("_Widget_SchStaff_Dashboard")
+	<div>
+		<hr />
+		<div>
+			<div>
+				@{
+					Html.RenderAction("AddPost1", "Posts");
+				}
+			</div>
+		</div>
+		<hr />
+	</div>
+	<br />
+	<br />
+	@section scripts{
+		@Scripts.Render("~/bundles/jqueryval")
+		@Scripts.Render("~/bundles/custom-validator")
+		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+		<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+		<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+		<script src="~/Scripts/summernote/summernote.min.js"></script>
+		<script src="~/Scripts/summernote/summernote-bs4.js"></script>
+		<script src="~/Scripts/summernote/summernote.js"></script>
+	}
 
 
 
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                @foreach (var item in Model)
-                {
-                    <div class="container">
-                        <h3 class="subject">@Html.DisplayFor(modelItem => item.PostSubject)</h3>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                @Html.DisplayFor(modelItem => item.CreatorFullName) -
-                                @Html.DisplayFor(modelItem => item.PostTopic.PostTopicName) - Created:
-                                @Html.DisplayFor(modelItem => item.PostCreationDate)
-                            </div>
-                            <div class="panel-body">
-                                @Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-                            </div>
-                            <div class="panel-footer">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Action <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" style="background-color:white">
-                                        <li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
-                                        <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				@foreach (var item in Model)
+				{
+					<div class="container">
+						<h3 class="subject">@Html.DisplayFor(modelItem => item.PostSubject)</h3>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								@Html.DisplayFor(modelItem => item.CreatorFullName) -
+								@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName) - Created:
+								@Html.DisplayFor(modelItem => item.PostCreationDate)
+							</div>
+							<div class="panel-body">
+								@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
+							</div>
+							<div class="panel-footer">
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Action <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" style="background-color:white">
+										<li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
+										<li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
                                         <li>
                                             @Html.ActionLink("Create Pdf", "DownloadPostPdf", "Posts", new { id = item.PostId }, null)
                                         </li>
-                                    </ul>
-                                </div>
+									</ul>
+								</div>
 
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
+							</div>
+						</div>
+					</div>
+					<hr />
 
-                }
-            </div>
-            <div class="col-lg-4">
-            </div>
-        </div>
-    </div>
+				}
+			</div>
+			<div class="col-lg-4">
+			</div>
+		</div>
+	</div>
 
 </div>
 
@@ -111,7 +110,7 @@
 
 
 
-	@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 	<input type="hidden" id="hiddenPostId" />
 
 	@*<a class="btn btn danger" onclick="SendEmail()">Send email</a>*@
@@ -197,7 +196,12 @@
 				success: function (response) {
 					$("#postEditBody").html(response);
 					$("#OrgpostEditModal1").modal("show");
-
+					$("#OrgpostEditModal1").on('shown.bs.modal', function () {
+						$('#PostContent').summernote({
+							height: '300px',
+							dialogsInBody: true,
+						});
+					})
 				}
 			})
 		}

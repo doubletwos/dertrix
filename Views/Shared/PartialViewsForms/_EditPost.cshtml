@@ -2,7 +2,6 @@
 <form id="PostEditForm">
 	@Html.AntiForgeryToken()
 	<div class="form-horizontal">
-		<h4> Edit post</h4>
 		<hr />
 		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		@Html.HiddenFor(model => model.PostId)
@@ -10,10 +9,6 @@
 		@Html.HiddenFor(model => model.PostCreatorId)
 		@Html.HiddenFor(model => model.PostCreationDate)
 		
-
-
-
-
 		<div class="form-group">
 			@Html.LabelFor(model => model.PostTopicId, "PostTopicId0", htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
@@ -54,12 +49,31 @@
 				yearRange: "-0:+10",
 			});
 		})
-		$(function () {
-			$('#PostContent').summernote({
-				height: '300px',
-				dialogsInBody: true,
-				spellCheck: true,
-			});
-		})
+        $(function () {
+			$('#PostContent').wysiwyg({
+                toolbar: [
+                    //['mode'],
+                    //['operations', ['undo', 'rendo', 'cut', 'copy', 'paste']],
+                    //['styles'],
+                    //['fonts', ['select', 'size']],
+                    ['text', ['bold', 'italic', 'underline', '/*strike*/', '/*subscript*/', '/*superscript*/', '/*font-color*/', '/*bg-color*/']],
+                    ['align', ['left', 'center', 'right', 'justify']],
+                    ['lists', ['unordered', 'ordered', '/*indent*/', '/*outdent*/']],
+                    //['components', ['table']],
+                    //['intervals', ['line-height', 'letter-spacing']],
+                    ['insert', ['/*emoji*/', 'link', '/*image*/', '/*video*/', '/*symbol*/']],
+                    //    ['special', ['print', 'unformat', 'visual', 'clean']],
+                ],
+                fontSizes: ['8px', ... '48px'],
+                fontSizeDefault: '12px',
+                fontFamilies: ['Open Sans', 'Arial', 'Times New Roman', 'Verdana'],
+                fontFamilyDefault: 'Open Sans',
+                mode: 'editor',
+                highlight: true,
+                debug: false
+
+
+            });
+        })
 	})
 </script>

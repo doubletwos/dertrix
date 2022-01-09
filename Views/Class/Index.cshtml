@@ -34,7 +34,7 @@
             <thead>
 
                 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-
+                    <th></th>
                     <th>
                         Class
                     </th>
@@ -53,30 +53,32 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title.TitleName)
-                            @Html.DisplayFor(modelItem => item.ClassTeacherFullName)
-                        </td>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title.TitleName)
+                        @Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+                    </td>
 
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="background-color:white">
-                                    <li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
-                                    @*<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">View Class Details</a></li>*@
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="background-color:white">
+                                <li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
                 }
             </tbody>
 

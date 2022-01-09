@@ -7,7 +7,6 @@ Register Guardian
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
 				<h4 class="modal-title">Link guardian to <b>@Html.DisplayFor(model => model.FullName)</b></h4>
 			</div>
 			<div class="modal-body">
@@ -76,8 +75,8 @@ Register Guardian
 						}
 
 						<div class="modal-footer">
-							<input type="submit" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+							<input type="button" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
+							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" id="modal2" />
 						</div>
 					</div>
 				</form>
@@ -91,11 +90,10 @@ Register Guardian
 		$(document).ready(function () {
 			$("#PrimarySchoolUserRoleId").hide();
 			$("#SecondarySchoolUserRoleId").hide();
+			$("#NurserySchoolUserRoleId").hide();
 			$("#PrimarySchoolUserRoleId").val("5");
 			$("#SecondarySchoolUserRoleId").val("5");
-
-
-
+			$("#NurserySchoolUserRoleId").val("5");
 
 			$('#GuardianForm').validate({
 				errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
@@ -158,14 +156,18 @@ Register Guardian
 						data: data,
 						success: function (response) {
 							alert("New Guardian Added");
-							$("#myModal").modal("hide");
+                            $("#LinkGuardianToStudent").modal("hide");
 							$("#GuardianForm")[0].reset();
 							window.location.reload();
 						}
 					})
 				}
 			})
-		})
+
+			$("#modal2").on("click", function () {
+                $("#LinkGuardianToStudent").modal("hide");
+			})
+		});
 	</script>
 
 

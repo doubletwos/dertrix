@@ -1,131 +1,147 @@
 ﻿@model Dertrix.ViewModels.AddNewPostViewModel
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#mycreatepost1">
-	<i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>
-	Create Post
+    <i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>
+    Create Post
 </a>
 <div class="modal fade" id="mycreatepost1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Add New Post </h3>
-			</div>
-			<div class="modal-body">
-				<form id="myCreatePostForm1">
-					@Html.AntiForgeryToken()
-					@{
-						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
-					}
-					<div class="form-horizontal">
-						<h4></h4>
-						<hr />
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						@Html.HiddenFor(model => model.Post.OrgId)
-						@Html.HiddenFor(model => model.Post.PostCreatorId)
-						@Html.HiddenFor(model => model.Post.CreatorFullName)
-						@Html.HiddenFor(model => model.Post.PostCreationDate)
-						<div class="form-group">
-							@Html.LabelFor(model => model.Post.PostTopicId, "Post Topic", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownListFor(x => x.Post.PostTopicId, new SelectList(Model.PostTopics, "PostTopicId", "PostTopicName"), "Please Select", new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.Post.PostTopicId, "", new { @class = "text-danger" })
-							</div>
-						</div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Add New Post </h3>
+            </div>
+            <div class="modal-body">
+                <form id="myCreatePostForm1">
+                    @Html.AntiForgeryToken()
+                    @{
+                        HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+                    }
+                    <div class="form-horizontal">
+                        <h4></h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Post.OrgId)
+                        @Html.HiddenFor(model => model.Post.PostCreatorId)
+                        @Html.HiddenFor(model => model.Post.CreatorFullName)
+                        @Html.HiddenFor(model => model.Post.PostCreationDate)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Post.PostTopicId, "Post Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(x => x.Post.PostTopicId, new SelectList(Model.PostTopics, "PostTopicId", "PostTopicName"), "Please Select", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Post.PostTopicId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="form-group">
-							@Html.LabelFor(model => model.Post.PostSubject, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.Post.PostSubject, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Post.PostSubject, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.Post.PostExpirtyDate, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.Post.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
-								@Html.ValidationMessageFor(model => model.Post.PostExpirtyDate, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.Post.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								<div class="summernote">
-									@Html.TextAreaFor(model => model.Post.PostContent, new { htmlAttributes = new { @class = "form-control PostContent1", @id = "summernote" } })
-								</div>
-								@Html.ValidationMessageFor(model => model.Post.PostContent, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-10">
-								@Html.LabelFor(model => model.Post.SendAsEmail, "Send As Email?")
-								@Html.EditorFor(model => model.Post.SendAsEmail, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Post.SendAsEmail, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<br />
-
-
-						<div class="form-group">
-							@Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
-							<div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
-
-								@for (int i = 0; i < Model.OrgGroups.Count; i++)
-								{
-									@Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
-									@Html.HiddenFor(model => model.OrgGroups[i].GroupName)
-									@:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
-									@:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
-									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
-									@:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
-
-									<br />
-								}
-
-							</div>
-						</div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Post.PostSubject, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Post.PostSubject, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Post.PostSubject, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Post.PostExpirtyDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Post.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+                                @Html.ValidationMessageFor(model => model.Post.PostExpirtyDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Post.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="summernote">
+                                    @Html.TextAreaFor(model => model.Post.PostContent, new{htmlAttributes = new{ @class = "form-control PostContent1",  @id = "wysiwyg" } })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Post.PostContent, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.Post.SendAsEmail, "Send As Email?")
+                                @Html.EditorFor(model => model.Post.SendAsEmail, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Post.SendAsEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
 
 
-						<br />
-						<br />
-						<div class="modal-footer">
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
-							<input type="button" value="Create Post" class="RegUserOrgButtonColour" id="btnSubmit" />
-						</div>
-					</div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
+                            <div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
 
-				</form>
-			</div>
-		</div>
-	</div>
+                                @for (int i = 0; i < Model.OrgGroups.Count; i++)
+                                {
+                                    @Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
+                                    @Html.HiddenFor(model => model.OrgGroups[i].GroupName)
+                                    @:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
+                                    @:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
+                                    @:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
+                                    @:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
+                                    <br />
+                                }
+
+                            </div>
+                        </div>
+
+
+                        <br />
+                        <br />
+                        <div class="modal-footer">
+                            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" id="cancel" />
+                            <input type="button" value="Create Post" class="RegUserOrgButtonColour" id="btnSubmit" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 <script>
-	$(document).ready(function () {
-		$(function () {
-			$(".datepicker").datepicker({
-				dateFormat: "dd-mm-yy",
-				changeMonth: true,
-				changeYear: true,
-				yearRange: "-35:+35",
-			});
-		})
+    $(document).ready(function () {
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "dd-mm-yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-35:+35",
+            });
+        })
 
-		$(function () {
-			$('#Post_PostContent').summernote({
-				height: '300px',
-				dialogsInBody: true,
+        $(function () {
+            $('#Post_PostContent').wysiwyg({
                 toolbar: [
-					['style', ['bold', 'italic', 'underline']],
-					['para', ['ul', 'ol']],
-                    ['view', ['fullscreen']]
-				],
-				fontNames: ['Arial', 'Arial Black'],
-                fontSizes: ['20']
-			});
-		})
+                    //['mode'],
+                    //['operations', ['undo', 'rendo', 'cut', 'copy', 'paste']],
+                    //['styles'],
+                    //['fonts', ['select', 'size']],
+                    ['text', ['bold', 'italic', 'underline', '/*strike*/', '/*subscript*/', '/*superscript*/', '/*font-color*/', '/*bg-color*/']],
+                    ['align', ['left', 'center', 'right', 'justify']],
+                    ['lists', ['unordered', 'ordered', '/*indent*/', '/*outdent*/']],
+                    //['components', ['table']],
+                    //['intervals', ['line-height', 'letter-spacing']],
+                    ['insert', ['/*emoji*/', 'link', '/*image*/', '/*video*/', '/*symbol*/']],
+                //    ['special', ['print', 'unformat', 'visual', 'clean']],
+                ],
+                fontSizes: ['8px', ... '48px'],
+                fontSizeDefault: '12px',
+                fontFamilies: ['Open Sans','Arial','Times New Roman','Verdana'],
+                fontFamilyDefault: 'Open Sans',
+                mode: 'editor',
+                highlight: true,
+                debug: false
+
+            });
+        })
+
+
 
 		$(function () {
-			$("#cancel").on("click", function () {
+            $("#cancel").on("click", function () {
+                $('#Post_PostContent').wysiwyg('destroy');
 				window.location.reload();
 
 			})
@@ -170,45 +186,7 @@
 
 
 
-
 <script>
-	$(document).ready(function () {
-		$('#myCreatePostForm1').validate({
-			errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
-			errorElement: 'div',
-			errorPlacement: function (error, e) {
-				e.parents('.form-group > div').append(error);
-			},
-			highlight: function (e) {
-				$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
-				$(e).closest('.help-block').remove();
-			},
-			success: function (e) {
-				e.closest('.form-group').removeClass('has-success has-error');
-				e.closest('.help-block').remove();
-			},
-			rules: {
-				'Post.PostTopicId': {
-					required: true,
-				},
-				'Post.PostSubject': {
-					required: true,
-				},
-				'Post.PostContent': {
-					required: true,
-				},
-				'Post.SendAsEmail': {
-					required: true,
-				}
+     
 
-			},
-			messages: {
-				'Post.PostTopicId': 'Please select appropriate topic',
-				'Post.PostSubject': 'Please enter subject',
-				'Post.PostContent': 'Post can not be empty',
-				'Post.SendAsEmail': 'Please select an option',
-			}
-		});
-	});
-
-</script>
+    </script>

@@ -3,58 +3,70 @@
 {
     foreach (var item in ViewBag.RegisteredUserOrganisation)
     {
-        <table class="table table-bordered table-striped">
-            <tr>
-                <td>
-                    <strong>Dertrix Id</strong>
-                </td>
-                <td>
-                    @item.RegisteredUserId
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Full Name</strong>
-                </td>
-                <td>
-                    @item.Title.TitleName
-                    @item.ContactFullName
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Email</strong>
-                </td>
-                <td>
-                    @item.Email
-                </td>
-            </tr>
+<table class="table table-bordered table-striped">
+    <tr>
+        <td>
+            <strong>Dertrix Id</strong>
+        </td>
+        <td>
+            @item.RegisteredUserId
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Full Name</strong>
+        </td>
+        <td>
+            @item.Title.TitleName
+            @item.ContactFullName
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Email</strong>
+        </td>
+        <td>
+            @item.Email
+        </td>
+    </tr>
 
-            @if ((int)Session["OrgType"] == 3)
-            {
-                <tr>
-                    <td>
-                        <strong>Role</strong>
-                    </td>
-                    <td>
-                        @item.PrimarySchoolUserRole.RoleName
-                    </td>
-                </tr>
+    @if ((int)Session["OrgType"] == 3)
+    {
+        <tr>
+            <td>
+                <strong>Role</strong>
+            </td>
+            <td>
+                @item.PrimarySchoolUserRole.RoleName
+            </td>
+        </tr>
 
-            }
+    }
 
-            @if ((int)Session["OrgType"] == 2)
-            {
-                <tr>
-                    <td>
-                        <strong>Role</strong>
-                    </td>
-                    <td>
-                        @item.SecondarySchoolUserRole.RoleName
-                    </td>
-                </tr>
-            }
-        </table>
+    @if ((int)Session["OrgType"] == 2)
+    {
+        <tr>
+            <td>
+                <strong>Role</strong>
+            </td>
+            <td>
+                @item.SecondarySchoolUserRole.RoleName
+            </td>
+        </tr>
+    }
+
+    @if ((int)Session["OrgType"] == 4)
+    {
+        <tr>
+            <td>
+                <strong>Role</strong>
+            </td>
+            <td>
+                @item.NurserySchoolUserRole.RoleName
+            </td>
+        </tr>
+    }
+</table>
     }
 }
 <hr />

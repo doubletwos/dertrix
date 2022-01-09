@@ -356,45 +356,7 @@ namespace Dertrix.Controllers
 
 
 
-        public ActionResult UpdateStudentGrade2(int Id)
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    var rr = Session["OrgId"].ToString();
-                    int i = Convert.ToInt32(rr);
-                    var stud1 = db.StudentSubjectGrades
-                        .Include(s => s.Subject)
-                        .Include(r => r.RegisteredUser)
-                        .Where(x => x.RegisteredUserId == Id)
-                        .FirstOrDefault();
 
-                    var stud = new StudentSubjectGrade
-                    {
-                        StudentSubjectGradeId = stud1.StudentSubjectGradeId,
-                        RegisteredUserId = stud1.RegisteredUserId,
-                        SubjectId = stud1.SubjectId,
-                        ClassId = stud1.ClassId,
-                        FirstTerm_ExamGrade = stud1.FirstTerm_ExamGrade,
-                        SecondTerm_ExamGrade = stud1.SecondTerm_ExamGrade,
-                        ThirdTerm_ExamGrade = stud1.ThirdTerm_ExamGrade,
-                        FirstTerm_TestGrade = stud1.FirstTerm_TestGrade,
-                        SecondTerm_TestGrade = stud1.SecondTerm_TestGrade,
-                        ThirdTerm_TestGrade = stud1.ThirdTerm_TestGrade,
-                        OrgId = stud1.OrgId,
-                        ClassRef = stud1.ClassRef
-                    };
-                    return PartialView("~/Views/Shared/PartialViewsForms/_UpdateStudentGrade.cshtml", stud);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
-            }         
-            return PartialView("_UpdateStudentGrade");
-        }
 
 
         // POST: StudentSubjects/Create
@@ -440,6 +402,9 @@ namespace Dertrix.Controllers
                     var grade_id = db.StudentSubjectGrades.AsNoTracking()
                         .Where(x => x.StudentSubjectGradeId == grade.StudentSubjectGradeId).FirstOrDefault();
 
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
+
                     var updategrade = new StudentSubjectGrade
                     {
                         StudentSubjectGradeId = grade.StudentSubjectGradeId,
@@ -457,7 +422,7 @@ namespace Dertrix.Controllers
                         Last_updated_date = DateTime.Now,
                         Created_date = grade.Created_date,
                         SubjectName = grade.SubjectName,
-                        Updater_Id = (int)Session["RegisteredUserId"]
+                        Updater_Id = i
                     };
 
                     grade_id = updategrade;
