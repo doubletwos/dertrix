@@ -30,6 +30,8 @@
 
     </div>
     <br />
+
+    <div id="preloader" style="display:none; text-align:center;"><img src="~/Content/Images/loading1.gif" /></div>
     <div class="panel panel-default">
         <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
             <thead>
@@ -80,15 +82,15 @@
     </div>
 </div>
 
-<script src="~/Scripts/jquery-3.4.1.js"></script>
+@*<script src="~/Scripts/jquery-3.4.1.js"></script>*@
 
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
 @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 <input type="hidden" id="hiddenRegisterUserId" />
 
 @*View Student Details Modal*@
 <div class="modal fade" id="myModalll4">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
@@ -133,9 +135,15 @@
                 type: "POST",
                 url: "/RegisteredUsers/StudentDetails",
                 data: { Id: Id },
+                beforeSend: function () {
+                    $("#preloader").show();
+                },
                 success: function (response) {
                     $("#myModalBodyDiv").html(response);
                     $("#myModalll4").modal("show");
+                },
+                complete: function () {
+                    $("#preloader").hide();
                 }
             })
 
@@ -149,9 +157,15 @@
             type: "GET",
             url: "/StudentSubjectGrade/UpdateStudentGrade",
             data: { Id: Id },
+            beforeSend: function () {
+                $("#preloader").show();
+            },
             success: function (response) {
                 $("#myModalBodyDiv2").html(response);
                 $("#myModalUpdateSubject").modal("show");
+            },
+            complete: function () {
+                $("#preloader").hide();
             }
         })
     }
@@ -171,6 +185,8 @@
             );
         });
     </script>
+    @Scripts.Render("~/bundles/jqueryval")
+
 
 
 }

@@ -9,150 +9,152 @@
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
-	<br />
-	<br />
-	@Html.Partial("_Widget_SchStaff_Dashboard")
-	<div>
-		<hr />
+    <br />
+    <br />
+    @Html.Partial("_Widget_SchStaff_Dashboard")
+    <div>
+        <hr />
 
-		<div class="row">
-			@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-			{
-				<div class="col-md-3">
-					@{
-						Html.RenderAction("AddStudent", "RegisteredUsers");
-					}
-				</div>
-
-
+        <div class="row">
+            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+            {
+                <div class="col-md-3">
+                    @{
+                        Html.RenderAction("AddStudent", "RegisteredUsers");
+                    }
+                </div>
 
 
-				<div class="col-md-3">
-					@{
-						Html.RenderAction("UploadStudents", "RegisteredUsers");
-					}
 
-				</div>
-				<div class="col-md-3">
-					<p>@Html.ActionLink("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers", "", new { @class = "RegUserOrgButtonColour" })</p>
-				</div>
 
-			}
-			<div class="col-md-3">
-			</div>
-		
-		</div>
-				<hr />
-			</div>
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
+                <div class="col-md-3">
+                    @{
+                        Html.RenderAction("UploadStudents", "RegisteredUsers");
+                    }
 
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-					<th>
-						Student ID
-					</th>
-					<th>
-						Student Full Name
-					</th>
-					<th>
-						Guardians
-					</th>
-					<th>
-						Class
-					</th>
-					<th>Select Action</th>
-				</tr>
-			</thead>
-			<tbody>
+                </div>
+                <div class="col-md-3">
+                    <p>@Html.ActionLink("Get Upload file", "DownloadStudentTemplateFile", "RegisteredUsers", "", new { @class = "RegUserOrgButtonColour" })</p>
+                </div>
 
-				@foreach (var item in Model.OrderBy(i => i.ClassRef))
-				{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.RegisteredUserId)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.FullName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.PgCount)
+            }
+            <div class="col-md-3">
+            </div>
 
-					</td>
-			
-					<td>
-						@Html.DisplayFor(modelItem => item.Class.ClassName)
-					</td>
-					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-                            <ul class="dropdown-menu" style="background-color:white">
-                                <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
-                                <li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
-                                <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
-                                <li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
-                            </ul>
-						</div>
-					</td>
-				</tr>
-				}
-			</tbody>
+        </div>
+        <hr />
+    </div>
+    <br />
+    
+    <div id="preloader" style="display:none; text-align:center;"><img src="~/Content/Images/loading1.gif" /></div>
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
 
-		</table>
-	</div>
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        Student ID
+                    </th>
+                    <th>
+                        Student Full Name
+                    </th>
+                    <th>
+                        Guardians
+                    </th>
+                    <th>
+                        Class
+                    </th>
+                    <th>Select Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.OrderBy(i => i.ClassRef))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredUserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PgCount)
+
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Class.ClassName)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
+                                    <li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
+                                    <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
+                                    <li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
 </div>
 <input type="hidden" id="hiddenRegisterUserId" />
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Remove Student</h3>
-			</div>
-			<div class="modal-body">
-				<h3>Are you sure you want to remove this student?</h3>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteRegisteredUser()">Confirm</a>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Remove Student</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure you want to remove this student?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                <a href="#" class="RegUserOrgButtonColour" onclick="DeleteRegisteredUser()">Confirm</a>
+            </div>
+        </div>
+    </div>
 </div>
 @*View Student Details Modal*@
 <div class="modal fade" id="myModalll4">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Student Details</h3>
-			</div>
-			<div class="modal-body" id="myModalBodyDiv"></div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Student Details</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv"></div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
 </div>
 @*Edit Student Details Modal*@
 <div class="modal fade" id="myModallll">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit Student Details</h3>
-			</div>
-			<div class="modal-body" id="myModalBodyDiv1"></div>
-			<div class="modal-footer">
-				@*<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>*@
-				@*<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />*@
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Edit Student Details</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1"></div>
+            <div class="modal-footer">
+                @*<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>*@
+                @*<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />*@
+            </div>
+        </div>
+    </div>
 </div>
 @*Change Student's Class*@
 <div class="modal fade" id="myModalls">
@@ -199,10 +201,16 @@
 			type: "POST",
 			url: "/RegisteredUsers/StudentDetails",
 			data: { Id: Id },
+            beforeSend: function () {
+                $("#preloader").show();
+            },
 			success: function (response) {
 				$("#myModalBodyDiv").html(response);
 				$("#myModalll4").modal("show");
-			}
+			},
+            complete: function () {
+                $("#preloader").hide();
+            }
 		})
 	}
 </script>

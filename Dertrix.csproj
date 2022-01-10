@@ -581,7 +581,7 @@
     <Content Include="Content\chosen-sprite%402x.png" />
     <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\chosen.css" />
-    <Content Include="Content\Images\loading.gif" />
+    <Content Include="Content\Images\loading1.gif" />
     <Content Include="Content\Images\ZeusHorizontal.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
