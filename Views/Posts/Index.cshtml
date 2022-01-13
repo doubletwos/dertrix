@@ -5,7 +5,10 @@
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
     <style>
-
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
 		.nav-pills > li {
 			float: left;
 			border-style: double;
@@ -17,18 +20,10 @@
 		.panel-default{
 			border-color:  @regUserOrgNavBar;
 		}
-
     </style>
 
-
-   
-
-
-
-
-
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
+<div id="content" class="der-body-content der-clearfix">
     <br />
     <br />
     @Html.Partial("_Widget_SchStaff_Dashboard")
@@ -153,7 +148,7 @@
 	</div>
 	@*Edit post  Modal*@
 	<div class="modal fade" id="OrgpostEditModal1">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<a href="#" class="close" data-dismiss="modal">&times;</a>

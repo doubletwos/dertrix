@@ -5,10 +5,15 @@
         ViewBag.Title = "Class students";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
+<div id="content" class="der-body-content der-clearfix">
     <br />
     <br />
     @Html.Partial("_Widget_SchStaff_Dashboard")
@@ -82,9 +87,7 @@
     </div>
 </div>
 
-@*<script src="~/Scripts/jquery-3.4.1.js"></script>*@
 
-@*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
 @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 <input type="hidden" id="hiddenRegisterUserId" />
 

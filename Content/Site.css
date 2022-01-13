@@ -90,6 +90,18 @@ textarea {
 }
 
 
+.der-body-content {
+    background-color: white;
+    padding: 10px;
+}
+
+.der-clearfix:after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+
 
 
 

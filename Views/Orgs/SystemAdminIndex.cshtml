@@ -4,114 +4,114 @@
         ViewBag.Title = "Org table";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
-
+    <style>
+		 .der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
-	<br />
-	<br />
-	<div>
-		<hr />
-		<div class="row">
-			<div class="col-md-3">
-				@{
-					Html.RenderAction("AddOrg", "Orgs");
-				}
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-		</div>
-	</div>
-	<hr />
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-					<th>
-						Id
-					</th>
-					<th>
-						Name
-					</th>
-					<th>
-						Type
-					</th>
-					<th>
-						Address
-					</th>
-					<th>
-						Creation Date
-					</th>
-					<th>
-						Select Action
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				@{
-					var orgid = Session["OrgId"].ToString();
-				}
-				@foreach (var item in Model)
-				{
-					<tr style="border-style: groove;">
-						<td>
-							@Html.DisplayFor(modelItem => item.OrgId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.OrgName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.OrgAddress)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.CreationDate)
-						</td>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
-									<li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
-									<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
-									@{
-										var isTester = Convert.ToInt32(Session["IsTester"]);
-										if (isTester == 1)
-										{
-											<li>
-												@Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
-											</li>
-										}
-									}
-								</ul>
-							</div>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	</div>
+<div id="content" class="der-body-content der-clearfix">
+    <br />
+    <br />
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                @{
+                    Html.RenderAction("AddOrg", "Orgs");
+                }
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        Creation Date
+                    </th>
+                    <th>
+                        Select Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var orgid = Session["OrgId"].ToString();
+                }
+                @foreach (var item in Model)
+                {
+                    <tr style="border-style: groove;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgType.OrgTypeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
+                                    <li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
+                                    <li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
+                                    @{
+                                        var isTester = Convert.ToInt32(Session["IsTester"]);
+                                        if (isTester == 1)
+                                        {
+                                            <li>
+                                                @Html.ActionLink("Jump To Org", "Index", "Orgs", new { id = item.OrgId }, null)
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
 <input type="hidden" id="hiddenOrgId" />
-
-
-
-
 @*Delete confirmation Modal*@
 <div class="modal fade" id="myModall">
 	<div class="modal-dialog">

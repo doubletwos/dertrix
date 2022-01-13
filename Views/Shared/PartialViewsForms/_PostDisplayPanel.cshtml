@@ -11,15 +11,15 @@
 </head>
 
 	@{
-		var postList = new List<object>();
+        var postList = new List<object>();
 
-		foreach (var item in Model)
-		{
-			postList.Add(item);
-			if (postList.Count() > 2)
-			{
-				break;
-			}
+        foreach (var item in Model)
+        {
+            postList.Add(item);
+            if (postList.Count() > 2)
+            {
+                break;
+            }
 			<div class="panel panel-default" style="width:auto; ">
 				<div class="panel-heading" style="background-color:darkgray;">
 					<strong>	@Html.DisplayFor(modelItem => item.PostSubject)</strong>
@@ -29,32 +29,33 @@
 				<hr />
 				<div class="panel-body">
 					@{
-						var maxchar = 150;
-						if (item.PostContent.Length < maxchar)
-						{
+                        var maxchar = 150;
+                        if (item.PostContent.Length < maxchar)
+                        {
 							@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-						}
-						else
-						{
-							var words = item.PostContent.Split(' ');
-							var totalCharacters = 0;
-							var summaryWords = new List<string>();
-							foreach (var word in words)
-							{
-								summaryWords.Add(word);
-								totalCharacters += word.Length + 1;
-								if (totalCharacters > 700)
-								{
-									break;
-								}
-							}
-							var summary = string.Join(" ", summaryWords) +
-								" ...Read More";
-							summary.ToString();
+                        }
+                        else
+                        {
+                            var words = item.PostContent.Split(' ');
+                            var totalCharacters = 0;
+                            var summaryWords = new List<string>();
+                            foreach (var word in words)
+                            {
+                                summaryWords.Add(word);
+                                totalCharacters += word.Length + 1;
+                                if (totalCharacters > 700)
+                                {
+                                    break;
+                                }
+                            }
+                            var summary = string.Join(" ", summaryWords) +
+                                " ...Read More";
+                            summary.ToString();
 							@Html.Raw(HttpUtility.HtmlDecode(summary))
-						}
+                        }
 					}
 				</div>
 			</div>
-	}
-	    }
+        }
+
+ }
