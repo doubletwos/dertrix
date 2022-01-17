@@ -3,10 +3,15 @@
         ViewBag.Title = "System Config";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
+<div id="content" class="der-body-content der-clearfix">
     <br />
     <br />
     @Html.Partial("_Widget_SchStaff_Dashboard")

@@ -20,7 +20,9 @@
 		.panel-default{
 			border-color:  @regUserOrgNavBar;
 		}
+
     </style>
+
 
 </head>
 <div id="content" class="der-body-content der-clearfix">
@@ -45,11 +47,10 @@
 
         @Scripts.Render("~/bundles/jqueryval")
         @Scripts.Render("~/bundles/custom-validator")
-        <script src="~/Content/wysiwyg-editor-bootstrap/src/js/wysiwyg.js"></script>
         <link href="~/Content/wysiwyg-editor-bootstrap/dist/css/wysiwyg.css" rel="stylesheet" />
-
         <link href="~/Content/wysiwyg-editor-bootstrap/dist/css/highlight.min.css" rel="stylesheet" />
         @*<script src="~/Content/wysiwyg-editor-bootstrap/dist/js/highlight.min.js"></script>*@
+        <script src="~/Content/wysiwyg-editor-bootstrap/src/js/wysiwyg.js"></script>
 
         <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
         <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
@@ -60,42 +61,42 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 @foreach (var item in Model)
                 {
-                    <div class="container">
-                        <h3 class="subject">@Html.DisplayFor(modelItem => item.PostSubject)</h3>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                @Html.DisplayFor(modelItem => item.CreatorFullName) -
-                                @Html.DisplayFor(modelItem => item.PostTopic.PostTopicName) - Created:
-                                @Html.DisplayFor(modelItem => item.PostCreationDate)
+                    @*<div class="container">*@
+                    <h3 class="subject">@Html.DisplayFor(modelItem => item.PostSubject)</h3>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            @Html.DisplayFor(modelItem => item.CreatorFullName) -
+                            @Html.DisplayFor(modelItem => item.PostTopic.PostTopicName) - Created:
+                            @Html.DisplayFor(modelItem => item.PostCreationDate)
+                        </div>
+                        <div class="panel-body">
+                            @Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
+                        </div>
+                        <div class="panel-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
+                                    <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
+                                    <li>
+                                        @Html.ActionLink("Create Pdf", "DownloadPostPdf", "Posts", new { id = item.PostId }, null)
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="panel-body">
-                                @Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-                            </div>
-                            <div class="panel-footer">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Action <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" style="background-color:white">
-                                        <li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
-                                        <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
-                                        <li>
-                                            @Html.ActionLink("Create Pdf", "DownloadPostPdf", "Posts", new { id = item.PostId }, null)
-                                        </li>
-                                    </ul>
-                                </div>
 
-                            </div>
                         </div>
                     </div>
+                    @*</div>*@
                     <hr />
 
                 }
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
             </div>
         </div>
     </div>
@@ -202,20 +203,7 @@
 		})
 	</script>
 	<script>
-	$("#edtSubmit").click(function () {
-		var data = $("#PostEditForm").serialize();
-		$.ajax({
-			type: "POST",
-			url:  '@Url.Action("Edit", "Posts")',
-			data: data,
-			success: function (response) {
-				alert("Post Updated");
-				$("#OrgpostEditModal1").modal("hide");
-				$("#PostEditForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
+	
 	</script>
 
 

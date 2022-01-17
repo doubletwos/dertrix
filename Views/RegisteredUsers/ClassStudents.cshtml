@@ -76,6 +76,8 @@
                                 <ul class="dropdown-menu" style="background-color:white">
                                     <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
                                     <li><a href="#" onclick="UpdateStudentGrade(@item.RegisteredUserId)">Update Student Grades</a></li>
+                                    <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
+
                                 </ul>
                             </div>
                         </td>
@@ -117,6 +119,18 @@
                 <h3 class="modal-title">Update student Grades</h3>
             </div>
             <div class="modal-body" id="myModalBodyDiv2"></div>
+        </div>
+    </div>
+</div>
+@*Change Student's Class*@
+<div class="modal fade" id="myModalls">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Change Student's Class</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDivls"></div>
         </div>
     </div>
 </div>
@@ -169,6 +183,19 @@
             },
             complete: function () {
                 $("#preloader").hide();
+            }
+        })
+    }
+</script>
+<script>
+    var ChangeStudentClass = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/RegisteredUsers/ChangeStudentsClass",
+            data: { Id: Id },
+            success: function (response) {
+                $("#myModalBodyDivls").html(response);
+                $("#myModalls").modal("show");
             }
         })
     }

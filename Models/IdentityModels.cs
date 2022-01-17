@@ -57,6 +57,8 @@ namespace Dertrix.Models
         public DbSet<OrgSchCalndrGrp> OrgSchCalndrGrps { get; set; } 
         public DbSet<Students_Grades_Log> Students_Grades_Logs { get; set; }
 
+        public DbSet<OrgSchPostGrp> OrgSchPostGrps { get; set; } 
+
 
 
 

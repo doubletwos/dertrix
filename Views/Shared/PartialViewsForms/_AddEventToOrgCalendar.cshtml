@@ -179,7 +179,7 @@
 						toastr.options.tapToDismiss = false;
 						toastr.success("Event added successfully");
 						$("#mycreateevent").modal("hide");
-						$("#mycreateevent")[0].reset();
+                        $("#myCreateEventForm")[0].reset();
 					},
 					error: function (response) {
                         toastr.options.positionClass = "toast-bottom-full-width";
@@ -190,7 +190,7 @@
                         toastr.options.tapToDismiss = false;
                         toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
 						$("#mycreateevent").modal("hide");
-                        $("#mycreateevent")[0].reset();
+                        $("#myCreateEventForm")[0].reset();
                     }
 				
 				})

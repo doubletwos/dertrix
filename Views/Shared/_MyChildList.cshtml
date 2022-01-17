@@ -2,7 +2,7 @@
 
 
 <table class="table table-bordered table-responsive table-condensed table-hover">
-	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+	<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none;">
 	
 		<th>
 			@Html.DisplayNameFor(model => model.StudentId)
@@ -25,7 +25,7 @@
 			</td>
 		
 			<td>
-				@Html.ActionLink("Select", "YourChild", "StudentSubjects", new { id = item.StudentId }, null) 
+				@Html.ActionLink("Select", "YourChild", "StudentSubjectGrade", new { id = item.StudentId }, null) 
 		
 			</td>
 		</tr>

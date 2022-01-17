@@ -72,35 +72,84 @@ namespace Dertrix.Controllers
         {
             try
             {
-                if (Id != 0)
+                if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
                 {
-                    var edtpost = db.Posts
-                        .Include(p => p.PostTopic)
-                        .Where(x => x.PostId == Id).FirstOrDefault();
-                    Post Post = db.Posts.Find(Id);
-                    var edtpost1 = new Post
-                    {
-                        PostId = edtpost.PostId,
-                        PostTopicId = edtpost.PostId,
-                        OrgId = edtpost.OrgId,
-                        PostSubject = edtpost.PostSubject,
-                        PostCreatorId = edtpost.PostCreatorId,
-                        CreatorFullName = edtpost.CreatorFullName,
-                        PostCreationDate = edtpost.PostCreationDate,
-                        PostExpirtyDate = edtpost.PostExpirtyDate,
-                        PostContent = edtpost.PostContent
-                    };
-                    ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", Post.PostTopicId);
-                    return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml", edtpost1);
+                    return RedirectToAction("WrongDevice", "Orgs");
 
                 }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                var sess = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(sess);
+
+                var edtpost = db.Posts
+                       .Include(p => p.PostTopic)
+                       .Where(x => x.PostId == Id)
+                       .Where(x => x.OrgId == i)
+                       .FirstOrDefault();
+
+
+                var grp = db.OrgGroups.Where(c => c.OrgId == i).ToList();
+
+                var posttopics = db.PostTopics.ToList();
+
+                var editpostviewmodel = new EditPostViewModel
+                {
+                    PostId = edtpost.PostId,
+                    PostTopicId = edtpost.PostTopicId,
+                    OrgId = edtpost.OrgId,
+                    PostCreatorId = edtpost.PostCreatorId,
+                    CreatorFullName = edtpost.CreatorFullName,
+                    PostCreationDate = edtpost.PostCreationDate,
+                    PostExpirtyDate = edtpost.PostExpirtyDate,
+                    PostContent = edtpost.PostContent,
+                    SendAsEmail = edtpost.SendAsEmail,
+                    PostSubject = edtpost.PostSubject,
+
+                    OrgGroups = grp.Select(x => new OrgGroup()
+                    {
+                        OrgGroupId = x.OrgGroupId,
+                        OrgId = x.OrgId,
+                        GroupName = x.GroupName,
+                        IsSelected = x.IsSelected
+                    }).ToList()
+                };
+
+                foreach (var group in editpostviewmodel.OrgGroups)
+                {
+                    int groupCount = editpostviewmodel.OrgGroups.Count();
+                }
+                foreach (var item in editpostviewmodel.OrgGroups)
+                {
+                    var isselected = db.OrgSchPostGrps
+                        .Where(x => x.OrgGroupId == item.OrgGroupId)
+                        .Where(x => x.OrgPostId == Id)
+                        .Where(X => X.OrgId == i)
+                        .Select(x => x.OrgSchPostGrpId)
+                        .Count();
+
+                    if (isselected == 0)
+                    {
+                        item.IsSelected = false;
+                    }
+                    else
+                    {
+                        item.IsSelected = true;
+                    }
+
+                }
+                ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", edtpost.PostTopicId);
+                ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName");
+                return PartialView("~/Views/Shared/PartialViewsForms/_EditPost.cshtml", editpostviewmodel);
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
             }
-            return new HttpStatusCodeResult(204);
         }
 
 
@@ -258,21 +307,44 @@ namespace Dertrix.Controllers
                 {
                     db.Posts.Add(viewmodel.Post);
                     db.SaveChanges();
+
+                    // UPON CREATING A POST - LOG THE EVENT 
+                    var orgeventlog = new Org_Events_Log()
+                    {
+                        Org_Event_SubjectId = viewmodel.Post.PostId.ToString(),
+                        Org_Event_SubjectName = viewmodel.Post.PostSubject,
+                        Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                        Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                        Org_Event_Time = DateTime.Now,
+                        OrgId = Session["OrgId"].ToString(),
+                        Org_Events_Types = Org_Events_Types.Created_Post
+                    };
+                    db.Org_Events_Logs.Add(orgeventlog);
+                    db.SaveChanges();
+
+                    var grps = viewmodel.OrgGroups.Select(x => x.OrgGroupId).ToList();
+                    var grpstolist = new List<int>(grps);
+
+                    foreach (var grp in grps)
+                    {
+                        // GET VALUE OF IS-SELECTED
+                        var isselected = viewmodel.OrgGroups.Where(x => grp == x.OrgGroupId).Select(x => x.IsSelected).FirstOrDefault();
+                        if (isselected == true)
+                        {
+                            var orgPostGrps = new OrgSchPostGrp()
+                            {
+                                OrgGroupId = grp,
+                                OrgId = i,
+                                OrgPostId = viewmodel.Post.PostId,
+
+                            };
+                            db.OrgSchPostGrps.Add(orgPostGrps);
+                            db.SaveChanges();
+                        }
+                    }
                 }
 
-                // UPON CREATING A POST - LOG THE EVENT 
-                var orgeventlog = new Org_Events_Log()
-                {
-                    Org_Event_SubjectId = viewmodel.Post.PostId.ToString(),
-                    Org_Event_SubjectName = viewmodel.Post.PostSubject,
-                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
-                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
-                    Org_Event_Time = DateTime.Now,
-                    OrgId = Session["OrgId"].ToString(),
-                    Org_Events_Types = Org_Events_Types.Created_Post
-                };
-                db.Org_Events_Logs.Add(orgeventlog);
-                db.SaveChanges();
+             
                 // Send Post as email if Send as Email is True
                 if (viewmodel.Post.SendAsEmail == true)
                 {
@@ -289,24 +361,24 @@ namespace Dertrix.Controllers
             {
                 Console.WriteLine(e);
                 return View(viewmodel);
-            } 
+            }
         }
 
 
         public JsonResult SendTestEmail(string postcontent, string postsubject)
         {
-           
-                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/HtmlPage.html"));
-                Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
-                Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
-                Body = Body.Replace("#Body#", postcontent);
-                Body = Body.Replace("#Subject#", postsubject);
 
-                bool result = false;
-                //result = SendEmail("epiphany04203@hotmail.com", postsubject, Body);
-                result = SendEmail("wilsonwales@gmail.com", postsubject, Body);
-                return Json(result, JsonRequestBehavior.AllowGet);
-            
+            string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/HtmlPage.html"));
+            Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+            Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
+            Body = Body.Replace("#Body#", postcontent);
+            Body = Body.Replace("#Subject#", postsubject);
+
+            bool result = false;
+            //result = SendEmail("epiphany04203@hotmail.com", postsubject, Body);
+            result = SendEmail("wilsonwales@gmail.com", postsubject, Body);
+            return Json(result, JsonRequestBehavior.AllowGet);
+
         }
 
 
@@ -344,12 +416,70 @@ namespace Dertrix.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
                 {
-                    post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == post.PostCreatorId).Select(x => x.FullName).FirstOrDefault();
+                    return RedirectToAction("WrongDevice", "Orgs");
+
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                var sess = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(sess);
+
+
+
+                    // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
+                    var postgrps = db.OrgSchPostGrps
+                        .Where(x => x.OrgPostId == post.PostId)
+                        .Where(x => x.OrgId == i)
+                        .Select(x => x.OrgSchPostGrpId)
+                        .ToList();
+
+                    var orgposttolist = new List<int>(postgrps);
+
+                    foreach (var recrd in postgrps)
+                    {
+                        var removercrd = db.OrgSchPostGrps
+                            .Where(x => x.OrgSchPostGrpId == recrd)
+                            .Where(x => x.OrgId == i)
+                            .Select(x => x.OrgSchPostGrpId)
+                            .FirstOrDefault();
+
+                        OrgSchPostGrp orgpostgrp = db.OrgSchPostGrps.Find(removercrd);
+                        db.OrgSchPostGrps.Remove(orgpostgrp);
+                    }
+
+
+                // LOOP THRU LIST OF GROUPS PROVIDED
+                var grps = post.OrgGroups.Select(x => x.OrgGroupId).ToList();
+                var grpstolist = new List<int>(grps);
+
+                foreach (var grp in grps)
+                {
+                    // GET VALUE OF IS-SELECTED
+                    var isselected = post.OrgGroups
+                        .Where(x => grp == x.OrgGroupId)
+                        .Select(x => x.IsSelected)
+                        .FirstOrDefault();
+
+                    if (isselected == true)
+                    {
+                        var orgPostGrps = new OrgSchPostGrp()
+                        {
+                            OrgGroupId = grp,
+                            OrgId = i,
+                            OrgPostId = post.PostId
+                        };
+                        db.OrgSchPostGrps.Add(orgPostGrps);
+                        db.SaveChanges();
+                    }
+                }
+                if (!(ModelState.IsValid) || ModelState.IsValid)
+                {
                     db.Entry(post).State = EntityState.Modified;
                     db.SaveChanges();
-
 
                     // UPON EDITING A POST  - LOG THE EVENT 
                     var orgeventlog = new Org_Events_Log()
@@ -366,8 +496,8 @@ namespace Dertrix.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
                 ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
+                ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
                 return View(post);
             }
             catch (Exception e)

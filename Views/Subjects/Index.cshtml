@@ -4,32 +4,36 @@
         ViewBag.Title = "All Subjects";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
-	<br />
-	<br />
-	@Html.Partial("_Widget_SchStaff_Dashboard")
-	<div>
-		<hr />
-		<div>
-			@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
-			{
-				Html.RenderAction("AddSubject", "Subjects");
-			}
-		</div>
-		<hr />
-	</div>
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
+<div id="content" class="der-body-content der-clearfix">
+    <br />
+    <br />
+    @Html.Partial("_Widget_SchStaff_Dashboard")
+    <div>
+        <hr />
+        <div>
+            @if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+            {
+                Html.RenderAction("AddSubject", "Subjects");
+            }
+        </div>
+        <hr />
+    </div>
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
                 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none;">
                     <th>
-                       
+
                     </th>
                     <th>
                         Subject
@@ -42,40 +46,40 @@
                     </th>
                     <th></th>
                 </tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model.OrderBy(i => i.ClassId))
-				{
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubjectId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubjectName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Class.ClassName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TaughtBy)
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Action <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="background-color:white">
-                                <li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
-                                @*<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>*@
-                            </ul>
-                        </div>
-                    </td>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(i => i.ClassId))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubjectId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubjectName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Class.ClassName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TaughtBy)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
+                                    @*<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>*@
+                                </ul>
+                            </div>
+                        </td>
 
-                </tr>
-				}
-			</tbody>
-		</table>
-	</div>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <input type="hidden" id="hiddensubjectId" />
 @*Delete confirmation Modal*@

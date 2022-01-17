@@ -1,56 +1,82 @@
-﻿@model Dertrix.Models.Post
+﻿@model Dertrix.ViewModels.EditPostViewModel
 <form id="PostEditForm">
-	@Html.AntiForgeryToken()
-	<div class="form-horizontal">
-		<hr />
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		@Html.HiddenFor(model => model.PostId)
-		@Html.HiddenFor(model => model.OrgId)
-		@Html.HiddenFor(model => model.PostCreatorId)
-		@Html.HiddenFor(model => model.PostCreationDate)
-		
-		<div class="form-group">
-			@Html.LabelFor(model => model.PostTopicId, "PostTopicId0", htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.DropDownList("PostTopicId", null, htmlAttributes: new { @id = "", @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.PostTopicId, "", new { @class = "text-danger" })
-			</div>
-		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.PostSubject, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.PostSubject, new { htmlAttributes = new { @id = "", @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.PostSubject, "", new { @class = "text-danger" })
-			</div>
-		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.PostExpirtyDate, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.EditorFor(model => model.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
-				@Html.ValidationMessageFor(model => model.PostExpirtyDate, "", new { @class = "text-danger" })
-			</div>
-		</div>
-		<div class="form-group">
-			@Html.LabelFor(model => model.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
-			<div class="col-md-10">
-				@Html.TextAreaFor(model => model.PostContent, new { htmlAttributes = new { @class = "form-control PostContent" } })
-				@Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
-			</div>
-		</div>
-	</div>
+    @Html.AntiForgeryToken()
+    @{
+        HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+    }
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PostId)
+        @Html.HiddenFor(model => model.OrgId)
+        @Html.HiddenFor(model => model.PostCreatorId)
+        @Html.HiddenFor(model => model.PostCreationDate)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PostTopicId, "Post Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("PostTopicId", null, htmlAttributes: new { @id = "", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PostTopicId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PostSubject, "Post Subject",htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PostSubject, new { htmlAttributes = new { @id = "", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PostSubject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PostExpirtyDate,"Post Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
+                @Html.ValidationMessageFor(model => model.PostExpirtyDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PostContent,"Post Content", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.PostContent, new { htmlAttributes = new { @class = "form-control PostContent" } })
+                @Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.SendAsEmail, "Send As Email?")
+                @Html.EditorFor(model => model.SendAsEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SendAsEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
+            <div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
+                @for (int i = 0; i < Model.OrgGroups.Count; i++)
+                {
+                    @Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
+                    @Html.HiddenFor(model => model.OrgGroups[i].GroupName)
+                    @:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)
+                    @:&nbsp;	@Html.LabelFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].GroupName)
+                    @:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgGroupId)
+                    @:&nbsp;	@Html.HiddenFor(model => model.OrgGroups[i].IsSelected, Model.OrgGroups[i].OrgId)
+                    <br />
+                }
+            </div>
+        </div>
+    </div>
 </form>
 <script>
-	$(document).ready(function () {
-		$(function () {
-			$(".datepicker").datepicker({
-				dateFormat: "dd-mm-yy",
-				changeMonth: true,
-				changeYear: true,
-				yearRange: "-0:+10",
-			});
-		})
+    $(document).ready(function () {
         $(function () {
-			$('#PostContent').wysiwyg({
+            $(".datepicker").datepicker({
+                dateFormat: "dd-mm-yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-0:+10",
+            });
+        })
+        $(function () {
+            $('#PostContent').wysiwyg({
                 toolbar: [
                     //['mode'],
                     //['operations', ['undo', 'rendo', 'cut', 'copy', 'paste']],
@@ -75,5 +101,66 @@
 
             });
         })
-	})
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#PostEditForm').validate({
+            ignore: ":hidden:not(textarea), [contenteditable='true']:not([name])",
+            errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+            errorElement: 'div',
+            errorPlacement: function (error, e) {
+                e.parents('.form-group > div').append(error);
+            },
+            highlight: function (e) {
+                $(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+                $(e).closest('.help-block').remove();
+            },
+            success: function (e) {
+                e.closest('.form-group').removeClass('has-success has-error');
+                e.closest('.help-block').remove();
+            },
+            rules: {
+                'PostTopicId': {
+                    required: true,
+                },
+                'PostSubject': {
+                    required: true,
+                },
+                'PostContent': {
+                    required: true,
+                },
+                'SendAsEmail': {
+                    required: true,
+                }
+
+            },
+            messages: {
+                'PostTopicId': 'Please select appropriate topic',
+                'PostSubject': 'Please enter subject',
+                'PostContent': 'Post can not be empty',
+                'SendAsEmail': 'Please select an option',
+            }
+
+        });
+        $("#edtSubmit").click(function () {
+            if ($("#PostEditForm").valid()) {
+				var data = $("#PostEditForm").serialize();
+				$.ajax({
+					type: "POST",
+					url: '@Url.Action("Edit", "Posts")',
+					data: data,
+					success: function (response) {
+						alert("Post Updated");
+						$("#OrgpostEditModal1").modal("hide");
+						$("#PostEditForm")[0].reset();
+						window.location.reload();
+					}
+				})
+			}
+
+
+	   })
+    });
 </script>

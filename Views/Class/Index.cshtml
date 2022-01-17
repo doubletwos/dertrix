@@ -4,11 +4,17 @@
         ViewBag.Title = "Classes";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
+<div id="content" class="der-body-content der-clearfix">
     <br />
     <br />
     @Html.Partial("_Widget_SchStaff_Dashboard")
@@ -25,8 +31,6 @@
             </div>
         </div>
     </div>
-
-
     <hr />
     <br />
     <div class="panel panel-default">
@@ -53,32 +57,32 @@
 
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ClassId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ClassName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title.TitleName)
-                        @Html.DisplayFor(modelItem => item.ClassTeacherFullName)
-                    </td>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredUsers.Count).ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title.TitleName)
+                            @Html.DisplayFor(modelItem => item.ClassTeacherFullName)
+                        </td>
 
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Action <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="background-color:white">
-                                <li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="AssignTeacher(@item.ClassId)">Assign Class Teacher</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                 }
             </tbody>
 

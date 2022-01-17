@@ -4,102 +4,107 @@
         ViewBag.Title = "Grades";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;">
-	<br />
-	<br />
-	@Html.Partial("_Widget_SchStaff_Dashboard")
-	<div>
-		<hr />
-		<div class="row">
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-		</div>
-	</div>
-	<hr />
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
+<div id="content" class="der-body-content der-clearfix">
+    <br />
+    <br />
+    @Html.Partial("_Widget_SchStaff_Dashboard")
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
 
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
 
-					<th>
-						Student Id
-					</th>
+                    <th>
+                        Student Id
+                    </th>
 
-					<th>
-						Name
-					</th>
-					<th>
-						Subject
-					</th>
-					<th style="text-align: center;">
-						First Term Grade
-					</th>
-					<th style="text-align: center;">
-						Second Term Grade
-					</th>
-					<th style="text-align: center;">
-						Third Term Grade
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-
-
-				@foreach (var item in Model)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Subject.SubjectName)
-						</td>
-						<td style="text-align: center;">
-							@Html.DisplayFor(modelItem => item.FirstTerm_ExamGrade)
-						</td>
-						<td style="text-align: center;">
-							@Html.DisplayFor(modelItem => item.SecondTerm_ExamGrade)
-						</td>
-						<td style="text-align: center;">
-							@Html.DisplayFor(modelItem => item.ThirdTerm_ExamGrade)
-						</td>
-
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Action <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" style="background-color:white">
-									<li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectGradeId)">Update Student Grade</a></li>
-									@*<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectGradeId)">Remove Subject</a></li>*@
-								</ul>
-							</div>
-						</td>
-					</tr>
-				}
-			</tbody>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Subject
+                    </th>
+                    <th style="text-align: center;">
+                        First Term Grade
+                    </th>
+                    <th style="text-align: center;">
+                        Second Term Grade
+                    </th>
+                    <th style="text-align: center;">
+                        Third Term Grade
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
 
 
-		</table>
-	</div>
-	<script src="~/Scripts/jquery-3.4.1.js"></script>
-	<input type="hidden" id="hiddenStudentSubjectId" />
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject.SubjectName)
+                        </td>
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.FirstTerm_ExamGrade)
+                        </td>
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.SecondTerm_ExamGrade)
+                        </td>
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.ThirdTerm_ExamGrade)
+                        </td>
+
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectGradeId)">Update Student Grade</a></li>
+                                    @*<li><a href="#" onclick="ConfirmDeleteSubject(@item.StudentSubjectGradeId)">Remove Subject</a></li>*@
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <input type="hidden" id="hiddenStudentSubjectId" />
 
 </div>
 

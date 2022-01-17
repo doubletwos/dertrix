@@ -928,44 +928,48 @@ $(document).ready(function () {
 	});
 });
 
-//$(document).ready(function () {
-//	$('#myCreatePostForm1').validate({
-//		errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
-//		errorElement: 'div',
-//		errorPlacement: function (error, e) {
-//			e.parents('.form-group > div').append(error);
-//		},
-//		highlight: function (e) {
-//			$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
-//			$(e).closest('.help-block').remove();
-//		},
-//		success: function (e) {
-//			e.closest('.form-group').removeClass('has-success has-error');
-//			e.closest('.help-block').remove();
-//		},
-//		rules: {
-//			'Post.PostTopicId': {
-//				required: true,
-//			},
-//			'Post.PostSubject': {
-//				required: true,
-//			},
-//			'Post.PostContent': {
-//			    required: true,
-//			},
-//			'Post.SendAsEmail': {
-//				required: true,
-//			}
+	$(document).ready(function () {
+		$('#myCreatePostForm1').validate({
+			ignore: ":hidden:not(textarea), [contenteditable='true']:not([name])",
+			errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+			errorElement: 'div',
+			errorPlacement: function (error, e) {
+				e.parents('.form-group > div').append(error);
+			},
+			highlight: function (e) {
+				$(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+				$(e).closest('.help-block').remove();
+			},
+			success: function (e) {
+				e.closest('.form-group').removeClass('has-success has-error');
+				e.closest('.help-block').remove();
+			},
+			rules: {
+				'Post.PostTopicId': {
+					required: true,
+				},
+				'Post.PostSubject': {
+					required: true,
+				},
+				'Post.Post.PostContent': {
+					required: true,
+				},
+				'Post.SendAsEmail': {
+					required: true,
+				}
 
-//		},
-//		messages: {
-//			'Post.PostTopicId': 'Please select appropriate topic',
-//			'Post.PostSubject': 'Please enter subject',
-//			'Post.PostContent': 'Post can not be empty',
-//			'Post.SendAsEmail': 'Please select an option',
-//		}
-//	});
-//});
+			},
+			messages: {
+				'Post.PostTopicId': 'Please select appropriate topic',
+				'Post.PostSubject': 'Please enter subject',
+				'Post.Post.PostContent': 'Post can not be empty',
+				'Post.SendAsEmail': 'Please select an option',
+			}
+			
+		});
+    });
+
+
 
 
 

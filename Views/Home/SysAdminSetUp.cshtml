@@ -3,9 +3,14 @@
         ViewBag.Title = "SysAdminSetUp";
         var regUserOrgBrand = Session["regOrgBrandButtonColour"].ToString();
     }
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgBrand;
+            border-style: double;
+         }
+    </style>
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgBrand; border-style:solid; border-width:medium;">
+<div id="content" class="der-body-content der-clearfix">
     <br />
     <br />
 

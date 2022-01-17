@@ -4,68 +4,72 @@
         ViewBag.Title = "Guardians";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
 </head>
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
-	<br />
-	<br />
-	@Html.Partial("_Widget_SchStaff_Dashboard")
-	<hr />
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
-			<thead>
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-					<th>
-						User ID
-					</th>
-					<th>
-						Full Name
-					</th>
-					<th>
-						Student
-					</th>
-					<th>
-						Email
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.RegisteredUserId)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Title.TitleName)
-						@Html.DisplayFor(modelItem => item.GuardianFullName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.StudentFullName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.GuardianEmailAddress)
-					</td>
-					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" style="background-color:white">
-								<li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
-								<li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
-							</ul>
-						</div>
-					</td>
-				</tr>
-				}
-			</tbody>
-		</table>
-	</div>
+<div id="content" class="der-body-content der-clearfix">
+    <br />
+    <br />
+    @Html.Partial("_Widget_SchStaff_Dashboard")
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+            <thead>
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        User ID
+                    </th>
+                    <th>
+                        Full Name
+                    </th>
+                    <th>
+                        Student
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredUserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title.TitleName)
+                            @Html.DisplayFor(modelItem => item.GuardianFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentFullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
+                                    <li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <input type="hidden" id="hiddenGuardianId" />

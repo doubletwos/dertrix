@@ -4,78 +4,82 @@
         ViewBag.Title = "Roles";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-
-
+    <style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
     <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
-<div class="jumbotron" style="height: 100vh; border-color: @regUserOrgNavBar; border-style:solid; border-width:medium;"> 
-	<br />
-	<br />
-	<div>
-		<hr />
-		<div class="row">
-			<div class="col-md-3">
-				@{
-					Html.RenderAction("AddSecSchRole", "SecondarySchoolUserRoles");
-				}
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-			<div class="col-md-3">
-			</div>
-		</div>
-	</div>
-	<hr />
-	<br />
-	<div class="panel panel-default">
-		<table id="myTable" class="table table-bordered table-responsive table-condensed">
-			<thead>
+<div id="content" class="der-body-content der-clearfix">
+    <br />
+    <br />
+    <div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                @{
+                    Html.RenderAction("AddSecSchRole", "SecondarySchoolUserRoles");
+                }
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-responsive table-condensed">
+            <thead>
 
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-					<th>
-					 Role Id
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.RoleName)
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-				<tr style="border-style: groove;">
-					<td>
-						@Html.DisplayFor(modelItem => item.SecondarySchoolUserRoleId)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.RoleName)
-					</td>
-					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Action <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" style="background-color:white">
-								<li><a href="#" onclick="EditRole(@item.SecondarySchoolUserRoleId)">Edit role</a></li>
-								@*<li><a href="#" onclick="ConfirmDelete(@item.SecondarySchoolUserRoleId)">Remove role</a></li>*@
-							</ul>
-						</div>
-					</td>
-				</tr>
-				}
-			</tbody>
+                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                    <th>
+                        Role Id
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RoleName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="border-style: groove;">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SecondarySchoolUserRoleId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoleName)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditRole(@item.SecondarySchoolUserRoleId)">Edit role</a></li>
+                                    @*<li><a href="#" onclick="ConfirmDelete(@item.SecondarySchoolUserRoleId)">Remove role</a></li>*@
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
-		</table>
+        </table>
 
-		<div>
-			<p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
-		</div>
-	</div>
+        <div>
+            <p>@Html.ActionLink("Back", "SysAdminSetUp", "Home", "", new { @class = "RegUserOrgButtonColour" })</p>
+        </div>
+    </div>
 </div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>

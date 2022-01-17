@@ -519,6 +519,10 @@
     <Compile Include="Migrations\202201081540366_Sprint2022.10.06.designer.cs">
       <DependentUpon>202201081540366_Sprint2022.10.06.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201170605231_Sprint2022.10.07.cs" />
+    <Compile Include="Migrations\202201170605231_Sprint2022.10.07.designer.cs">
+      <DependentUpon>202201170605231_Sprint2022.10.07.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -540,6 +544,7 @@
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgSchCalendar.cs" />
     <Compile Include="Models\OrgSchCalndrGrp.cs" />
+    <Compile Include="Models\OrgSchPostGrp.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\Org_Events_Log.cs" />
     <Compile Include="Models\Org_Events_Types.cs" />
@@ -568,6 +573,7 @@
     <Compile Include="ViewModels\AddNewOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\AddNewPostViewModel.cs" />
     <Compile Include="ViewModels\EditOrgSchCalViewModel.cs" />
+    <Compile Include="ViewModels\EditPostViewModel.cs" />
     <Compile Include="ViewModels\NewRegisterUserViewModel.cs" />
     <Compile Include="ViewModels\UpdateStudentGradesViewModel.cs" />
   </ItemGroup>
@@ -1188,6 +1194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201081540366_Sprint2022.10.06.resx">
       <DependentUpon>202201081540366_Sprint2022.10.06.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201170605231_Sprint2022.10.07.resx">
+      <DependentUpon>202201170605231_Sprint2022.10.07.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
