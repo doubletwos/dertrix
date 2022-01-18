@@ -1,9 +1,10 @@
 ﻿@model Dertrix.Models.RegisteredUser
+
 @if (ViewBag.RegisteredUser != null)
 {
     foreach (var item in ViewBag.RegisteredUser)
     {
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped" style="width:50%">
             <tr>
                 <td>
                     <strong>Dertrix Id</strong>
@@ -72,21 +73,23 @@
     }
 }
 <hr />
-@*<div class="container">
-    <div class="row">
-        <div class="col-sm-12">*@
-@{
-    Html.RenderAction("LinkGuardianToStudent", "RegisteredUsers");
-}
+<div class="container">
+    @{
+        Html.RenderAction("DisplayStudentGrades", "StudentSubjectGrade");
+    }
+</div>
+<div class="container">
+    @{
+        Html.RenderAction("LinkGuardianToStudent", "RegisteredUsers");
+    }
+</div>
 
-@*</div>
-        </div>
-    </div>*@
 <hr />
-<h3>Guardians</h3>
-@{
-    Html.RenderAction("MyGuardians", "StudentGuardians");
-}
+    <h3>Guardians</h3>
+    @{
+        Html.RenderAction("MyGuardians", "StudentGuardians");
+    }
+
 
 
 

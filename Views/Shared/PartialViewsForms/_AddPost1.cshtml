@@ -26,7 +26,7 @@
                         @Html.HiddenFor(model => model.Post.CreatorFullName)
                         @Html.HiddenFor(model => model.Post.PostCreationDate)
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Post.PostTopicId, "Post Topic", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.Post.PostTopicId, "Topic", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownListFor(x => x.Post.PostTopicId, new SelectList(Model.PostTopics, "PostTopicId", "PostTopicName"), "Please Select", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Post.PostTopicId, "", new { @class = "text-danger" })
@@ -34,21 +34,21 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Post.PostSubject, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.Post.PostSubject,"Subject", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Post.PostSubject, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Post.PostSubject, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Post.PostExpirtyDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.Post.PostExpirtyDate, "Expiry Date",htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Post.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
                                 @Html.ValidationMessageFor(model => model.Post.PostExpirtyDate, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Post.PostContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.Post.PostContent,"Content", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 <div class="summernote">
                                     @Html.TextAreaFor(model => model.Post.PostContent, new{htmlAttributes = new{ @class = "form-control PostContent1",  @id = "wysiwyg" } })
@@ -67,7 +67,7 @@
 
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.IsSelected, "Organisation Recipients")
+                            @Html.LabelFor(model => model.IsSelected, "Organisation Groups")
                             <div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
 
                                 @for (int i = 0; i < Model.OrgGroups.Count; i++)

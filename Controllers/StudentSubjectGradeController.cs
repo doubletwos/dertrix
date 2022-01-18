@@ -230,6 +230,88 @@ namespace Dertrix.Controllers
         }
 
 
+        //Update students Grades
+        public ActionResult DisplayStudentGrades(int? id) 
+        {
+            try
+            {
+                var sess = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(sess);
+
+                // Get all the subjects from the database
+                var ssg = db.StudentSubjectGrades
+                    .Where(x => x.RegisteredUserId == id)
+                    .Include(x => x.Subject)
+                    .ToList();
+
+                var registereduser = db.RegisteredUsers.Find(id);
+
+                // Get students class id
+
+                var classid = db.RegisteredUsers
+                    .Where(x => x.RegisteredUserId == id)
+                    .Select(x => x.ClassId)
+                    .FirstOrDefault();
+
+                // Get all the subjects linked to student
+                var subjects = db.Subjects
+                    .Where(x => x.ClassId == classid)
+                    .Where(x => x.SubjectOrgId == i)
+                    .ToList();
+
+                // Initialize the view model
+                var displayssgviewmodel = new DisplayStudentGradesViewModel
+                {
+                    RegisteredUser = registereduser,
+
+                    StudentSubjectGrades = ssg.Select(x => new StudentSubjectGrade()
+                    {
+                        StudentSubjectGradeId = x.StudentSubjectGradeId,
+                        OrgId = x.OrgId,
+                        SubjectId = x.SubjectId,
+                        SubjectName = x.SubjectName,
+                        FirstTerm_ExamGrade = x.FirstTerm_ExamGrade,
+                        SecondTerm_ExamGrade = x.SecondTerm_ExamGrade,
+                        ThirdTerm_ExamGrade = x.ThirdTerm_ExamGrade,
+                        FirstTerm_TestGrade = x.FirstTerm_TestGrade,
+                        SecondTerm_TestGrade = x.SecondTerm_TestGrade,
+                        ThirdTerm_TestGrade = x.ThirdTerm_TestGrade,
+                        RegisteredUserId = x.RegisteredUserId,
+                        Created_date = x.Created_date,
+                        Last_updated_date = x.Last_updated_date,
+                        ClassRef = x.ClassRef,
+                        ClassId = x.ClassId,
+                        Updater_Id = x.Updater_Id,
+
+                    }).ToList(),
+
+                    Subject = subjects.Select(x => new Subject()
+                    {
+                        SubjectId = x.SubjectId,
+                        SubjectName = x.SubjectName,
+                        ClassId = x.ClassId,
+                        ClassTeacherId = x.ClassTeacherId,
+                        TaughtBy = x.TaughtBy,
+                        SubjectOrgId = x.SubjectOrgId,
+                        First_Term_Test_MaxGrade = x.First_Term_Test_MaxGrade,
+                        Second_Term_Test_MaxGrade = x.Second_Term_Test_MaxGrade,
+                        Third_Term_Test_MaxGrade = x.Third_Term_Test_MaxGrade,
+                        First_Term_Exam_MaxGrade = x.First_Term_Exam_MaxGrade,
+                        Second_Term_Exam_MaxGrade = x.Second_Term_Exam_MaxGrade,
+                        Third_Term_Exam_MaxGrade = x.Third_Term_Exam_MaxGrade,
+                        Created_date = x.Created_date,
+                        Creator_Id = x.Creator_Id
+                    }).ToList(),
+                };
+                return PartialView("~/Views/Shared/PartialViewsForms/_DisplayStudentGrades.cshtml", displayssgviewmodel);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return RedirectToAction("Index", "StudentSubjects");
+        }
+
 
 
         //Update students Grades
@@ -241,10 +323,10 @@ namespace Dertrix.Controllers
                 int i = Convert.ToInt32(sess);
 
 
-                var sub = db.StudentSubjectGrades
-                    .Where(x => x.RegisteredUserId == id)
-                    .Include(x => x.Subject)
-                    .ToList();
+                //var sub = db.StudentSubjectGrades
+                //    .Where(x => x.RegisteredUserId == id)
+                //    .Include(x => x.Subject)
+                //    .ToList();
 
 
                 // Get all the subjects from the database

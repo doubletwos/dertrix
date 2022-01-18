@@ -572,6 +572,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddNewOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\AddNewPostViewModel.cs" />
+    <Compile Include="ViewModels\DisplayStudentGradesViewModel.cs" />
     <Compile Include="ViewModels\EditOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\EditPostViewModel.cs" />
     <Compile Include="ViewModels\NewRegisterUserViewModel.cs" />
@@ -957,6 +958,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditNursSchRole.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_DisplayStudentGrades.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,58 @@
+﻿@model Dertrix.ViewModels.DisplayStudentGradesViewModel
+
+
+<table class="table table-bordered table-striped" style="width:50%">
+    <thead>
+        <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:10px; background-color:white; border-style: double; border-left: none; border-right:none; ">
+            <th>Subject Id</th>
+            <th>Subject </th>
+            <th> Min <br>Marks </th>
+            <th>Max<br>Marks</th>
+            <th>Marks<br>Obtained</th>
+            <th>Final<br>Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.StudentSubjectGrades.Count; i++)
+        {
+        <tr>
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].StudentSubjectGradeId)
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].RegisteredUserId)
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassId)
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassRef)
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].OrgId)
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].Created_date)
+            @Html.HiddenFor(model => model.StudentSubjectGrades[i].Last_updated_date)
+
+            <td>
+                @Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectId)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName, new { htmlAttributes = new { @style = "" } })
+
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentSubjectGrades[i].FirstTerm_TestGrade, new { htmlAttributes = new { @style = "" } })
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentSubjectGrades[i].FirstTerm_ExamGrade, new { htmlAttributes = new { @style = "" } })
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StudentSubjectGrades[i].FirstTerm_ExamGrade, new { htmlAttributes = new { @style = "" } })
+            </td>
+
+            <td>
+                @foreach (var sub in Model.Subject.Where(x => x.SubjectId == @Model.StudentSubjectGrades[i].SubjectId))
+                {
+                    @Html.DisplayFor(modelItem => sub.TaughtBy)
+                }
+            </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+
+
