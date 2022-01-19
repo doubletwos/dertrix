@@ -38,6 +38,14 @@ namespace Dertrix.Models
 
         public decimal? Third_Term_Exam_MaxGrade { get; set; }
 
+        public decimal? SubjectMaxGrade 
+        {
+            get
+            {
+                return First_Term_Test_MaxGrade + Second_Term_Test_MaxGrade + Third_Term_Test_MaxGrade + First_Term_Exam_MaxGrade + Second_Term_Exam_MaxGrade + Third_Term_Exam_MaxGrade;
+            }
+        }
+
         public DateTime? Created_date { get; set; }
 
         public string Creator_Id { get; set; } 

@@ -36,6 +36,14 @@ namespace Dertrix.Models
 
         public decimal? ThirdTerm_TestGrade { get; set; }
 
+        public decimal? StudentSubjectGradeObtained 
+        {
+            get
+            {
+                return FirstTerm_ExamGrade + SecondTerm_ExamGrade + ThirdTerm_ExamGrade + FirstTerm_TestGrade + SecondTerm_TestGrade + ThirdTerm_TestGrade;
+            }
+        }
+
         public DateTime? Last_updated_date { get; set; }
 
         public DateTime? Created_date { get; set; }

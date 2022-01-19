@@ -2,77 +2,67 @@
 
 @if (ViewBag.RegisteredUser != null)
 {
-    foreach (var item in ViewBag.RegisteredUser)
-    {
-        <table class="table table-bordered table-striped" style="width:50%">
+    <table class="table table-bordered table-responsive table-condensed table-hover">
+        <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+            <th>
+                Dertrix Id
+            </th>
+            <th>
+                Full Name
+            </th>
+            <th>
+                Class
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Religion
+            </th>
+            <th>
+                Tribe
+            </th>
+            <th>
+                Date Of Birth
+            </th>
+            <th>
+                Enrolment Date
+            </th>
+        </tr>
+        @foreach (var item in ViewBag.RegisteredUser)
+        {
             <tr>
-                <td>
-                    <strong>Dertrix Id</strong>
-                </td>
                 <td>
                     @item.RegisteredUserId
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Full Name</strong>
                 </td>
                 <td>
                     @item.ContactFullName
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Class</strong>
-                </td>
                 <td>
                     @item.Class.ClassName
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Gender</strong>
                 </td>
                 <td>
                     @item.Gender.GenderName
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Religion</strong>
-                </td>
                 <td>
                     @item.Religion.ReligionName
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Tribe</strong>
                 </td>
                 <td>
                     @item.Tribe.TribeName
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Date Of Birth</strong>
-                </td>
                 <td>
                     @item.DateOfBirth.ToShortDateString()
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Enrolment Date</strong>
                 </td>
                 <td>
                     @item.EnrolmentDate.ToShortDateString()
                 </td>
             </tr>
-        </table>
-    }
+        }
+
+    </table>
 }
 <hr />
+<h3>Grades</h3>
 <div class="container">
     @{
         Html.RenderAction("DisplayStudentGrades", "StudentSubjectGrade");
@@ -85,10 +75,10 @@
 </div>
 
 <hr />
-    <h3>Guardians</h3>
-    @{
-        Html.RenderAction("MyGuardians", "StudentGuardians");
-    }
+<h3>Guardians</h3>
+@{
+    Html.RenderAction("MyGuardians", "StudentGuardians");
+}
 
 
 

@@ -300,7 +300,7 @@ namespace Dertrix.Controllers
                         Second_Term_Exam_MaxGrade = x.Second_Term_Exam_MaxGrade,
                         Third_Term_Exam_MaxGrade = x.Third_Term_Exam_MaxGrade,
                         Created_date = x.Created_date,
-                        Creator_Id = x.Creator_Id
+                        Creator_Id = x.Creator_Id                                               
                     }).ToList(),
                 };
                 return PartialView("~/Views/Shared/PartialViewsForms/_DisplayStudentGrades.cshtml", displayssgviewmodel);

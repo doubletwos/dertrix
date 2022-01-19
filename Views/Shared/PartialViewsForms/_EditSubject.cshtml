@@ -1,5 +1,6 @@
 ﻿@model Dertrix.Models.Subject
 
+
 <form id="SubjectEditForm">
 
 
@@ -42,7 +43,7 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.First_Term_Exam_MaxGrade, "1st Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.First_Term_Exam_MaxGrade, "1st Term Exam Grade", htmlAttributes: new { @class = "control-label col-md-2", @style ="font-family:Trebuchet MS,Tahoma, Arial; color: #666;font-size: 11px"})
             <div class="col-md-10">
                 @Html.EditorFor(model => model.First_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.First_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
@@ -50,7 +51,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Second_Term_Exam_MaxGrade, "2nd Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Second_Term_Exam_MaxGrade, "2nd Term Exam Grade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Second_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Second_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
@@ -58,14 +59,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Third_Term_Exam_MaxGrade, "3rd Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Third_Term_Exam_MaxGrade, "3rd Term Exam Grade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Third_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Third_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.First_Term_Test_MaxGrade, "1st Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.First_Term_Test_MaxGrade, "1st Term Test Grade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.First_Term_Test_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.First_Term_Test_MaxGrade, "", new { @class = "text-danger" })
@@ -73,7 +74,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Second_Term_Test_MaxGrade, "2nd Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Second_Term_Test_MaxGrade, "2nd Term Test Grade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Second_Term_Test_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Second_Term_Test_MaxGrade, "", new { @class = "text-danger" })
@@ -81,7 +82,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Third_Term_Test_MaxGrade, "3rd Term Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Third_Term_Test_MaxGrade, "3rd Term Test Grade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Third_Term_Test_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Third_Term_Test_MaxGrade, "", new { @class = "text-danger" })
