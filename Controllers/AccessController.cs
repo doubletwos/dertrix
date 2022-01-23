@@ -148,6 +148,7 @@ namespace Dertrix.Controllers
                     RegisteredUserTypeId = reguserid.RegisteredUserTypeId,
                     PrimarySchoolUserRoleId = reguserid.PrimarySchoolUserRoleId,
                     SecondarySchoolUserRoleId = reguserid.SecondarySchoolUserRoleId,
+                    NurserySchoolUserRoleId = reguserid.NurserySchoolUserRoleId,
                     EnrolmentDate = reguserid.EnrolmentDate,
                     CreatedBy = reguserid.CreatedBy,
                     FullName = reguserid.FullName,

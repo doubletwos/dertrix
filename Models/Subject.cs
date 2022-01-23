@@ -30,11 +30,11 @@ namespace Dertrix.Models
 
         public decimal? Second_Term_Test_MaxGrade { get; set; }
 
-        public decimal? Third_Term_Test_MaxGrade { get; set; }  
+        public decimal? Third_Term_Test_MaxGrade { get; set; }
 
-        public decimal? First_Term_Exam_MaxGrade { get; set; } 
+        public decimal? First_Term_Exam_MaxGrade { get; set; }
 
-        public decimal? Second_Term_Exam_MaxGrade { get; set; } 
+        public decimal? Second_Term_Exam_MaxGrade { get; set; }
 
         public decimal? Third_Term_Exam_MaxGrade { get; set; }
 

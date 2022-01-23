@@ -527,6 +527,30 @@
     <Compile Include="Migrations\202201190553367_Sprint2022.10.08.designer.cs">
       <DependentUpon>202201190553367_Sprint2022.10.08.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201200559548_Sprint2022.10.09.cs" />
+    <Compile Include="Migrations\202201200559548_Sprint2022.10.09.designer.cs">
+      <DependentUpon>202201200559548_Sprint2022.10.09.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201200610159_Sprint2022.10.10.cs" />
+    <Compile Include="Migrations\202201200610159_Sprint2022.10.10.designer.cs">
+      <DependentUpon>202201200610159_Sprint2022.10.10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201200619049_Sprint2022.10.11.cs" />
+    <Compile Include="Migrations\202201200619049_Sprint2022.10.11.designer.cs">
+      <DependentUpon>202201200619049_Sprint2022.10.11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201230750010_Sprint2022.10.12.cs" />
+    <Compile Include="Migrations\202201230750010_Sprint2022.10.12.designer.cs">
+      <DependentUpon>202201230750010_Sprint2022.10.12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201230942027_Sprint2022.10.13.cs" />
+    <Compile Include="Migrations\202201230942027_Sprint2022.10.13.designer.cs">
+      <DependentUpon>202201230942027_Sprint2022.10.13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201231126492_Sprint2022.10.14.cs" />
+    <Compile Include="Migrations\202201231126492_Sprint2022.10.14.designer.cs">
+      <DependentUpon>202201231126492_Sprint2022.10.14.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -563,6 +587,7 @@
     <Compile Include="Models\RegUsersAccessLog.cs" />
     <Compile Include="Models\Relationship.cs" />
     <Compile Include="Models\Religion.cs" />
+    <Compile Include="Models\RemovedRegisteredUser.cs" />
     <Compile Include="Models\SecondarySchoolUserRole.cs" />
     <Compile Include="Models\StudentClassChangeType.cs" />
     <Compile Include="Models\StudentGuardian.cs" />
@@ -1206,6 +1231,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201190553367_Sprint2022.10.08.resx">
       <DependentUpon>202201190553367_Sprint2022.10.08.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201200559548_Sprint2022.10.09.resx">
+      <DependentUpon>202201200559548_Sprint2022.10.09.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201200610159_Sprint2022.10.10.resx">
+      <DependentUpon>202201200610159_Sprint2022.10.10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201200619049_Sprint2022.10.11.resx">
+      <DependentUpon>202201200619049_Sprint2022.10.11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201230750010_Sprint2022.10.12.resx">
+      <DependentUpon>202201230750010_Sprint2022.10.12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201230942027_Sprint2022.10.13.resx">
+      <DependentUpon>202201230942027_Sprint2022.10.13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201231126492_Sprint2022.10.14.resx">
+      <DependentUpon>202201231126492_Sprint2022.10.14.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

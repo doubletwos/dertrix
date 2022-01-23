@@ -766,12 +766,14 @@ namespace Dertrix.Controllers
                 }
                 var staffs = db.RegisteredUserOrganisations
                     .Where(j => j.OrgId == id)
-                    .Where(p => p.PrimarySchoolUserRoleId != null || p.SecondarySchoolUserRoleId != null)
+                    .Where(p => p.PrimarySchoolUserRoleId != null || p.SecondarySchoolUserRoleId != null || p.NurserySchoolUserRoleId != null)
                     .Where(p => p.PrimarySchoolUserRoleId != 5)
                     .Where(p => p.SecondarySchoolUserRoleId != 5)
+                    .Where(p => p.NurserySchoolUserRoleId != 5)
                     .Include(p => p.Title)
                     .Include(p => p.PrimarySchoolUserRole)
                     .Include(p => p.SecondarySchoolUserRole)
+                    .Include(p => p.NurserySchoolUserRole)
                     .ToList();
                 return View(staffs);
             }
@@ -1833,7 +1835,7 @@ namespace Dertrix.Controllers
                                 StudentClassChangeType = StudentClassChangeType.Change_of_class,
                                 ClassTeacherId = currentsubject.ClassTeacherId,
                                 Created_date = DateTime.Now,
-                               
+
                             };
                             db.Students_Grades_Logs.Add(gradeslog);
                             db.SaveChanges();
@@ -2110,27 +2112,39 @@ namespace Dertrix.Controllers
         {
             try
             {
-                // CHECK IF USER BEING DELETED IS A STAFF = IF YES - WE GO INTO THIS CONDITION - LOG EVENT. REMOVING  STUDENT IS EVENTTYPEID = 4
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                // CHECK IF USER BEING DELETED IS A STAFF = IF YES - WE GO INTO THIS CONDITION - 
                 // LOCATE USERS ROLES
                 var chkifPsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.PrimarySchoolUserRoleId).FirstOrDefault();
                 var chkifSsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
                 var chkifNsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.NurserySchoolUserRoleId).FirstOrDefault();
 
-                if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4
-                    || chkifNsStaff == 1 || chkifNsStaff == 2 || chkifNsStaff == 3 || chkifNsStaff == 4)
-
+                if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifPsStaff == 6 || 
+                    chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4 || chkifSsStaff == 6  ||
+                    chkifNsStaff == 1 || chkifNsStaff == 2 || chkifNsStaff == 3 || chkifNsStaff == 4 || chkifNsStaff == 6)
                 {
-                    var staforgcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.RegisteredUserId).Count();
+                    var staforgcount = db.RegisteredUserOrganisations
+                        .Where(x => x.RegisteredUserId == id)
+                        .Select(x => x.RegisteredUserId) 
+                        .Count();
+
                     // IF COUNT OF ORG IS 1 - WE GO INTO THIS CONDITION - WE DELETE USER FROM REGUSER TABLE / LOG EVENT AND MOVE ON.
                     if (staforgcount == 1)
                     {
-                        // GET STAFF'S FULLNAME
-                        var stafullname = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.FullName).FirstOrDefault();
-                        // BEFORE REMVING STAFF - LOG EVENT. REMOVING STAFF IS EVENTTYPEID = 6
+                        // GET STAFF'S DATA
+                        var staffdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).FirstOrDefault();
+                        var staffdataRug = db.RegisteredUserOrganisations
+                            .Where(x => x.RegisteredUserId == id)
+                            .Where(x => x.OrgId == i)
+                            .FirstOrDefault();
+
+                        // BEFORE REMVING STAFF - LOG EVENT. 
                         var orgeventlog = new Org_Events_Log()
                         {
                             Org_Event_SubjectId = id.ToString(),
-                            Org_Event_SubjectName = stafullname,
+                            Org_Event_SubjectName = staffdataRu.FullName,
                             Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                             Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                             Org_Event_Time = DateTime.Now,
@@ -2139,6 +2153,48 @@ namespace Dertrix.Controllers
                         };
                         db.Org_Events_Logs.Add(orgeventlog);
                         db.SaveChanges();
+
+
+
+                        if (staffdataRu.DateOfBirth == null)
+                        {
+                            staffdataRu.DateOfBirth = DateTime.MaxValue;
+
+                            if (staffdataRug.LastLogOn == null)
+                            {
+                                staffdataRug.LastLogOn = DateTime.MaxValue;
+                            }
+
+                            var remvdstaff = new RemovedRegisteredUser
+                            {
+                                RegisteredUserId = staffdataRu.RegisteredUserId,
+                                CreationDate = DateTime.Now,
+                                FirstName = staffdataRu.FirstName,
+                                LastName = staffdataRu.LastName,
+                                FullName = staffdataRu.FullName,
+                                Email = staffdataRu.Email,
+                                Telephone = staffdataRu.Telephone,
+                                RegisteredUserType = staffdataRu.RegisteredUserTypeId,
+                                PrimarySchoolUserRole = staffdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                                SecondarySchoolUserRole = staffdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                                NurserySchoolUserRole = staffdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                                OrgId = staffdataRug.OrgId,
+                                ClassId = staffdataRu.ClassId.GetValueOrDefault(),
+                                ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
+                                GenderId = staffdataRu.GenderId.GetValueOrDefault(),
+                                ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
+                                StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
+                                IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
+                                DateOfBirth = staffdataRu.DateOfBirth,
+                                EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
+                                LastLogOn = staffdataRug.LastLogOn,
+                                EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
+                            };
+                            db.RemovedRegisteredUsers.Add(remvdstaff);
+                            db.SaveChanges();
+
+                        }
+
                         RegisteredUser removestaff = db.RegisteredUsers.Find(id);
                         db.RegisteredUsers.Remove(removestaff);
                         db.SaveChanges();
@@ -2149,13 +2205,66 @@ namespace Dertrix.Controllers
                     {
                         var stafsorgs = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.OrgId).ToList();
                         var linkedorgs = new List<int>(stafsorgs);
-                        var rr = Session["OrgId"].ToString();
-                        int i = Convert.ToInt32(rr);
+
                         foreach (var ruo in stafsorgs)
                         {
                             if (ruo == i)
                             {
-                                var getstaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Where(x => x.OrgId == i).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+                                var getstaff = db.RegisteredUserOrganisations
+                                    .Where(x => x.RegisteredUserId == id)
+                                    .Where(x => x.OrgId == i)
+                                    .Select(x => x.RegisteredUserOrganisationId)
+                                    .FirstOrDefault();
+
+                                // GET STAFF'S DATA
+                                var staffdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).FirstOrDefault();
+                                var staffdataRug = db.RegisteredUserOrganisations
+                                    .Where(x => x.RegisteredUserId == id)
+                                    .Where(x => x.OrgId == i)
+                                    .FirstOrDefault();
+
+                                // SOFT DELETE USER
+                                if (staffdataRu.DateOfBirth == null)
+                                {
+                                    staffdataRu.DateOfBirth = DateTime.MaxValue;
+
+                                    if(staffdataRug.LastLogOn == null)
+                                    {
+                                        staffdataRug.LastLogOn = DateTime.MaxValue;
+                                    }
+
+                                    var remvdstaff = new RemovedRegisteredUser
+                                    {
+                                        RegisteredUserId = staffdataRu.RegisteredUserId,
+                                        CreationDate = DateTime.Now,
+                                        FirstName = staffdataRu.FirstName,
+                                        LastName = staffdataRu.LastName,
+                                        FullName = staffdataRu.FullName,
+                                        Email = staffdataRu.Email,
+                                        Telephone = staffdataRu.Telephone,
+                                        RegisteredUserType = staffdataRu.RegisteredUserTypeId,
+                                        PrimarySchoolUserRole = staffdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                                        SecondarySchoolUserRole = staffdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                                        NurserySchoolUserRole = staffdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                                        OrgId = staffdataRug.OrgId,
+                                        ClassId = staffdataRu.ClassId.GetValueOrDefault(),
+                                        ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
+                                        GenderId = staffdataRu.GenderId.GetValueOrDefault(),
+                                        ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
+                                        StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
+                                        IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
+                                        DateOfBirth = staffdataRu.DateOfBirth,
+                                        LastLogOn = staffdataRug.LastLogOn,
+                                        EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
+                                        EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
+                                    };
+
+                                    db.RemovedRegisteredUsers.Add(remvdstaff);
+                                    staffdataRu.DateOfBirth = null;
+                                    db.SaveChanges();
+
+                                }
+
                                 RegisteredUserOrganisation removestaff = db.RegisteredUserOrganisations.Find(getstaff);
                                 db.RegisteredUserOrganisations.Remove(removestaff);
                                 db.SaveChanges();
@@ -2239,8 +2348,7 @@ namespace Dertrix.Controllers
                                     // IF STD TO BE DELETED - WE GO INTO THIS CONDITION 
                                     if (std == id)
                                     {
-                                        var rr = Session["OrgId"].ToString();
-                                        int i = Convert.ToInt32(rr);
+
                                         // LOCATE THE GD IN THE STUD GUARD TABLE  
                                         var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
                                         // CHECK HOW MANY OTHER STUD GUARD IS LINKED TO IN ACTIVE ORG = IF ONLY 1 THEN WE CAN REMV GUARD FROM REGUSERORG TABLE

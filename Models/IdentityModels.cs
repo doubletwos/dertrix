@@ -56,11 +56,8 @@ namespace Dertrix.Models
         public DbSet<CalendarCategory> CalendarCategorys { get; set; }
         public DbSet<OrgSchCalndrGrp> OrgSchCalndrGrps { get; set; } 
         public DbSet<Students_Grades_Log> Students_Grades_Logs { get; set; }
-
-        public DbSet<OrgSchPostGrp> OrgSchPostGrps { get; set; } 
-
-
-
+        public DbSet<OrgSchPostGrp> OrgSchPostGrps { get; set; }
+        public DbSet<RemovedRegisteredUser> RemovedRegisteredUsers { get; set; } 
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

@@ -265,14 +265,38 @@ $(document).ready(function () {
 		rules: {
 			'SubjectName': {
 				required: true,
-				maxlength: 20
+				maxlength: 15
 			},
 			'ClassId': {
 				required: true,
 			},
 			'ClassTeacherId': {
 				required: true,
-			}
+			},
+			'First_Term_Test_MaxGrade': {
+				required: true,
+				maxlength: 3
+			},
+			'First_Term_Exam_MaxGrade': {
+				required: true,
+				maxlength: 3
+			},
+			'Second_Term_Test_MaxGrade': {
+				required: true,
+				maxlength: 3
+			},
+			'Second_Term_Exam_MaxGrade': {
+				required: true,
+				maxlength: 3
+			},
+			'Third_Term_Test_MaxGrade': {
+				required: true,
+				maxlength: 3
+			},
+			'Third_Term_Exam_MaxGrade': {
+				required: true,
+				maxlength: 3
+			},
 		},
 		messages: {
 			'SubjectName': {
@@ -280,7 +304,31 @@ $(document).ready(function () {
 				maxlength: 'Not more than 20 characters allowed'
 			},
 			'ClassId': 'Please select class',
-			'ClassTeacherId': 'Please assign subject to a teacher'
+			'ClassTeacherId': 'Please assign subject to a teacher',
+			'First_Term_Test_MaxGrade': {
+				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
+			'First_Term_Exam_MaxGrade': {
+				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
+			'Second_Term_Test_MaxGrade': {
+				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
+			'Second_Term_Exam_MaxGrade': {
+				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
+			'Third_Term_Test_MaxGrade': {
+				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
+			'Third_Term_Exam_MaxGrade': {
+				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
 		}
 	});
 

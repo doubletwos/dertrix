@@ -62,23 +62,11 @@ namespace Dertrix.Models
         [DisplayFormat(DataFormatString = "{0:dddd | dd-MM-yyyy | H:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? LastLogOn { get; set; } 
 
-
         public string CreatedBy { get; set; }
 
         public string FullName { get; set; }
 
-
         public RegistrationFlags RegistrationFlags  { get; set; }
-
-
-
-
-
-
-
-
-
-
 
     }
 }
