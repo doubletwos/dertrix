@@ -2155,16 +2155,7 @@ namespace Dertrix.Controllers
                         db.SaveChanges();
 
 
-
-                        if (staffdataRu.DateOfBirth == null)
-                        {
-                            staffdataRu.DateOfBirth = DateTime.MaxValue;
-
-                            if (staffdataRug.LastLogOn == null)
-                            {
-                                staffdataRug.LastLogOn = DateTime.MaxValue;
-                            }
-
+                        // SOFT DELETE USER
                             var remvdstaff = new RemovedRegisteredUser
                             {
                                 RegisteredUserId = staffdataRu.RegisteredUserId,
@@ -2193,7 +2184,6 @@ namespace Dertrix.Controllers
                             db.RemovedRegisteredUsers.Add(remvdstaff);
                             db.SaveChanges();
 
-                        }
 
                         RegisteredUser removestaff = db.RegisteredUsers.Find(id);
                         db.RegisteredUsers.Remove(removestaff);
@@ -2224,15 +2214,6 @@ namespace Dertrix.Controllers
                                     .FirstOrDefault();
 
                                 // SOFT DELETE USER
-                                if (staffdataRu.DateOfBirth == null)
-                                {
-                                    staffdataRu.DateOfBirth = DateTime.MaxValue;
-
-                                    if(staffdataRug.LastLogOn == null)
-                                    {
-                                        staffdataRug.LastLogOn = DateTime.MaxValue;
-                                    }
-
                                     var remvdstaff = new RemovedRegisteredUser
                                     {
                                         RegisteredUserId = staffdataRu.RegisteredUserId,
@@ -2258,12 +2239,10 @@ namespace Dertrix.Controllers
                                         EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
                                         EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
                                     };
-
                                     db.RemovedRegisteredUsers.Add(remvdstaff);
                                     staffdataRu.DateOfBirth = null;
                                     db.SaveChanges();
 
-                                }
 
                                 RegisteredUserOrganisation removestaff = db.RegisteredUserOrganisations.Find(getstaff);
                                 db.RegisteredUserOrganisations.Remove(removestaff);
@@ -2434,6 +2413,43 @@ namespace Dertrix.Controllers
                         }
                     }
                 }
+
+                // SOFT DELETE USER
+                // GET USER'S DATA
+                var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).FirstOrDefault();
+                var userdataRug = db.RegisteredUserOrganisations
+                    .Where(x => x.RegisteredUserId == id)
+                    .Where(x => x.OrgId == i)
+                    .FirstOrDefault();
+                var remvuser = new RemovedRegisteredUser
+                {
+                    RegisteredUserId = userdataRu.RegisteredUserId,
+                    CreationDate = DateTime.Now,
+                    FirstName = userdataRu.FirstName,
+                    LastName = userdataRu.LastName,
+                    FullName = userdataRu.FullName,
+                    Email = userdataRu.Email,
+                    Telephone = userdataRu.Telephone,
+                    RegisteredUserType = userdataRu.RegisteredUserTypeId,
+                    PrimarySchoolUserRole = userdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                    SecondarySchoolUserRole = userdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                    NurserySchoolUserRole = userdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                    OrgId = userdataRug.OrgId,
+                    ClassId = userdataRu.ClassId.GetValueOrDefault(),
+                    ClassRef = userdataRu.ClassRef.GetValueOrDefault(),
+                    GenderId = userdataRu.GenderId.GetValueOrDefault(),
+                    ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
+                    StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
+                    IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
+                    DateOfBirth = userdataRu.DateOfBirth,
+                    LastLogOn = userdataRug.LastLogOn,
+                    EnrolmentDate = userdataRug.EnrolmentDate.GetValueOrDefault(),
+                    EnrolledBy = Convert.ToInt32(userdataRug.CreatedBy)
+                };
+                db.RemovedRegisteredUsers.Add(remvuser);
+                db.SaveChanges();
+
+
                 // IF USER BEING DELETED IS NOT A STUDENT - WE COME HERE STRAIGHT AND REMOVE USER.
                 RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
                 db.RegisteredUsers.Remove(registeredUser);

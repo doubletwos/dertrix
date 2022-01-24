@@ -29,7 +29,6 @@ namespace Dertrix.Models
         public bool IsTester { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
-
         public DateTime? EnrolmentDate { get; set; }
         public DateTime? LastLogOn { get; set; }
 
