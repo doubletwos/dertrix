@@ -60,7 +60,7 @@ namespace Dertrix.Controllers
                 ViewBag.ClassTeacherId = new SelectList(
                 from x in db.RegisteredUserOrganisations
                 .Where(x => x.OrgId == i)
-                .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4))
+                .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3))
                 select new { x.RegisteredUserId, x.FullName, Name_Id = x.FullName + " " + "[" + x.RegisteredUserId + "]" },
                 "RegisteredUserId", "Name_Id");
 

@@ -301,6 +301,41 @@ namespace Dertrix.Controllers
                     db.Entry(studgaurd).State = EntityState.Modified;
                     db.SaveChanges();
 
+                    // SOFT DELETE USER
+                    // GET USER'S DATA
+                    var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).FirstOrDefault();
+                    var userdataRug = db.RegisteredUserOrganisations
+                        .Where(x => x.RegisteredUserId == gd_id)
+                        .Where(x => x.OrgId == i)
+                        .FirstOrDefault();
+                    var remvuser = new RemovedRegisteredUser
+                    {
+                        RegisteredUserId = userdataRu.RegisteredUserId,
+                        CreationDate = DateTime.Now,
+                        FirstName = userdataRu.FirstName,
+                        LastName = userdataRu.LastName,
+                        FullName = userdataRu.FullName,
+                        Email = userdataRu.Email,
+                        Telephone = userdataRu.Telephone,
+                        RegisteredUserType = userdataRu.RegisteredUserTypeId,
+                        PrimarySchoolUserRole = userdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                        SecondarySchoolUserRole = userdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                        NurserySchoolUserRole = userdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                        OrgId = userdataRug.OrgId,
+                        ClassId = userdataRu.ClassId.GetValueOrDefault(),
+                        ClassRef = userdataRu.ClassRef.GetValueOrDefault(),
+                        GenderId = userdataRu.GenderId.GetValueOrDefault(),
+                        ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
+                        StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
+                        IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
+                        DateOfBirth = userdataRu.DateOfBirth,
+                        LastLogOn = userdataRug.LastLogOn,
+                        EnrolmentDate = userdataRug.EnrolmentDate.GetValueOrDefault(),
+                        EnrolledBy = Convert.ToInt32(userdataRug.CreatedBy)
+                    };
+                    db.RemovedRegisteredUsers.Add(remvuser);
+                    db.SaveChanges();
+
 
                     // REMV FROM PG FROM SG
                     RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id);
@@ -325,14 +360,54 @@ namespace Dertrix.Controllers
                 {
                     // GET THE STUD PG IS BEING UNLINKED FROM
                     var stud_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+
                     // CHECK HOW MANY STU IN ORG PG IS LINKED TO - IF 1 - REMV PG FROM SG / REGUORG - ONLY
-                    var mylinkedstudsinorg = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i).Select(x => x.RegisteredUserId).Count();
+                    var mylinkedstudsinorg = db.StudentGuardians
+                        .Where(x => x.RegisteredUserId == gd_id)
+                        .Where(x => x.OrgId == i)
+                        .Select(x => x.RegisteredUserId)
+                        .Count();
 
 
                     // COUNT OF mylinkedstudsinorg IS 1 - MEANS PG IS LINKED TO ONLY 1 STUD IN THIS ORG. - REMV PG FROM REGUSERORG / SG / ORGGROUP /TABLE
                     if (mylinkedstudsinorg == 1)
                     {
                         var getpginreguserorg = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == gd_id).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+
+                        // SOFT DELETE USER
+                        // GET USER'S DATA
+                        var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).FirstOrDefault();
+                        var userdataRug = db.RegisteredUserOrganisations
+                            .Where(x => x.RegisteredUserId == gd_id)
+                            .Where(x => x.OrgId == i)
+                            .FirstOrDefault();
+                        var remvuser = new RemovedRegisteredUser
+                        {
+                            RegisteredUserId = userdataRu.RegisteredUserId,
+                            CreationDate = DateTime.Now,
+                            FirstName = userdataRu.FirstName,
+                            LastName = userdataRu.LastName,
+                            FullName = userdataRu.FullName,
+                            Email = userdataRu.Email,
+                            Telephone = userdataRu.Telephone,
+                            RegisteredUserType = userdataRu.RegisteredUserTypeId,
+                            PrimarySchoolUserRole = userdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                            SecondarySchoolUserRole = userdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                            NurserySchoolUserRole = userdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                            OrgId = userdataRug.OrgId,
+                            ClassId = userdataRu.ClassId.GetValueOrDefault(),
+                            ClassRef = userdataRu.ClassRef.GetValueOrDefault(),
+                            GenderId = userdataRu.GenderId.GetValueOrDefault(),
+                            ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
+                            StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
+                            IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
+                            DateOfBirth = userdataRu.DateOfBirth,
+                            LastLogOn = userdataRug.LastLogOn,
+                            EnrolmentDate = userdataRug.EnrolmentDate.GetValueOrDefault(),
+                            EnrolledBy = Convert.ToInt32(userdataRug.CreatedBy)
+                        };
+                        db.RemovedRegisteredUsers.Add(remvuser);
+                        db.SaveChanges();
 
                         // REMV FROM REGUSERORG
                         RegisteredUserOrganisation reguserord = db.RegisteredUserOrganisations.Find(getpginreguserorg);
@@ -420,11 +495,20 @@ namespace Dertrix.Controllers
                     else
                     {
                         // GET STUD CLASS GRP ID
-                        var studclassGrpid = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i).Where(x => x.StudentId == stud_id).Select(x => x.Stu_class_Org_Grp_id).FirstOrDefault();
-
+                        var studclassGrpid = db.StudentGuardians
+                            .Where(x => x.RegisteredUserId == gd_id)
+                            .Where(x => x.OrgId == i)
+                            .Where(x => x.StudentId == stud_id)
+                            .Select(x => x.Stu_class_Org_Grp_id)
+                            .FirstOrDefault();
 
                         // COUNT HOW MANY STUDENTS GD IS LINKED TO IN CLASS
-                        var alllinkedstuds = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Where(x => x.OrgId == i).Where(x => x.Stu_class_Org_Grp_id == studclassGrpid).Select(x => x.Stu_class_Org_Grp_id == studclassGrpid).Count();
+                        var alllinkedstuds = db.StudentGuardians
+                            .Where(x => x.RegisteredUserId == gd_id)
+                            .Where(x => x.OrgId == i)
+                            .Where(x => x.Stu_class_Org_Grp_id == studclassGrpid)
+                            .Select(x => x.Stu_class_Org_Grp_id == studclassGrpid)
+                            .Count();
 
 
                         // LOOP THRU THE LIST OF STUDENTS PG IS LINKED TO 

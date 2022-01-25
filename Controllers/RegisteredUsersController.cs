@@ -2291,10 +2291,49 @@ namespace Dertrix.Controllers
                                 //LOCATE GUARD IN REG USER TABLE AND DELETE.
                                 var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
                                 var guardfullname = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.GuardianFullName).FirstOrDefault();
-                                //NOW DELETE GUARDIAN FROM REG USER TABLE.
-                                RegisteredUser remvguard = db.RegisteredUsers.Find(locateguard);
-                                db.RegisteredUsers.Remove(remvguard);
+
+                                // SOFT DELETE USER
+                                // GET USER'S DATA
+                                var guarddataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == locateguard).FirstOrDefault();
+                                var guarddataRug = db.RegisteredUserOrganisations
+                                    .Where(x => x.RegisteredUserId == locateguard)
+                                    .Where(x => x.OrgId == i)
+                                    .FirstOrDefault();
+                                var remvguard = new RemovedRegisteredUser
+                                {
+                                    RegisteredUserId = guarddataRu.RegisteredUserId,
+                                    CreationDate = DateTime.Now,
+                                    FirstName = guarddataRu.FirstName,
+                                    LastName = guarddataRu.LastName,
+                                    FullName = guarddataRu.FullName,
+                                    Email = guarddataRu.Email,
+                                    Telephone = guarddataRu.Telephone,
+                                    RegisteredUserType = guarddataRu.RegisteredUserTypeId,
+                                    PrimarySchoolUserRole = guarddataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                                    SecondarySchoolUserRole = guarddataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                                    NurserySchoolUserRole = guarddataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                                    OrgId = guarddataRug.OrgId,
+                                    ClassId = guarddataRu.ClassId.GetValueOrDefault(),
+                                    ClassRef = guarddataRu.ClassRef.GetValueOrDefault(),
+                                    GenderId = guarddataRu.GenderId.GetValueOrDefault(),
+                                    ReligionId = guarddataRu.ReligionId.GetValueOrDefault(),
+                                    StudentRegFormId = guarddataRu.StudentRegFormId.GetValueOrDefault(),
+                                    IsTester = (bool)guarddataRu.IsTester.GetValueOrDefault(),
+                                    DateOfBirth = guarddataRu.DateOfBirth,
+                                    LastLogOn = guarddataRug.LastLogOn,
+                                    EnrolmentDate = guarddataRug.EnrolmentDate.GetValueOrDefault(),
+                                    EnrolledBy = Convert.ToInt32(guarddataRug.CreatedBy)
+                                };
+                                db.RemovedRegisteredUsers.Add(remvguard);
                                 db.SaveChanges();
+
+
+                                //NOW DELETE GUARDIAN FROM REG USER TABLE.
+                                RegisteredUser remvguar = db.RegisteredUsers.Find(locateguard);
+                                db.RegisteredUsers.Remove(remvguar);
+                                db.SaveChanges();
+
+
                                 // LOOP THROUGH GROUPS IN ORG AND UPDATE COUNT
                                 var myorgid = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.OrgId).FirstOrDefault();
                                 var orggrp = db.OrgGroups.Where(x => x.OrgId == myorgid).Select(x => x.OrgGroupId).ToList();
@@ -2337,10 +2376,49 @@ namespace Dertrix.Controllers
                                         {
                                             // LOCATE GUARD IN REGUSER ORG TABLE.                                      
                                             var locategd1 = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == gdreguserid).Where(x => x.OrgId == i).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+
+                                            // SOFT DELETE USER
+                                            // GET USER'S DATA
+                                            var gddataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gdreguserid).FirstOrDefault(); 
+                                            var gddataRug = db.RegisteredUserOrganisations 
+                                                .Where(x => x.RegisteredUserId == gdreguserid)
+                                                .Where(x => x.OrgId == i)
+                                                .FirstOrDefault();
+
+                                            var remvgd1 = new RemovedRegisteredUser 
+                                            {
+                                                RegisteredUserId = gddataRu.RegisteredUserId,
+                                                CreationDate = DateTime.Now,
+                                                FirstName = gddataRu.FirstName,
+                                                LastName = gddataRu.LastName,
+                                                FullName = gddataRu.FullName,
+                                                Email = gddataRu.Email,
+                                                Telephone = gddataRu.Telephone,
+                                                RegisteredUserType = gddataRu.RegisteredUserTypeId,
+                                                PrimarySchoolUserRole = gddataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                                                SecondarySchoolUserRole = gddataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                                                NurserySchoolUserRole = gddataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                                                OrgId = gddataRug.OrgId,
+                                                ClassId = gddataRu.ClassId.GetValueOrDefault(),
+                                                ClassRef = gddataRu.ClassRef.GetValueOrDefault(),
+                                                GenderId = gddataRu.GenderId.GetValueOrDefault(),
+                                                ReligionId = gddataRu.ReligionId.GetValueOrDefault(),
+                                                StudentRegFormId = gddataRu.StudentRegFormId.GetValueOrDefault(),
+                                                IsTester = (bool)gddataRu.IsTester.GetValueOrDefault(),
+                                                DateOfBirth = gddataRu.DateOfBirth,
+                                                LastLogOn = gddataRug.LastLogOn,
+                                                EnrolmentDate = gddataRug.EnrolmentDate.GetValueOrDefault(),
+                                                EnrolledBy = Convert.ToInt32(gddataRug.CreatedBy)
+                                            };
+                                            db.RemovedRegisteredUsers.Add(remvgd1);
+                                            db.SaveChanges();
+
+
                                             // DELETE GUARD FROM REGUSER ORG TABLE.
                                             RegisteredUserOrganisation regusrorg = db.RegisteredUserOrganisations.Find(locategd1);
                                             db.RegisteredUserOrganisations.Remove(regusrorg);
                                             db.SaveChanges();
+
                                             // LOOP THRU GROUP AND DELETE GUARD FROM ALL GROUP
                                             var guardingrp = db.RegisteredUsersGroups
                                                     .Where(x => x.RegisteredUserId == locateguard)
