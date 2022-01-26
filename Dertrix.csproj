@@ -751,11 +751,6 @@
     <Content Include="connectionStrings_1.config" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
-    <Content Include="Content\wysiwyg-editor-bootstrap\.gitignore" />
-    <Content Include="Content\wysiwyg-editor-bootstrap\bower.json" />
-    <Content Include="Content\wysiwyg-editor-bootstrap\composer.json" />
-    <Content Include="Content\wysiwyg-editor-bootstrap\package.json" />
-    <Content Include="Content\wysiwyg-editor-bootstrap\README.md" />
     <Content Include="Content\wysiwyg-editor-bootstrap\src\scss\wysiwyg.scss" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
