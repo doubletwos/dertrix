@@ -498,7 +498,8 @@ namespace Dertrix.Controllers
                 .Where(x => x.OrgId == i)
                 .Include(x => x.Title)
                 .Include(x => x.PrimarySchoolUserRole)
-                .Include(x => x.SecondarySchoolUserRole);
+                .Include(x => x.SecondarySchoolUserRole)
+                .Include(x => x.NurserySchoolUserRole);               
                 ViewBag.RegisteredUserOrganisation = stud;
                 return PartialView("_StaffDetails");
             }
@@ -626,11 +627,14 @@ namespace Dertrix.Controllers
                     var staff = db.RegisteredUserOrganisations
                         .Include(t => t.PrimarySchoolUserRole)
                         .Include(t => t.SecondarySchoolUserRole)
+                        .Include(t => t.NurserySchoolUserRole)
                         .Where(x => x.RegisteredUserId == Id)
                         .Where(x => x.OrgId == i)
                         .FirstOrDefault();
                     ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", staff.PrimarySchoolUserRoleId);
                     ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName", staff.SecondarySchoolUserRoleId);
+                    ViewBag.NurserySchoolUserRoleId = new SelectList(db.NurserySchoolUserRoles, "NurserySchoolUserRoleId", "RoleName", staff.NurserySchoolUserRoleId);
+
                     var staff0 = new RegisteredUserOrganisation
                     {
                         RegisteredUserOrganisationId = staff.RegisteredUserOrganisationId,
@@ -645,6 +649,7 @@ namespace Dertrix.Controllers
                         RegisteredUserTypeId = staff.RegisteredUserTypeId,
                         PrimarySchoolUserRoleId = staff.PrimarySchoolUserRoleId,
                         SecondarySchoolUserRoleId = staff.SecondarySchoolUserRoleId,
+                        NurserySchoolUserRoleId = staff.NurserySchoolUserRoleId,
                         EnrolmentDate = staff.EnrolmentDate,
                         CreatedBy = staff.CreatedBy,
                         FullName = staff.FullName,
@@ -727,6 +732,7 @@ namespace Dertrix.Controllers
                         RegisteredUserTypeId = stud1.RegisteredUserTypeId,
                         PrimarySchoolUserRoleId = stud1.PrimarySchoolUserRoleId,
                         SecondarySchoolUserRoleId = stud1.SecondarySchoolUserRoleId,
+                        NurserySchoolUserRoleId = stud1.NurserySchoolUserRoleId,
                         EnrolmentDate = stud1.EnrolmentDate,
                         CreatedBy = stud1.CreatedBy,
                         FullName = stud1.FullName,
@@ -1677,6 +1683,7 @@ namespace Dertrix.Controllers
                             RegisteredUserTypeId = locatestaff.RegisteredUserTypeId,
                             PrimarySchoolUserRoleId = locatestaff.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = registeredUserOrganisation.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = locatestaff.NurserySchoolUserRoleId,
                             EnrolmentDate = locatestaff.EnrolmentDate,
                             CreatedBy = locatestaff.CreatedBy,
                             FullName = locatestaff.FullName,
@@ -1718,6 +1725,7 @@ namespace Dertrix.Controllers
                             RegisteredUserTypeId = locatestaff.RegisteredUserTypeId,
                             PrimarySchoolUserRoleId = registeredUserOrganisation.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = locatestaff.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = locatestaff.NurserySchoolUserRoleId,
                             EnrolmentDate = locatestaff.EnrolmentDate,
                             CreatedBy = locatestaff.CreatedBy,
                             FullName = locatestaff.FullName,
@@ -1732,6 +1740,44 @@ namespace Dertrix.Controllers
                     // ORG IS NURSERY SCH
                     if ((int)Session["OrgType"] == 4)
                     {
+                        // Update teachers role to non teaching staff if set as empty
+                        if (registeredUserOrganisation.NurserySchoolUserRoleId == null)
+                        {
+                            // ORG IS SECONDARY SCH
+                            if ((int)Session["OrgType"] == 4)
+                            {
+                                registeredUserOrganisation.NurserySchoolUserRoleId = 6;
+                            }
+                        }
+                        else
+                        {
+                            locatestaff.SecondarySchoolUserRoleId = registeredUserOrganisation.SecondarySchoolUserRoleId;
+                        }
+                        var pristaff = new RegisteredUserOrganisation
+                        {
+                            RegisteredUserOrganisationId = locatestaff.RegisteredUserOrganisationId,
+                            RegisteredUserId = locatestaff.RegisteredUserId,
+                            OrgId = locatestaff.OrgId,
+                            Email = locatestaff.Email,
+                            FirstName = locatestaff.FirstName,
+                            LastName = locatestaff.LastName,
+                            OrgName = locatestaff.OrgName,
+                            RegUserOrgBrand = locatestaff.RegUserOrgBrand,
+                            IsTester = locatestaff.IsTester,
+                            RegisteredUserTypeId = locatestaff.RegisteredUserTypeId,
+                            PrimarySchoolUserRoleId = locatestaff.PrimarySchoolUserRoleId,
+                            SecondarySchoolUserRoleId = locatestaff.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = registeredUserOrganisation.NurserySchoolUserRoleId,
+                            EnrolmentDate = locatestaff.EnrolmentDate,
+                            CreatedBy = locatestaff.CreatedBy,
+                            FullName = locatestaff.FullName,
+                            TitleId = locatestaff.TitleId,
+                            LastLogOn = locatestaff.LastLogOn,
+                            RegistrationFlags = locatestaff.RegistrationFlags,
+                        };
+                        locatestaff = pristaff;
+                        db.Entry(locatestaff).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                     return RedirectToAction("Staffs", "RegisteredUsers");
                 }
@@ -2013,6 +2059,7 @@ namespace Dertrix.Controllers
                             LastLogOn = getid.LastLogOn,
                             PrimarySchoolUserRoleId = getid.PrimarySchoolUserRoleId,
                             SecondarySchoolUserRoleId = getid.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = getid.NurserySchoolUserRoleId,
                             RegistrationFlags = getid.RegistrationFlags
                         };
                         getid = reguser;

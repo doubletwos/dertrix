@@ -49,6 +49,18 @@
                 </div>
             }
         }
+        @{
+            if ((int)Session["OrgType"] == 4 || (int)Session["OrgType"] == 5)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NurserySchoolUserRoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("NurserySchoolUserRoleId", null, "", new { @id = "NurserySchoolUserRoleId", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NurserySchoolUserRoleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        }
 
 
         <div class="modal-footer">

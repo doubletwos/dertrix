@@ -86,7 +86,7 @@ namespace Dertrix.Controllers
 
 
 
-        public ActionResult MyGroups(int id)
+        public ActionResult MyGroups(int? id)
         {
             try
             {

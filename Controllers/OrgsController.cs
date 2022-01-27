@@ -330,7 +330,9 @@ namespace Dertrix.Controllers
                         db.OrgGroups.Add(orggroup);
                         db.SaveChanges();
                     }
-                    return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
+                    //return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
+                    return RedirectToAction("SystemAdminIndex");
+
 
                 }
 
