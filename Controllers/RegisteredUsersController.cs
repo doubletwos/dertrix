@@ -2164,9 +2164,9 @@ namespace Dertrix.Controllers
 
                 // CHECK IF USER BEING DELETED IS A STAFF = IF YES - WE GO INTO THIS CONDITION - 
                 // LOCATE USERS ROLES
-                var chkifPsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.PrimarySchoolUserRoleId).FirstOrDefault();
-                var chkifSsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
-                var chkifNsStaff = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.NurserySchoolUserRoleId).FirstOrDefault();
+                var chkifPsStaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.PrimarySchoolUserRoleId).FirstOrDefault();
+                var chkifSsStaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
+                var chkifNsStaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.NurserySchoolUserRoleId).FirstOrDefault();
 
                 if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifPsStaff == 6 || 
                     chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4 || chkifSsStaff == 6  ||
@@ -2235,7 +2235,7 @@ namespace Dertrix.Controllers
                         RegisteredUser removestaff = db.RegisteredUsers.Find(id);
                         db.RegisteredUsers.Remove(removestaff);
                         db.SaveChanges();
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Staffs");
                     }
                     // GET A LIST OF ORGS STAFF IS LINKED TO - LOOP THRU - AND DELETE FROM REGUSERORG TABLE AND LOG EVENT ONCE ON ORG THAT IS SAME AS ACTIVE SESSION.
                     else
@@ -2309,7 +2309,7 @@ namespace Dertrix.Controllers
                                 };
                                 db.Org_Events_Logs.Add(orgeventlog);
                                 db.SaveChanges();
-                                return RedirectToAction("Index");
+                                return RedirectToAction("Staffs");
                             }
                         }
                     }
@@ -2579,6 +2579,7 @@ namespace Dertrix.Controllers
                 RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
                 db.RegisteredUsers.Remove(registeredUser);
                 db.SaveChanges();
+
                 // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT. 
                 var chkifstud1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
                 var studfullname = db.RegisteredUsers.Where(x => x.RelationshipId == id).Select(x => x.FullName).FirstOrDefault();
@@ -2596,8 +2597,10 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
+
+                    var updateclasses = UpdateClassProfile();
+                    return RedirectToAction("AllStudents");
                 }
-                var updateclasses = UpdateClassProfile();
                 return RedirectToAction("Index");
             }
             catch (Exception e)
