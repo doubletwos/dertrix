@@ -36,10 +36,12 @@
     <br />
 
     <div class="panel panel-default">
-        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive ">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive standard">
             <thead>
-
-                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ClassId)
+                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Org.OrgName)
                     </th>
@@ -50,9 +52,6 @@
                         @Html.DisplayNameFor(model => model.ClassRefNumb)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ClassIsActive)
-                    </th>
-                    <th>
                         Select Action
                     </th>
                 </tr>
@@ -61,32 +60,33 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr style="border-style: groove;">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Org.OrgName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassRefNumb)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassIsActive)
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="background-color:white">
-                                    <li><a href="#" onclick="ShowClass(@item.ClassId)">Class details</a></li>
-                                    <li><a href="#" onclick="EditClass(@item.ClassId)">Edit class</a></li>
-                                    @*<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">Remove class</a></li>*@
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Org.OrgName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassRefNumb)
+                    </td>
+
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="background-color:white">
+                                <li><a href="#" onclick="ShowClass(@item.ClassId)">Class details</a></li>
+                                <li><a href="#" onclick="EditClass(@item.ClassId)">Edit class</a></li>
+                                @*<li><a href="#" onclick="ConfirmDelete(@item.ClassId)">Remove class</a></li>*@
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

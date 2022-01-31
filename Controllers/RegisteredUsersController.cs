@@ -631,9 +631,9 @@ namespace Dertrix.Controllers
                         .Where(x => x.RegisteredUserId == Id)
                         .Where(x => x.OrgId == i)
                         .FirstOrDefault();
-                    ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName", staff.PrimarySchoolUserRoleId);
-                    ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName", staff.SecondarySchoolUserRoleId);
-                    ViewBag.NurserySchoolUserRoleId = new SelectList(db.NurserySchoolUserRoles, "NurserySchoolUserRoleId", "RoleName", staff.NurserySchoolUserRoleId);
+                    ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles.Where(x => x.PrimarySchoolUserRoleID != 5), "PrimarySchoolUserRoleId", "RoleName", staff.PrimarySchoolUserRoleId);
+                    ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles.Where(x => x.SecondarySchoolUserRoleId != 5), "SecondarySchoolUserRoleId", "RoleName", staff.SecondarySchoolUserRoleId);
+                    ViewBag.NurserySchoolUserRoleId = new SelectList(db.NurserySchoolUserRoles.Where(x => x.NurserySchoolUserRoleId != 5), "NurserySchoolUserRoleId", "RoleName", staff.NurserySchoolUserRoleId);
 
                     var staff0 = new RegisteredUserOrganisation
                     {
@@ -1075,7 +1075,7 @@ namespace Dertrix.Controllers
                                 db.Org_Events_Logs.Add(orgeventlog);
                                 db.SaveChanges();
                                 // THEN EXIT.
-                                return RedirectToAction("Students", "RegisteredUsers");
+                                return RedirectToAction("AllStudents", "RegisteredUsers");
                             }
                             //  IF USER IS NOT LINKED TO ANOTHER STUDENT AT THIS ORG, THAT MEANS USER HAS NO ACC IN THE REGUSERORG TABLE. ADD USER - WE GO INTO THIS CONDITION.
                             else
@@ -1235,7 +1235,7 @@ namespace Dertrix.Controllers
                                 var result1 = otherController.UpdateGroupMemberCount(allprgrptyid, w);
 
                                 // THEN EXIT.
-                                return RedirectToAction("Students", "RegisteredUsers");
+                                return RedirectToAction("AllStudents", "RegisteredUsers");
                             }
                         }
                     }
@@ -1532,7 +1532,7 @@ namespace Dertrix.Controllers
                         db.Org_Events_Logs.Add(orgeventlog);
                         db.SaveChanges();
                         // THEN EXIT
-                        return RedirectToAction("Students", "RegisteredUsers");
+                        return RedirectToAction("AllStudents", "RegisteredUsers");
                     }
                     // NEW STUDENT                // ADDING NEW STUDENT - USER IS A STUDENT  - THEN THIS CONDITION IS TRUE - WE GO IN.//
                     if (registeredUser.SelectedOrgList == null && registeredUser.StudentRegFormId != null)
@@ -1626,7 +1626,7 @@ namespace Dertrix.Controllers
                         var otherController = DependencyResolver.Current.GetService<StudentSubjectGradeController>();
                         var result = otherController.CreateStudentModules(classid, studid, classref, i6);
 
-                        return RedirectToAction("Students", "RegisteredUsers");
+                        return RedirectToAction("AllStudents", "RegisteredUsers");
                         // THEN EXIT
                     }
                 }
@@ -1991,7 +1991,7 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AllStudents");
         }
 
 
@@ -2601,7 +2601,7 @@ namespace Dertrix.Controllers
                     var updateclasses = UpdateClassProfile();
                     return RedirectToAction("AllStudents");
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("AllStudents");
             }
             catch (Exception e)
             {

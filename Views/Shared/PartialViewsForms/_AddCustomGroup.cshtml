@@ -18,7 +18,6 @@
                         HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
                     }
                     <div class="form-horizontal">
-                        <hr />
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         @Html.HiddenFor(model => model.OrgId)
                         @Html.HiddenFor(model => model.GroupOrgTypeId)

@@ -5,7 +5,7 @@
 	Add event
 </a>
 <div class="modal fade" id="mycreateevent">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<a href="#" class="close" data-dismiss="modal">&times;</a>
@@ -18,8 +18,6 @@
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
                     <div class="form-horizontal">
-                        <h4></h4>
-                        <hr />
                         @Html.HiddenFor(model => model.OrgSchCalendar.OrgId)
                         @Html.HiddenFor(model => model.OrgSchCalendar.CreatorId)
                         @Html.HiddenFor(model => model.OrgSchCalendar.CreatorFullName)
@@ -60,7 +58,7 @@
 
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.OrgSchCalendar.IsRecurring, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.OrgSchCalendar.IsRecurring,"Is Recurring ?", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownListFor(model => model.OrgSchCalendar.IsRecurring, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text", new { htmlAttributes = new { @id = "IsRecurring", @class = "form-control" } }))
                                 @Html.ValidationMessageFor(model => model.OrgSchCalendar.IsRecurring, "", new { @class = "text-danger" })
@@ -74,17 +72,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.OrgSchCalendar.SendAsEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.OrgSchCalendar.SendAsEmail,"Send As Email ?", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownListFor(model => model.OrgSchCalendar.SendAsEmail, new SelectList(new[] { new { Value = "", Text = "Please select" }, new { Value = "true", Text = "Yes" }, new { Value = "false", Text = "No" }, }, "Value", "Text"))
                                 @Html.ValidationMessageFor(model => model.OrgSchCalendar.SendAsEmail, "", new { @class = "text-danger" })
                             </div>
                         </div>
-
-
-
-
-
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.OrgSchCalendar.Description, htmlAttributes: new { @class = "control-label col-md-2" })

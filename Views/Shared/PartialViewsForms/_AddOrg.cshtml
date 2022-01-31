@@ -2,7 +2,7 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myModalAddOrg">
 	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
-	New Org
+	Add Org
 </a>
 <div class="modal fade" id="myModalAddOrg">
 	<div class="modal-dialog">
@@ -18,44 +18,43 @@
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
 
-					<div class="form-horizontal">
-						<hr />
+			  <div class="form-horizontal">
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 					<div class="form-group">
-						<div class="col-md-10">
-							@Html.LabelFor(model => model.OrgName, "Organisation Name")
-							@Html.EditorFor(model => model.OrgName, new { htmlAttributes = new { @id = "OrgName", @class = "form-control" } })
-							@Html.ValidationMessageFor(model => model.OrgName, "", new { @class = "text-danger" })
-						</div>
-					</div>
+                            @Html.LabelFor(model => model.OrgName, "Organisation Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.OrgName, new { htmlAttributes = new { @id = "OrgName", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.OrgName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OrgAddress, "Organisation Address", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.OrgAddress, new { htmlAttributes = new { @id = "OrgAddress", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.OrgAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 					<div class="form-group">
-						<div class="col-md-10">
-							@Html.LabelFor(model => model.OrgAddress, "Organisation Address")
-							@Html.EditorFor(model => model.OrgAddress, new { htmlAttributes = new { @id = "OrgAddress", @class = "form-control" } })
-							@Html.ValidationMessageFor(model => model.OrgAddress, "", new { @class = "text-danger" })
-						</div>
-					</div>
+                            @Html.LabelFor(model => model.DomainId, "Organisation Sub Domain", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("DomainId", null, "", htmlAttributes: new { @id = "DomainId", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.DomainId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 					<div class="form-group">
-						<div class="col-md-10">
-							@Html.LabelFor(model => model.DomainId, "Organisation Sub Domain")
-							@Html.DropDownList("DomainId", null, "", htmlAttributes: new { @id = "DomainId", @class = "form-control" })
-							@Html.ValidationMessageFor(model => model.DomainId, "", new { @class = "text-danger" })
-						</div>
-					</div>
+                            @Html.LabelFor(model => model.OrgTypeId, "Organisation Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("OrgTypeId", null, "", htmlAttributes: new { @id = "OrgTypeId", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.OrgTypeId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 					<div class="form-group">
-						<div class="col-md-10">
-							@Html.LabelFor(model => model.OrgTypeId, "Organisation Type")
-							@Html.DropDownList("OrgTypeId", null, "", htmlAttributes: new { @id = "OrgTypeId", @class = "form-control" })
-							@Html.ValidationMessageFor(model => model.OrgTypeId, "", new { @class = "text-danger" })
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-10">
-							@Html.LabelFor(model => model.OrgBrandId, "Organisation Brand")
-							@Html.DropDownList("OrgBrandId", null, "", htmlAttributes: new { @id = "OrgBrandId", @class = "form-control" })
-							@Html.ValidationMessageFor(model => model.OrgBrandId, "", new { @class = "text-danger" })
-						</div>
-					</div>
+                            @Html.LabelFor(model => model.OrgBrandId, "Organisation Brand", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("OrgBrandId", null, "", htmlAttributes: new { @id = "OrgBrandId", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.OrgBrandId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 					</div>
 					<div class="modal-footer">
 						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />

@@ -101,6 +101,27 @@ textarea {
     content: '';
 }
 
+/*Tables*/
+.table.standard th {
+    color: #111;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: normal;
+    background-color: #e2e2e2;
+    border-left: none;
+    border-right: none;
+}
+
+.table.standard td {
+    color: #111;
+    font-size: 12px;
+    font-family: Trebuchet MS, Tahoma, Arial;
+}
+
+
+
+
+
 
 
 

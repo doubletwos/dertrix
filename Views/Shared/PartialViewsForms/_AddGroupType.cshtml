@@ -24,7 +24,7 @@
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 					<div class="form-group">
 						<div class="col-md-10">
-							@Html.LabelFor(model => model.GroupTypeName, "Group Name")
+							@Html.LabelFor(model => model.GroupTypeName, "Group Name", htmlAttributes: new { @class = "control-label col-md-2" })
 							@Html.EditorFor(model => model.GroupTypeName, new { htmlAttributes = new { @class = "form-control" } })
 							@Html.ValidationMessageFor(model => model.GroupTypeName, "", new { @class = "text-danger" })
 						</div>
@@ -32,7 +32,7 @@
 
 					<div class="form-group">
 						<div class="col-md-10">
-							@Html.LabelFor(model => model.GroupOrgTypeId, "Group Type")
+							@Html.LabelFor(model => model.GroupOrgTypeId, "Group Type", htmlAttributes: new { @class = "control-label col-md-2" })
 							@Html.EditorFor(model => model.GroupOrgTypeId, new { htmlAttributes = new { @class = "form-control" } })
 							@Html.ValidationMessageFor(model => model.GroupOrgTypeId, "", new { @class = "text-danger" })
 						</div>
@@ -40,7 +40,7 @@
 
 					<div class="form-group">
 						<div class="col-md-10">
-							@Html.LabelFor(model => model.GroupRefNumb, "Group Reference number")
+							@Html.LabelFor(model => model.GroupRefNumb, "Group Reference number", htmlAttributes: new { @class = "control-label col-md-2" })
 							@Html.EditorFor(model => model.GroupRefNumb, new { htmlAttributes = new { @class = "form-control" } })
 							@Html.ValidationMessageFor(model => model.GroupRefNumb, "", new { @class = "text-danger" })
 						</div>

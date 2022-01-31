@@ -618,7 +618,6 @@
     <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\chosen.css" />
     <Content Include="Content\Images\loading1.gif" />
-    <Content Include="Content\Images\ZeusHorizontal.png" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -872,7 +871,6 @@
     <Content Include="Views\GroupTypes\Index.cshtml" />
     <Content Include="Views\OrgGroups\Index.cshtml" />
     <Content Include="Views\Shared\_RegisteredUsersGroupMembers.cshtml" />
-    <Content Include="Views\RegisteredUsers\NotInUse-Guardians.cshtml" />
     <Content Include="Views\StudentGuardians\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianStudent.cshtml" />
     <Content Include="Content\BespokeContents\_BespokeLayout1\fonts\Flaticon.eot" />
@@ -930,7 +928,6 @@
     <Content Include="Views\Shared\_AllClassList.cshtml" />
     <Content Include="Views\RegisteredUsers\ClassStudents.cshtml" />
     <Content Include="Views\Shared\_Widget_SchStaff_Dashboard.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_AddPost1-Disabled.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddMemberToGroup1.cshtml" />
     <Content Include="Views\RegisteredUsersGroups\_MyGroups.cshtml" />
     <Content Include="Views\Shared\_MyOrgCount.cshtml" />
@@ -939,10 +936,7 @@
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_ImpDateDisplayPanel.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_EditImpDate.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EventDisplayPanel.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_EditEvent.cshtml" />
     <Content Include="Views\Shared\_Widget_PG_Dashboard.cshtml" />
     <Content Include="Views\Shared\_MyChildList.cshtml" />
     <Content Include="Views\Shared\_MyChildCount.cshtml" />
