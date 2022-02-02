@@ -21,27 +21,92 @@ namespace Dertrix.Controllers
         {
             try
             {
-                if (isarchived == null)
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+                if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
                 {
-                    var rr = Session["OrgId"].ToString();
-                    int i = Convert.ToInt32(rr);
-                    var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == false).ToList();
-                    return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
-                }
-                if (isarchived == true)
-                {
-                    var rr = Session["OrgId"].ToString();
-                    int i = Convert.ToInt32(rr);
-                    var orgcalendardisplayarchived = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == true).ToList();
-                    return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
+                    if (isarchived == null)
+                    {
+                        var orgcalendardisplay = (from orgschcal in db.OrgSchCalendars
+                                                  //join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                                  //join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                                  //join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                                  where orgschcal.Isarchived == false
+                                                  //where ru.RegisteredUserId == RegisteredUserId
+                                                  where orgschcal.OrgId == i
+                                                  select orgschcal).ToList();
+
+                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                    }
+                    if (isarchived == true)
+                    {
+                        var orgcalendardisplayarchived = (from orgschcal in db.OrgSchCalendars
+                                                          //join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                                          //join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                                          //join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                                          where orgschcal.Isarchived == true
+                                                          //where ru.RegisteredUserId == RegisteredUserId
+                                                          where orgschcal.OrgId == i
+                                                          select orgschcal).ToList();
+                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
+                    }
+                    if (isarchived == false)
+                    {
+                        var orgcalendardisplay = (from orgschcal in db.OrgSchCalendars
+                                                  //join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                                  //join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                                  //join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                                  where orgschcal.Isarchived == false
+                                                  //where ru.RegisteredUserId == RegisteredUserId
+                                                  where orgschcal.OrgId == i
+                                                  select orgschcal).ToList();
+                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                    }
 
                 }
-                if (isarchived == false)
+                else
                 {
-                    var rr = Session["OrgId"].ToString();
-                    int i = Convert.ToInt32(rr);
-                    var orgcalendardisplay = db.OrgSchCalendars.Where(x => x.OrgId == i).Where(x => x.Isarchived == false).ToList();
-                    return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                    if (isarchived == null)
+                    {
+                        var orgcalendardisplay = (from orgschcal in db.OrgSchCalendars
+                                                  join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                                  join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                                  join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                                  where orgschcal.Isarchived == false
+                                                  where ru.RegisteredUserId == RegisteredUserId
+                                                  where orgschcal.OrgId == i
+                                                  select orgschcal).ToList();
+
+                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                    }
+                    if (isarchived == true)
+                    {
+                        var orgcalendardisplayarchived = (from orgschcal in db.OrgSchCalendars
+                                                          join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                                          join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                                          join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                                          where orgschcal.Isarchived == true
+                                                          where ru.RegisteredUserId == RegisteredUserId
+                                                          where orgschcal.OrgId == i
+                                                          select orgschcal).ToList();
+                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
+                    }
+                    if (isarchived == false)
+                    {
+                        var orgcalendardisplay = (from orgschcal in db.OrgSchCalendars
+                                                  join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                                  join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                                  join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                                  where orgschcal.Isarchived == false
+                                                  where ru.RegisteredUserId == RegisteredUserId
+                                                  where orgschcal.OrgId == i
+                                                  select orgschcal).ToList();
+                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                    }
+
                 }
             }
             catch (Exception e)
@@ -51,6 +116,8 @@ namespace Dertrix.Controllers
             }
             return Content("");
         }
+
+
 
 
         [ChildActionOnly]

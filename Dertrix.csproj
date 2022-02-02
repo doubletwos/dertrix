@@ -936,7 +936,6 @@
     <Content Include="Views\Titles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditTitle.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddTitle.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_EventDisplayPanel.cshtml" />
     <Content Include="Views\Shared\_Widget_PG_Dashboard.cshtml" />
     <Content Include="Views\Shared\_MyChildList.cshtml" />
     <Content Include="Views\Shared\_MyChildCount.cshtml" />
@@ -984,6 +983,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\UploadedFiles\" />
+    <Folder Include="Views\Shared\DisplayViews\" />
     <Folder Include="Views\Shared\Layouts\" />
     <Folder Include="Views\Students_Grades_Log\" />
   </ItemGroup>
