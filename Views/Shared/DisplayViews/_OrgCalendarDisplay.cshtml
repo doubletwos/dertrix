@@ -77,13 +77,13 @@
 					@if (DateTime.Now < item.EventDate)
 					{
 						<td style="padding-top: 1.8em;">
-							<p>
-								<a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-								@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-								{
-									<a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-									<a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>}
-							</p>
+                            <p>
+                                <a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+                                @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                {
+                                    <a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+                                    <a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>}
+                            </p>
 						</td>
 					}
 				</tr>

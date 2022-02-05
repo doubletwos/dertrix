@@ -862,7 +862,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditOrg.cshtml" />
     <Content Include="Views\Posts\Index-disabled.cshtml" />
     <Content Include="Views\PostTopics\Index.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_PostDisplayPanel.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_PostDisplayPanel.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
     <Content Include="Views\StudentSubjectGrade\Grades.cshtml" />
     <Content Include="Views\Home\SysSetUp.cshtml" />
@@ -953,7 +953,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddCustomGroup.cshtml" />
     <Content Include="Views\Shared\_Eventlogs.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_LinkGuardianToStudent.cshtml" />
-    <Content Include="Views\Shared\_OrgCalendarDisplay.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_OrgCalendarDisplay.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddCalendarCategory.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditCalendarCategory.cshtml" />
     <Content Include="Views\CalendarCategorys\Table.cshtml" />
@@ -973,7 +973,7 @@
     <Content Include="Views\NurserySchoolUserRoles\Index.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddNursSchRole.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditNursSchRole.cshtml" />
-    <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\Posts\AllPosts.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_DisplayStudentGrades.cshtml" />
     <None Include="Web.Live.config">
@@ -983,7 +983,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\UploadedFiles\" />
-    <Folder Include="Views\Shared\DisplayViews\" />
     <Folder Include="Views\Shared\Layouts\" />
     <Folder Include="Views\Students_Grades_Log\" />
   </ItemGroup>

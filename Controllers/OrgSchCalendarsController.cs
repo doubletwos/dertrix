@@ -31,39 +31,27 @@ namespace Dertrix.Controllers
                     if (isarchived == null)
                     {
                         var orgcalendardisplay = (from orgschcal in db.OrgSchCalendars
-                                                  //join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
-                                                  //join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
-                                                  //join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
                                                   where orgschcal.Isarchived == false
-                                                  //where ru.RegisteredUserId == RegisteredUserId
                                                   where orgschcal.OrgId == i
                                                   select orgschcal).ToList();
 
-                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                        return PartialView("~/Views/Shared/DisplayViews/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
                     }
                     if (isarchived == true)
                     {
                         var orgcalendardisplayarchived = (from orgschcal in db.OrgSchCalendars
-                                                          //join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
-                                                          //join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
-                                                          //join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
                                                           where orgschcal.Isarchived == true
-                                                          //where ru.RegisteredUserId == RegisteredUserId
                                                           where orgschcal.OrgId == i
                                                           select orgschcal).ToList();
-                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
+                        return PartialView("~/Views/Shared/DisplayViews/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
                     }
                     if (isarchived == false)
                     {
                         var orgcalendardisplay = (from orgschcal in db.OrgSchCalendars
-                                                  //join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
-                                                  //join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
-                                                  //join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
                                                   where orgschcal.Isarchived == false
-                                                  //where ru.RegisteredUserId == RegisteredUserId
                                                   where orgschcal.OrgId == i
                                                   select orgschcal).ToList();
-                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                        return PartialView("~/Views/Shared/DisplayViews/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
                     }
 
                 }
@@ -78,9 +66,11 @@ namespace Dertrix.Controllers
                                                   where orgschcal.Isarchived == false
                                                   where ru.RegisteredUserId == RegisteredUserId
                                                   where orgschcal.OrgId == i
-                                                  select orgschcal).ToList();
+                                                  select orgschcal)
+                                                  .Distinct()
+                                                  .ToList();
 
-                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                        return PartialView("~/Views/Shared/DisplayViews/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
                     }
                     if (isarchived == true)
                     {
@@ -91,8 +81,11 @@ namespace Dertrix.Controllers
                                                           where orgschcal.Isarchived == true
                                                           where ru.RegisteredUserId == RegisteredUserId
                                                           where orgschcal.OrgId == i
-                                                          select orgschcal).ToList();
-                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
+                                                          select orgschcal)
+                                                          .Distinct()
+                                                          .ToList();
+
+                        return PartialView("~/Views/Shared/DisplayViews/_OrgCalendarDisplay.cshtml", orgcalendardisplayarchived);
                     }
                     if (isarchived == false)
                     {
@@ -103,8 +96,11 @@ namespace Dertrix.Controllers
                                                   where orgschcal.Isarchived == false
                                                   where ru.RegisteredUserId == RegisteredUserId
                                                   where orgschcal.OrgId == i
-                                                  select orgschcal).ToList();
-                        return PartialView("~/Views/Shared/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
+                                                  select orgschcal)
+                                                  .Distinct()
+                                                  .ToList();
+
+                        return PartialView("~/Views/Shared/DisplayViews/_OrgCalendarDisplay.cshtml", orgcalendardisplay);
                     }
 
                 }

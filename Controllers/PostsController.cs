@@ -22,11 +22,15 @@ namespace Dertrix.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
-        public ActionResult Index()
+        public ActionResult AllPosts()
         {
             try
             {
-                if (Request.Browser.IsMobileDevice == true)
+                if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                { 
+                }
+
+                    if (Request.Browser.IsMobileDevice == true)
                 {
                     return RedirectToAction("WrongDevice", "Orgs");
                 }
@@ -56,17 +60,28 @@ namespace Dertrix.Controllers
         }
 
 
-        //public ActionResult PostsTable()
-        //{
-        //    if (Session["OrgId"] == null)
-        //    {
-        //        return RedirectToAction("Signin", "Access");
-        //    }
-        //    var rr = Session["OrgId"].ToString();
-        //    int i = Convert.ToInt32(rr);
-        //    var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
-        //    return View(posts.ToList());
-        //}
+        public ActionResult PostsTable()
+        {
+            if (Session["OrgId"] == null)
+            {
+                return RedirectToAction("Signin", "Access");
+            }
+            var rr = Session["OrgId"].ToString();
+            int i = Convert.ToInt32(rr);
+            var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+            var usersposts = (from psts in db.Posts
+                              join pstgrp in db.OrgSchPostGrps on psts.PostId equals pstgrp.OrgPostId
+                              join rug in db.RegisteredUsersGroups on pstgrp.OrgGroupId equals rug.OrgGroupId
+                              join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                              where ru.RegisteredUserId == RegisteredUserId
+                              where psts.OrgId == i
+                              select psts)
+                              .Distinct()
+                              .ToList();
+
+            return View(usersposts);
+        }
 
         public ActionResult EditPost(int? Id)
         {
@@ -271,8 +286,29 @@ namespace Dertrix.Controllers
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
-                var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
-                return PartialView("~/Views/Shared/PartialViewsForms/_PostDisplayPanel.cshtml", posts);
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+                var usersposts =  (from psts in db.Posts
+                                  join pstgrp in db.OrgSchPostGrps on psts.PostId equals pstgrp.OrgPostId
+                                  join rug in db.RegisteredUsersGroups on pstgrp.OrgGroupId equals rug.OrgGroupId
+                                  join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                  where ru.RegisteredUserId == RegisteredUserId
+                                  where psts.OrgId == i
+                                  select psts)
+                                  .Distinct()
+                                  .ToList();
+
+
+
+
+
+
+
+
+
+
+                //var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
+                return PartialView("~/Views/Shared/DisplayViews/_PostDisplayPanel.cshtml", usersposts);
             }
             catch (Exception e)
             {
@@ -494,7 +530,7 @@ namespace Dertrix.Controllers
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("AllPosts");
                 }
                 ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
@@ -532,7 +568,7 @@ namespace Dertrix.Controllers
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("AllPosts");
             }
             catch (Exception e)
             {

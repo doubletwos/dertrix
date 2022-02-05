@@ -81,19 +81,20 @@
                                     Action <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" style="background-color:white">
-                                    <li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
-                                    <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
                                     <li>
                                         @Html.ActionLink("Create Pdf", "DownloadPostPdf", "Posts", new { id = item.PostId }, null)
                                     </li>
+                                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                    {
+                                    <li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
+                                    <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
+                                    }
                                 </ul>
                             </div>
 
                         </div>
                     </div>
-                    @*</div>*@
                     <hr />
-
                 }
             </div>
             <div class="col-lg-6">
@@ -123,11 +124,6 @@
 
 			}
 		</script>*@
-
-
-
-
-
 
 	@*Delete confirmation Modal*@
 	<div class="modal fade" id="PostDeleteModal">
