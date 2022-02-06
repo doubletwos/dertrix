@@ -26,11 +26,7 @@ namespace Dertrix.Controllers
         {
             try
             {
-                if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-                { 
-                }
-
-                    if (Request.Browser.IsMobileDevice == true)
+                if (Request.Browser.IsMobileDevice == true)
                 {
                     return RedirectToAction("WrongDevice", "Orgs");
                 }
@@ -38,19 +34,48 @@ namespace Dertrix.Controllers
                 {
                     return RedirectToAction("Signin", "Access");
                 }
-                if (Session["IsParent/Guardian"] != null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
+
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-                var posts = db.Posts
-                    .Where(x => x.OrgId == i)
-                    .Include(p => p.Org)
-                    .Include(p => p.PostTopic);
+                if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                {
+                    var usersposts = (from psts in db.Posts
+                                      where psts.OrgId == i
+                                      select psts)
+                                      .Distinct()
+                                      .ToList();
+                    return View(usersposts);
+                }
+                else
+                {
+                    if (Request.Browser.IsMobileDevice == true)
+                    {
+                        return RedirectToAction("WrongDevice", "Orgs");
+                    }
+                    if (Session["OrgId"] == null)
+                    {
+                        return RedirectToAction("Signin", "Access");
+                    }
+                    if (Session["IsParent/Guardian"] != null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
 
-                return View(posts.ToList());
+                    var usersposts = (from psts in db.Posts
+                                      join pstgrp in db.OrgSchPostGrps on psts.PostId equals pstgrp.OrgPostId
+                                      join rug in db.RegisteredUsersGroups on pstgrp.OrgGroupId equals rug.OrgGroupId
+                                      join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                      where ru.RegisteredUserId == RegisteredUserId
+                                      where psts.OrgId == i
+                                      select psts)
+                                      .Distinct()
+                                      .ToList();
+                    return View(usersposts);
+
+                }
+
             }
             catch (Exception e)
             {
@@ -129,7 +154,8 @@ namespace Dertrix.Controllers
                         OrgId = x.OrgId,
                         GroupName = x.GroupName,
                         IsSelected = x.IsSelected
-                    }).ToList()
+                    })
+                    .ToList()
                 };
 
                 foreach (var group in editpostviewmodel.OrgGroups)
@@ -262,7 +288,8 @@ namespace Dertrix.Controllers
                         OrgGroupId = x.OrgGroupId,
                         OrgId = x.OrgId,
                         GroupName = x.GroupName
-                    }).ToList()
+                    })
+                    .ToList()
                 };
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", post.OrgId);
                 ViewBag.PostTopicId = new SelectList(db.PostTopics, "PostTopicId", "PostTopicName", post.PostTopicId);
@@ -288,7 +315,7 @@ namespace Dertrix.Controllers
                 int i = Convert.ToInt32(rr);
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
 
-                var usersposts =  (from psts in db.Posts
+                var usersposts = (from psts in db.Posts
                                   join pstgrp in db.OrgSchPostGrps on psts.PostId equals pstgrp.OrgPostId
                                   join rug in db.RegisteredUsersGroups on pstgrp.OrgGroupId equals rug.OrgGroupId
                                   join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
@@ -297,15 +324,6 @@ namespace Dertrix.Controllers
                                   select psts)
                                   .Distinct()
                                   .ToList();
-
-
-
-
-
-
-
-
-
 
                 //var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
                 return PartialView("~/Views/Shared/DisplayViews/_PostDisplayPanel.cshtml", usersposts);
@@ -380,7 +398,7 @@ namespace Dertrix.Controllers
                     }
                 }
 
-             
+
                 // Send Post as email if Send as Email is True
                 if (viewmodel.Post.SendAsEmail == true)
                 {
@@ -466,26 +484,26 @@ namespace Dertrix.Controllers
 
 
 
-                    // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
-                    var postgrps = db.OrgSchPostGrps
-                        .Where(x => x.OrgPostId == post.PostId)
+                // LOOP THRU LIST OF RECORD IN TABLE AND REMOVE
+                var postgrps = db.OrgSchPostGrps
+                    .Where(x => x.OrgPostId == post.PostId)
+                    .Where(x => x.OrgId == i)
+                    .Select(x => x.OrgSchPostGrpId)
+                    .ToList();
+
+                var orgposttolist = new List<int>(postgrps);
+
+                foreach (var recrd in postgrps)
+                {
+                    var removercrd = db.OrgSchPostGrps
+                        .Where(x => x.OrgSchPostGrpId == recrd)
                         .Where(x => x.OrgId == i)
                         .Select(x => x.OrgSchPostGrpId)
-                        .ToList();
+                        .FirstOrDefault();
 
-                    var orgposttolist = new List<int>(postgrps);
-
-                    foreach (var recrd in postgrps)
-                    {
-                        var removercrd = db.OrgSchPostGrps
-                            .Where(x => x.OrgSchPostGrpId == recrd)
-                            .Where(x => x.OrgId == i)
-                            .Select(x => x.OrgSchPostGrpId)
-                            .FirstOrDefault();
-
-                        OrgSchPostGrp orgpostgrp = db.OrgSchPostGrps.Find(removercrd);
-                        db.OrgSchPostGrps.Remove(orgpostgrp);
-                    }
+                    OrgSchPostGrp orgpostgrp = db.OrgSchPostGrps.Find(removercrd);
+                    db.OrgSchPostGrps.Remove(orgpostgrp);
+                }
 
 
                 // LOOP THRU LIST OF GROUPS PROVIDED

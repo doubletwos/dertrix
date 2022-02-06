@@ -38,29 +38,29 @@
 	
 	}
 	<div class="panel panel-default" style="height:70vh; overflow:auto;">
-		<table class="table table-bordered table-condensed  table-responsive" style="background-color:white; ">
-			@foreach (var item in Model)
-			{
-				<tr>
-					<td>
-						<div style="background-color:darkgray; width:auto; background-color:darkgray;">
-							<strong>
-								&nbsp;&nbsp;
-								<u>@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)</u> &nbsp;&nbsp;&nbsp;
-								@Html.DisplayFor(modelItem => item.PostSubject)
-								<br />
-							</strong>
-							&nbsp;&nbsp;@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>@Html.DisplayFor(modelItem => item.PostCreationDate)</i>
-							<hr />
-						</div>
-						<div style="background-color:white;">
-							@Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
-						</div>
-					</td>
-			
-				</tr>
-			}
-		</table>
+        <table class="table table-bordered table-condensed  table-responsive" style="background-color:white; ">
+            @foreach (var item in Model.OrderByDescending(i => i.PostCreationDate))
+            {
+                <tr>
+                    <td>
+                        <div style="background-color:darkgray; width:auto; background-color:darkgray;">
+                            <strong>
+                                &nbsp;&nbsp;
+                                <u>@Html.DisplayFor(modelItem => item.PostTopic.PostTopicName)</u> &nbsp;&nbsp;&nbsp;
+                                @Html.DisplayFor(modelItem => item.PostSubject)
+                                <br />
+                            </strong>
+                            &nbsp;&nbsp;@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>@Html.DisplayFor(modelItem => item.PostCreationDate)</i>
+                            <hr />
+                        </div>
+                        <div style="background-color:white;">
+                            @Html.Raw(HttpUtility.HtmlDecode(item.PostContent))
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </table>
 	</div>
 	<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 	<input type="hidden" id="hiddenPostId" />

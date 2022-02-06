@@ -53,6 +53,7 @@
             <div style="height: 150px; width: 450px; overflow: auto; border: double; margin-left:120px;">
                 @for (int i = 0; i < Model.OrgGroups.Count; i++)
                 {
+
                     @Html.HiddenFor(model => model.OrgGroups[i].OrgGroupId)
                     @Html.HiddenFor(model => model.OrgGroups[i].GroupName)
                     @:&nbsp;    @Html.CheckBoxFor(model => model.OrgGroups[i].IsSelected)

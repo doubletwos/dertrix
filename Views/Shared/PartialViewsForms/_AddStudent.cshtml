@@ -129,7 +129,7 @@
                         toastr.options.tapToDismiss = false;
                         toastr.success("Student added successfully");
                         $("#myModal").modal("hide");
-                        $("#AddStaffForm")[0].reset();
+                        $("#AddStudentForm")[0].reset();
                     },
                     error: function (response) {
                         toastr.options.positionClass = "toast-bottom-full-width";
@@ -140,7 +140,7 @@
                         toastr.options.tapToDismiss = false;
                         toastr.error("Oops, There has been a problem, the system adminstrators have been notified");
                         $("#myModal").modal("hide");
-                        $("#AddStaffForm")[0].reset();
+                        $("#AddStudentForm")[0].reset();
                     }
 				})
 
@@ -149,11 +149,9 @@
 		})
 
 		$(function () {
-			$("#cancel").on("click", function () {
-				$("#AddStudentForm")[0].reset();
-
+            $("#cancel").on("click", function () {
+                $("#AddStudentForm")[0].reset();
 				window.location.reload();
-
 
 			})
 		})

@@ -1008,14 +1008,17 @@ namespace Dertrix.Controllers
                                 };
                                 db.StudentGuardians.Add(studentguardian);
                                 db.SaveChanges();
+
                                 // ADD GUARDIAN TO CLASS GROUP.
                                 var rrr = Session["OrgId"].ToString();
                                 int w = Convert.ToInt32(rrr);
                                 var studentclassref = db.RegisteredUsers.Where(x => x.RegisteredUserId == (int)registeredUser.TempIntHolder).Select(x => x.ClassRef).FirstOrDefault();
                                 var orggrpref = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.OrgGroupId).FirstOrDefault();
                                 var orggrptypeid = db.OrgGroups.Where(x => x.GroupRefNumb == studentclassref && x.OrgId == w).Select(x => x.GroupTypeId).FirstOrDefault();
+
                                 var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                                 var result = otherController.UpdateGroupMemberCount(orggrpref, w);
+
                                 // UPDATE STUD'S GUARDIAN COUNT.
                                 var studid = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.RegisteredUserId).FirstOrDefault();
                                 var locatestud = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == studid).FirstOrDefault();
@@ -1130,21 +1133,6 @@ namespace Dertrix.Controllers
                                 db.RegisteredUsersGroups.Add(regusergrp);
                                 db.SaveChanges();
 
-                                // ADD GUARDIAN INTO THE ALL PARENTS GROUP.
-                                // GET ALL PRNTS GRP TYPE ID
-
-                                var allprgrptyid = db.OrgGroups.Where(x => x.OrgId == i).Where(x => x.GroupTypeId == 5).Select(x => x.OrgGroupId).FirstOrDefault();
-                                var allprntgrp = new RegisteredUsersGroups
-                                {
-                                    RegisteredUserId = reguserid,
-                                    OrgGroupId = allprgrptyid,
-                                    Email = registeredUser.Email,
-                                    RegUserOrgId = i,
-                                    GroupTypeId = 5
-                                };
-                                db.RegisteredUsersGroups.Add(allprntgrp);
-                                db.SaveChanges();
-
 
 
                                 // UPDATE STUD'S GUARDIAN COUNT.
@@ -1230,9 +1218,6 @@ namespace Dertrix.Controllers
                                 // UPDATE GROUPS COUNT
                                 var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                                 var result = otherController.UpdateGroupMemberCount(orggrpref, w);
-
-                                var otherController1 = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
-                                var result1 = otherController.UpdateGroupMemberCount(allprgrptyid, w);
 
                                 // THEN EXIT.
                                 return RedirectToAction("AllStudents", "RegisteredUsers");
@@ -1430,27 +1415,14 @@ namespace Dertrix.Controllers
                         db.RegisteredUsersGroups.Add(regusergrp);
                         db.SaveChanges();
 
-                        // ADD GUARDIAN INTO THE ALL PARENTS GROUP.
-                        // GET ALL PRNTS GRP TYPE ID
-                        var allprgrptyid = db.OrgGroups.Where(x => x.OrgId == w).Where(x => x.GroupTypeId == 5).Select(x => x.OrgGroupId).FirstOrDefault();
-                        var allprntgrp = new RegisteredUsersGroups
-                        {
-                            RegisteredUserId = registeredUser.RegisteredUserId,
-                            OrgGroupId = allprgrptyid,
-                            Email = registeredUser.Email,
-                            RegUserOrgId = w,
-                            GroupTypeId = 5
-                        };
-                        db.RegisteredUsersGroups.Add(allprntgrp);
-                        db.SaveChanges();
+
 
                         // UPDATE GROUP COUNT
                         var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                         var result = otherController.UpdateGroupMemberCount(orggrpref, w);
 
 
-                        var otherController1 = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
-                        var result1 = otherController.UpdateGroupMemberCount(allprgrptyid, w);
+
 
                         // UPDATE STUD'S GUARDIAN COUNT.
                         var studid = db.RegisteredUsers.Where(x => x.RegisteredUserId == registeredUser.TempIntHolder).Select(x => x.RegisteredUserId).FirstOrDefault();
