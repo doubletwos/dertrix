@@ -325,7 +325,6 @@ namespace Dertrix.Controllers
                                   .Distinct()
                                   .ToList();
 
-                //var posts = db.Posts.Where(x => x.OrgId == i).Include(p => p.Org).Include(p => p.PostTopic);
                 return PartialView("~/Views/Shared/DisplayViews/_PostDisplayPanel.cshtml", usersposts);
             }
             catch (Exception e)

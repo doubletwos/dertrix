@@ -152,6 +152,38 @@ namespace Dertrix.Controllers
             }
         }
 
+
+        public ActionResult EventDisplayPanel()
+        {
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+                var eventsdisplay = (from orgschcal in db.OrgSchCalendars
+                                          join orgschgrp in db.OrgSchCalndrGrps on orgschcal.OrgSchCalendarId equals orgschgrp.OrgSchCalendarId
+                                          join rug in db.RegisteredUsersGroups on orgschgrp.OrgGroupId equals rug.OrgGroupId
+                                          join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
+                                          where orgschcal.Isarchived == false
+                                          where ru.RegisteredUserId == RegisteredUserId
+                                          where orgschcal.OrgId == i
+                                          select orgschcal)
+                          .Distinct()
+                          .ToList();
+
+                return PartialView("~/Views/Shared/PartialViewsForms/_AddEventToOrgCalendar.cshtml", eventsdisplay);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+
+        }
+
+
         // GET: OrgSchCalendars/EventDetails/5
         public ActionResult EventDetails(int Id)
         {
