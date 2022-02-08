@@ -1,14 +1,4 @@
 ﻿@model IEnumerable<Dertrix.Models.Post>
-<head>
-	<style>
-		.jumbotron p {
-			font-size: 15px;
-			color: black;
-			font-weight: normal;
-			margin-top: -9px;
-		}
-	</style>
-</head>
 
 	@{
         var postList = new List<object>();
@@ -27,7 +17,7 @@
 					@Html.DisplayFor(modelItem => item.CreatorFullName) &nbsp;&nbsp;&nbsp; Created: <i>   @Html.DisplayFor(modelItem => item.PostCreationDate)</i>
 				</div>
 				<hr />
-				<div class="panel-body">
+				<div class="panel-body" style="color: #111; font-size: 12px; font-family:'Trebuchet MS', 'Tahoma','Arial';">
 					@{
                         var maxchar = 150;
                         if (item.PostContent.Length < maxchar)

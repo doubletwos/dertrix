@@ -173,7 +173,7 @@ namespace Dertrix.Controllers
                           .Distinct()
                           .ToList();
 
-                return PartialView("~/Views/Shared/PartialViewsForms/_AddEventToOrgCalendar.cshtml", eventsdisplay);
+                return PartialView("~/Views/Shared/DisplayViews/_EventDisplayPanel.cshtml", eventsdisplay);
             }
             catch (Exception e)
             {

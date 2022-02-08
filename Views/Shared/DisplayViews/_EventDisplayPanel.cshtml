@@ -1,0 +1,175 @@
+﻿@model IEnumerable<Dertrix.Models.OrgSchCalendar>
+
+
+@{
+    var eventlist = new List<object>();
+
+    foreach (var item in Model)
+    {
+        eventlist.Add(item);
+        if (eventlist.Count() > 2)
+        {
+            break;
+        }
+    <div class="panel panel-default" style="width:auto; ">
+        <div class="panel-heading" style="background-color:darkgray;">
+            <strong>	@Html.DisplayFor(modelItem => item.Name)</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table standard">
+                <tr>
+                    <td>
+                        <strong>Date:</strong>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventDate) | @Html.DisplayFor(modelItem => item.EventTime)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Details: </strong>
+                    </td>
+                    <td>
+                        @{
+                            var maxchar = 150;
+                            if (item.Description.Length < maxchar)
+                            {
+                                @Html.Raw(HttpUtility.HtmlDecode(item.Description))
+                            }
+                            else
+                            {
+                                var words = item.Description.Split(' ');
+                                var totalCharacters = 0;
+                                var summaryWords = new List<string>();
+                                foreach (var word in words)
+                                {
+                                    summaryWords.Add(word);
+                                    totalCharacters += word.Length + 1;
+                                    if (totalCharacters > 700)
+                                    {
+                                        break;
+                                    }
+                                }
+                                var summary = string.Join(" ", summaryWords) +
+                                    " ...Read More";
+                                summary.ToString();
+                                @Html.Raw(HttpUtility.HtmlDecode(summary))
+                            }
+                        }
+
+                    </td>
+                </tr>
+            </table>
+
+          
+        </div>
+
+
+    </div>
+
+    }
+}
+
+
+
+
+
+
+
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CalendarCategory.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Org.OrgName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatorId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatorFullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EventDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EventTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsRecurring)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Frequency)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SendAsEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Isarchived)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Org.OrgName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatorFullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRecurring)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendAsEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isarchived)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrgSchCalendarId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.OrgSchCalendarId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrgSchCalendarId })
+            </td>
+        </tr>
+    }
+
+
+</table>*@
+

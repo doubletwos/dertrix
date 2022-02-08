@@ -976,6 +976,7 @@
     <Content Include="Views\Posts\AllPosts.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_DisplayStudentGrades.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_EventDisplayPanel.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
