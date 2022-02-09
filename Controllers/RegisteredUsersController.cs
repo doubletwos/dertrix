@@ -2174,8 +2174,90 @@ namespace Dertrix.Controllers
                         db.SaveChanges();
 
 
+                        // CHECK IF TEACHER AND UN-ASSIGN FOR LINKED CLASSES  
+                        var assignedclasscount = db.Classes
+                            .Where(x => x.ClassTeacherId == id)
+                            .Where(x => x.OrgId == i)
+                            .Count();
+
+                        // CHECK IF TEACHER AND UN-ASSIGN FROM LINKED SUBJECTS  
+                        var assignedsubjectcount = db.Subjects
+                            .Where(x => x.ClassTeacherId == id)
+                            .Where(x => x.SubjectOrgId == i)
+                            .Count();
+
+                        if(assignedclasscount > 0)
+                        {
+                            var assignedclasses = db.Classes
+                                .Where(x => x.ClassTeacherId == id)
+                                .Where(x => x.OrgId == i).Select(x => x.ClassId)
+                                .ToList();
+
+                            var classlist = new List<int>(assignedclasses);
+
+                            foreach (var cl in classlist)
+                            {
+                               var currentclass = db.Classes.AsNoTracking().Where(x => x.ClassId == cl && x.OrgId == i).FirstOrDefault();
+
+                                var updaterecrds = new Class
+                                {
+                                    ClassId = currentclass.ClassId,
+                                    ClassName = currentclass.ClassName,
+                                    ClassIsActive = currentclass.ClassIsActive,
+                                    OrgId = currentclass.OrgId,
+                                    ClassRefNumb = currentclass.ClassRefNumb,
+                                    ClassTeacherId = null,
+                                    ClassTeacherFullName = null,
+                                    Students_Count = currentclass.Students_Count,
+                                    Female_Students_Count = currentclass.Female_Students_Count,
+                                    Male_Students_Count = currentclass.Male_Students_Count,
+                                    TitleId = null
+                                };
+                                currentclass = updaterecrds;
+                                db.Entry(currentclass).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+
+                        if (assignedsubjectcount > 0)
+                        {
+                            var assignedsubs = db.Subjects
+                                .Where(x => x.ClassTeacherId == id)
+                                .Where(x => x.SubjectOrgId == i).Select(x => x.SubjectId)
+                                .ToList();
+
+                            var subjlist = new List<int>(assignedsubs);
+
+                            foreach (var sub in subjlist)
+                            {
+                                var currentsubj = db.Subjects.AsNoTracking().Where(x => x.SubjectId == sub && x.SubjectOrgId == i).FirstOrDefault();
+
+                                var updaterecrds = new Subject
+                                {
+                                    SubjectId = currentsubj.SubjectId,
+                                    SubjectName = currentsubj.SubjectName,
+                                    ClassId = currentsubj.ClassId,
+                                    ClassTeacherId = null,
+                                    TaughtBy = null,
+                                    SubjectOrgId = currentsubj.SubjectOrgId,
+                                    First_Term_Test_MaxGrade = currentsubj.First_Term_Test_MaxGrade,
+                                    Second_Term_Test_MaxGrade = currentsubj.Second_Term_Test_MaxGrade,
+                                    Third_Term_Test_MaxGrade = currentsubj.Third_Term_Test_MaxGrade,
+                                    First_Term_Exam_MaxGrade = currentsubj.First_Term_Exam_MaxGrade,
+                                    Second_Term_Exam_MaxGrade = currentsubj.Second_Term_Exam_MaxGrade,
+                                    Third_Term_Exam_MaxGrade = currentsubj.Third_Term_Exam_MaxGrade,
+                                    Created_date = currentsubj.Created_date,
+                                    Creator_Id = currentsubj.Creator_Id,
+                                };
+                                currentsubj = updaterecrds;
+                                db.Entry(currentsubj).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+
+
                         // SOFT DELETE USER
-                            var remvdstaff = new RemovedRegisteredUser
+                        var remvdstaff = new RemovedRegisteredUser
                             {
                                 RegisteredUserId = staffdataRu.RegisteredUserId,
                                 CreationDate = DateTime.Now,
@@ -2232,8 +2314,89 @@ namespace Dertrix.Controllers
                                     .Where(x => x.OrgId == i)
                                     .FirstOrDefault();
 
+                                // CHECK IF TEACHER AND UN-ASSIGN FOR LINKED CLASSES  
+                                var assignedclasscount = db.Classes
+                                    .Where(x => x.ClassTeacherId == id)
+                                    .Where(x => x.OrgId == i)
+                                    .Count();
+
+                                // CHECK IF TEACHER AND UN-ASSIGN FROM LINKED SUBJECTS  
+                                var assignedsubjectcount = db.Subjects
+                                    .Where(x => x.ClassTeacherId == id)
+                                    .Where(x => x.SubjectOrgId == i)
+                                    .Count();
+
+                                if (assignedclasscount > 0)
+                                {
+                                    var assignedclasses = db.Classes
+                                        .Where(x => x.ClassTeacherId == id)
+                                        .Where(x => x.OrgId == i).Select(x => x.ClassId)
+                                        .ToList();
+
+                                    var classlist = new List<int>(assignedclasses);
+
+                                    foreach (var cl in classlist)
+                                    {
+                                        var currentclass = db.Classes.AsNoTracking().Where(x => x.ClassId == cl && x.OrgId == i).FirstOrDefault();
+
+                                        var updaterecrds = new Class
+                                        {
+                                            ClassId = currentclass.ClassId,
+                                            ClassName = currentclass.ClassName,
+                                            ClassIsActive = currentclass.ClassIsActive,
+                                            OrgId = currentclass.OrgId,
+                                            ClassRefNumb = currentclass.ClassRefNumb,
+                                            ClassTeacherId = null,
+                                            ClassTeacherFullName = null,
+                                            Students_Count = currentclass.Students_Count,
+                                            Female_Students_Count = currentclass.Female_Students_Count,
+                                            Male_Students_Count = currentclass.Male_Students_Count,
+                                            TitleId = null
+                                        };
+                                        currentclass = updaterecrds;
+                                        db.Entry(currentclass).State = EntityState.Modified;
+                                        db.SaveChanges();
+                                    }
+                                }
+
+                                if (assignedsubjectcount > 0)
+                                {
+                                    var assignedsubs = db.Subjects
+                                        .Where(x => x.ClassTeacherId == id)
+                                        .Where(x => x.SubjectOrgId == i).Select(x => x.SubjectId)
+                                        .ToList();
+
+                                    var subjlist = new List<int>(assignedsubs);
+
+                                    foreach (var sub in subjlist)
+                                    {
+                                        var currentsubj = db.Subjects.AsNoTracking().Where(x => x.SubjectId == sub && x.SubjectOrgId == i).FirstOrDefault();
+
+                                        var updaterecrds = new Subject
+                                        {
+                                            SubjectId = currentsubj.SubjectId,
+                                            SubjectName = currentsubj.SubjectName,
+                                            ClassId = currentsubj.ClassId,
+                                            ClassTeacherId = null,
+                                            TaughtBy = null,
+                                            SubjectOrgId = currentsubj.SubjectOrgId,
+                                            First_Term_Test_MaxGrade = currentsubj.First_Term_Test_MaxGrade,
+                                            Second_Term_Test_MaxGrade = currentsubj.Second_Term_Test_MaxGrade,
+                                            Third_Term_Test_MaxGrade = currentsubj.Third_Term_Test_MaxGrade,
+                                            First_Term_Exam_MaxGrade = currentsubj.First_Term_Exam_MaxGrade,
+                                            Second_Term_Exam_MaxGrade = currentsubj.Second_Term_Exam_MaxGrade,
+                                            Third_Term_Exam_MaxGrade = currentsubj.Third_Term_Exam_MaxGrade,
+                                            Created_date = currentsubj.Created_date,
+                                            Creator_Id = currentsubj.Creator_Id,
+                                        };
+                                        currentsubj = updaterecrds;
+                                        db.Entry(currentsubj).State = EntityState.Modified;
+                                        db.SaveChanges();
+                                    }
+                                }
+
                                 // SOFT DELETE USER
-                                    var remvdstaff = new RemovedRegisteredUser
+                                var remvdstaff = new RemovedRegisteredUser
                                     {
                                         RegisteredUserId = staffdataRu.RegisteredUserId,
                                         CreationDate = DateTime.Now,

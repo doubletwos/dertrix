@@ -119,7 +119,10 @@ namespace Dertrix.Controllers
 
                     };
 
-                    ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations.Where(x => x.OrgId == i).Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4)), "RegisteredUserId", "FullName", edtsubject1.ClassTeacherId);
+                    ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
+                        .Where(x => x.OrgId == i)
+                        .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3)), "RegisteredUserId", "FullName", edtsubject1.ClassTeacherId);
+
                     ViewBag.ClassId = new SelectList(db.Classes.Where(x => x.OrgId == i), "ClassId", "ClassName", edtsubject.ClassId);
 
                     return PartialView("~/Views/Shared/PartialViewsForms/_EditSubject.cshtml", edtsubject1);
