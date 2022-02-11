@@ -18,7 +18,6 @@
                         HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
                     <div class="form-horizontal">
-                        <hr />
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
                             @Html.LabelFor(model => model.SubjectName, "Subject Name", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -49,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.First_Term_Exam_MaxGrade, "1st Term Exam Max Grade", htmlAttributes: new { @class = "control-label col-md-2"})
+                            @Html.LabelFor(model => model.First_Term_Exam_MaxGrade, "1st Term Exam Max Grade", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.First_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.First_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
@@ -83,6 +82,13 @@
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Third_Term_Exam_MaxGrade, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Third_Term_Exam_MaxGrade, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Subject_Min_Passmark, "Required Pass Mark", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Subject_Min_Passmark, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Subject_Min_Passmark, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="modal-footer">

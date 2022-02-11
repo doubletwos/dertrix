@@ -297,6 +297,10 @@ $(document).ready(function () {
 				required: true,
 				maxlength: 3
 			},
+			'Subject_Min_Passmark': {
+				required: true,
+				maxlength: 3
+			},
 		},
 		messages: {
 			'SubjectName': {
@@ -327,6 +331,10 @@ $(document).ready(function () {
 			},
 			'Third_Term_Exam_MaxGrade': {
 				required: 'Max grade is required',
+				maxlength: 'Not more than 3 characters allowed'
+			},
+			'Subject_Min_Passmark': {
+				required: 'Required pass mark is required',
 				maxlength: 'Not more than 3 characters allowed'
 			},
 		}

@@ -1848,7 +1848,7 @@ namespace Dertrix.Controllers
                                 Third_Term_Exam_MaxGrade = currentsubject.Third_Term_Exam_MaxGrade,
                                 First_Term_Test_MaxGrade = currentsubject.First_Term_Test_MaxGrade,
                                 Second_Term_Test_MaxGrade = currentsubject.Second_Term_Test_MaxGrade,
-                                Third_Term_Test_MaxGrade = currentsubject.Third_Term_Test_MaxGrade,
+                                Third_Term_Test_MaxGrade = currentsubject.Third_Term_Test_MaxGrade,                                
                                 Updater_Id = (int)currentgrade.Updater_Id,
                                 StudentClassChangeType = StudentClassChangeType.Change_of_class,
                                 ClassTeacherId = currentsubject.ClassTeacherId,
@@ -2246,6 +2246,7 @@ namespace Dertrix.Controllers
                                     First_Term_Exam_MaxGrade = currentsubj.First_Term_Exam_MaxGrade,
                                     Second_Term_Exam_MaxGrade = currentsubj.Second_Term_Exam_MaxGrade,
                                     Third_Term_Exam_MaxGrade = currentsubj.Third_Term_Exam_MaxGrade,
+                                    Subject_Min_Passmark = currentsubj.Subject_Min_Passmark,
                                     Created_date = currentsubj.Created_date,
                                     Creator_Id = currentsubj.Creator_Id,
                                 };
@@ -2386,6 +2387,7 @@ namespace Dertrix.Controllers
                                             First_Term_Exam_MaxGrade = currentsubj.First_Term_Exam_MaxGrade,
                                             Second_Term_Exam_MaxGrade = currentsubj.Second_Term_Exam_MaxGrade,
                                             Third_Term_Exam_MaxGrade = currentsubj.Third_Term_Exam_MaxGrade,
+                                            Subject_Min_Passmark = currentsubj.Subject_Min_Passmark,
                                             Created_date = currentsubj.Created_date,
                                             Creator_Id = currentsubj.Creator_Id,
                                         };

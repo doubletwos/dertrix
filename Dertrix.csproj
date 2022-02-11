@@ -551,6 +551,14 @@
     <Compile Include="Migrations\202201231126492_Sprint2022.10.14.designer.cs">
       <DependentUpon>202201231126492_Sprint2022.10.14.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202100549380_Sprint2022.02.01.cs" />
+    <Compile Include="Migrations\202202100549380_Sprint2022.02.01.designer.cs">
+      <DependentUpon>202202100549380_Sprint2022.02.01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202110625540_Sprint2022.02.02.cs" />
+    <Compile Include="Migrations\202202110625540_Sprint2022.02.02.designer.cs">
+      <DependentUpon>202202110625540_Sprint2022.02.02.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -751,6 +759,7 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <Content Include="Content\wysiwyg-editor-bootstrap\src\scss\wysiwyg.scss" />
+    <Content Include="Files\Template_Files\test.xlsx" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -964,7 +973,6 @@
     <Content Include="Views\Orgs\PGSchCentre1.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditCustomGroup.cshtml" />
     <Content Include="Views\Shared\_MyOrgList.cshtml" />
-    <Content Include="Files\Template_Files\test.xlsx" />
     <Content Include="Views\Shared\PartialViewsForms\_UploadStudents.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStudentsClass.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_ChangeStaffsRole.cshtml" />
@@ -975,7 +983,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_EditNursSchRole.cshtml" />
     <Content Include="Views\Posts\AllPosts.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddPost1.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_DisplayStudentGrades.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_DisplayStudentGrades.cshtml" />
     <Content Include="Views\Shared\DisplayViews\_EventDisplayPanel.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1238,6 +1246,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201231126492_Sprint2022.10.14.resx">
       <DependentUpon>202201231126492_Sprint2022.10.14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202100549380_Sprint2022.02.01.resx">
+      <DependentUpon>202202100549380_Sprint2022.02.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202110625540_Sprint2022.02.02.resx">
+      <DependentUpon>202202110625540_Sprint2022.02.02.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

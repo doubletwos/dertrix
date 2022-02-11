@@ -50,6 +50,13 @@ namespace Dertrix.Models
 
         public int? Updater_Id { get; set; }  
 
+        public decimal? Subject_Min_Passmark { get; set; }
+
+        public decimal? Subject_Max_Passmark { get; set; } 
+
+
+
+
 
 
     }

@@ -46,14 +46,11 @@ namespace Dertrix.Models
             }
         }
 
+        public decimal? Subject_Min_Passmark { get; set; }  
+
         public DateTime? Created_date { get; set; }
 
         public string Creator_Id { get; set; } 
-
-
-
-
-
 
     }
 }

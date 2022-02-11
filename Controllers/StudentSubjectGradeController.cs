@@ -95,7 +95,7 @@ namespace Dertrix.Controllers
 
                 foreach (var sb in subjects)
                 {
-                    var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == sb).Select(c => c.SubjectName).FirstOrDefault();
+                    var subjectdata = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == sb).FirstOrDefault();
                     var studentsubjects = new StudentSubjectGrade()
                     {
                         RegisteredUserId = studid,
@@ -103,7 +103,7 @@ namespace Dertrix.Controllers
                         ClassRef = classref,
                         OrgId = i6,
                         SubjectId = sb,
-                        SubjectName = subjectname,
+                        SubjectName = subjectdata.SubjectName,
                         FirstTerm_ExamGrade = 00.0m,
                         SecondTerm_ExamGrade = 00.0m,
                         ThirdTerm_ExamGrade = 00.0m,
@@ -113,6 +113,9 @@ namespace Dertrix.Controllers
                         Created_date = DateTime.Now,
                         Updater_Id = 0,
                         Last_updated_date = DateTime.Now,
+                        Subject_Min_Passmark = subjectdata.Subject_Min_Passmark,
+                        Subject_Max_Passmark = subjectdata.SubjectMaxGrade
+
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
                     db.SaveChanges();
@@ -142,7 +145,7 @@ namespace Dertrix.Controllers
                 // Loop through students
                 foreach (var student in studentlist)
                 {
-                    var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).Select(c => c.SubjectName).FirstOrDefault();
+                    var subjectdata = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).FirstOrDefault();
                     var studentsubjects = new StudentSubjectGrade()
                     {
                         RegisteredUserId = student,
@@ -158,7 +161,9 @@ namespace Dertrix.Controllers
                         ThirdTerm_TestGrade = 00.0m,
                         Last_updated_date = DateTime.Now,
                         Created_date = DateTime.Now,
-                        SubjectName = subjectname,
+                        SubjectName = subjectdata.SubjectName,
+                        Subject_Min_Passmark = subjectdata.Subject_Min_Passmark,
+                        Subject_Max_Passmark = subjectdata.SubjectMaxGrade,
                         Updater_Id = 0,
                     };
                     db.StudentSubjectGrades.Add(studentsubjects);
@@ -299,11 +304,12 @@ namespace Dertrix.Controllers
                         First_Term_Exam_MaxGrade = x.First_Term_Exam_MaxGrade,
                         Second_Term_Exam_MaxGrade = x.Second_Term_Exam_MaxGrade,
                         Third_Term_Exam_MaxGrade = x.Third_Term_Exam_MaxGrade,
+                        Subject_Min_Passmark = x.Subject_Min_Passmark,
                         Created_date = x.Created_date,
                         Creator_Id = x.Creator_Id                                               
                     }).ToList(),
                 };
-                return PartialView("~/Views/Shared/PartialViewsForms/_DisplayStudentGrades.cshtml", displayssgviewmodel);
+                return PartialView("~/Views/Shared/DisplayViews/_DisplayStudentGrades.cshtml", displayssgviewmodel);
             }
             catch (Exception e)
             {
@@ -321,13 +327,6 @@ namespace Dertrix.Controllers
             {
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);
-
-
-                //var sub = db.StudentSubjectGrades
-                //    .Where(x => x.RegisteredUserId == id)
-                //    .Include(x => x.Subject)
-                //    .ToList();
-
 
                 // Get all the subjects from the database
                 var ssg = db.StudentSubjectGrades
@@ -353,12 +352,15 @@ namespace Dertrix.Controllers
                         FirstTerm_TestGrade = x.FirstTerm_TestGrade,
                         SecondTerm_TestGrade = x.SecondTerm_TestGrade,
                         ThirdTerm_TestGrade = x.ThirdTerm_TestGrade,
+                        Subject_Min_Passmark = x.Subject_Min_Passmark,
+                        Subject_Max_Passmark = x.Subject_Max_Passmark,
                         RegisteredUserId = x.RegisteredUserId,
                         Created_date = x.Created_date,
                         Last_updated_date = x.Last_updated_date,
                         ClassRef = x.ClassRef,
                         ClassId = x.ClassId,
                         Updater_Id = x.Updater_Id,
+
 
                     }).ToList(),
 
@@ -376,7 +378,7 @@ namespace Dertrix.Controllers
         }
 
 
-        // Update Subject Name on StudentSubjectGrade records for all students
+        // Update Subject Data on StudentSubjectGrade records for all students
         public ActionResult UpdateStudentSubjectData(int subid, int classid, int? orgid) 
         {
             try
@@ -390,8 +392,8 @@ namespace Dertrix.Controllers
                 //Create List
                 var studentlist = new List<int>(studs);
 
-                //Get Subject Name
-                var subjectname = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).Select(c => c.SubjectName).FirstOrDefault();
+                //Get Subject Data
+                var subjectdata = db.Subjects.Where(s => s.ClassId == classid).Where(x => x.SubjectId == subid).FirstOrDefault();
 
                 foreach (var stud in studs) 
                 {
@@ -414,9 +416,11 @@ namespace Dertrix.Controllers
                         FirstTerm_TestGrade = student.FirstTerm_TestGrade,
                         SecondTerm_TestGrade = student.SecondTerm_TestGrade,
                         ThirdTerm_TestGrade = student.ThirdTerm_TestGrade,
+                        Subject_Min_Passmark = subjectdata.Subject_Min_Passmark,
+                        Subject_Max_Passmark = subjectdata.SubjectMaxGrade,
                         Last_updated_date = student.Last_updated_date,
                         Created_date = student.Created_date,
-                        SubjectName = subjectname,
+                        SubjectName = subjectdata.SubjectName,
                         Updater_Id = student.Updater_Id,
                     };
                     student = updateStudent;
@@ -487,6 +491,9 @@ namespace Dertrix.Controllers
                     var rr = Session["OrgId"].ToString();
                     int i = Convert.ToInt32(rr);
 
+                    var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+
                     var updategrade = new StudentSubjectGrade
                     {
                         StudentSubjectGradeId = grade.StudentSubjectGradeId,
@@ -501,10 +508,12 @@ namespace Dertrix.Controllers
                         FirstTerm_TestGrade = grade.FirstTerm_TestGrade,
                         SecondTerm_TestGrade = grade.SecondTerm_TestGrade,
                         ThirdTerm_TestGrade = grade.ThirdTerm_TestGrade,
+                        Subject_Min_Passmark = grade.Subject_Min_Passmark,
+                        Subject_Max_Passmark = grade.Subject_Max_Passmark,
                         Last_updated_date = DateTime.Now,
                         Created_date = grade.Created_date,
                         SubjectName = grade.SubjectName,
-                        Updater_Id = i
+                        Updater_Id = RegisteredUserId
                     };
 
                     grade_id = updategrade;

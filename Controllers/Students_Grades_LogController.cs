@@ -113,16 +113,16 @@ namespace Dertrix.Controllers
             return View(students_Grades_Log);
         }
 
-        // POST: Students_Grades_Log/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Students_Grades_Log students_Grades_Log = db.Students_Grades_Logs.Find(id);
-            db.Students_Grades_Logs.Remove(students_Grades_Log);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Students_Grades_Log/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Students_Grades_Log students_Grades_Log = db.Students_Grades_Logs.Find(id);
+        //    db.Students_Grades_Logs.Remove(students_Grades_Log);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

@@ -113,6 +113,7 @@ namespace Dertrix.Controllers
                         First_Term_Test_MaxGrade = edtsubject.First_Term_Test_MaxGrade,
                         Second_Term_Test_MaxGrade = edtsubject.Second_Term_Test_MaxGrade,
                         Third_Term_Test_MaxGrade = edtsubject.Third_Term_Test_MaxGrade,
+                        Subject_Min_Passmark = edtsubject.Subject_Min_Passmark,
                         SubjectOrgId = edtsubject.SubjectOrgId,
                         Created_date = edtsubject.Created_date,
                         Creator_Id = edtsubject.Creator_Id,
