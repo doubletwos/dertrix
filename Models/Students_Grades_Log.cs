@@ -46,6 +46,19 @@ namespace Dertrix.Models
 
         public decimal? Third_Term_Exam_MaxGrade { get; set; }
 
+        public decimal? Subject_Min_Passmark { get; set; }
+
+        public decimal? Subject_Max_Passmark { get; set; }
+
+
+        public decimal? StudentSubjectGradeObtained
+        {
+            get
+            {
+                return FirstTerm_ExamGrade + SecondTerm_ExamGrade + ThirdTerm_ExamGrade + FirstTerm_TestGrade + SecondTerm_TestGrade + ThirdTerm_TestGrade;
+            }
+        }
+
         public int? ClassTeacherId { get; set; }
 
         public DateTime? Created_date { get; set; }
