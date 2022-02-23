@@ -1,143 +1,148 @@
 ﻿@model IEnumerable<Dertrix.Models.OrgSchCalendar>
-	<head>
-		@{ var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString(); }
-	</head>
-	<div class="row">
-		@*
-			<div class="col-md-3">
-				@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-				{
-				{
-				Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
-				}
-				}
-			</div>
-		*@
-		<div class="col-md-3" style="padding-top: 0.7em;">
-			Today is :	<b>@DateTime.Now.ToString("dddd, dd MMMM yyyy")</b>
-		</div>
-		<div class="col-md-3">
-		</div>
-	</div>
-	<table class="table" style="height:300px; display: block; overflow-y:scroll; width:3200px;">
-		<thead>
-			<tr>
-				<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-					@Html.DisplayNameFor(model => model.Name)
-				</th>
-				<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-					Category
-				</th>
-				<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-					@Html.DisplayNameFor(model => model.EventDate)
-				</th>
-				<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-					Days To Event
-				</th>
-				<th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
-					Select Action
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model.OrderBy(i => i.EventDate))
-			{
-				<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
-					<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-						@Html.DisplayFor(modelItem => item.Name)
-					</td>
-					<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-						@Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
-					</td>
-					<td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
-						@Html.DisplayFor(modelItem => item.EventDate)
-					</td>
+<head>
+    @{ var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString(); }
+</head>
+<div class="row">
+    @*
+        <div class="col-md-3">
+            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+            {
+            {
+            Html.RenderAction("AddEventToOrgCalendar", "OrgSchCalendars");
+            }
+            }
+        </div>
+    *@
+    <div class="col-md-3" style="padding-top: 0.7em;">
+        Today is :	<b>@DateTime.Now.ToString("dddd, dd MMMM yyyy")</b>
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
+<table class="table" style="height:300px; display: block; overflow-y:scroll; width:3200px;">
+    <thead>
+        <tr>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                Category
+            </th>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                @Html.DisplayNameFor(model => model.EventDate)
+            </th>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                Days To Event
+            </th>
+            <th style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em; position: sticky; top: 0; background-color: white;">
+                Select Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(i => i.EventDate))
+        {
+            <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:12px;  background-color:white; border-style: double ; border-left: none; border-right:none; border-spacing:20px;">
+                <td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+                    @Html.DisplayFor(modelItem => item.CalendarCategory.CategoryName)
+                </td>
+                <td style="padding-bottom: 2em; padding-top: 2em; padding-right: 4em; padding-left: 4em;">
+                    @Html.DisplayFor(modelItem => item.EventDate)
+                </td>
 
 
-					@if(item.EventDate != null)
-					{
-					<td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
-						@{ DateTime d1 = DateTime.Now;
-							DateTime? d2 = @item.EventDate;
-							TimeSpan? t = d2 - d1;
-							string NrOfDays = t.Value.Days.ToString();
-						}
+                @if (item.EventDate != null)
+                {
+                    <td style="padding-bottom: 2em; padding-top: 2.5em; padding-right: 4em; padding-left: 4em;">
+                        @{ DateTime d1 = DateTime.Now;
+                            DateTime? d2 = @item.EventDate;
+                            TimeSpan? t = d2 - d1;
+                            string NrOfDays = t.Value.Days.ToString();
+                        }
 
-						@if (t.Value.Days == 0)
-						{
-							NrOfDays = "Today";
-						}
-						else
-						{
-							@NrOfDays
-						}
-					</td>
-					}
+                        @if (t.Value.Days == 0)
+                        {
+                            NrOfDays = "Today";
+                        }
+                        @if (t.Value.Days < 0)
+                        {
+                           var pastevents = "Past Event";
+                            @pastevents;
+                        }
+                        else
+                        {
+                            @NrOfDays
+                        }
+                    </td>
+                }
 
-					@if (DateTime.Now < item.EventDate)
-					{
-						<td style="padding-top: 1.8em;">
-                            <p>
-                                <a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-                                @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-                                {
-                                    <a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
-                                    <a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>}
-                            </p>
-						</td>
-					}
-				</tr>
-			}
-		</tbody>
-	</table>
-	<input type="hidden" id="hiddenOrgSchCalendarId" />
-	@*View Calendar Details Modal*@
-	<div class="modal fade" id="calendarmodal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title"></h3>
-				</div>
-				<div class="modal-body" id="calModalBodyDiv"></div>
-				<div class="modal-footer">
-					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Close</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
-		var ShowEvent = function (Id) {
-			$.ajax({
-				type: "POST",
-				url: "/OrgSchCalendars/EventDetails",
-				data: { Id: Id },
-				success: function (response) {
-					$("#calModalBodyDiv").html(response);
-					$("#calendarmodal").modal("show");
-				}
-			})
-		}
-	</script>
-	@*Delete confirmation Modal*@
-	<div class="modal fade" id="DeleteEventModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title"></h3>
-				</div>
-				<div class="modal-body">
-					<h3>Are you sure you want to delete this event?</h3>
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-					<a href="#" class="RegUserOrgButtonColour" onclick="DeleteCalendarEvent()">Confirm</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
+                @if (DateTime.Now < item.EventDate)
+                {
+                    <td style="padding-top: 1.8em;">
+                        <p>
+                            <a href="#" onclick="ShowEvent(@item.OrgSchCalendarId)"> <i class="fa fa-info-circle" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+                            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                            {
+                                <a href="#" onclick="EditEvent(@item.OrgSchCalendarId)"> <i class="fa fa-edit" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>
+                                <a href="#" onclick="ConfirmDelete(@item.OrgSchCalendarId)"> <i class="fa fa-trash" style="color:@regUserOrgNavBar;" aria-hidden="true"></i></a>}
+                        </p>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<input type="hidden" id="hiddenOrgSchCalendarId" />
+@*View Calendar Details Modal*@
+<div class="modal fade" id="calendarmodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body" id="calModalBodyDiv"></div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ShowEvent = function (Id) {
+        $.ajax({
+            type: "POST",
+            url: "/OrgSchCalendars/EventDetails",
+            data: { Id: Id },
+            success: function (response) {
+                $("#calModalBodyDiv").html(response);
+                $("#calendarmodal").modal("show");
+            }
+        })
+    }
+</script>
+@*Delete confirmation Modal*@
+<div class="modal fade" id="DeleteEventModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure you want to delete this event?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                <a href="#" class="RegUserOrgButtonColour" onclick="DeleteCalendarEvent()">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
 	var ConfirmDelete = function (OrgSchCalendarId) {
 		$("#hiddenOrgSchCalendarId").val(OrgSchCalendarId);
 		$("#DeleteEventModal").modal('show');
@@ -155,33 +160,33 @@
 			}
 		})
 	}
-	</script>
-	@*Edit Org Imp Date Modal*@
-	<div class="modal fade" id="EditEventModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="#" class="close" data-dismiss="modal">&times;</a>
-					<h3 class="modal-title"></h3>
-				</div>
-				<div class="modal-body" id="EditEventModalBody"></div>
-			</div>
-		</div>
-	</div>
-	<script>
-		var EditEvent = function (Id) {
-			$.ajax({
-				type: "GET",
-				url: "/OrgSchCalendars/EditOrgSchCal",
-				data: { Id: Id },
-				success: function (response) {
-					$("#EditEventModalBody").html(response);
-					$("#EditEventModal").modal("show");
-				}
-			})
-		}
-	</script>
-	<script>
+</script>
+@*Edit Org Imp Date Modal*@
+<div class="modal fade" id="EditEventModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body" id="EditEventModalBody"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var EditEvent = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/OrgSchCalendars/EditOrgSchCal",
+            data: { Id: Id },
+            success: function (response) {
+                $("#EditEventModalBody").html(response);
+                $("#EditEventModal").modal("show");
+            }
+        })
+    }
+</script>
+<script>
 	var archived = function (isarchived) {
 		$('#mycheckbox').change(function () {
 			var output = $("#mycheckbox").val();
@@ -210,4 +215,4 @@
 			}
 		})
 	}
-	</script>
+</script>
