@@ -30,14 +30,11 @@
 							@Html.ValidationMessageFor(model => model.RelationshipName, "", new { @class = "text-danger" })
 						</div>
 					</div>
-
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
 							<input type="button" value="Add Relationship" class="RegUserOrgButtonColour" id="btnSubmit7" />
 						</div>
-
 					</div>
-
 				</form>
 			</div>
 		</div>
@@ -47,7 +44,6 @@
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }
-
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
@@ -60,13 +56,31 @@
 					url: "/Relationships/Create",
 					data: data,
 					success: function (response) {
-						alert("New relationship created");
-						$("#addrelationshipmodal").modal("hide");
-						$("#AddRelationship")[0].reset();
-						window.location.reload();
-					}
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.success("Relationship added successfully");
+                        $("#addrelationshipmodal").modal("hide");
+                        $("#AddRelationship")[0].reset();
+					},
+                    error: function (response) {
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+                        $("#addrelationshipmodal").modal("hide");
+                        $("#AddRelationship")[0].reset();
+                    }
 				})
-
 			}
 
 		})

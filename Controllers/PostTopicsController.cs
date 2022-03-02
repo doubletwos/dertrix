@@ -96,9 +96,10 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(postTopic);
             }
-            return new HttpStatusCodeResult(204);
+            return View(postTopic);
+
         }
 
         // POST: PostTopics/Edit/5

@@ -1,7 +1,8 @@
-﻿@model IEnumerable<Dertrix.Models.StudentSubjectGrade>
+﻿@model IEnumerable<Dertrix.Models.RegisteredUser>
+
 <head>
     @{
-        ViewBag.Title = "My Class";
+        ViewBag.Title = "Class students";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
     <style>
@@ -10,71 +11,62 @@
             border-style: double;
          }
     </style>
-    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
 </head>
 <div id="content" class="der-body-content der-clearfix">
     <br />
     <br />
     @Html.Partial("_Widget_SchStaff_Dashboard")
-    <hr />
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                @{
-                    Html.RenderAction("ClassProfile", "StudentSubjectGrade");
-                }
+
+    <div>
+        <br />
+        <br />
+        <hr />
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    @{
+                        Html.RenderAction("ClassProfile", "StudentSubjectGrade");
+                    }
+                </div>
             </div>
         </div>
+        <hr />
+
     </div>
-    <hr />
+    <br />
+
+    <div id="preloader" style="display:none; text-align:center;"><img src="~/Content/Images/loading1.gif" /></div>
     <div class="panel panel-default">
         <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive standard">
             <thead>
+
                 <tr>
                     <th>
-                        Student Id
+                        Student ID
                     </th>
                     <th>
-                        Full Name
+                        Student Full Name
                     </th>
                     <th>
-                        Subject
+                        Class
                     </th>
-
-                    <th style="text-align: center;">
-                        1st Term Grade
-                    </th>
-                    <th style="text-align: center;">
-                        2nd Term Grade
-                    </th>
-                    <th style="text-align: center;">
-                        3rd Term Grade
-                    </th>
-                    <th></th>
+                    <th>Select Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.OrderBy(i => i.RegisteredUser.FullName))
+
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RegisteredUser.RegisteredUserId)
+                            @Html.DisplayFor(modelItem => item.RegisteredUserId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RegisteredUser.FullName)
+                            @Html.DisplayFor(modelItem => item.ContactFullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.SubjectName)
-                        </td>
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.FirstTerm_ExamGrade)
-                        </td>
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.SecondTerm_ExamGrade)
-                        </td>
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.ThirdTerm_ExamGrade)
+                            @Html.DisplayFor(modelItem => item.Class.ClassName)
                         </td>
                         <td>
                             <div class="btn-group">
@@ -82,14 +74,14 @@
                                     Action <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" style="background-color:white">
-                                    <li><a href="#" onclick="UpdateStudentGrade(@item.StudentSubjectGradeId)">Update grades</a></li>
+                                    <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
+                                    <li><a href="#" onclick="UpdateStudentGrade(@item.RegisteredUserId)">Update Student Grades</a></li>
+                                    @*<li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>*@
                                 </ul>
                             </div>
                         </td>
-
                     </tr>
                 }
-
             </tbody>
 
         </table>
@@ -97,98 +89,136 @@
 </div>
 
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<input type="hidden" id="hiddenDomainId" />
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+<input type="hidden" id="hiddenRegisterUserId" />
+
+@*View Student Details Modal*@
+<div class="modal fade" id="myModalll4">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Student Details</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv"></div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-
-@*Update grades modal*@
+@*update Student grades Modal*@
 <div class="modal fade" id="myModalUpdateSubject">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Update student grades</h3>
-			</div>
-			<div class="modal-body" id="myModalBodyDiv2"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="updateGrade" />
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Update student Grades</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv2"></div>
+        </div>
+    </div>
 </div>
-
-
-@*Display MyclassList modal*@
-<div class="modal fade" id="ClasslistModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Select Class</h3>
-			</div>
-			<div class="modal-body" id="ClassListModalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-			</div>
-		</div>
-	</div>
+@*Change Student's Class*@
+<div class="modal fade" id="myModalls">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Change Student's Class</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDivls"></div>
+        </div>
+    </div>
 </div>
 
 
 
+
+<script>
+    var ShowStudent = function (Id) {
+        $.ajax({
+            type: "POST",
+            url: "/StudentGuardians/MyGuardians",
+            data: { Id: Id },
+            success: function (response) {
+            }
+        }),
+
+            $.ajax({
+                type: "POST",
+                url: "/RegisteredUsers/StudentDetails",
+                data: { Id: Id },
+                beforeSend: function () {
+                    $("#preloader").show();
+                },
+                success: function (response) {
+                    $("#myModalBodyDiv").html(response);
+                    $("#myModalll4").modal("show");
+                },
+                complete: function () {
+                    $("#preloader").hide();
+                }
+            })
+
+
+    }
+</script>
+
+<script>
+    var UpdateStudentGrade = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/StudentSubjectGrade/UpdateStudentGrade",
+            data: { Id: Id },
+            beforeSend: function () {
+                $("#preloader").show();
+            },
+            success: function (response) {
+                $("#myModalBodyDiv2").html(response);
+                $("#myModalUpdateSubject").modal("show");
+            },
+            complete: function () {
+                $("#preloader").hide();
+            }
+        })
+    }
+</script>
+<script>
+    var ChangeStudentClass = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/RegisteredUsers/ChangeStudentsClass",
+            data: { Id: Id },
+            success: function (response) {
+                $("#myModalBodyDivls").html(response);
+                $("#myModalls").modal("show");
+            }
+        })
+    }
+</script>
 
 
 
 
 @section scripts{
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#myTable').DataTable(
-				{
-					"ordering": false,
-				}
-			);
-		});
-	</script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                    "ordering": false,
+                }
+            );
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
 }
-
-
-
-
-<script>
-	var UpdateStudentGrade = function (Id) {
-		$.ajax({
-			type: "GET",
-			url: "/StudentSubjects/UpdateStudentGrade",
-			data: { Id: Id },
-			success: function (response) {
-				$("#myModalBodyDiv2").html(response);
-				$("#myModalUpdateSubject").modal("show");
-			}
-		})
-	}
-</script>
-
-
-<script>
-	$("#updateGrade").click(function () {
-		var data = $("#UpdateStudentGradeForm").serialize();
-		$.ajax({
-			type: "POST",
-			url: "/StudentSubjects/Edit",
-			data: data,
-			success: function (response) {
-				alert("Grade Updated");
-				$("#myModalUpdateSubject").modal("hide");
-				$("#UpdateStudentGradeForm")[0].reset();
-				window.location.reload();
-			}
-		})
-	})
-</script>
 
 
 

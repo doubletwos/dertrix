@@ -166,7 +166,6 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
                 ViewBag.OrgId = new SelectList(db.Orgs, "OrgId", "OrgName", @Class.OrgId);
-
                 return RedirectToAction("SystemAdminIndex");
             }
             catch (Exception e)

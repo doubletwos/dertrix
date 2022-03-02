@@ -29,9 +29,6 @@
 							@Html.ValidationMessageFor(model => model.OrgBrandName, "", new { @class = "text-danger" })
 						</div>
 					</div>
-
-
-
 					<div class="form-group">
 						<div class="col-md-10">
 							@Html.LabelFor(model => model.OrgBrandButtonColour, "Organisation Brand Button Colour Code", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -39,26 +36,18 @@
 							@Html.ValidationMessageFor(model => model.OrgBrandButtonColour, "", new { @class = "text-danger" })
 						</div>
 					</div>
-
 						<hr/>
-
-
 						<div class="form-group">
 							@Html.Label("Logo", new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
 								<input type="file" id="Logo" name="upload" />
 							</div>
 						</div>
-
-
-
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add Organisation Brand" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="button" value="Add Organisation Brand" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
 					</div>
-
-
 				</form>
 			</div>
 		</div>
@@ -82,13 +71,31 @@
 					url: "/OrgBrands/Create",
 					data: data,
 					success: function (response) {
-						alert("New brand created");
-						$("#myModalAddOrgBrand").modal("hide");
-						$("#AddOrgBrandForm")[0].reset();
-						window.location.reload();
-					}
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.success("Brand added successfully");
+                        $("#myModalAddOrgBrand").modal("hide");
+                        $("#AddOrgBrandForm")[0].reset();
+					},
+                    error: function (response) {
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+                        $("#myModalAddOrgBrand").modal("hide");
+                        $("#AddOrgBrandForm")[0].reset();
+                    }
 				})
-
 			}
 		})
 	});

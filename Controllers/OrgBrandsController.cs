@@ -147,9 +147,9 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(orgBrand);
             }
-            return new HttpStatusCodeResult(204);
+            return View(orgBrand);
         }
 
 

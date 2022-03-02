@@ -191,17 +191,23 @@ namespace Dertrix.Controllers
                 {
                     return RedirectToAction("Signin", "Access");
                 }
-                var OrgId = (int)Session["OrgId"];
 
-                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
-                var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId && x.ClassId == id).Select(x => x.ClassId).FirstOrDefault();
-                var mystudents = db.StudentSubjectGrades
-                    .Where(x => x.ClassId == id && x.ClassId == myclasses)
-                    .Include(s => s.Subject)
-                    .Include(r => r.RegisteredUser)
+                //var OrgId = (int)Session["OrgId"];
+                //var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                //var myclasses = db.Classes.Where(x => x.ClassTeacherId == RegisteredUserId && x.ClassId == id).Select(x => x.ClassId).FirstOrDefault();
+                //var mystudents = db.StudentSubjectGrades
+                //    .Where(x => x.ClassId == id && x.ClassId == myclasses)
+                //    .Include(s => s.Subject)
+                //    .Include(r => r.RegisteredUser)
+                //    .ToList();
+                //return View(mystudents);
+
+                var orgid = (int)Session["OrgId"];
+                var classref = db.Classes.Where(x => x.ClassId == id).Select(x => x.ClassRefNumb).FirstOrDefault();
+                var students = db.RegisteredUsers
+                    .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid && x.ClassRef == classref && x.ClassId == id)
                     .ToList();
-
-                return View(mystudents);
+                return View(students);
             }
             catch (Exception e)
             {

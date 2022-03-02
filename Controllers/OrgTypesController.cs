@@ -86,11 +86,12 @@ namespace Dertrix.Controllers
                     return RedirectToAction("Index");
                 }
                 return View(orgType);
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(orgType);
             }
         }
 

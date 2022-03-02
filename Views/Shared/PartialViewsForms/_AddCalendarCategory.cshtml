@@ -33,7 +33,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-                            <input type="submit" value="Add Category" class="RegUserOrgButtonColour" id="btnSubmit" />
+                            <input type="button" value="Add Category" class="RegUserOrgButtonColour" id="btnSubmit" />
                         </div>
                     </div>
 
@@ -58,12 +58,31 @@
 				type: "POST",
                 url: "/CalendarCategorys/Create",
 				data: data,
-				success: function (response) {
-					alert("New Category Created");
-					$("#AddCategoryModal").modal("hide");
+                success: function (response) {
+                    toastr.options.onHidden = function () {
+                        window.location.reload();
+                    }
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.success("Category added successfully");
+                    $("#AddCategoryModal").modal("hide");
                     $("#AddNewCategoryForm")[0].reset();
-					window.location.reload();
-				}
+                },
+                error: function (response) {
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+                    $("#AddCategoryModal").modal("hide");
+                    $("#AddNewCategoryForm")[0].reset();
+                }
 			})
 			}
 		})

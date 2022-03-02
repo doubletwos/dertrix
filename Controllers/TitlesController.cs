@@ -96,7 +96,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(title);
             }
             return View(title);
         }

@@ -29,13 +29,10 @@
 								@Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
 							</div>
 						</div>
-
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
 							<input type="button" value="Add Role" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
-
-
 					</div>
 				</form>
 			</div>
@@ -60,11 +57,30 @@
 				url: "/PrimarySchoolUserRoles/Create",
 				data: data,
 				success: function (response) {
-					alert("New role created");
-					$("#addprischrolemodal").modal("hide");
-					$("#AddPrischrole")[0].reset();
-					window.location.reload();
-				}
+                    toastr.options.onHidden = function () {
+                        window.location.reload();
+                    }
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.success("Role added successfully");
+                    $("#addprischrolemodal").modal("hide");
+                    $("#AddPrischrole")[0].reset();
+				},
+                error: function (response) {
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+                    $("#addprischrolemodal").modal("hide");
+                    $("#AddPrischrole")[0].reset();
+                }
 			})
 			}
 		})

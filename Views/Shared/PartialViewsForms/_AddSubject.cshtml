@@ -118,7 +118,6 @@
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("Create", "Subjects")',
-
                     data: data,
                     success: function (response) {
                         toastr.options.onHidden = function () {

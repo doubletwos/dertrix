@@ -48,9 +48,9 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(gender);
             }
-            return new HttpStatusCodeResult(204);
+            return View(gender);
         }
 
         // POST: Genders/Edit/5

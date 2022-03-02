@@ -29,23 +29,16 @@
 							@Html.ValidationMessageFor(model => model.GenderName, "", new { @class = "text-danger" })
 						</div>
 					</div>
-
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add Gender" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="button" value="Add Gender" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
-
-
 					</div>
-
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
@@ -61,12 +54,31 @@
 				type: "POST",
 				url: "/Genders/Create",
 				data: data,
-				success: function (response) {
-					alert("New gender created");
+				  success: function (response) {
+                      toastr.options.onHidden = function () {
+                          window.location.reload();
+                      }
+                      toastr.options.positionClass = "toast-bottom-full-width";
+                      toastr.options.progressBar = true;
+                      toastr.options.timeout = 0;
+                      toastr.options.extendedTimeOut = 0;
+                      toastr.options.fadeOut = 500;
+                      toastr.options.tapToDismiss = false;
+                      toastr.success("Gender added successfully");
+                      $("#addgendermodal").modal("hide");
+                      $("#AddGender")[0].reset();
+				  },
+                  error: function (response) {
+                      toastr.options.positionClass = "toast-bottom-full-width";
+                      toastr.options.progressBar = true;
+                      toastr.options.timeout = 0;
+                      toastr.options.extendedTimeOut = 0;
+                      toastr.options.fadeOut = 500;
+                      toastr.options.tapToDismiss = false;
+                      toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
 					$("#addgendermodal").modal("hide");
 					$("#AddGender")[0].reset();
-					window.location.reload();
-				}
+                  }
 			  })
 		 }
 	   })

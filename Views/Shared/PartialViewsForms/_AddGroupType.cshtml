@@ -48,10 +48,8 @@
 
 						<div class="modal-footer">
 							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="submit" value="Add Group" class="RegUserOrgButtonColour" id="btnSubmit" />
+							<input type="button" value="Add Group" class="RegUserOrgButtonColour" id="btnSubmit" />
 						</div>
-
-
 					</div>
 
 				</form>
@@ -59,8 +57,6 @@
 		</div>
 	</div>
 </div>
-
-
 
 
 @section Scripts {
@@ -78,14 +74,32 @@
 				url: "/GroupTypes/Create",
 				data: data,
 				success: function (response) {
-					alert("New group created");
+                    toastr.options.onHidden = function () {
+                        window.location.reload();
+                    }
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.success("Group type added successfully");
+                    $("#addgrouptypemodal").modal("hide");
+                    $("#AddGroup")[0].reset();
+				},
+                error: function (response) {
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
 					$("#addgrouptypemodal").modal("hide");
 					$("#AddGroup")[0].reset();
-					window.location.reload();
-				}
+                }
 			})
 			}
 		})
-
 	});
 </script>

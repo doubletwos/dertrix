@@ -69,7 +69,7 @@
 					</div>
 					<div class="modal-footer">
 						<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-						<input type="submit" value="Add User" class="RegUserOrgButtonColour" id="btnSubmit" />
+						<input type="button" value="Add User" class="RegUserOrgButtonColour" id="btnSubmit" />
 					</div>
 				</form>
 			</div>
@@ -89,18 +89,36 @@
 		$("#Organisation").val("23");
 		$("#btnSubmit").on("click", function () {
 			if ($("#AddNewDertrixUserForm").valid()) {
-
 				var data = $("#AddNewDertrixUserForm").serialize();
 				$.ajax({
 					type: "POST",
 					url: "/RegisteredUsers/Create",
 					data: data,
 					success: function (response) {
-						alert("New user created");
-						$("#myModalRegUser").modal("hide");
-						$("#AddNewDertrixUserForm")[0].reset();
-						window.location.reload();
-					}
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.success("System admin added successfully");
+                        $("#myModalRegUser").modal("hide");
+                        $("#AddNewDertrixUserForm")[0].reset();
+                    },
+                    error: function (response) {
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+                        $("#myModalRegUser").modal("hide");
+                        $("#AddNewDertrixUserForm")[0].reset();
+                    }
 				})
 			}
 		})

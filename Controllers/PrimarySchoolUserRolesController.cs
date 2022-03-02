@@ -93,9 +93,9 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(primarySchoolUserRole);
             }
-            return new HttpStatusCodeResult(204);
+            return View(primarySchoolUserRole);
         }
 
         // POST: PrimarySchoolUserRoles/Edit/5

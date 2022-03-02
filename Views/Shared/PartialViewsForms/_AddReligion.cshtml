@@ -2,73 +2,89 @@
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#addreligionmodal">
-	<i class="fa fa-plus fa-lg" aria-hidden="true"></i>
-	New Religion
+    <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+    New Religion
 </a>
 <div class="modal fade" id="addreligionmodal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">New Religion</h3>
-			</div>
-			<div class="modal-body">
-				<form id="AddReligion">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">New Religion</h3>
+            </div>
+            <div class="modal-body">
+                <form id="AddReligion">
 
-					@Html.AntiForgeryToken()
-					@{
-						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
-					}
+                    @Html.AntiForgeryToken()
+                    @{
+                        HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+                    }
 
-					<div class="form-horizontal">
-						<hr />
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						<div class="form-group">
-							<div class="col-md-10">
-								@Html.LabelFor(model => model.ReligionName, "Religion Name")
-								@Html.EditorFor(model => model.ReligionName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.ReligionName, "", new { @class = "text-danger" })
-							</div>
-						</div>
+                    <div class="form-horizontal">
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.ReligionName, "Religion Name")
+                                @Html.EditorFor(model => model.ReligionName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ReligionName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-						<div class="modal-footer">
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-							<input type="button" value="Add Religion" class="RegUserOrgButtonColour" id="btnSubmit" />
-						</div>
-					</div>
-
-
-				</form>
-			</div>
-		</div>
-	</div>
+                        <div class="modal-footer">
+                            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
+                            <input type="button" value="Add Religion" class="RegUserOrgButtonColour" id="btnSubmit" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-	@Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")
 }
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
-	$(document).ready(function () {
-		$("#btnSubmit").on("click", function () {
-			if ($("#AddReligion").valid()) {
+    $(document).ready(function () {
+        $("#btnSubmit").on("click", function () {
+            if ($("#AddReligion").valid()) {
 
-			var data = $("#AddReligion").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/Religions/Create",
-				data: data,
-				success: function (response) {
-					alert("New religion created");
-					$("#addreligionmodal").modal("hide");
-					$("#AddReligion")[0].reset();
-					window.location.reload();
-				}
-			})
+                var data = $("#AddReligion").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/Religions/Create",
+                    data: data,
+                    success: function (response) {
+                        toastr.options.onHidden = function () {
+                            window.location.reload();
+                        }
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.success("Religion added successfully");
+                        $("#addreligionmodal").modal("hide");
+                        $("#AddReligion")[0].reset();
+                    },
+                    error: function (response) {
+                        toastr.options.positionClass = "toast-bottom-full-width";
+                        toastr.options.progressBar = true;
+                        toastr.options.timeout = 0;
+                        toastr.options.extendedTimeOut = 0;
+                        toastr.options.fadeOut = 500;
+                        toastr.options.tapToDismiss = false;
+                        toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+                        $("#addreligionmodal").modal("hide");
+                        $("#AddReligion")[0].reset();
+                    }
+                })
+            }
 
-			}
-
-		})
-	});
+        })
+    });
 </script>

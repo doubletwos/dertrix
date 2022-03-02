@@ -74,13 +74,24 @@ namespace Dertrix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Relationship relationship)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Relationships.Add(relationship);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if (ModelState.IsValid)
+                {
+                    db.Relationships.Add(relationship);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View(relationship);
+            }
             return View(relationship);
         }
 
