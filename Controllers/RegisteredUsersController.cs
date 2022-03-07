@@ -684,6 +684,7 @@ namespace Dertrix.Controllers
                         .FirstOrDefault();
                     ViewBag.PrimarySchoolUserRoleId = new SelectList(db.PrimarySchoolUserRoles, "PrimarySchoolUserRoleId", "RoleName");
                     ViewBag.SecondarySchoolUserRoleId = new SelectList(db.SecondarySchoolUserRoles, "SecondarySchoolUserRoleId", "RoleName");
+                    ViewBag.NurserySchoolUserRoleId = new SelectList(db.NurserySchoolUserRoles, "NurserySchoolUserRoleId", "RoleName");
                     ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName");
                     ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
                     var stud = new RegisteredUser

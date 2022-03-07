@@ -15,70 +15,76 @@ Register Guardian
 					@{
 						HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 					}
-					<div class="form-horizontal">
-						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-						@Html.HiddenFor(model => model.RegisteredUserId)
-						<div class="form-group">
-							@Html.LabelFor(model => model.TitleId, "Title", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("TitleId", null, "Please Select", new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.TitleId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
-								@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						<div class="form-group">
-							@Html.LabelFor(model => model.RelationshipId, "Relationship", htmlAttributes: new { @class = "control-label col-md-2" })
-							<div class="col-md-10">
-								@Html.DropDownList("RelationshipId", null, "Please Select", new { @class = "form-control" })
-								@Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
-							</div>
-						</div>
-						@{
-							if ((int)Session["OrgType"] == 3 || (int)Session["OrgType"] == 5)
-							{
-								@Html.DropDownList("PrimarySchoolUserRoleId", null, "Please Select", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.RegisteredUserId)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TitleId, "Title", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("TitleId", null, "Please Select", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TitleId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RelationshipId, "Relationship", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("RelationshipId", null, "Please Select", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.RelationshipId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        @{
+                            if ((int)Session["OrgType"] == 3 || (int)Session["OrgType"] == 5)
+                            {
+                                @Html.DropDownList("PrimarySchoolUserRoleId", null, "Please Select", new { @id = "PrimarySchoolUserRoleId", @class = "form-control" })
 
-							}
-						}
-						@{
-							if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
-							{
-								@Html.DropDownList("SecondarySchoolUserRoleId", null, "Please Select", new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
-							}
-						}
+                            }
+                        }
+                        @{
+                            if ((int)Session["OrgType"] == 2 || (int)Session["OrgType"] == 5)
+                            {
+                                @Html.DropDownList("SecondarySchoolUserRoleId", null, "Please Select", new { @id = "SecondarySchoolUserRoleId", @class = "form-control" })
+                            }
+                        }
+                        @{
+                            if ((int)Session["OrgType"] == 4 || (int)Session["OrgType"] == 5)
+                            {
+                                @Html.DropDownList("NurserySchoolUserRoleId", null, "Please Select", new { @id = "NurserySchoolUserRoleId", @class = "form-control" })
+                            }
+                        }
 
-						<div class="modal-footer">
-							<input type="button" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
-							<input type="reset" value="Cancel" class="RegUserOrgButtonColour" id="modal2" />
-						</div>
-					</div>
+                        <div class="modal-footer">
+                            <input type="button" value="Add" class="RegUserOrgButtonColour" id="addGuardian" />
+                            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" id="modal2" />
+                        </div>
+                    </div>
 				</form>
 
 				</div>
