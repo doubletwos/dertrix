@@ -567,6 +567,10 @@
     <Compile Include="Migrations\202202220634561_Sprint2022.02.04.designer.cs">
       <DependentUpon>202202220634561_Sprint2022.02.04.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202203120551369_Sprint2022.03.00.cs" />
+    <Compile Include="Migrations\202203120551369_Sprint2022.03.00.designer.cs">
+      <DependentUpon>202203120551369_Sprint2022.03.00.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -1266,6 +1270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202202220634561_Sprint2022.02.04.resx">
       <DependentUpon>202202220634561_Sprint2022.02.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203120551369_Sprint2022.03.00.resx">
+      <DependentUpon>202203120551369_Sprint2022.03.00.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

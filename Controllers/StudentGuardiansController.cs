@@ -228,25 +228,21 @@ namespace Dertrix.Controllers
                 int i = Convert.ToInt32(rr);
 
                 // GET GUARDIANS REGUSERID
-                var gd_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.RegisteredUserId).FirstOrDefault();
-
-                // GET GUARDIANS FULLNAME. 
-                string guardfullname1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).Select(x => x.FullName).FirstOrDefault();
-
+                var gd_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).FirstOrDefault();
 
                 // CHECK IF GUARDIAN IS LINKED TO ANY OTHER STUDENT IN THIS ORG - IF NO - DELETE FROM SG /REGUSERORG/ REGUSER - TABLE AND LOG EVENT. CHECK USER IS DELETED FROM GRP LINKED TO CLASS.
 
 
                 // COUNT HOW MANY STUDENT GUARDIAN IS LINKED TO IN THE DATABASE
-                var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Count();
+                var linked_stud = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id.RegisteredUserId).Count();
                 // IF COUNT OF LINKED STUDENT IS 1 - MEANS GUARDIAN IS ONLY LINKED TO THE STUDENT - WE GO IN THIS CONDITON AND FULLY DELETE GUARDIAN FROM THE SYSTEM.
                 if (linked_stud == 1)
                 {
                     // LOG EVENT 
                     var orgeventlog = new Org_Events_Log()
                     {
-                        Org_Event_SubjectId = gd_id.ToString(),
-                        Org_Event_SubjectName = guardfullname1,
+                        Org_Event_SubjectId = gd_id.RegisteredUserId.ToString(),
+                        Org_Event_SubjectName = gd_id.GuardianFullName,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
@@ -303,9 +299,9 @@ namespace Dertrix.Controllers
 
                     // SOFT DELETE USER
                     // GET USER'S DATA
-                    var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).FirstOrDefault();
+                    var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id.RegisteredUserId).FirstOrDefault();
                     var userdataRug = db.RegisteredUserOrganisations
-                        .Where(x => x.RegisteredUserId == gd_id)
+                        .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                         .Where(x => x.OrgId == i)
                         .FirstOrDefault();
                     var remvuser = new RemovedRegisteredUser
@@ -327,6 +323,8 @@ namespace Dertrix.Controllers
                         GenderId = userdataRu.GenderId.GetValueOrDefault(),
                         ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
                         StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
+                        Linked_StudentId = studid,
+                        RelationshipId = gd_id.RelationshipId,
                         IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
                         DateOfBirth = userdataRu.DateOfBirth,
                         LastLogOn = userdataRug.LastLogOn,
@@ -338,7 +336,7 @@ namespace Dertrix.Controllers
 
 
                     // REMV FROM PG FROM SG
-                    RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id);
+                    RegisteredUser remv_g = db.RegisteredUsers.Find(gd_id.RegisteredUserId);
                     db.RegisteredUsers.Remove(remv_g);
                     db.SaveChanges();
 
@@ -359,11 +357,11 @@ namespace Dertrix.Controllers
                 else
                 {
                     // GET THE STUD PG IS BEING UNLINKED FROM
-                    var stud_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.StudentId).FirstOrDefault();
+                    var stud_id = db.StudentGuardians.Where(x => x.StudentGuardianId == id).FirstOrDefault();
 
                     // CHECK HOW MANY STU IN ORG PG IS LINKED TO - IF 1 - REMV PG FROM SG / REGUORG - ONLY
                     var mylinkedstudsinorg = db.StudentGuardians
-                        .Where(x => x.RegisteredUserId == gd_id)
+                        .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                         .Where(x => x.OrgId == i)
                         .Select(x => x.RegisteredUserId)
                         .Count();
@@ -372,15 +370,20 @@ namespace Dertrix.Controllers
                     // COUNT OF mylinkedstudsinorg IS 1 - MEANS PG IS LINKED TO ONLY 1 STUD IN THIS ORG. - REMV PG FROM REGUSERORG / SG / ORGGROUP /TABLE
                     if (mylinkedstudsinorg == 1)
                     {
-                        var getpginreguserorg = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == gd_id).Select(x => x.RegisteredUserOrganisationId).FirstOrDefault();
+                        var getpginreguserorg = db.RegisteredUserOrganisations
+                            .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
+                            .Select(x => x.RegisteredUserOrganisationId)
+                            .FirstOrDefault();
 
                         // SOFT DELETE USER
                         // GET USER'S DATA
-                        var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id).FirstOrDefault();
+                        var userdataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gd_id.RegisteredUserId).FirstOrDefault();
+
                         var userdataRug = db.RegisteredUserOrganisations
-                            .Where(x => x.RegisteredUserId == gd_id)
+                            .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                             .Where(x => x.OrgId == i)
                             .FirstOrDefault();
+
                         var remvuser = new RemovedRegisteredUser
                         {
                             RegisteredUserId = userdataRu.RegisteredUserId,
@@ -400,6 +403,8 @@ namespace Dertrix.Controllers
                             GenderId = userdataRu.GenderId.GetValueOrDefault(),
                             ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
                             StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
+                            Linked_StudentId = stud_id.StudentId,
+                            RelationshipId = stud_id.RelationshipId.GetValueOrDefault(),
                             IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
                             DateOfBirth = userdataRu.DateOfBirth,
                             LastLogOn = userdataRug.LastLogOn,
@@ -416,7 +421,12 @@ namespace Dertrix.Controllers
 
 
                         // REMV PG FROM ORGGRP - 
-                        var pginorggrp = db.RegisteredUsersGroups.Where(x => x.RegisteredUserId == gd_id).Where(x => x.RegUserOrgId == i).Select(x => x.RegisteredUsersGroupsId).ToList();
+                        var pginorggrp = db.RegisteredUsersGroups
+                            .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
+                            .Where(x => x.RegUserOrgId == i)
+                            .Select(x => x.RegisteredUsersGroupsId)
+                            .ToList();
+
                         var pgingrp = new List<int>(pginorggrp);
 
                         foreach (var pg in pginorggrp)
@@ -429,8 +439,8 @@ namespace Dertrix.Controllers
                         // LOG EVENT 
                         var orgeventlog = new Org_Events_Log()
                         {
-                            Org_Event_SubjectId = gd_id.ToString(),
-                            Org_Event_SubjectName = guardfullname1,
+                            Org_Event_SubjectId = gd_id.RegisteredUserId.ToString(),
+                            Org_Event_SubjectName = stud_id.GuardianFullName,
                             Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                             Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                             Org_Event_Time = DateTime.Now,
@@ -496,15 +506,15 @@ namespace Dertrix.Controllers
                     {
                         // GET STUD CLASS GRP ID
                         var studclassGrpid = db.StudentGuardians
-                            .Where(x => x.RegisteredUserId == gd_id)
+                            .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                             .Where(x => x.OrgId == i)
-                            .Where(x => x.StudentId == stud_id)
+                            .Where(x => x.StudentId == stud_id.StudentId)
                             .Select(x => x.Stu_class_Org_Grp_id)
                             .FirstOrDefault();
 
                         // COUNT HOW MANY STUDENTS GD IS LINKED TO IN CLASS
                         var alllinkedstuds = db.StudentGuardians
-                            .Where(x => x.RegisteredUserId == gd_id)
+                            .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                             .Where(x => x.OrgId == i)
                             .Where(x => x.Stu_class_Org_Grp_id == studclassGrpid)
                             .Select(x => x.Stu_class_Org_Grp_id == studclassGrpid)
@@ -512,7 +522,7 @@ namespace Dertrix.Controllers
 
 
                         // LOOP THRU THE LIST OF STUDENTS PG IS LINKED TO 
-                        var mylinkedstuds = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id).Select(x => x.StudentGuardianId).ToList();
+                        var mylinkedstuds = db.StudentGuardians.Where(x => x.RegisteredUserId == gd_id.RegisteredUserId).Select(x => x.StudentGuardianId).ToList();
                         var linkstudents = new List<int>(mylinkedstuds);
 
                         // MORE THAN 1 - LOOP THRU LIST OF STUD AND REMV FROM SG
@@ -574,7 +584,7 @@ namespace Dertrix.Controllers
 
                                     // REMV PG FROM ORGGRP - 
                                     var pginorggrp = db.RegisteredUsersGroups
-                                        .Where(x => x.RegisteredUserId == gd_id)
+                                        .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                                         .Where(x => x.RegUserOrgId == i)
                                         .Where(X => X.OrgGroupId == studclassGrpid)
                                         .Where(x => x.LinkedStudentId == studid)
@@ -612,7 +622,7 @@ namespace Dertrix.Controllers
 
                                     // REMV PG FROM ORGGRP - 
                                     var pginorggrp = db.RegisteredUsersGroups
-                                        .Where(x => x.RegisteredUserId == gd_id)
+                                        .Where(x => x.RegisteredUserId == gd_id.RegisteredUserId)
                                         .Where(x => x.RegUserOrgId == i)
                                         .Where(X => X.OrgGroupId == studclassGrpid)
                                         .Select(x => x.RegisteredUsersGroupsId).ToList();

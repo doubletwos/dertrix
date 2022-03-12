@@ -2279,6 +2279,8 @@ namespace Dertrix.Controllers
                                 ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
                                 GenderId = staffdataRu.GenderId.GetValueOrDefault(),
                                 ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
+                                Linked_StudentId = staffdataRu.TempIntHolder,
+                                RelationshipId = staffdataRu.RelationshipId,
                                 StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
                                 IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
                                 DateOfBirth = staffdataRu.DateOfBirth,
@@ -2420,6 +2422,8 @@ namespace Dertrix.Controllers
                                         GenderId = staffdataRu.GenderId.GetValueOrDefault(),
                                         ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
                                         StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
+                                        Linked_StudentId = staffdataRu.TempIntHolder.GetValueOrDefault(),
+                                        RelationshipId = staffdataRu.RelationshipId.GetValueOrDefault(),
                                         IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
                                         DateOfBirth = staffdataRu.DateOfBirth,
                                         LastLogOn = staffdataRug.LastLogOn,
@@ -2476,14 +2480,14 @@ namespace Dertrix.Controllers
                             if (mylinkedstudents.Count == 1)
                             {
                                 //LOCATE GUARD IN REG USER TABLE AND DELETE.
-                                var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
-                                var guardfullname = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.GuardianFullName).FirstOrDefault();
+                                var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).FirstOrDefault();
+                                //var guardfullname = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.GuardianFullName).FirstOrDefault();
 
                                 // SOFT DELETE USER
                                 // GET USER'S DATA
-                                var guarddataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == locateguard).FirstOrDefault();
+                                var guarddataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == locateguard.RegisteredUserId).FirstOrDefault();
                                 var guarddataRug = db.RegisteredUserOrganisations
-                                    .Where(x => x.RegisteredUserId == locateguard)
+                                    .Where(x => x.RegisteredUserId == locateguard.RegisteredUserId)
                                     .Where(x => x.OrgId == i)
                                     .FirstOrDefault();
                                 var remvguard = new RemovedRegisteredUser
@@ -2505,6 +2509,8 @@ namespace Dertrix.Controllers
                                     GenderId = guarddataRu.GenderId.GetValueOrDefault(),
                                     ReligionId = guarddataRu.ReligionId.GetValueOrDefault(),
                                     StudentRegFormId = guarddataRu.StudentRegFormId.GetValueOrDefault(),
+                                    Linked_StudentId = locateguard.StudentId,
+                                    RelationshipId = locateguard.RelationshipId,
                                     IsTester = (bool)guarddataRu.IsTester.GetValueOrDefault(),
                                     DateOfBirth = guarddataRu.DateOfBirth,
                                     LastLogOn = guarddataRug.LastLogOn,
@@ -2516,7 +2522,7 @@ namespace Dertrix.Controllers
 
 
                                 //NOW DELETE GUARDIAN FROM REG USER TABLE.
-                                RegisteredUser remvguar = db.RegisteredUsers.Find(locateguard);
+                                RegisteredUser remvguar = db.RegisteredUsers.Find(locateguard.RegisteredUserId);
                                 db.RegisteredUsers.Remove(remvguar);
                                 db.SaveChanges();
 
@@ -2534,8 +2540,8 @@ namespace Dertrix.Controllers
                                 // UPON REMVING GUARD - LOG EVENT.
                                 var orgeventlog = new Org_Events_Log()
                                 {
-                                    Org_Event_SubjectId = locateguard.ToString(),
-                                    Org_Event_SubjectName = guardfullname,
+                                    Org_Event_SubjectId = locateguard.RegisteredUserId.ToString(),
+                                    Org_Event_SubjectName = locateguard.GuardianFullName,
                                     Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                                     Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                                     Org_Event_Time = DateTime.Now,
@@ -2555,9 +2561,13 @@ namespace Dertrix.Controllers
                                     {
 
                                         // LOCATE THE GD IN THE STUD GUARD TABLE  
-                                        var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).Select(x => x.RegisteredUserId).FirstOrDefault();
+                                        var locateguard = db.StudentGuardians.Where(x => x.StudentGuardianId == gd).FirstOrDefault();
                                         // CHECK HOW MANY OTHER STUD GUARD IS LINKED TO IN ACTIVE ORG = IF ONLY 1 THEN WE CAN REMV GUARD FROM REGUSERORG TABLE
-                                        var linkedstdinorgcount = db.StudentGuardians.Where(x => x.RegisteredUserId == locateguard).Where(x => x.OrgId == i).Select(x => x.OrgId).Count();
+                                        var linkedstdinorgcount = db.StudentGuardians.Where(x => x.RegisteredUserId == locateguard.RegisteredUserId)
+                                            .Where(x => x.OrgId == i)
+                                            .Select(x => x.OrgId)
+                                            .Count();
+
                                         // IF ONLY 1 - MEANS GUARD IS ONLY LINKED TO BE DELETED WE GO INTO THIS CONDITION - SO WE DELETE GUARD FROM REGUSERORG TABLE AND LOG EVENT.
                                         if (linkedstdinorgcount == 1)
                                         {
@@ -2591,6 +2601,8 @@ namespace Dertrix.Controllers
                                                 GenderId = gddataRu.GenderId.GetValueOrDefault(),
                                                 ReligionId = gddataRu.ReligionId.GetValueOrDefault(),
                                                 StudentRegFormId = gddataRu.StudentRegFormId.GetValueOrDefault(),
+                                                Linked_StudentId = locateguard.StudentId,
+                                                RelationshipId = locateguard.RelationshipId,
                                                 IsTester = (bool)gddataRu.IsTester.GetValueOrDefault(),
                                                 DateOfBirth = gddataRu.DateOfBirth,
                                                 LastLogOn = gddataRug.LastLogOn,
@@ -2608,7 +2620,7 @@ namespace Dertrix.Controllers
 
                                             // LOOP THRU GROUP AND DELETE GUARD FROM ALL GROUP
                                             var guardingrp = db.RegisteredUsersGroups
-                                                    .Where(x => x.RegisteredUserId == locateguard)
+                                                    .Where(x => x.RegisteredUserId == locateguard.RegisteredUserId)
                                                     .Where(x => x.RegUserOrgId == i)
                                                     .Select(x => x.RegisteredUsersGroupsId)
                                                     .ToList();
@@ -2646,7 +2658,7 @@ namespace Dertrix.Controllers
                                                     .Select(x => x.Stu_class_Org_Grp_id).FirstOrDefault();
                                             // LOCATE GUARDIANS REGUSERGRPID
                                             var guardingrpcount = db.RegisteredUsersGroups
-                                                    .Where(x => x.RegisteredUserId == locateguard)
+                                                    .Where(x => x.RegisteredUserId == locateguard.RegisteredUserId)
                                                     .Where(x => x.OrgGroupId == locateguardgrpid)
                                                     .Where(x => x.RegUserOrgId == i)
                                                     .Where(x => x.LinkedStudentId == id)
@@ -2654,7 +2666,7 @@ namespace Dertrix.Controllers
                                             if (guardingrpcount > 0)
                                             {
                                                 var guardingrplist = db.RegisteredUsersGroups
-                                               .Where(x => x.RegisteredUserId == locateguard)
+                                               .Where(x => x.RegisteredUserId == locateguard.RegisteredUserId)
                                                .Where(x => x.OrgGroupId == locateguardgrpid)
                                                .Where(x => x.RegUserOrgId == i)
                                                .Where(x => x.LinkedStudentId == id)
@@ -2705,6 +2717,8 @@ namespace Dertrix.Controllers
                     GenderId = userdataRu.GenderId.GetValueOrDefault(),
                     ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
                     StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
+                    Linked_StudentId = userdataRu.TempIntHolder.GetValueOrDefault(),
+                    RelationshipId = userdataRu.RelationshipId.GetValueOrDefault(),
                     IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
                     DateOfBirth = userdataRu.DateOfBirth,
                     LastLogOn = userdataRug.LastLogOn,
