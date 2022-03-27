@@ -210,7 +210,7 @@ namespace Dertrix.Controllers
             {
                 var stud = db.Orgs.Where(x => x.OrgId == Id);
                 ViewBag.Org = stud;
-                return PartialView("~/Views/Shared/PartialViewsForms/_OrgDetails.cshtml");
+                return PartialView("~/Views/Shared/DisplayViews/_OrgDetails.cshtml");
             }
             catch (Exception e)
             {

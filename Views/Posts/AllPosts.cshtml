@@ -32,11 +32,14 @@
     <div>
         <hr />
         <div>
-            <div>
-                @{
-                    Html.RenderAction("AddPost1", "Posts");
-                }
-            </div>
+            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+            {
+                <div>
+                    @{
+                        Html.RenderAction("AddPost1", "Posts");
+                    }
+                </div>
+            }
         </div>
         <hr />
     </div>

@@ -90,7 +90,7 @@
                                 <ul class="dropdown-menu" style="background-color:white">
                                     <li><a href="#" onclick="ShowOrg(@item.OrgId)">Org Details</a></li>
                                     <li><a href="#" onclick="EditOrg(@item.OrgId)">Edit Org</a></li>
-                                    <li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>
+                                    @*<li><a href="#" onclick="ConfirmDelete(@item.OrgId)">Remove Org</a></li>*@
                                     @{
                                         var isTester = Convert.ToInt32(Session["IsTester"]);
                                         if (isTester == 1)

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Mail;
+
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dertrix.Models;
+using System.Text;
 
 namespace Dertrix.Controllers
 {
@@ -49,8 +52,6 @@ namespace Dertrix.Controllers
             }
 
         }
-
-
 
 
         public ActionResult MyGuardians(int id)
@@ -151,7 +152,12 @@ namespace Dertrix.Controllers
                         OrgId = guardian.OrgId,
                         TitleId = guardian.TitleId,
                         RelationshipId = guardian.RelationshipId,
-                        Telephone = guardian.Telephone
+                        Telephone = guardian.Telephone,
+                        IsRegistered = guardian.IsRegistered,
+                        RegisteredDate = guardian.RegisteredDate,
+                        LastLogOn = guardian.LastLogOn,
+                        InviteSentDate = guardian.InviteSentDate,
+                        CountOfInvite = guardian.CountOfInvite
                     };
                     ViewBag.RelationshipId = new SelectList(db.Relationships, "RelationshipId", "RelationshipName", guardian.RelationshipId);
                     ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", guardian.TitleId);
@@ -215,6 +221,110 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
             return View(studentGuardian);
+        }
+
+
+        //[HttpPost]
+        public JsonResult SendEmailInvitation(int id)
+        {
+            if (Session["IsTester"] != null)
+            {
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+
+                // GET TESTER'S EMAIL ADDRESS
+                var useremail = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.Email).FirstOrDefault();
+
+                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
+                Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+                Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
+                var orgName = Session["OrgName"].ToString();
+                var subject = "Invitation from" + " " + orgName;
+                bool result = false;
+                result = SendEmail(useremail, subject, Body);
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                // GET USER'S EMAIL ADDRESS
+                var user = db.StudentGuardians.AsNoTracking().Where(x => x.StudentGuardianId == id).FirstOrDefault();
+
+                var invitecount = user.CountOfInvite;
+                if (invitecount == null)
+                {
+                    var zero = 0;
+                    invitecount = zero;
+                }
+
+                var guardian = new StudentGuardian
+                {
+                    StudentGuardianId = user.StudentGuardianId,
+                    RegisteredUserId = user.RegisteredUserId,
+                    GuardianFirstName = user.GuardianFirstName,
+                    GuardianLastName = user.GuardianLastName,
+                    GuardianFullName = user.GuardianFullName,
+                    GuardianEmailAddress = user.GuardianEmailAddress,
+                    DateAdded = user.DateAdded,
+                    StudentId = user.StudentId,
+                    StudentFullName = user.StudentFullName,
+                    OrgId = user.OrgId,
+                    TitleId = user.TitleId,
+                    RelationshipId = user.RelationshipId,
+                    Telephone = user.Telephone,
+                    Stu_class_Org_Grp_id = user.Stu_class_Org_Grp_id,
+                    IsRegistered = user.IsRegistered,
+                    RegisteredDate = user.RegisteredDate,
+                    LastLogOn = user.LastLogOn,
+                    InviteSentDate = DateTime.Now,
+                    CountOfInvite = invitecount + 1
+                };
+                user = guardian;
+                db.Entry(guardian).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
+                Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+                Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
+                //Body = Body.Replace("#Body#", postcontent);
+                var orgName = Session["OrgName"].ToString();
+                var subject = "Invitation from" + " " + orgName;
+                bool result = false;
+                result = SendEmail(user.GuardianEmailAddress, subject, Body);
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+
+
+
+        }
+
+
+        public bool SendEmail(string toEmail, string subject, string Body)
+        {
+            try
+            {
+                string senderEmail = System.Configuration.ConfigurationManager.AppSettings["SenderEmail"].ToString();
+                string senderPassword = System.Configuration.ConfigurationManager.AppSettings["SenderPassword"].ToString();
+                SmtpClient client = new SmtpClient("smtp.ionos.co.uk", 587);
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(senderEmail, senderPassword);
+                MailMessage mailMessage = new MailMessage(senderEmail, toEmail, subject, Body);
+                mailMessage.IsBodyHtml = true;
+                mailMessage.BodyEncoding = UTF8Encoding.UTF8;
+                client.Send(mailMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
 
 
@@ -323,7 +433,6 @@ namespace Dertrix.Controllers
                         GenderId = userdataRu.GenderId.GetValueOrDefault(),
                         ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
                         StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
-                        Linked_StudentId = studid,
                         RelationshipId = gd_id.RelationshipId,
                         IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
                         DateOfBirth = userdataRu.DateOfBirth,
@@ -403,7 +512,6 @@ namespace Dertrix.Controllers
                             GenderId = userdataRu.GenderId.GetValueOrDefault(),
                             ReligionId = userdataRu.ReligionId.GetValueOrDefault(),
                             StudentRegFormId = userdataRu.StudentRegFormId.GetValueOrDefault(),
-                            Linked_StudentId = stud_id.StudentId,
                             RelationshipId = stud_id.RelationshipId.GetValueOrDefault(),
                             IsTester = (bool)userdataRu.IsTester.GetValueOrDefault(),
                             DateOfBirth = userdataRu.DateOfBirth,

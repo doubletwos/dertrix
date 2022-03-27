@@ -94,10 +94,13 @@
                                 </button>
                                 <ul class="dropdown-menu" style="background-color:white">
                                     <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
-                                    <li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
-                                    <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
-                                    <li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
-                                </ul>
+                                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                    {
+                                        <li><a href="#" onclick="EditStudent(@item.RegisteredUserId)">Edit Student Details</a></li>
+                                        <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
+                                        <li><a href="#" onclick="ConfirmDelete(@item.RegisteredUserId)">Remove Student</a></li>
+                                    }
+                                    </ul>
                             </div>
                         </td>
                     </tr>

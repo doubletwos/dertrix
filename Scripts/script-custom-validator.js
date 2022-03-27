@@ -270,9 +270,9 @@ $(document).ready(function () {
 			'ClassId': {
 				required: true,
 			},
-			'ClassTeacherId': {
-				required: true,
-			},
+			//'ClassTeacherId': {
+			//	required: true,
+			//},
 			'First_Term_Test_MaxGrade': {
 				required: true,
 				maxlength: 3
@@ -308,7 +308,7 @@ $(document).ready(function () {
 				maxlength: 'Not more than 20 characters allowed'
 			},
 			'ClassId': 'Please select class',
-			'ClassTeacherId': 'Please assign subject to a teacher',
+			//'ClassTeacherId': 'Please assign subject to a teacher',
 			'First_Term_Test_MaxGrade': {
 				required: 'Max grade is required',
 				maxlength: 'Not more than 3 characters allowed'

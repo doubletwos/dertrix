@@ -19,8 +19,15 @@
             Relationship
         </th>
         <th>
+            Invites sent
+        </th>
+        <th>
+            Send Invite
+        </th>
+        <th>
             Unlink
         </th>
+
 
 
     </tr>
@@ -58,10 +65,18 @@
                     @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
                 </td>
                 <td>
-                    <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"> <i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
+                    @Html.DisplayFor(modelItem => item.CountOfInvite)
                 </td>
+                @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                {
+                    <td>
+                        <p><a href="#" onclick="SendInvite(@item.StudentGuardianId)"> <i class="fa fa-envelope" style="color:green" aria-hidden="true"></i></a></p>
+                    </td>
+                    <td>
+                        <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"> <i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
+                    </td>
 
-
+                }
             </tr>
         }
     }
@@ -89,6 +104,37 @@
         </div>
     </div>
 </div>
+
+<script>
+    var SendInvite = function (Id) {
+        $.ajax({
+            type: "GET",
+            url: "/StudentGuardians/SendEmailInvitation/",
+            data: { Id: Id },
+            success: function (response) {
+                toastr.options.onHidden = function () {
+                }
+                toastr.options.positionClass = "toast-bottom-full-width";
+                toastr.options.progressBar = true;
+                toastr.options.timeout = 0;
+                toastr.options.extendedTimeOut = 0;
+                toastr.options.fadeOut = 500;
+                toastr.options.tapToDismiss = false;
+                toastr.success("Invitation Email Sent");
+            },
+            error: function (response) {
+                toastr.options.positionClass = "toast-bottom-full-width";
+                toastr.options.progressBar = true;
+                toastr.options.timeout = 0;
+                toastr.options.extendedTimeOut = 0;
+                toastr.options.fadeOut = 500;
+                toastr.options.tapToDismiss = false;
+                toastr.error("Oops, There has been a problem, the system adminstrators have been notified.");
+            }
+        })
+    }
+</script>
+
 <script>
     var ConfirmDelete = function (RegisteredUserId) {
         $("#hiddenRegisterUserId").val(RegisteredUserId);
@@ -107,6 +153,7 @@
             }
         })
     }
+
 </script>
 
 

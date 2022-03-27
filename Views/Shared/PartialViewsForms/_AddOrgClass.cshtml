@@ -23,7 +23,7 @@
 
 						<div class="form-group">
 							<div class="col-md-10">
-								@Html.LabelFor(model => model.ClassName, "Class Name", htmlAttributes: new { @class = "control-label col-md-2" })
+								@Html.LabelFor(model => model.ClassName, "Name", htmlAttributes: new { @class = "control-label col-md-2" })
 								@Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })
 
 								@Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
@@ -31,14 +31,14 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-10">
-								@Html.LabelFor(model => model.ClassRefNumb, "Class Reference Number", htmlAttributes: new { @class = "control-label col-md-2" })
+								@Html.LabelFor(model => model.ClassRefNumb, "Reference Number", htmlAttributes: new { @class = "control-label col-md-2" })
 								@Html.EditorFor(model => model.ClassRefNumb, new { htmlAttributes = new { @class = "form-control" } })
 								@Html.ValidationMessageFor(model => model.ClassRefNumb, "", new { @class = "text-danger" })
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-10">
-								@Html.LabelFor(model => model.OrgId, "Class Organisation Name", htmlAttributes: new { @class = "control-label col-md-2" })
+								@Html.LabelFor(model => model.OrgId, "Org Name", htmlAttributes: new { @class = "control-label col-md-2" })
 								@Html.DropDownList("OrgId", null, "", htmlAttributes: new { @class = "form-control" })
 								@Html.ValidationMessageFor(model => model.OrgId, "", new { @class = "text-danger" })
 							</div>
@@ -46,7 +46,7 @@
 
 						<hr />
 						<div class="form-group">
-							@Html.LabelFor(model => model.ClassIsActive, "Class Is Active?", htmlAttributes: new { @class = "control-label col-md-2" })
+							@Html.LabelFor(model => model.ClassIsActive, "Is Active?", htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="checkbox">
 								<div class="col-md-10">
 									@Html.CheckBoxFor(model => model.ClassIsActive)

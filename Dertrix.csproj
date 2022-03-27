@@ -571,6 +571,14 @@
     <Compile Include="Migrations\202203120551369_Sprint2022.03.00.designer.cs">
       <DependentUpon>202203120551369_Sprint2022.03.00.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202203170429129_Sprint2022.03.01.cs" />
+    <Compile Include="Migrations\202203170429129_Sprint2022.03.01.designer.cs">
+      <DependentUpon>202203170429129_Sprint2022.03.01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203271813568_Sprint2022.03.02.cs" />
+    <Compile Include="Migrations\202203271813568_Sprint2022.03.02.designer.cs">
+      <DependentUpon>202203271813568_Sprint2022.03.02.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -813,6 +821,7 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Views\EmailTemplates\HtmlPage.html" />
+    <Content Include="Views\EmailTemplates\InvitationEmail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -879,7 +888,7 @@
     <Content Include="Views\RegisteredUsers\Staffs.cshtml" />
     <Content Include="Views\Shared\_StaffDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditStaff.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_OrgDetails.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_OrgDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrg.cshtml" />
     <Content Include="Views\Posts\Index-disabled.cshtml" />
     <Content Include="Views\PostTopics\Index.cshtml" />
@@ -912,7 +921,7 @@
     <Content Include="Views\Shared\_OrgBrandDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrgBrand.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddOrgClass.cshtml" />
-    <Content Include="Views\Shared\PartialViewsForms\_ClassDetails.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_ClassDetails.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditClass.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AddOrgType.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_EditOrgType.cshtml" />
@@ -1273,6 +1282,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202203120551369_Sprint2022.03.00.resx">
       <DependentUpon>202203120551369_Sprint2022.03.00.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203170429129_Sprint2022.03.01.resx">
+      <DependentUpon>202203170429129_Sprint2022.03.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203271813568_Sprint2022.03.02.resx">
+      <DependentUpon>202203271813568_Sprint2022.03.02.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

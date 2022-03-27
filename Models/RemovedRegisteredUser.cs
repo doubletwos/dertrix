@@ -26,7 +26,6 @@ namespace Dertrix.Models
         public int? GenderId { get; set; }
         public int? ReligionId { get; set; }
         public int? StudentRegFormId { get; set; }
-        public int? Linked_StudentId { get; set; }
         public int? RelationshipId { get; set; }
         public bool IsTester { get; set; }
 

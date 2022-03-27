@@ -139,7 +139,7 @@ namespace Dertrix.Controllers
                 {
                     var cla = db.Classes.Where(x => x.ClassId == Id);
                     ViewBag.Class = cla;
-                    return PartialView("~/Views/Shared/PartialViewsForms/_ClassDetails.cshtml");
+                    return PartialView("~/Views/Shared/DisplayViews/_ClassDetails.cshtml");
                 }
             }
             catch (Exception e)

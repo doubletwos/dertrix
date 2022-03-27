@@ -68,11 +68,15 @@
         Html.RenderAction("DisplayStudentGrades", "StudentSubjectGrade");
     }
 </div>
-<div class="container">
-    @{
-        Html.RenderAction("LinkGuardianToStudent", "RegisteredUsers");
-    }
-</div>
+
+@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+{
+    <div class="container">
+        @{
+            Html.RenderAction("LinkGuardianToStudent", "RegisteredUsers");
+        }
+    </div>
+}
 
 <hr />
 <h3>Guardians</h3>

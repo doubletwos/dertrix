@@ -60,9 +60,12 @@
                                     Action <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" style="background-color:white">
-                                    <li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
-                                    <li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
-                                </ul>
+                                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                    {
+                                        <li><a href="#" onclick="EditGuardian(@item.StudentGuardianId)">Edit Guardian Details</a></li>
+                                        <li><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)">Remove Guardian</a></li>
+                                    }
+                                 </ul>
                             </div>
                         </td>
                     </tr>

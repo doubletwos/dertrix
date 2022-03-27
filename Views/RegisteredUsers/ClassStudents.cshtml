@@ -76,8 +76,10 @@
                                 <ul class="dropdown-menu" style="background-color:white">
                                     <li><a href="#" onclick="ShowStudent(@item.RegisteredUserId)">View Student Details</a></li>
                                     <li><a href="#" onclick="UpdateStudentGrade(@item.RegisteredUserId)">Update Student Grades</a></li>
-                                    <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
-
+                                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                                    {
+                                        <li><a href="#" onclick="ChangeStudentClass(@item.RegisteredUserId)">Change Student's Class</a></li>
+                                    }
                                 </ul>
                             </div>
                         </td>
