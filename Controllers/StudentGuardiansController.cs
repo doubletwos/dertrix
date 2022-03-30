@@ -230,18 +230,50 @@ namespace Dertrix.Controllers
             if (Session["IsTester"] != null)
             {
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+               
+                // GET TESTER'S DATA
+                var user = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).FirstOrDefault();
 
-                // GET TESTER'S EMAIL ADDRESS
-                var useremail = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.Email).FirstOrDefault();
+                // GENERATE INVITE KEY
+                var ru = user.RegisteredUserId.ToString();
+                var fn = user.FirstName;
+                var ln = user.LastName;
+                var en = user.EnrolmentDate.ToString();
 
-                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
-                Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
-                Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
-                var orgName = Session["OrgName"].ToString();
-                var subject = "Invitation from" + " " + orgName;
-                bool result = false;
-                result = SendEmail(useremail, subject, Body);
-                return Json(result, JsonRequestBehavior.AllowGet);
+
+                if (ru.Length >= 4 || fn.Length >= 4 || ln.Length >= 4 || en.Length >= 4)
+                {
+                        string newru = ru.Substring(ru.Length - 2);
+                        var code1 = newru.ToString();
+
+                        string newfn = fn.Substring(fn.Length - 2);
+                        var code2 = newfn.ToString();
+
+                        string newln = ln.Substring(ln.Length - 2);
+                        var code3 = newln.ToString();
+
+                        string newen = en.Substring(en.Length - 2);
+                        var code4 = newen.ToString();
+
+                    var invitecode = (code1 + code2, code3, code4);
+
+                    string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
+                    Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+                    Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
+                    var orgName = Session["OrgName"].ToString();
+                    var subject = "Invitation from" + " " + orgName;
+                    var key = invitecode;
+                    bool result = false;
+                    result = SendEmail(user.Email, subject, Body);
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    // display message saying code cant be generated
+                }
+                bool result1 = false;
+                return Json(result1, JsonRequestBehavior.AllowGet);
+
 
             }
             else

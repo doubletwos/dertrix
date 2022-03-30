@@ -188,6 +188,12 @@ namespace Dertrix.Controllers
             return View();
         }
 
+        // GET: Access/Welcome
+        public ActionResult Register() 
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
