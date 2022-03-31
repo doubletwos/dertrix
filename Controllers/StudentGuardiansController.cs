@@ -244,18 +244,18 @@ namespace Dertrix.Controllers
                 if (ru.Length >= 4 || fn.Length >= 4 || ln.Length >= 4 || en.Length >= 4)
                 {
                         string newru = ru.Substring(ru.Length - 2);
-                        var code1 = newru.ToString();
+                        var code1 = newru.ToUpper().ToString();
 
                         string newfn = fn.Substring(fn.Length - 2);
-                        var code2 = newfn.ToString();
+                        var code2 = newfn.ToUpper().ToString();
 
                         string newln = ln.Substring(ln.Length - 2);
-                        var code3 = newln.ToString();
+                        var code3 = newln.ToUpper().ToString();
 
                         string newen = en.Substring(en.Length - 2);
-                        var code4 = newen.ToString();
+                        var code4 = newen.ToUpper().ToString();
 
-                    var invitecode = (code1 + code2, code3, code4);
+                    var invitecode = (code1 + code2 + code3+ code4);
 
                     string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
                     Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());

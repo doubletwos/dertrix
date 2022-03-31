@@ -121,9 +121,11 @@ Register Guardian
 					},
 					'FirstName': {
 						required: true,
+                        minlength: 4,
 					},
 					'LastName': {
 						required: true,
+                        minlength: 4,
 					},
 					'Email': {
 						required: true,
@@ -138,15 +140,20 @@ Register Guardian
 				},
 				messages: {
 					'TitleId': 'Please select title',
-					'FirstName': 'First name is required',
-					'LastName': 'Last name is required',
 					'Email': 'Please enter email address',
 					'RelationshipId': 'Please select relationship',
 					'Telephone': {
 						required: 'Please enter telephone number',
 						maxlength: 'Not more than 11 characters allowed'
 					},
-
+					'FirstName': {
+						required: 'First name is required',
+                        minlength: 'More than 4 characters required'
+                    },
+					'LastName': {
+                        required: 'Last name is required',
+                        minlength: 'More than 4 characters required'
+                    }
 				}
 			});
 

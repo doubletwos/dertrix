@@ -229,9 +229,11 @@ $(document).ready(function () {
 		rules: {
 			'FirstName': {
 				required: true,
+				minlength: 4,
 			},
 			'LastName': {
 				required: true,
+				minlength: 4,
 			},
 			'Email': {
 				required: true,
@@ -239,9 +241,16 @@ $(document).ready(function () {
 	
 		},
 		messages: {
-			'FirstName': 'Please enter first name',
-			'LastName': 'Please enter last name',
-			'Email': 'Please enter email'
+			'Email': 'Please enter email',
+
+			'FirstName': {
+				required: 'First name is required',
+				minlength: 'More than 4 characters required'
+			},
+			'LastName': {
+				required: 'Last name is required',
+				minlength: 'More than 4 characters required'
+			}
 		}
 	});
 });
@@ -362,11 +371,13 @@ $(document).ready(function () {
 		rules: {
 			'FirstName': {
 				required: true,
-				maxlength: 20
+				maxlength: 20,
+				minlength: 4
 			},
 			'LastName': {
 				required: true,
-				maxlength: 20
+				maxlength: 20,
+				minlength: 4
 			},
 			'ClassId': {
 				required: true,
@@ -387,11 +398,13 @@ $(document).ready(function () {
 		messages: {
 			'FirstName': {
 				required: 'Please enter first name',
-				maxlength : 'Not more than 20 characters allowed'
+				maxlength: 'Not more than 20 characters allowed',
+				minlength: 'More than 4 characters required'
 			},
 			'LastName': {
 				required: 'Please enter last name',
-				maxlength: 'Not more than 20 characters allowed'
+				maxlength: 'Not more than 20 characters allowed',
+				minlength: 'More than 4 characters required'
 			},
 			'ClassId': 'Please select class',
 			'GenderId': 'Please select gender',
@@ -434,9 +447,11 @@ $(document).ready(function () {
 			},
 			'FirstName': {
 				required: true,
+				minlength: 4,
 			},
 			'LastName': {
 				required: true,
+				minlength: 4,
 			},
 			'Email': {
 				required: true,
@@ -520,9 +535,11 @@ $(document).ready(function () {
 			},
 			'FirstName': {
 				required: true,
+				minlength: 4,
 			},
 			'LastName': {
 				required: true,
+				minlength: 4,
 			},
 			'Email': {
 				required: true,

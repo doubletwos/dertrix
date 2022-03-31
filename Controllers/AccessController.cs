@@ -78,6 +78,45 @@ namespace Dertrix.Controllers
             return View(db.RegUsersAccessLogs.ToList());
         }
 
+        // GET: Access/KeyCheck
+        public ActionResult KeyCheck()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult KeyCheck(RegisteredUser registeredUser)
+        {
+            try
+            {
+                var locatekey = db.RegisteredUsers.Where(x => x.InviteKey == registeredUser.InviteKey).Select(x => x.InviteKey).FirstOrDefault();
+
+                if (registeredUser.InviteKey == null)
+                {
+                    registeredUser.LoginErrorMsg = "Please enter invitation key or a valid invitation key";
+                    return View("KeyCheck", registeredUser);
+                }
+                if (registeredUser.InviteKey.Length < 6)
+                {
+                    registeredUser.LoginErrorMsg = "Invitation key must be at least 6 characters long.";
+                    return View("KeyCheck", registeredUser);
+                }
+                if (registeredUser.InviteKey == locatekey)
+                {
+                    registeredUser.LoginErrorMsg = "Redirect Accordingly";
+                    return View("KeyCheck", registeredUser);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View(registeredUser);
+            }
+            return View();
+        }
+
 
         // GET: Access/Signin
         public ActionResult Signin()
@@ -177,7 +216,7 @@ namespace Dertrix.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Redirect("~/ErrorHandler.html");
+                return View(registeredUser);
 
             }
         }
@@ -188,8 +227,8 @@ namespace Dertrix.Controllers
             return View();
         }
 
-        // GET: Access/Welcome
-        public ActionResult Register() 
+        // GET: Access/Register
+        public ActionResult Register()
         {
             return View();
         }

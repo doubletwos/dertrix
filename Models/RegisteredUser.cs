@@ -131,6 +131,7 @@ namespace Dertrix.Models
 
         public string CreatedBy { get; set; }
 
+        public string InviteKey { get; set; } 
 
         public int? RegUserOrgBrand { get; set; }
 
