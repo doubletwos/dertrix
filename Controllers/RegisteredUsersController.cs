@@ -512,6 +512,86 @@ namespace Dertrix.Controllers
         }
 
 
+        public ActionResult GenerateGuardianInviteKey(int Id)  
+        {
+            try
+            {
+                // LOCATE USER
+                var reguser = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == Id).FirstOrDefault();
+
+                // GENERATE INVITE KEY
+                var ru = reguser.RegisteredUserId.ToString();
+                var fn = reguser.FirstName;
+                var ln = reguser.LastName;
+                var en = reguser.EnrolmentDate.ToString();
+
+
+                if (ru.Length >= 4 || fn.Length >= 4 || ln.Length >= 4 || en.Length >= 4)
+                {
+                    string newru = ru.Substring(ru.Length - 2);
+                    var code1 = newru.ToUpper().ToString();
+
+                    string newfn = fn.Substring(fn.Length - 2);
+                    var code2 = newfn.ToUpper().ToString();
+
+                    string newln = ln.Substring(ln.Length - 2);
+                    var code3 = newln.ToUpper().ToString();
+
+                    string newen = en.Substring(en.Length - 2);
+                    var code4 = newen.ToUpper().ToString();
+
+                    var invitecode = (code1 + code2 + code3 + code4);
+
+                    // SAVE CODE IN USER'S DATA 
+
+                    var usrtoupdt = new RegisteredUser
+                    {
+                        RegisteredUserId = reguser.RegisteredUserId,
+                        RegisteredUserTypeId = reguser.RegisteredUserTypeId,
+                        FirstName = reguser.FirstName,
+                        LastName = reguser.LastName,
+                        Email = reguser.Email,
+                        LoginErrorMsg = reguser.LoginErrorMsg,
+                        Password = reguser.Password,
+                        ConfirmPassword = reguser.ConfirmPassword,
+                        Telephone = reguser.Telephone,
+                        SelectedOrg = reguser.SelectedOrg,
+                        ClassId = reguser.ClassId,
+                        GenderId = reguser.GenderId,
+                        TribeId = reguser.TribeId,
+                        DateOfBirth = reguser.DateOfBirth,
+                        EnrolmentDate = reguser.EnrolmentDate,
+                        ReligionId = reguser.ReligionId,
+                        PrimarySchoolUserRoleId = reguser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = reguser.SecondarySchoolUserRoleId,
+                        StudentRegFormId = reguser.StudentRegFormId,
+                        CreatedBy = reguser.CreatedBy,
+                        RegUserOrgBrand = reguser.RegUserOrgBrand,
+                        FullName = reguser.FullName,
+                        IsTester = reguser.IsTester,
+                        ClassRef = reguser.ClassRef,
+                        TempIntHolder = reguser.TempIntHolder,
+                        TitleId = reguser.TitleId,
+                        RelationshipId = reguser.RelationshipId,
+                        PgCount = reguser.PgCount,
+                        NurserySchoolUserRoleId = reguser.NurserySchoolUserRoleId,
+                        InviteKey = invitecode
+                    };
+                    reguser = usrtoupdt;
+                    db.Entry(reguser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return View();
+
+        }
+
+
         public ActionResult EditStudent(int Id)
         {
             try
@@ -2009,6 +2089,7 @@ namespace Dertrix.Controllers
                     locatestud = studs;
                     db.Entry(locatestud).State = EntityState.Modified;
                     db.SaveChanges();
+
                     //Updating registered user organisation with changes 
                     var reguseridcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(p => p.RegisteredUserOrganisationId).ToList();
                     var listofreguserid = new List<int>(reguseridcount);

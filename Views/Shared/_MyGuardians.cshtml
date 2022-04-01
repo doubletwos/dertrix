@@ -109,7 +109,7 @@
     var SendInvite = function (Id) {
         $.ajax({
             type: "GET",
-            url: "/StudentGuardians/SendEmailInvitation/",
+            url: "/StudentGuardians/SendGuardianEmailInvitation/",
             data: { Id: Id },
             success: function (response) {
                 toastr.options.onHidden = function () {

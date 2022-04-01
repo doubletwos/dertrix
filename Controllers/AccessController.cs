@@ -91,7 +91,7 @@ namespace Dertrix.Controllers
         {
             try
             {
-                var locatekey = db.RegisteredUsers.Where(x => x.InviteKey == registeredUser.InviteKey).Select(x => x.InviteKey).FirstOrDefault();
+                var locateuser = db.RegisteredUsers.Where(x => x.InviteKey == registeredUser.InviteKey).FirstOrDefault();
 
                 if (registeredUser.InviteKey == null)
                 {
@@ -103,10 +103,9 @@ namespace Dertrix.Controllers
                     registeredUser.LoginErrorMsg = "Invitation key must be at least 6 characters long.";
                     return View("KeyCheck", registeredUser);
                 }
-                if (registeredUser.InviteKey == locatekey)
+                if (registeredUser.InviteKey == locateuser.InviteKey)
                 {
-                    registeredUser.LoginErrorMsg = "Redirect Accordingly";
-                    return View("KeyCheck", registeredUser);
+                    return RedirectToAction("InitialSettings", "Access", new { id = locateuser.RegisteredUserId });
                 }
             }
             catch (Exception e)
@@ -116,6 +115,119 @@ namespace Dertrix.Controllers
             }
             return View();
         }
+
+
+        // GET: Access/InitialSettings
+        public ActionResult InitialSettings(int Id)
+        {
+            try
+            {
+                if (Id != 0)
+                {
+                    var newuser = db.RegisteredUsers.Where(x => x.RegisteredUserId == Id).FirstOrDefault();
+
+                    var usr = new RegisteredUser
+                    {
+                        RegisteredUserId = newuser.RegisteredUserId,
+                        RegisteredUserType = newuser.RegisteredUserType,
+                        FirstName = newuser.FirstName,
+                        LastName = newuser.LastName,
+                        Email = newuser.Email,
+                        Password = newuser.Password,
+                        ConfirmPassword = newuser.ConfirmPassword,
+                        Telephone = newuser.Telephone,
+                        SelectedOrg = newuser.SelectedOrg,
+                        ClassId = newuser.ClassId,
+                        GenderId = newuser.GenderId,
+                        TribeId = newuser.TribeId,
+                        DateOfBirth = newuser.DateOfBirth,
+                        EnrolmentDate = newuser.EnrolmentDate,
+                        ReligionId = newuser.ReligionId,
+                        PrimarySchoolUserRoleId = newuser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = newuser.SecondarySchoolUserRoleId,
+                        StudentRegFormId = newuser.StudentRegFormId,
+                        CreatedBy = newuser.CreatedBy,
+                        RegUserOrgBrand = newuser.RegUserOrgBrand,
+                        FullName = newuser.FullName,
+                        IsTester = newuser.IsTester,
+                        ClassRef = newuser.ClassRef,
+                        TempIntHolder = newuser.TempIntHolder,
+                        TitleId = newuser.TitleId,
+                        RelationshipId = newuser.RelationshipId,
+                        PgCount = newuser.PgCount,
+                        NurserySchoolUserRoleId = newuser.NurserySchoolUserRoleId,
+                        InviteKey = newuser.InviteKey,
+                    };
+                    return View(usr);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return View();
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InitialSettings(RegisteredUser registeredUser)
+        {
+            try
+            {
+                var locateuser = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
+
+                var usr = new RegisteredUser
+                {
+                    RegisteredUserId = locateuser.RegisteredUserId,
+                    RegisteredUserTypeId = locateuser.RegisteredUserTypeId,
+                    FirstName = locateuser.FirstName,
+                    LastName = locateuser.LastName,
+                    Email = locateuser.Email,
+                    Password = registeredUser.Password,
+                    ConfirmPassword = registeredUser.ConfirmPassword,
+                    Telephone = locateuser.Telephone,
+                    SelectedOrg = locateuser.SelectedOrg,
+                    ClassId = locateuser.ClassId,
+                    GenderId = locateuser.GenderId,
+                    TribeId = locateuser.TribeId,
+                    DateOfBirth = locateuser.DateOfBirth,
+                    EnrolmentDate = locateuser.EnrolmentDate,
+                    ReligionId = locateuser.ReligionId,
+                    PrimarySchoolUserRoleId = locateuser.PrimarySchoolUserRoleId,
+                    SecondarySchoolUserRoleId = locateuser.SecondarySchoolUserRoleId,
+                    StudentRegFormId = locateuser.StudentRegFormId,
+                    CreatedBy = locateuser.CreatedBy,
+                    RegUserOrgBrand = locateuser.RegUserOrgBrand,
+                    FullName = locateuser.FullName,
+                    IsTester = locateuser.IsTester,
+                    ClassRef = locateuser.ClassRef,
+                    TempIntHolder = locateuser.TempIntHolder,
+                    TitleId = locateuser.TitleId,
+                    RelationshipId = locateuser.RelationshipId,
+                    PgCount = locateuser.PgCount,
+                    NurserySchoolUserRoleId = locateuser.NurserySchoolUserRoleId,
+                    InviteKey = "",
+                };
+                locateuser = usr;
+                db.Entry(locateuser).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Signin", "Access");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Redirect("~/ErrorHandler.html");
+            }
+
+        }
+
+
 
 
         // GET: Access/Signin

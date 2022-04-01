@@ -225,7 +225,7 @@ namespace Dertrix.Controllers
 
 
         //[HttpPost]
-        public JsonResult SendEmailInvitation(int id)
+        public JsonResult SendGuardianEmailInvitation(int id) 
         {
             if (Session["IsTester"] != null)
             {
@@ -234,54 +234,43 @@ namespace Dertrix.Controllers
                 // GET TESTER'S DATA
                 var user = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).FirstOrDefault();
 
-                // GENERATE INVITE KEY
-                var ru = user.RegisteredUserId.ToString();
-                var fn = user.FirstName;
-                var ln = user.LastName;
-                var en = user.EnrolmentDate.ToString();
+                // GET GUARDIAN REGISTER'S ID
+                var guardianid = db.StudentGuardians.Where(x => x.StudentGuardianId == id).Select(x => x.RegisteredUserId).FirstOrDefault();
 
 
-                if (ru.Length >= 4 || fn.Length >= 4 || ln.Length >= 4 || en.Length >= 4)
-                {
-                        string newru = ru.Substring(ru.Length - 2);
-                        var code1 = newru.ToUpper().ToString();
+                id = guardianid;
 
-                        string newfn = fn.Substring(fn.Length - 2);
-                        var code2 = newfn.ToUpper().ToString();
+                // CALL GENERATE KEY METHOD
+                var otherController = DependencyResolver.Current.GetService<RegisteredUsersController>();
+                var result = otherController.GenerateGuardianInviteKey(id);
 
-                        string newln = ln.Substring(ln.Length - 2);
-                        var code3 = newln.ToUpper().ToString();
-
-                        string newen = en.Substring(en.Length - 2);
-                        var code4 = newen.ToUpper().ToString();
-
-                    var invitecode = (code1 + code2 + code3+ code4);
-
-                    string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
-                    Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
-                    Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
-                    var orgName = Session["OrgName"].ToString();
-                    var subject = "Invitation from" + " " + orgName;
-                    var key = invitecode;
-                    bool result = false;
-                    result = SendEmail(user.Email, subject, Body);
-                    return Json(result, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    // display message saying code cant be generated
-                }
+                var key = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.InviteKey).FirstOrDefault();
+                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
+                Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+                Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
+                var orgName = Session["OrgName"].ToString();
+                var subject = "Invitation from" + " " + orgName;
+                var invitekey = key;
+                Body = Body.Replace("InviteKey", key.ToString());
                 bool result1 = false;
-                return Json(result1, JsonRequestBehavior.AllowGet);
-
+                result1 = SendEmail(user.Email, subject, Body);
+                return Json(result, JsonRequestBehavior.AllowGet);
 
             }
             else
             {
-                // GET USER'S EMAIL ADDRESS
-                var user = db.StudentGuardians.AsNoTracking().Where(x => x.StudentGuardianId == id).FirstOrDefault();
 
-                var invitecount = user.CountOfInvite;
+                // GET GUARDIAN REGISTER'S ID
+                var guardianid = db.StudentGuardians.AsNoTracking().Where(x => x.StudentGuardianId == id).FirstOrDefault();
+
+                id = guardianid.RegisteredUserId;
+
+                // CALL GENERATE KEY METHOD
+                var otherController = DependencyResolver.Current.GetService<RegisteredUsersController>();
+                var result = otherController.GenerateGuardianInviteKey(id);
+
+
+                var invitecount = guardianid.CountOfInvite;
                 if (invitecount == null)
                 {
                     var zero = 0;
@@ -290,46 +279,44 @@ namespace Dertrix.Controllers
 
                 var guardian = new StudentGuardian
                 {
-                    StudentGuardianId = user.StudentGuardianId,
-                    RegisteredUserId = user.RegisteredUserId,
-                    GuardianFirstName = user.GuardianFirstName,
-                    GuardianLastName = user.GuardianLastName,
-                    GuardianFullName = user.GuardianFullName,
-                    GuardianEmailAddress = user.GuardianEmailAddress,
-                    DateAdded = user.DateAdded,
-                    StudentId = user.StudentId,
-                    StudentFullName = user.StudentFullName,
-                    OrgId = user.OrgId,
-                    TitleId = user.TitleId,
-                    RelationshipId = user.RelationshipId,
-                    Telephone = user.Telephone,
-                    Stu_class_Org_Grp_id = user.Stu_class_Org_Grp_id,
-                    IsRegistered = user.IsRegistered,
-                    RegisteredDate = user.RegisteredDate,
-                    LastLogOn = user.LastLogOn,
+                    StudentGuardianId = guardianid.StudentGuardianId,
+                    RegisteredUserId = guardianid.RegisteredUserId,
+                    GuardianFirstName = guardianid.GuardianFirstName,
+                    GuardianLastName = guardianid.GuardianLastName,
+                    GuardianFullName = guardianid.GuardianFullName,
+                    GuardianEmailAddress = guardianid.GuardianEmailAddress,
+                    DateAdded = guardianid.DateAdded,
+                    StudentId = guardianid.StudentId,
+                    StudentFullName = guardianid.StudentFullName,
+                    OrgId = guardianid.OrgId,
+                    TitleId = guardianid.TitleId,
+                    RelationshipId = guardianid.RelationshipId,
+                    Telephone = guardianid.Telephone,
+                    Stu_class_Org_Grp_id = guardianid.Stu_class_Org_Grp_id,
+                    IsRegistered = guardianid.IsRegistered,
+                    RegisteredDate = guardianid.RegisteredDate,
+                    LastLogOn = guardianid.LastLogOn,
                     InviteSentDate = DateTime.Now,
                     CountOfInvite = invitecount + 1
                 };
-                user = guardian;
+                guardianid = guardian;
                 db.Entry(guardian).State = EntityState.Modified;
                 db.SaveChanges();
 
-
+                var key = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.InviteKey).FirstOrDefault();
                 string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/InvitationEmail.html"));
                 Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
                 Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
                 //Body = Body.Replace("#Body#", postcontent);
                 var orgName = Session["OrgName"].ToString();
                 var subject = "Invitation from" + " " + orgName;
-                bool result = false;
-                result = SendEmail(user.GuardianEmailAddress, subject, Body);
+                var invitekey = key;
+                Body = Body.Replace("InviteKey", key.ToString());
+                bool result2 = false;
+                result2 = SendEmail(guardianid.GuardianEmailAddress, subject, Body);
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             }
-
-
-
-
 
         }
 

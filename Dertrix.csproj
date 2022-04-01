@@ -1011,6 +1011,7 @@
     <Content Include="Views\Shared\DisplayViews\_DisplayStudentGrades.cshtml" />
     <Content Include="Views\Shared\DisplayViews\_EventDisplayPanel.cshtml" />
     <Content Include="Views\Access\KeyCheck.cshtml" />
+    <Content Include="Views\Access\InitialSettings.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
