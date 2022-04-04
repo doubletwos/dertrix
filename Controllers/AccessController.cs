@@ -180,6 +180,7 @@ namespace Dertrix.Controllers
             {
                 var locateuser = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
 
+                // Set Usr password & Delete Invite Key
                 var usr = new RegisteredUser
                 {
                     RegisteredUserId = locateuser.RegisteredUserId,
@@ -216,7 +217,41 @@ namespace Dertrix.Controllers
                 db.Entry(locateuser).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Signin", "Access");
+
+                // Set Guardian as Registered 
+                if (registeredUser.PrimarySchoolUserRoleId != 5 || registeredUser.SecondarySchoolUserRoleId != 5 || registeredUser.NurserySchoolUserRoleId != 5)
+                {
+                    var guardian = db.StudentGuardians.AsNoTracking().Where(x => x.RegisteredUserId == locateuser.RegisteredUserId).FirstOrDefault();
+
+                    var newguardian = new StudentGuardian
+                    {
+                        StudentGuardianId = guardian.StudentGuardianId,
+                        RegisteredUserId = guardian.RegisteredUserId,
+                        GuardianFirstName = guardian.GuardianFirstName,
+                        GuardianLastName = guardian.GuardianLastName,
+                        GuardianFullName = guardian.GuardianFullName,
+                        GuardianEmailAddress = guardian.GuardianEmailAddress,
+                        DateAdded = guardian.DateAdded,
+                        StudentId = guardian.StudentId,
+                        StudentFullName = guardian.StudentFullName,
+                        OrgId = guardian.OrgId,
+                        TitleId = guardian.TitleId,
+                        RelationshipId = guardian.RelationshipId,
+                        Telephone = guardian.Telephone,
+                        Stu_class_Org_Grp_id = guardian.Stu_class_Org_Grp_id,
+                        IsRegistered = true,
+                        RegisteredDate = DateTime.Now,
+                        LastLogOn = guardian.LastLogOn,
+                        InviteSentDate = guardian.InviteSentDate,
+                        CountOfInvite = guardian.CountOfInvite,
+                    };
+                    guardian = newguardian;
+                    db.Entry(guardian).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                }
+
+                    return RedirectToAction("Signin", "Access");
 
             }
             catch (Exception ex)

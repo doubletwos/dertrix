@@ -825,7 +825,8 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Views\EmailTemplates\HtmlPage.html" />
-    <Content Include="Views\EmailTemplates\InvitationEmail.html" />
+    <Content Include="Views\EmailTemplates\ExistingGuardianInvitationEmail.html" />
+    <Content Include="Views\EmailTemplates\NewGuardianInvitationEmail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

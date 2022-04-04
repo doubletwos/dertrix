@@ -1086,6 +1086,7 @@ namespace Dertrix.Controllers
                                     DateAdded = DateTime.Now,
                                     OrgId = i,
                                     Stu_class_Org_Grp_id = orggrpref_1
+
                                 };
                                 db.StudentGuardians.Add(studentguardian);
                                 db.SaveChanges();
@@ -1439,9 +1440,6 @@ namespace Dertrix.Controllers
                         int w = Convert.ToInt32(rr3);
                         registeredUser.TitleId = registeredUser.TitleId;
                         registeredUser.Email = registeredUser.Email;
-                        var pwd = "iamanewuser";
-                        registeredUser.Password = pwd;
-                        registeredUser.ConfirmPassword = pwd;
                         registeredUser.FullName = registeredUser.ContactFullName;
                         registeredUser.Telephone = registeredUser.Telephone;
                         registeredUser.RegisteredUserTypeId = 2;
@@ -1593,8 +1591,6 @@ namespace Dertrix.Controllers
                         var rr4 = Session["OrgId"].ToString();
                         int w4 = Convert.ToInt32(rr4);
                         registeredUser.SelectedOrg = w4;
-                        var email = "iamanewuser@thisorg.com";
-                        registeredUser.Email = email;
                         registeredUser.FullName = registeredUser.ContactFullName;
                         registeredUser.RegisteredUserTypeId = 2;
                         registeredUser.CreatedBy = Session["RegisteredUserId"].ToString();

@@ -14,18 +14,23 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
 
-                @using (Html.BeginForm("InitialSettings", "Access", FormMethod.Post))
-                {
 
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img src="~/Main/img/DertrixLogo.png" class="img-circle" alt="Logo" style="width:350px;">
+                    <br />
+                    @using (Html.BeginForm("InitialSettings", "Access", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
                 <div class="form-horizontal">
+                    <p><b>Welcome to the Dertrix website. In order to use this website, we would be grateful if you could check and complete the details below.</b></p>
+                    <p><b>Once complete, you will be redirected to the sign in page, where you can sign in using your new credentials.</b></p>
+                    <p><b>You are able to modify your details and preferences after completing the sign up process.</b></p>
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.RegisteredUserId)
-                    @Html.AntiForgeryToken()
                     @Html.HiddenFor(model => model.RegisteredUserTypeId)
                     @Html.HiddenFor(model => model.PrimarySchoolUserRoleId)
                     @Html.HiddenFor(model => model.SecondarySchoolUserRoleId)
@@ -52,7 +57,7 @@
                     @Html.HiddenFor(model => model.LastName)
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.FullName, "Name", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DisplayFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
                         </div>
@@ -87,18 +92,22 @@
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
+                    <h6>I've read and agree to the Terms and conditions and Privacy policy </h6>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Register" class="btn btn-default" />
                             <input type="reset" value="Reset" class="btn btn-default" />
                         </div>
+
                     </div>
                 </div>
-                }
+                    }
+                </div>
             </div>
         </div>
-    </div>
     <p>@Html.ActionLink("Back Home", "Welcome", "Access", "", new { @class = "btn btn-default" })</p>
+
 </body>
 </html>
 
