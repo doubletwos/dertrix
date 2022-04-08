@@ -34,32 +34,6 @@ namespace Dertrix.Models
 
         public int? Stu_class_Org_Grp_id { get; set; }
 
-        public bool? IsRegistered { get; set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? RegisteredDate { get; set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? LastLogOn { get; set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? InviteSentDate { get; set; }
-
-        public int? CountOfInvite { get; set; }
-
-
-
-
-
-
-
-
-
-
-
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }

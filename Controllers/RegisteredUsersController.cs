@@ -575,11 +575,17 @@ namespace Dertrix.Controllers
                         RelationshipId = reguser.RelationshipId,
                         PgCount = reguser.PgCount,
                         NurserySchoolUserRoleId = reguser.NurserySchoolUserRoleId,
-                        InviteKey = invitecode
+                        InviteKey = invitecode,
+                        InviteSentDate = reguser.InviteSentDate,
+                        CountOfInvite = reguser.CountOfInvite,
+                        IsRegistered = reguser.IsRegistered,
+                        RegisteredDate = reguser.RegisteredDate,
                     };
                     reguser = usrtoupdt;
                     db.Entry(reguser).State = EntityState.Modified;
                     db.SaveChanges();
+                    //db.Entry(reguser).State = EntityState.Detached;
+                    //Dispose(true);
                 }
             }
             catch (Exception ex)
@@ -1085,7 +1091,7 @@ namespace Dertrix.Controllers
                                     Telephone = registeredUser.Telephone,
                                     DateAdded = DateTime.Now,
                                     OrgId = i,
-                                    Stu_class_Org_Grp_id = orggrpref_1
+                                    Stu_class_Org_Grp_id = orggrpref_1,
 
                                 };
                                 db.StudentGuardians.Add(studentguardian);
@@ -1141,7 +1147,12 @@ namespace Dertrix.Controllers
                                     TitleId = locatestud.TitleId,
                                     RelationshipId = locatestud.RelationshipId,
                                     ClassRef = locatestud.ClassRef,
-                                    PgCount = currentcount + 1
+                                    PgCount = currentcount + 1,
+                                    InviteKey = locatestud.InviteKey,
+                                    InviteSentDate = locatestud.InviteSentDate,
+                                    CountOfInvite = locatestud.CountOfInvite,
+                                    IsRegistered = locatestud.IsRegistered,
+                                    RegisteredDate = locatestud.RegisteredDate
                                 };
                                 locatestud = studgaurd;
                                 db.Entry(studgaurd).State = EntityState.Modified;
@@ -1257,7 +1268,12 @@ namespace Dertrix.Controllers
                                     TitleId = locatestud.TitleId,
                                     RelationshipId = locatestud.RelationshipId,
                                     ClassRef = locatestud.ClassRef,
-                                    PgCount = currentcount + 1
+                                    PgCount = currentcount + 1,
+                                    InviteKey = locatestud.InviteKey,
+                                    InviteSentDate = locatestud.InviteSentDate,
+                                    CountOfInvite = locatestud.CountOfInvite,
+                                    IsRegistered = locatestud.IsRegistered,
+                                    RegisteredDate = locatestud.RegisteredDate
                                 };
                                 locatestud = studgaurd;
                                 db.Entry(studgaurd).State = EntityState.Modified;
@@ -1453,6 +1469,11 @@ namespace Dertrix.Controllers
                         registeredUser.RegisteredUserId = Convert.ToInt32(clear);
                         db.RegisteredUsers.Add(registeredUser);
                         db.SaveChanges();
+
+                        //// CALL GENERATE KEY METHOD
+                        //var generatekey = DependencyResolver.Current.GetService<RegisteredUsersController>();
+                        //var result = generatekey.GenerateGuardianInviteKey(registeredUser.RegisteredUserId);
+
                         // ADDING GUARDIAN  - INTO REGUSERORG//
                         var objRegisteredUserOrganisations = new RegisteredUserOrganisation()
                         {
@@ -1498,7 +1519,7 @@ namespace Dertrix.Controllers
 
                         // UPDATE GROUP COUNT
                         var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
-                        var result = otherController.UpdateGroupMemberCount(orggrpref, w);
+                        var result2 = otherController.UpdateGroupMemberCount(orggrpref, w);
 
 
 
@@ -1544,7 +1565,12 @@ namespace Dertrix.Controllers
                             TitleId = locatestud.TitleId,
                             RelationshipId = locatestud.RelationshipId,
                             ClassRef = locatestud.ClassRef,
-                            PgCount = currentcount + 1
+                            PgCount = currentcount + 1,
+                            InviteKey = locatestud.InviteKey,
+                            InviteSentDate = locatestud.InviteSentDate,
+                            CountOfInvite = locatestud.CountOfInvite,
+                            IsRegistered = locatestud.IsRegistered,
+                            RegisteredDate = locatestud.RegisteredDate,
                         };
                         locatestud = studgaurd;
                         db.Entry(studgaurd).State = EntityState.Modified;
@@ -1590,6 +1616,8 @@ namespace Dertrix.Controllers
                     {
                         var rr4 = Session["OrgId"].ToString();
                         int w4 = Convert.ToInt32(rr4);
+                        var email = "student";
+                        registeredUser.Email = email;
                         registeredUser.SelectedOrg = w4;
                         registeredUser.FullName = registeredUser.ContactFullName;
                         registeredUser.RegisteredUserTypeId = 2;
@@ -2081,6 +2109,11 @@ namespace Dertrix.Controllers
                         FullName = registeredUser.FirstName + " " + registeredUser.LastName,
                         ClassRef = locatestud.ClassRef,
                         PgCount = locatestud.PgCount,
+                        InviteKey = locatestud.InviteKey,
+                        InviteSentDate = locatestud.InviteSentDate,
+                        CountOfInvite = locatestud.CountOfInvite,
+                        IsRegistered = locatestud.IsRegistered,
+                        RegisteredDate = locatestud.RegisteredDate,
                     };
                     locatestud = studs;
                     db.Entry(locatestud).State = EntityState.Modified;

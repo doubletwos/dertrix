@@ -46,8 +46,7 @@
 {
     foreach (var item in Model.OrderBy(i => i.GuardianFullName))
     {
-        if (item.IsRegistered == false || item.IsRegistered == null)
-        {
+
             <table class="table table-bordered table-responsive table-condensed table-hover">
                 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
                     <th>
@@ -98,14 +97,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CountOfInvite)
-                    </td>
+
                     @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
                     {
 
                         <td>
-                            <p><a href="#" onclick="SendInvite(@item.StudentGuardianId)"><i class="fa fa-envelope" style="color:green" aria-hidden="true"></i></a></p>
+                            <p><a href="#" onclick="SendInvite(@item.RegisteredUserId)"><i class="fa fa-envelope" style="color:green" aria-hidden="true"></i></a></p>
                         </td>
                         <td>
                             <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"><i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
@@ -115,10 +112,6 @@
                 </tr>
             </table>
 
-
-        }
-        else
-        {
             <table class="table table-bordered table-responsive table-condensed table-hover">
                 <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
                     <th>
@@ -182,7 +175,6 @@
 
                 </tr>
             </table>
-        }
     }
 
 }
@@ -219,7 +211,7 @@
     var SendInvite = function (Id) {
         $.ajax({
             type: "GET",
-            url: "/StudentGuardians/SendGuardianEmailInvitation/",
+            url: "/StudentGuardians/UnRegisteredGuardianInvitationEmail/",
             data: { Id: Id },
             success: function (response) {
                 toastr.options.onHidden = function () {
