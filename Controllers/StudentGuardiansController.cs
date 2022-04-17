@@ -220,7 +220,7 @@ namespace Dertrix.Controllers
 
 
 
-        public JsonResult UnRegisteredGuardianInvitationEmail(int id)
+        public JsonResult SendInvitationEmail(int id) 
         {
             try
             {
@@ -228,10 +228,6 @@ namespace Dertrix.Controllers
                 // GET GUARDIAN REGISTER'S ID
                 var guardianid = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == id).FirstOrDefault();
 
-                //// TESTERS ENTER HERE
-                //if (Session["IsTester"] != null)
-                //{
-                //}
 
                 if(guardianid.IsRegistered == null || guardianid.IsRegistered == false)
                 {
@@ -245,6 +241,8 @@ namespace Dertrix.Controllers
                     {
                         guardianid.CountOfInvite = zero;
                     }
+
+                    var getkey = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.InviteKey).FirstOrDefault();
 
                     var updtguardian = new RegisteredUser
                     {
@@ -269,7 +267,7 @@ namespace Dertrix.Controllers
                         TitleId = guardianid.TitleId,
                         RelationshipId = guardianid.RelationshipId,
                         NurserySchoolUserRoleId = guardianid.NurserySchoolUserRoleId,
-                        InviteKey = guardianid.InviteKey,
+                        InviteKey = getkey,
                         CountOfInvite = zero + 1,
                         IsRegistered = guardianid.IsRegistered,
                         RegisteredDate = guardianid.RegisteredDate,
@@ -514,10 +512,7 @@ namespace Dertrix.Controllers
                         //UPDATE GROUP COUNT 
                         var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                         var result = otherController.UpdateGroupMemberCount(grp, i);
-
                     }
-
-
                 }
                 else
                 {
@@ -652,7 +647,6 @@ namespace Dertrix.Controllers
                             RelationshipId = locatestud.RelationshipId,
                             ClassRef = locatestud.ClassRef,
                             PgCount = currentcount - 1
-
                         };
                         locatestud = studgaurd;
                         db.Entry(studgaurd).State = EntityState.Modified;
@@ -735,7 +729,6 @@ namespace Dertrix.Controllers
                                         RelationshipId = locatestud.RelationshipId,
                                         ClassRef = locatestud.ClassRef,
                                         PgCount = currentcount - 1
-
                                     };
                                     locatestud = studgaurd;
                                     db.Entry(studgaurd).State = EntityState.Modified;
@@ -772,12 +765,9 @@ namespace Dertrix.Controllers
                                             var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                                             var result = otherController.UpdateGroupMemberCount(grp, i);
                                         }
-
-
                                     }
                                     //EXIT
                                     return RedirectToAction("Index");
-
                                 }
                                 // PG IS LINKED TO JUST THIS STUD IN CLASS - SO WE REMV FROM CLASSGRP AND SG TABLE
 
@@ -809,7 +799,6 @@ namespace Dertrix.Controllers
                                             var otherController = DependencyResolver.Current.GetService<RegisteredUsersGroupsController>();
                                             var result = otherController.UpdateGroupMemberCount(grp, i);
                                         }
-
                                     }
 
                                     // UPDATE STUD'S GUARDIAN COUNT.
@@ -876,9 +865,6 @@ namespace Dertrix.Controllers
             }
             return RedirectToAction("Index");
         }
-
-
-
 
         protected override void Dispose(bool disposing)
         {

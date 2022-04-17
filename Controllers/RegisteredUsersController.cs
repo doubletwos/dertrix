@@ -584,8 +584,6 @@ namespace Dertrix.Controllers
                     reguser = usrtoupdt;
                     db.Entry(reguser).State = EntityState.Modified;
                     db.SaveChanges();
-                    //db.Entry(reguser).State = EntityState.Detached;
-                    //Dispose(true);
                 }
             }
             catch (Exception ex)
@@ -593,7 +591,9 @@ namespace Dertrix.Controllers
                 Console.WriteLine(ex);
                 return Redirect("~/ErrorHandler.html");
             }
-            return View();
+            //return View();
+            return new HttpStatusCodeResult(204);
+
 
         }
 
@@ -1092,7 +1092,7 @@ namespace Dertrix.Controllers
                                     DateAdded = DateTime.Now,
                                     OrgId = i,
                                     Stu_class_Org_Grp_id = orggrpref_1,
-
+                                    IsRegistered = false
                                 };
                                 db.StudentGuardians.Add(studentguardian);
                                 db.SaveChanges();
@@ -1591,7 +1591,8 @@ namespace Dertrix.Controllers
                             StudentFullName = studentfullname,
                             DateAdded = DateTime.Now,
                             OrgId = w,
-                            Stu_class_Org_Grp_id = orggrpref
+                            Stu_class_Org_Grp_id = orggrpref,
+                            IsRegistered = false
                         };
                         db.StudentGuardians.Add(studentguardian);
                         db.SaveChanges();

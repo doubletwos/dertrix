@@ -160,8 +160,7 @@ namespace Dertrix.Controllers
                         InviteSentDate = newuser.InviteSentDate,
                         CountOfInvite = newuser.CountOfInvite,
                         IsRegistered = newuser.IsRegistered,
-                        RegisteredDate = newuser.RegisteredDate,
-
+                        RegisteredDate = newuser.RegisteredDate,                        
                     };
                     return View(usr);
                 }
@@ -226,7 +225,35 @@ namespace Dertrix.Controllers
                 db.Entry(locateuser).State = EntityState.Modified;
                 db.SaveChanges();
 
-                    return RedirectToAction("Signin", "Access");
+
+                // Locate SG in the SG table and set IsRegistered to TRUE
+                var locateGD = db.StudentGuardians.AsNoTracking()
+                    .Where(x => x.RegisteredUserId == locateuser.RegisteredUserId)
+                    .FirstOrDefault();
+
+                var updategd = new StudentGuardian
+                {
+                    StudentGuardianId = locateGD.StudentGuardianId,
+                    RegisteredUserId = locateGD.RegisteredUserId,
+                    GuardianFirstName = locateGD.GuardianFirstName,
+                    GuardianLastName = locateGD.GuardianLastName,
+                    GuardianFullName = locateGD.GuardianFullName,
+                    GuardianEmailAddress = locateGD.GuardianEmailAddress,
+                    DateAdded = locateGD.DateAdded,
+                    StudentId = locateGD.StudentId,
+                    StudentFullName = locateGD.StudentFullName,
+                    OrgId = locateGD.OrgId,
+                    TitleId = locateGD.TitleId,
+                    RelationshipId = locateGD.RelationshipId,
+                    Telephone = locateGD.Telephone,
+                    Stu_class_Org_Grp_id = locateGD.Stu_class_Org_Grp_id,
+                    IsRegistered = true
+                };
+                locateGD = updategd;
+                db.Entry(locateGD).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Signin", "Access");
 
             }
             catch (Exception ex)
@@ -328,6 +355,47 @@ namespace Dertrix.Controllers
 
                 if (Session["IsParent/Guardian"] != null)
                 {
+                    // check status of Isregistered
+                    var registeredstatus = db.StudentGuardians
+                        .Where(x => x.RegisteredUserId == reguserid.RegisteredUserId)
+                        //.Where(x => x.OrgId == reguserid.OrgId)
+                        .Where(x => x.IsRegistered == false || x.IsRegistered == null)
+                        .Select(x => x.IsRegistered)
+                        .ToList();
+
+                    if (registeredstatus.Count > 0)
+                    {
+                        // Locate SG in the SG table and set IsRegistered to TRUE
+                        var locateGD = db.StudentGuardians.AsNoTracking()
+                            .Where(x => x.RegisteredUserId == reguserid.RegisteredUserId)
+                            .Where(x => x.IsRegistered == false || x.IsRegistered == null)
+                            //.Where(x => x.OrgId == reguserid.OrgId)
+                            .FirstOrDefault();
+
+                        var updategd = new StudentGuardian
+                        {
+                            StudentGuardianId = locateGD.StudentGuardianId,
+                            RegisteredUserId = locateGD.RegisteredUserId,
+                            GuardianFirstName = locateGD.GuardianFirstName,
+                            GuardianLastName = locateGD.GuardianLastName,
+                            GuardianFullName = locateGD.GuardianFullName,
+                            GuardianEmailAddress = locateGD.GuardianEmailAddress,
+                            DateAdded = locateGD.DateAdded,
+                            StudentId = locateGD.StudentId,
+                            StudentFullName = locateGD.StudentFullName,
+                            OrgId = locateGD.OrgId,
+                            TitleId = locateGD.TitleId,
+                            RelationshipId = locateGD.RelationshipId,
+                            Telephone = locateGD.Telephone,
+                            Stu_class_Org_Grp_id = locateGD.Stu_class_Org_Grp_id,
+                            IsRegistered = true
+                        };
+                        locateGD = updategd;
+                        db.Entry(locateGD).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                    }
+
                     return RedirectToAction("PGSchCentre", "Orgs", new { id = orgredirect });
                 }
                 else

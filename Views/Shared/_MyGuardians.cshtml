@@ -1,33 +1,7 @@
 ﻿@model IEnumerable<Dertrix.Models.StudentGuardian>
 
 
-@*<table class="table table-bordered table-responsive table-condensed table-hover">
-    <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-        <th>
-            Dertrix Id
-        </th>
-        <th>
-            Guardian's FullName
-        </th>
-        <th>
-            Email Address
-        </th>
-        <th>
-            Tel
-        </th>
-        <th>
-            Relationship
-        </th>
-        <th>
-            Invites sent
-        </th>
-        <th>
-            Send Invite
-        </th>
-        <th>
-            Unlink
-        </th>
-    </tr>*@
+
 
 @if (Model.Count() == 0)
 {
@@ -44,140 +18,80 @@
 
 @if (Model.Count() == 1 || Model.Count() > 1)
 {
-    foreach (var item in Model.OrderBy(i => i.GuardianFullName))
-    {
 
-            <table class="table table-bordered table-responsive table-condensed table-hover">
-                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-                    <th>
-                        Dertrix Id
-                    </th>
-                    <th>
-                        Guardian's FullName
-                    </th>
-                    <th>
-                        Email Address
-                    </th>
-                    <th>
-                        Tel
-                    </th>
-                    <th>
-                        Relationship
-                    </th>
-                    <th>
-                        Invites sent
-                    </th>
 
-                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+    <table class="table table-bordered table-responsive table-condensed table-hover">
+        <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+            <th>
+                Dertrix Id
+            </th>
+            <th>
+                Guardian's FullName
+            </th>
+            <th>
+                Email Address
+            </th>
+            <th>
+                Tel
+            </th>
+            <th>
+                Relationship
+            </th>
+            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+            {
+                <th>
+                    Unlink
+                </th>
+                <th>
+                    Send Invite
+                </th>
+            }
+
+        </tr>
+
+        @foreach (var item in Model.OrderBy(i => i.GuardianFullName))
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredUserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title.TitleName)
+                    @Html.DisplayFor(modelItem => item.GuardianFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
+                </td>
+
+                @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                {
+                    <td>
+                        <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"><i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
+                    </td>
+
+                    if (item.IsRegistered == null || item.IsRegistered == false)
                     {
-
-                        <th>
-                            Send Invite
-                        </th>
-                        <th>
-                            Unlink
-                        </th>
-                    }
-
-                </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RegisteredUserId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title.TitleName)
-                        @Html.DisplayFor(modelItem => item.GuardianFullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
-                    </td>
-                    <th>
-                        @Html.DisplayFor(modelItem => item.Telephone)
-                    </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
-                    </td>
-
-                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-                    {
-
                         <td>
                             <p><a href="#" onclick="SendInvite(@item.RegisteredUserId)"><i class="fa fa-envelope" style="color:green" aria-hidden="true"></i></a></p>
                         </td>
-                        <td>
-                            <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"><i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
-                        </td>
                     }
 
-                </tr>
-            </table>
+                }
 
-            <table class="table table-bordered table-responsive table-condensed table-hover">
-                <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
-                    <th>
-                        Dertrix Id
-                    </th>
-                    <th>
-                        Guardian's FullName
-                    </th>
-                    <th>
-                        Email Address
-                    </th>
-                    <th>
-                        Tel
-                    </th>
-                    <th>
-                        Relationship
-                    </th>
-                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-                    {
-                        @*<th>
-                            Invites sent
-                        </th>
-                        <th>
-                            Send Invite
-                        </th>*@
-                        <th>
-                            Unlink
-                        </th>
-                    }
+            </tr>
+        }
+    </table>
 
-                </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RegisteredUserId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title.TitleName)
-                        @Html.DisplayFor(modelItem => item.GuardianFullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GuardianEmailAddress)
-                    </td>
-                    <th>
-                        @Html.DisplayFor(modelItem => item.Telephone)
-                    </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Relationship.RelationshipName)
-                    </td>
-                    @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-                    {
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.CountOfInvite)
-                        </td>
-                        <td>
-                            <p><a href="#" onclick="SendInvite(@item.StudentGuardianId)"><i class="fa fa-envelope" style="color:green" aria-hidden="true"></i></a></p>
-                        </td>*@
-                        <td>
-                            <p><a href="#" onclick="ConfirmDelete(@item.StudentGuardianId)"><i class="fa fa-trash" style="color:red" aria-hidden="true"></i></a></p>
-                        </td>
-                    }
-
-                </tr>
-            </table>
-    }
 
 }
+
 
 
 <input type="hidden" id="hiddenRegisterUserId" />
@@ -211,7 +125,7 @@
     var SendInvite = function (Id) {
         $.ajax({
             type: "GET",
-            url: "/StudentGuardians/UnRegisteredGuardianInvitationEmail/",
+            url: "/StudentGuardians/SendInvitationEmail/",
             data: { Id: Id },
             success: function (response) {
                 toastr.options.onHidden = function () {
@@ -255,7 +169,6 @@
             }
         })
     }
-
 </script>
 
 

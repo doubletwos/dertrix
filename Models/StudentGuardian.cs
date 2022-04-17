@@ -38,7 +38,9 @@ namespace Dertrix.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }
 
-        public int OrgId { get; set; } 
+        public int OrgId { get; set; }
+
+        public bool? IsRegistered { get; set; }
 
 
     }
