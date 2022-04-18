@@ -30,159 +30,228 @@
     </div>
     <br />
     <div class="panel panel-default">
-            <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive standard">
-                <thead>
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive standard">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Subject
+                    </th>
+                    <th>
+                        Class
+                    </th>
+                    <th>
+                        Taught By
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(i => i.ClassId))
+                {
                     <tr>
-                        <th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubjectId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubjectName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Class.ClassName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TaughtBy)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="background-color:white">
+                                    <li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
+                                    <li><a href="#" onclick="AssignTeacher(@item.SubjectId)">Assign Teacher</a></li>
+                                    @*<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>*@
+                                </ul>
+                            </div>
+                        </td>
 
-                        </th>
-                        <th>
-                            Subject
-                        </th>
-                        <th>
-                            Class
-                        </th>
-                        <th>
-                            Taught By
-                        </th>
-                        <th>
-						</th>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.OrderBy(i => i.ClassId))
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SubjectId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SubjectName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Class.ClassName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TaughtBy)
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Action <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" style="background-color:white">
-                                        <li><a href="#" onclick="EditSubject(@item.SubjectId)">Edit subject</a></li>
-                                        @*<li><a href="#" onclick="ConfirmDelete(@item.SubjectId)">Remove subject</a></li>*@
-                                    </ul>
-                                </div>
-                            </td>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<input type="hidden" id="hiddensubjectId" />
 
-                        </tr>
-                    }
-                </tbody>
-            </table>
+@*Assign Teacher Modal*@
+<div class="modal fade" id="AssignTeacherModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Assign Teacher</h3>
+            </div>
+            <div class="modal-body" id="AssignTeacherBody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
+            </div>
         </div>
     </div>
-<input type="hidden" id="hiddensubjectId" />
+</div>
+
 @*Delete confirmation Modal*@
 <div class="modal fade" id="SubjectDeleteModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Remove subject</h3>
-			</div>
-			<div class="modal-body">
-				<h3>Are you sure you want to remove this subject?</h3>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
-				<a href="#" class="RegUserOrgButtonColour" onclick="DeleteSubject()">Confirm</a>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Remove subject</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure you want to remove this subject?</h3>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+                <a href="#" class="RegUserOrgButtonColour" onclick="DeleteSubject()">Confirm</a>
+            </div>
+        </div>
+    </div>
 </div>
 @*Edit subject modal*@
 <div class="modal fade" id="SubjectEditModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a href="#" class="close" data-dismiss="modal">&times;</a>
-				<h3 class="modal-title">Edit subject</h3>
-			</div>
-			<div class="modal-body" id="SubjectEditModalbody"></div>
-			<div class="modal-footer">
-				<input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
-				<input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit" />
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Edit subject</h3>
+            </div>
+            <div class="modal-body" id="SubjectEditModalbody"></div>
+            <div class="modal-footer">
+                <input type="button" value="Cancel" class="RegUserOrgButtonColour" id="cancel" data-dismiss="modal" />
+                <input type="button" value="Update" class="RegUserOrgButtonColour" id="edtSubmit1" />
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts{
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#myTable').DataTable(
-				{
-					"ordering": false,
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                    "ordering": false,
 
-				}
-			);
-		});
-	</script>
+                }
+            );
+        });
+    </script>
 
-	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/custom-validator")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom-validator")
 
-	<script>
-		var ConfirmDelete = function (SubjectId) {
-			$("#hiddensubjectId").val(SubjectId);
-			$("#SubjectDeleteModal").modal('show');
-		}
-		var DeleteSubject = function () {
-			var Sub = $("#hiddensubjectId").val();
-			$.ajax({
-				type: "POST",
-				url: "/Subjects/DeleteConfirmed/",
-				data: { id: Sub },
-				success: function (response) {
-					alert("Subject deleted");
-					$("#SubjectDeleteModal").modal("hide");
-					window.location.reload();
-				}
-			})
-		}
-	</script>
-	<script>
-		var EditSubject = function (Id) {
-			$.ajax({
-				type: "GET",
-				url: "/Subjects/EditSubject",
-				data: { Id: Id },
-				success: function (response) {
-					$("#SubjectEditModalbody").html(response);
-					$("#SubjectEditModal").modal("show");
-				}
-			})
-		}
-	</script>
-	<script>
-		$("#edtSubmit").click(function () {
-			var data = $("#SubjectEditForm").serialize();
-			$.ajax({
-				type: "POST",
-				url: "/Subjects/Edit",
-				data: data,
-				success: function (response) {
-					alert("Subject updated");
-					$("#SubjectEditModal").modal("hide");
-					$("#SubjectEditForm")[0].reset();
-					window.location.reload();
-				}
-			})
-		})
-	</script>
+    <script>
+        var AssignTeacher = function (Id) {
+            $.ajax({
+                type: "GET",
+                url: "/Subjects/AssignSubjectTeacher",
+                data: { Id: Id },
+                success: function (response) {
+                    $("#AssignTeacherBody").html(response);
+                    $("#AssignTeacherModal").modal("show");
+                }
+            })
+        }
+    </script>
+
+    <script>
+        $("#edtSubmit").click(function () {
+            var data = $("#AssignSubjectTeacherForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Subjects/AssignSubjectTeacher",
+                data: data,
+                success: function (response) {
+                    toastr.options.onHidden = function () {
+                        window.location.reload();
+                    }
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 1000;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 500;
+                    toastr.options.tapToDismiss = false;
+                    toastr.success("Teacher assigned successfully");
+                    $("#AssignTeacherModal").modal("hide");
+                    $("#AssignSubjectTeacherForm")[0].reset();
+                },
+                error: function (response) {
+                    toastr.options.positionClass = "toast-bottom-full-width";
+                    toastr.options.progressBar = true;
+                    toastr.options.timeout = 0;
+                    toastr.options.extendedTimeOut = 0;
+                    toastr.options.fadeOut = 900;
+                    toastr.options.tapToDismiss = false;
+                    toastr.error("Oops, There has been a problem, the system adminstrators have been notified");
+                    $("#AssignTeacherModal").modal("hide");
+                    $("#AssignSubjectTeacherForm")[0].reset();
+                }
+            })
+        })
+    </script>
+
+    <script>
+        var ConfirmDelete = function (SubjectId) {
+            $("#hiddensubjectId").val(SubjectId);
+            $("#SubjectDeleteModal").modal('show');
+        }
+        var DeleteSubject = function () {
+            var Sub = $("#hiddensubjectId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Subjects/DeleteConfirmed/",
+                data: { id: Sub },
+                success: function (response) {
+                    alert("Subject deleted");
+                    $("#SubjectDeleteModal").modal("hide");
+                    window.location.reload();
+                }
+            })
+        }
+    </script>
+    <script>
+        var EditSubject = function (Id) {
+            $.ajax({
+                type: "GET",
+                url: "/Subjects/EditSubject",
+                data: { Id: Id },
+                success: function (response) {
+                    $("#SubjectEditModalbody").html(response);
+                    $("#SubjectEditModal").modal("show");
+                }
+            })
+        }
+    </script>
+    <script>
+        $("#edtSubmit1").click(function () {
+            var data = $("#SubjectEditForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Subjects/Edit",
+                data: data,
+                success: function (response) {
+                    alert("Subject updated");
+                    $("#SubjectEditModal").modal("hide");
+                    $("#SubjectEditForm")[0].reset();
+                    window.location.reload();
+                }
+            })
+        })
+    </script>
 }
 
 

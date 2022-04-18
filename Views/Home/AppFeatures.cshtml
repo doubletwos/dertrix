@@ -1,0 +1,82 @@
+﻿
+<head>
+    @{
+        ViewBag.Title = "AppFeatures";
+        var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+    }
+    <style>
+		 .der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+    </style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
+    <link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+
+
+
+
+<div id="content" class="der-body-content der-clearfix">
+    <br />
+    <br />
+    <div>
+        <hr />
+    </div>
+    <hr />
+    <br />
+    <div class="panel panel-default">
+        <table id="myTable" class="table table-bordered table-condensed table-striped table-hover table-responsive standard">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-style: groove;">
+                    <td>
+                        Registered system users
+                    </td>
+                    <td>
+                        There are 4 types of registered users: System admins, School staff, Parents / Guardians, Students<br />
+                        All user types except students can log in to the application.<br />
+                        School staff and Parents / Guardians can be linked to more than one organisation on the system,<br />
+                        as long as the same email is used when 
+                        the account is being added to the system.
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.23/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable(
+                {
+                    "ordering": false,
+                }
+            );
+        });
+    </script>
+
+}
+

@@ -110,7 +110,7 @@ namespace Dertrix.Controllers
                     };
                     ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
                         .Where(x => x.OrgId == i)
-                        .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3 )), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
+                        .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3)), "RegisteredUserId", "FullName", classroom.ClassTeacherId);
 
                     return PartialView("~/Views/Shared/PartialViewsForms/_AssignClassTeacher.cshtml", cr);
                 }
@@ -185,22 +185,69 @@ namespace Dertrix.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var teacherstitle = db.RegisteredUsers
-                        .Where(x => x.RegisteredUserId == Class.ClassTeacherId)
-                        .Select(x => x.TitleId)
-                        .FirstOrDefault();
 
-                    var teachersName = db.RegisteredUsers
-                        .Where(x => x.RegisteredUserId == Class.ClassTeacherId)
-                        .Select(x => x.FullName)
-                        .FirstOrDefault();
 
-                    Class.ClassTeacherFullName = teachersName;
-                    Class.TitleId = teacherstitle;
+                    if (Class.ClassTeacherId == null)
+                    {
+                        Class.TitleId = null;
 
-                    db.Entry(@Class).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                        db.Entry(@Class).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        // Log Event 
+                        var orgeventlog = new Org_Events_Log()
+                        {
+                            Org_Event_SubjectId = Class.ClassTeacherId.ToString(),
+                            Org_Event_SubjectName =    Class.ClassName,
+                            Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                            Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                            Org_Event_Time = DateTime.Now,
+                            OrgId = Session["OrgId"].ToString(),
+                            Org_Events_Types = Org_Events_Types.Unassigned_Teacher_From_Class
+                        };
+                        db.Org_Events_Logs.Add(orgeventlog);
+                        db.SaveChanges();
+
+                        return RedirectToAction("Index");
+
+                    }
+
+                    else
+                    {
+                        var teacherstitle = db.RegisteredUsers
+                           .Where(x => x.RegisteredUserId == Class.ClassTeacherId)
+                           .Select(x => x.TitleId)
+                           .FirstOrDefault();
+
+                        var teachersName = db.RegisteredUsers
+                            .Where(x => x.RegisteredUserId == Class.ClassTeacherId)
+                            .Select(x => x.FullName)
+                            .FirstOrDefault();
+
+                        Class.ClassTeacherFullName = teachersName;
+                        Class.TitleId = teacherstitle;
+
+                        db.Entry(@Class).State = EntityState.Modified;
+                        db.SaveChanges();
+
+
+                        // Log Event 
+                        var orgeventlog = new Org_Events_Log()
+                        {
+                            Org_Event_SubjectId = Class.ClassTeacherId.ToString(),
+                            Org_Event_SubjectName = teachersName + " To " + Class.ClassName,
+                            Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                            Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                            Org_Event_Time = DateTime.Now,
+                            OrgId = Session["OrgId"].ToString(),
+                            Org_Events_Types = Org_Events_Types.Assigned_Teacher_
+                        };
+                        db.Org_Events_Logs.Add(orgeventlog);
+                        db.SaveChanges();
+
+                        return RedirectToAction("Index");
+
+                    }
                 }
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);

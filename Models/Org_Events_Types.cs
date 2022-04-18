@@ -22,6 +22,10 @@ namespace Dertrix.Models
         Created_Group = 13,
         Edited_Group = 14,
         Deleted_Group = 15,
-        Changed_Class = 16
+        Changed_Class = 16,
+        Assigned_Teacher_ = 17,
+        Unassigned_Teacher_From_Class = 18,
+        Assigned_Teacher = 19,
+        Unassigned_Teacher = 20,
     }
 }

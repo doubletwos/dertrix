@@ -60,5 +60,34 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
         }
+
+        public ActionResult AppFeatures()
+        {
+            try
+            {
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if ((int)Session["OrgId"] != 23)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if ((int)Session["OrgId"] == 23)
+                {
+                    return View();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return new HttpStatusCodeResult(204);
+        }
     }
 }
