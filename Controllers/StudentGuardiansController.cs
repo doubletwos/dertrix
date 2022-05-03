@@ -236,11 +236,6 @@ namespace Dertrix.Controllers
                     var otherController = DependencyResolver.Current.GetService<RegisteredUsersController>();
                     var result = otherController.GenerateGuardianInviteKey(id);
 
-                    var zero = 0;
-                    if (guardianid.CountOfInvite == zero || guardianid.CountOfInvite == null)
-                    {
-                        guardianid.CountOfInvite = zero;
-                    }
 
                     var getkey = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.InviteKey).FirstOrDefault();
 
@@ -268,9 +263,10 @@ namespace Dertrix.Controllers
                         RelationshipId = guardianid.RelationshipId,
                         NurserySchoolUserRoleId = guardianid.NurserySchoolUserRoleId,
                         InviteKey = getkey,
-                        CountOfInvite = zero + 1,
+                        CountOfInvite = guardianid.CountOfInvite + 1,
                         IsRegistered = guardianid.IsRegistered,
                         RegisteredDate = guardianid.RegisteredDate,
+                        InviteSentDate = DateTime.Now
 
                     };
                     guardianid = updtguardian;
@@ -293,12 +289,6 @@ namespace Dertrix.Controllers
                 }
                 else
                 {
-                    var xero = 0;
-
-                    if (guardianid.CountOfInvite == xero || guardianid.CountOfInvite == null)
-                    {
-                        guardianid.CountOfInvite = xero;
-                    }
 
                     var updtguardian = new RegisteredUser
                     {
@@ -324,9 +314,10 @@ namespace Dertrix.Controllers
                         RelationshipId = guardianid.RelationshipId,
                         NurserySchoolUserRoleId = guardianid.NurserySchoolUserRoleId,
                         InviteKey = guardianid.InviteKey,
-                        CountOfInvite = xero + 1,
+                        CountOfInvite = guardianid.CountOfInvite + 1,
                         IsRegistered = guardianid.IsRegistered,
                         RegisteredDate = guardianid.RegisteredDate,
+                        InviteSentDate = DateTime.Now
 
                     };
                     guardianid = updtguardian;

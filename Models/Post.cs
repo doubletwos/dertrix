@@ -50,6 +50,6 @@ namespace Dertrix.Models
 
         public bool? SendAsEmail { get; set; }
 
-
+        
     }
 }

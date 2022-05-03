@@ -92,6 +92,8 @@ namespace Dertrix.Controllers
             try
             {
                 var locateuser = db.RegisteredUsers.Where(x => x.InviteKey == registeredUser.InviteKey).FirstOrDefault();
+                var locateusercount = db.RegisteredUsers.Where(x => x.InviteKey == registeredUser.InviteKey).Count();
+
 
                 if (registeredUser.InviteKey == null)
                 {
@@ -103,10 +105,16 @@ namespace Dertrix.Controllers
                     registeredUser.LoginErrorMsg = "Invitation key must be at least 6 characters long.";
                     return View("KeyCheck", registeredUser);
                 }
+                if (locateusercount == 0)
+                {
+                    registeredUser.LoginErrorMsg = "Please enter invitation key or a valid invitation key";
+                    return View("KeyCheck", registeredUser);
+                }
                 if (registeredUser.InviteKey == locateuser.InviteKey)
                 {
                     return RedirectToAction("InitialSettings", "Access", new { id = locateuser.RegisteredUserId });
                 }
+
             }
             catch (Exception e)
             {

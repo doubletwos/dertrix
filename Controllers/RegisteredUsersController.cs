@@ -542,6 +542,8 @@ namespace Dertrix.Controllers
 
                     var invitecode = (code1 + code2 + code3 + code4);
 
+
+
                     // SAVE CODE IN USER'S DATA 
 
                     var usrtoupdt = new RegisteredUser
@@ -1467,6 +1469,7 @@ namespace Dertrix.Controllers
                         registeredUser.TempIntHolder = registeredUser.RegisteredUserId;
                         string clear = null;
                         registeredUser.RegisteredUserId = Convert.ToInt32(clear);
+                        registeredUser.CountOfInvite = 0;
                         db.RegisteredUsers.Add(registeredUser);
                         db.SaveChanges();
 
