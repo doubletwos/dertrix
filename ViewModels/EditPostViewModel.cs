@@ -42,5 +42,7 @@ namespace Dertrix.ViewModels
 
         public bool? SendAsEmail { get; set; }
 
+        public bool? Isarchived { get; set; }
+
     }
 }

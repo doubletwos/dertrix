@@ -19,6 +19,8 @@ namespace Dertrix.ViewModels
         public Post Post { get; set; }
         public List<OrgGroup> OrgGroups { get; set; }
         public bool IsSelected { get; set; }
+
+        public bool? Isarchived { get; set; }
         public IEnumerable<PostTopic> PostTopics  { get; set; }
 
     }

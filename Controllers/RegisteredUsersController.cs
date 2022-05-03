@@ -593,7 +593,6 @@ namespace Dertrix.Controllers
                 Console.WriteLine(ex);
                 return Redirect("~/ErrorHandler.html");
             }
-            //return View();
             return new HttpStatusCodeResult(204);
 
 

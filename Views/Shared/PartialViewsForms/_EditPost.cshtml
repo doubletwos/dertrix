@@ -11,6 +11,9 @@
         @Html.HiddenFor(model => model.OrgId)
         @Html.HiddenFor(model => model.PostCreatorId)
         @Html.HiddenFor(model => model.PostCreationDate)
+        @Html.HiddenFor(model => model.Isarchived)
+        @Html.HiddenFor(model => model.CreatorFullName)
+
 
 
         <div class="form-group">
@@ -21,21 +24,21 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PostSubject, "Subject",htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PostSubject, "Subject", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PostSubject, new { htmlAttributes = new { @id = "", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PostSubject, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PostExpirtyDate,"Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PostExpirtyDate, "Expiry Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PostExpirtyDate, new { htmlAttributes = new { @class = "form-control datepicker", type = "text" } })
                 @Html.ValidationMessageFor(model => model.PostExpirtyDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PostContent,"Content", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PostContent, "Content", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.PostContent, new { htmlAttributes = new { @class = "form-control PostContent" } })
                 @Html.ValidationMessageFor(model => model.PostContent, "", new { @class = "text-danger" })

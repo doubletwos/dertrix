@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Dertrix.Models.Post>
 <head>
     @{
-        ViewBag.Title = "All Posts";
+        ViewBag.Title = "Archived Posts";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
     <style>
@@ -20,7 +20,6 @@
 		.panel-default{
 			border-color:  @regUserOrgNavBar;
 		}
-
     </style>
 
 
@@ -31,19 +30,8 @@
     @Html.Partial("_Widget_SchStaff_Dashboard")
     <div>
         <hr />
-        <div>
-            @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-            {
-                <div>
-                    @{
-                        Html.RenderAction("AddPost1", "Posts");
-                    }
-                </div>
-            }
-        </div>
-        <hr />
+        <h4><strong>Archived Posts</strong></h4>
     </div>
-    <br />
     <br />
 
     @section scripts{
@@ -89,8 +77,8 @@
                                     </li>
                                     @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
                                     {
-                                        <li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>
-                                        <li><a href="#" onclick="ArchivePost(@item.PostId)">Archive Post</a></li>
+                                        @*<li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>*@
+                                        @*<li><a href="#" onclick="ArchivePost(@item.PostId)">Archive Post</a></li>*@
                                         <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
                                     }
                                 </ul>
@@ -112,22 +100,9 @@
 
 
 
-@*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
 <input type="hidden" id="hiddenPostId" />
 
-@*<a class="btn btn danger" onclick="SendEmail()">Send email</a>*@
-@*<script>
-        var SendEmail = function () {
-            $.ajax({
-                type: "Post",
-                url:  '@Url.Action("SendTestEmail", "Posts")',
-                success: function (data) {
-                    alert("Email Sent");
-                }
-            })
 
-        }
-    </script>*@
 
 @*Delete confirmation Modal*@
 <div class="modal fade" id="PostDeleteModal">
@@ -237,6 +212,8 @@
         })
     })
 </script>
+
+
 
 
 

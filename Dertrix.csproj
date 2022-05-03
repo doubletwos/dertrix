@@ -595,6 +595,10 @@
     <Compile Include="Migrations\202204140629119_Sprint2022.03.06.designer.cs">
       <DependentUpon>202204140629119_Sprint2022.03.06.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205031252563_Sprint2022.05.00.cs" />
+    <Compile Include="Migrations\202205031252563_Sprint2022.05.00.designer.cs">
+      <DependentUpon>202205031252563_Sprint2022.05.00.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -1027,6 +1031,7 @@
     <Content Include="Views\Access\InitialSettings.cshtml" />
     <Content Include="Views\Home\AppFeatures.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AssignSubjectTeacher.cshtml" />
+    <Content Include="Views\Posts\ArchivedPosts.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1321,6 +1326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204140629119_Sprint2022.03.06.resx">
       <DependentUpon>202204140629119_Sprint2022.03.06.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205031252563_Sprint2022.05.00.resx">
+      <DependentUpon>202205031252563_Sprint2022.05.00.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

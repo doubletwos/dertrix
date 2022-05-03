@@ -42,6 +42,7 @@ namespace Dertrix.Controllers
                 {
                     var usersposts = (from psts in db.Posts
                                       where psts.OrgId == i
+                                      where psts.Isarchived == false
                                       select psts)
                                       .Distinct()
                                       .ToList();
@@ -69,6 +70,7 @@ namespace Dertrix.Controllers
                                       join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
                                       where ru.RegisteredUserId == RegisteredUserId
                                       where psts.OrgId == i
+                                      where psts.Isarchived == false
                                       select psts)
                                       .Distinct()
                                       .ToList();
@@ -83,6 +85,44 @@ namespace Dertrix.Controllers
                 return Redirect("~/ErrorHandler.html");
             }
         }
+
+
+
+        public ActionResult ArchivedPosts()
+        {
+            try
+            {
+                if (Request.Browser.IsMobileDevice == true)
+                {
+                    return RedirectToAction("WrongDevice", "Orgs");
+                }
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+                {
+                    var usersposts = (from psts in db.Posts
+                                      where psts.OrgId == i
+                                      where psts.Isarchived == true
+                                      select psts)
+                                      .Distinct()
+                                      .ToList();
+                    return View(usersposts);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return View();
+        }
+
 
 
         public ActionResult PostsTable()
@@ -101,6 +141,7 @@ namespace Dertrix.Controllers
                               join ru in db.RegisteredUsers on rug.RegisteredUserId equals ru.RegisteredUserId
                               where ru.RegisteredUserId == RegisteredUserId
                               where psts.OrgId == i
+                              where psts.Isarchived == false
                               select psts)
                               .Distinct()
                               .ToList();
@@ -147,6 +188,7 @@ namespace Dertrix.Controllers
                     PostContent = edtpost.PostContent,
                     SendAsEmail = edtpost.SendAsEmail,
                     PostSubject = edtpost.PostSubject,
+                    Isarchived = edtpost.Isarchived,
 
                     OrgGroups = grp.Select(x => new OrgGroup()
                     {
@@ -191,6 +233,56 @@ namespace Dertrix.Controllers
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
             }
+        }
+
+        public ActionResult ArchivePost(int? id)
+        {
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var locatepost = db.Posts.AsNoTracking().Where(x => x.PostId == id).Where(x => x.OrgId == i).FirstOrDefault();
+
+                var updt = new Post
+                {
+                    PostId = locatepost.PostId,
+                    PostTopicId = locatepost.PostTopicId,
+                    OrgId = locatepost.OrgId,
+                    PostSubject = locatepost.PostSubject,
+                    PostCreatorId = locatepost.PostCreatorId,
+                    CreatorFullName = locatepost.CreatorFullName,
+                    PostCreationDate = locatepost.PostCreationDate,
+                    PostExpirtyDate = locatepost.PostExpirtyDate,
+                    PostContent = locatepost.PostContent,
+                    SendAsEmail = locatepost.SendAsEmail,
+                    Isarchived = true
+                };
+                locatepost = updt;
+                db.Entry(locatepost).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                // UPON ARCHIVING POST - LOG THE EVENT 
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_SubjectId = locatepost.PostId.ToString(),
+                    Org_Event_SubjectName = locatepost.PostSubject,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.Archived_Post
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return RedirectToAction("AllPosts", "Posts");
         }
 
 
@@ -353,6 +445,7 @@ namespace Dertrix.Controllers
                 viewmodel.Post.OrgId = i;
                 viewmodel.Post.CreatorFullName = db.RegisteredUsers.Where(x => x.RegisteredUserId == RegisteredUserId).Select(x => x.FullName).FirstOrDefault();
                 viewmodel.Post.PostCreationDate = DateTime.Now;
+                viewmodel.Post.Isarchived = false;
 
 
                 // Adding / Saving the Post

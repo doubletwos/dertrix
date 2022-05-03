@@ -50,6 +50,7 @@ namespace Dertrix.Models
 
         public bool? SendAsEmail { get; set; }
 
-        
+        public bool? Isarchived { get; set; }
+
     }
 }

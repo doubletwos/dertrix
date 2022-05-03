@@ -27,5 +27,6 @@ namespace Dertrix.Models
         Unassigned_Teacher_From_Class = 18,
         Assigned_Teacher = 19,
         Unassigned_Teacher = 20,
+        Archived_Post = 21
     }
 }
