@@ -599,6 +599,22 @@
     <Compile Include="Migrations\202205031252563_Sprint2022.05.00.designer.cs">
       <DependentUpon>202205031252563_Sprint2022.05.00.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205100543075_Sprint2022.05.01.cs" />
+    <Compile Include="Migrations\202205100543075_Sprint2022.05.01.designer.cs">
+      <DependentUpon>202205100543075_Sprint2022.05.01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205100549028_Sprint2022.05.02.cs" />
+    <Compile Include="Migrations\202205100549028_Sprint2022.05.02.designer.cs">
+      <DependentUpon>202205100549028_Sprint2022.05.02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205100621173_Sprint2022.05.03.cs" />
+    <Compile Include="Migrations\202205100621173_Sprint2022.05.03.designer.cs">
+      <DependentUpon>202205100621173_Sprint2022.05.03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205101132391_Sprint2022.05.04.cs" />
+    <Compile Include="Migrations\202205101132391_Sprint2022.05.04.designer.cs">
+      <DependentUpon>202205101132391_Sprint2022.05.04.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -1329,6 +1345,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205031252563_Sprint2022.05.00.resx">
       <DependentUpon>202205031252563_Sprint2022.05.00.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205100543075_Sprint2022.05.01.resx">
+      <DependentUpon>202205100543075_Sprint2022.05.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205100549028_Sprint2022.05.02.resx">
+      <DependentUpon>202205100549028_Sprint2022.05.02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205100621173_Sprint2022.05.03.resx">
+      <DependentUpon>202205100621173_Sprint2022.05.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205101132391_Sprint2022.05.04.resx">
+      <DependentUpon>202205101132391_Sprint2022.05.04.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -2798,6 +2798,71 @@ namespace Dertrix.Controllers
                             }
                         }
                     }
+
+                    //CHECK IF STUD HAS ANY GRADES IN CURRENT CLASS
+                    var checkgrades = db.StudentSubjectGrades.Where(x => x.RegisteredUserId == id).Count();
+
+                    // IF GRADES COUNT > 0, LOG THE GRADES IN Students_Grades_LogController
+                    if (checkgrades > 0)
+                    {
+                        // GET LIST OF GRADES
+                        var grades = db.StudentSubjectGrades
+                                .Where(x => x.RegisteredUserId == id)
+                                .Where(x => x.OrgId == i)
+                                .Select(x => x.StudentSubjectGradeId)
+                                .ToList();
+                        var listofsubjects = new List<int>(grades);
+
+                        foreach (var grade in grades)
+                        {
+                            var currentgrade = db.StudentSubjectGrades
+                                .Where(x => x.StudentSubjectGradeId == grade)
+                                .Where(x => x.OrgId == i)
+                                .FirstOrDefault();
+
+                            var currentsubject = db.Subjects
+                                .Where(x => x.SubjectId == currentgrade.SubjectId)
+                                .Where(x => x.SubjectOrgId == i)
+                                .FirstOrDefault();
+
+                            var gradeslog = new Students_Grades_Log
+                            {
+                                RegisteredUserId = id,
+                                SubjectId = currentgrade.SubjectId,
+                                ClassId = (int)currentgrade.ClassId,
+                                ClassRef = (int)currentgrade.ClassRef,
+                                OrgId = (int)currentgrade.OrgId,
+                                FirstTerm_ExamGrade = currentgrade.FirstTerm_ExamGrade,
+                                SecondTerm_ExamGrade = currentgrade.SecondTerm_ExamGrade,
+                                ThirdTerm_ExamGrade = currentgrade.ThirdTerm_ExamGrade,
+                                FirstTerm_TestGrade = currentgrade.FirstTerm_TestGrade,
+                                SecondTerm_TestGrade = currentgrade.SecondTerm_TestGrade,
+                                ThirdTerm_TestGrade = currentgrade.ThirdTerm_TestGrade,
+                                Last_updated_date = currentgrade.Last_updated_date,
+                                First_Term_Exam_MaxGrade = currentsubject.First_Term_Exam_MaxGrade,
+                                Second_Term_Exam_MaxGrade = currentsubject.Second_Term_Exam_MaxGrade,
+                                Third_Term_Exam_MaxGrade = currentsubject.Third_Term_Exam_MaxGrade,
+                                First_Term_Test_MaxGrade = currentsubject.First_Term_Test_MaxGrade,
+                                Second_Term_Test_MaxGrade = currentsubject.Second_Term_Test_MaxGrade,
+                                Third_Term_Test_MaxGrade = currentsubject.Third_Term_Test_MaxGrade,
+                                Subject_Min_Passmark = currentsubject.Subject_Min_Passmark,
+                                Subject_Max_Passmark = currentsubject.SubjectMaxGrade,
+                                Updater_Id = (int)currentgrade.Updater_Id,
+                                StudentClassChangeType = StudentClassChangeType.Change_of_class,
+                                ClassTeacherId = currentsubject.ClassTeacherId,
+                                Created_date = DateTime.Now,
+
+                            };
+                            db.Students_Grades_Logs.Add(gradeslog);
+                            db.SaveChanges();
+
+                            // REMOVE RECORD FROM STUSUBGRADS TABLE 
+                            db.StudentSubjectGrades.Remove(currentgrade);
+                            db.SaveChanges();
+                        }
+                    }
+
+
                 }
 
                 // SOFT DELETE USER

@@ -16,7 +16,11 @@ namespace Dertrix.Models
 
         public int? GroupOrgTypeId { get; set; }
 
-        public int? GroupRefNumb { get; set; }  
+        public int? GroupRefNumb { get; set; }
+
+        public DateTime? Created_date { get; set; }
+
+        public string Creator_Id { get; set; }
 
 
     }

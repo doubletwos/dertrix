@@ -10,7 +10,7 @@ namespace Dertrix.Models
         public int Students_Grades_LogId { get; set; }
 
         public int RegisteredUserId { get; set; }
-        public RegisteredUser RegisteredUser { get; set; }
+        //public RegisteredUser RegisteredUser { get; set; }
 
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }

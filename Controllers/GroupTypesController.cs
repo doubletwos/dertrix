@@ -38,6 +38,8 @@ namespace Dertrix.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        groupType.Creator_Id = Session["RegisteredUserId"].ToString();
+                        groupType.Created_date = DateTime.Now;
                         db.GroupTypes.Add(groupType);
                         db.SaveChanges();
                         return RedirectToAction("Index");
@@ -141,6 +143,8 @@ namespace Dertrix.Controllers
                             GroupOrgTypeId = edtgrptye.GroupOrgTypeId,
                             GroupRefNumb = edtgrptye.GroupRefNumb,
                             GroupTypeName = edtgrptye.GroupTypeName,
+                            Created_date = edtgrptye.Created_date,
+                            Creator_Id  = edtgrptye.Creator_Id,
                         };
                         return PartialView("~/Views/Shared/PartialViewsForms/_EditGroupType.cshtml", edtgrptye1);
                     }
