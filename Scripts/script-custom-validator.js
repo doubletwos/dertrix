@@ -374,6 +374,10 @@ $(document).ready(function () {
 				maxlength: 20,
 				minlength: 4
 			},
+			'OtherNames': {
+				maxlength: 40,
+				minlength: 4
+			},
 			'LastName': {
 				required: true,
 				maxlength: 20,
@@ -399,6 +403,10 @@ $(document).ready(function () {
 			'FirstName': {
 				required: 'Please enter first name',
 				maxlength: 'Not more than 20 characters allowed',
+				minlength: 'More than 4 characters required'
+			},
+			'OtherNames': {
+				maxlength: 'Not more than 40 characters allowed',
 				minlength: 'More than 4 characters required'
 			},
 			'LastName': {

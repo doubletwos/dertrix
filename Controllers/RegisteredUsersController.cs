@@ -1620,6 +1620,9 @@ namespace Dertrix.Controllers
                         var rr4 = Session["OrgId"].ToString();
                         int w4 = Convert.ToInt32(rr4);
                         var email = "student";
+                        registeredUser.FirstName = registeredUser.FirstName;
+                        registeredUser.OtherNames = registeredUser.OtherNames;
+                        registeredUser.LastName = registeredUser.LastName;
                         registeredUser.Email = email;
                         registeredUser.SelectedOrg = w4;
                         registeredUser.FullName = registeredUser.ContactFullName;
@@ -1644,6 +1647,7 @@ namespace Dertrix.Controllers
                             OrgId = w4,
                             Email = registeredUser.Email,
                             FirstName = registeredUser.FirstName,
+                            OtherNames = registeredUser.OtherNames,
                             LastName = registeredUser.LastName,
                             OrgName = db.Orgs.Where(x => x.OrgId == w4).Select(x => x.OrgName).FirstOrDefault(),
                             RegUserOrgBrand = registeredUser.RegUserOrgBrand,
