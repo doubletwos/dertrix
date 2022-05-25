@@ -27,11 +27,14 @@ namespace Dertrix.Models
 
         public string LastName { get; set; }
 
+        public string OtherNames { get; set; }
+
+
         public string ContactFullName
         {
             get
             {
-                return FirstName + " " + LastName;
+                return FirstName + " " + OtherNames + " " + LastName;
             }
         }
 

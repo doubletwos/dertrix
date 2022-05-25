@@ -25,14 +25,16 @@ namespace Dertrix.Models
         [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
 
+        public string OtherNames { get; set; }
+
+
         public string ContactFullName
         {
             get
             {
-                return FirstName + " " + LastName;
+                return FirstName + " " + OtherNames + " " + LastName;
             }
         }
-
 
         public string FullName { get; set; }
 
