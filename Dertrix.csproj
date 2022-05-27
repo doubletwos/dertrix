@@ -755,6 +755,7 @@
     <Content Include="Main\img\client-1.png" />
     <Content Include="Main\img\client-2.png" />
     <Content Include="Main\img\DertrixLogo.png" />
+    <Content Include="Main\img\DertrixLogoMedium.png" />
     <Content Include="Main\img\hero-bg.png" />
     <Content Include="Main\img\logo.png" />
     <Content Include="Main\img\portfolio-1.png" />
@@ -820,6 +821,7 @@
     <Content Include="Content\toastr.less" />
     <Content Include="Content\wysiwyg-editor-bootstrap\src\scss\wysiwyg.scss" />
     <Content Include="Files\Template_Files\test.xlsx" />
+    <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
