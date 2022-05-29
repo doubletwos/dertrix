@@ -756,6 +756,7 @@
     <Content Include="Main\img\client-2.png" />
     <Content Include="Main\img\DertrixLogo.png" />
     <Content Include="Main\img\DertrixLogoMedium.png" />
+    <Content Include="Main\img\DertrixLogo_medium.png" />
     <Content Include="Main\img\hero-bg.png" />
     <Content Include="Main\img\logo.png" />
     <Content Include="Main\img\portfolio-1.png" />

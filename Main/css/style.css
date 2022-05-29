@@ -94,14 +94,20 @@ h1, h2, h3, h4, h5, h6 {
   margin: 20px;
 }
 
+/* Thick red border */
+hr.Horizontal-line {
+    border: 1px solid #fdc216;
+    width:800px;
+}
+
 #hero .hero-logo img {
   max-width: 100%;
 }
 
 #hero .hero-container {
-  /*background: rgba(0, 0, 0, 0.8);*/
-  background-color: white;
-  display: table-cell;
+/*  background: rgba(0, 0, 0, 0.8);*/
+/*  background-color: white;
+*/  display: table-cell;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -137,6 +143,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   #hero h2 .rotating {
     display: block;
+ 
   }
 }
 
