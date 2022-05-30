@@ -113,6 +113,10 @@ namespace Dertrix.Controllers
                                       .ToList();
                     return View(usersposts);
                 }
+                else
+                {
+                    return Redirect("~/ErrorHandler.html");
+                }
 
             }
             catch (Exception e)
@@ -120,7 +124,6 @@ namespace Dertrix.Controllers
                 Console.WriteLine(e);
                 return Redirect("~/ErrorHandler.html");
             }
-            return View();
         }
 
 

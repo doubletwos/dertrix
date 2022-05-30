@@ -100,14 +100,21 @@ hr.Horizontal-line {
     width:800px;
 }
 
+/* Thick red border mobile */
+@media (max-width: 768px) {
+    hr.Horizontal-line {
+        border: 1px solid #fdc216;
+        width: 140px;
+    }
+}
+
 #hero .hero-logo img {
   max-width: 100%;
 }
 
 #hero .hero-container {
-/*  background: rgba(0, 0, 0, 0.8);*/
-/*  background-color: white;
-*/  display: table-cell;
+/*  background: rgba(0, 0, 0, 0.8);*/ 
+  display: table-cell;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -121,6 +128,11 @@ hr.Horizontal-line {
   text-transform: uppercase;
   color: #fff;
 }
+
+
+
+
+
 
 @media (max-width: 768px) {
   #hero h1 {
