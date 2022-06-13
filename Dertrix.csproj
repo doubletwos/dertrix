@@ -1055,6 +1055,7 @@
     <Content Include="Views\Home\AppFeatures.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_AssignSubjectTeacher.cshtml" />
     <Content Include="Views\Posts\ArchivedPosts.cshtml" />
+    <Content Include="Views\RegisteredUsers\AccountInfo.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1062,6 +1063,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\UploadedFiles\" />
+    <Folder Include="Views\RegisteredUserOrganisations\" />
     <Folder Include="Views\Shared\Layouts\" />
     <Folder Include="Views\Students_Grades_Log\" />
   </ItemGroup>

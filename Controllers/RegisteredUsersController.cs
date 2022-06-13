@@ -165,6 +165,200 @@ namespace Dertrix.Controllers
 
         }
 
+        public ActionResult AccountInfo(int? id)
+        {
+            try
+            {
+                var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
+                if (Session["OrgId"] == null)
+                {
+                    return RedirectToAction("Signin", "Access");
+                }
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if (RegisteredUserId != id)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                else
+                {
+                    var user = db.RegisteredUsers.Where(j => j.RegisteredUserId == id).FirstOrDefault();
+
+                    ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
+                    ViewBag.Password = user.Password;
+                    ViewBag.ConfirmPassword = user.Password;
+
+                    return View(user);
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateAccountInfo(RegisteredUser registeredUser)
+        {
+            try
+            {
+                if (!(ModelState.IsValid) || ModelState.IsValid)
+                {
+                    var rr = Session["OrgId"].ToString();
+                    int i = Convert.ToInt32(rr);
+                    var locateuser = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
+                    var studs = new RegisteredUser
+                    {
+                        RegisteredUserId = locateuser.RegisteredUserId,
+                        RegisteredUserTypeId = locateuser.RegisteredUserTypeId,
+                        TitleId = registeredUser.TitleId,
+                        FirstName = registeredUser.FirstName,
+                        OtherNames = registeredUser.OtherNames,
+                        LastName = registeredUser.LastName,
+                        Password = registeredUser.Password,
+                        ConfirmPassword = registeredUser.ConfirmPassword,
+                        Telephone = registeredUser.Telephone,
+                        Email = locateuser.Email,
+                        SelectedOrg = locateuser.SelectedOrg,
+                        ClassId = locateuser.ClassId,
+                        GenderId = registeredUser.GenderId,
+                        TribeId = registeredUser.TribeId,
+                        DateOfBirth = registeredUser.DateOfBirth,
+                        EnrolmentDate = locateuser.EnrolmentDate,
+                        ReligionId = registeredUser.ReligionId,
+                        StudentRegFormId = locateuser.StudentRegFormId,
+                        CreatedBy = locateuser.CreatedBy,
+                        RegUserOrgBrand = locateuser.RegUserOrgBrand,
+                        FullName = registeredUser.FirstName + " " + registeredUser.OtherNames + " " + registeredUser.LastName,
+                        ClassRef = locateuser.ClassRef,
+                        PgCount = locateuser.PgCount,
+                        InviteKey = locateuser.InviteKey,
+                        InviteSentDate = locateuser.InviteSentDate,
+                        CountOfInvite = locateuser.CountOfInvite,
+                        IsRegistered = locateuser.IsRegistered,
+                        RegisteredDate = locateuser.RegisteredDate,
+                    };
+                    locateuser = studs;
+                    db.Entry(locateuser).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    //Updating registered user organisation with changes 
+                    var reguseridcount = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(p => p.RegisteredUserOrganisationId).ToList();
+                    var listofreguserid = new List<int>(reguseridcount);
+                    foreach (var re in reguseridcount)
+                    {
+                        var getid = db.RegisteredUserOrganisations.AsNoTracking().Where(x => x.RegisteredUserOrganisationId == re).FirstOrDefault();
+                        var reguser = new RegisteredUserOrganisation
+                        {
+                            RegisteredUserOrganisationId = getid.RegisteredUserOrganisationId,
+                            RegisteredUserId = getid.RegisteredUserId,
+                            OrgId = getid.OrgId,
+                            OrgName = getid.OrgName,
+                            RegUserOrgBrand = getid.RegUserOrgBrand,
+                            IsTester = getid.IsTester,
+                            RegisteredUserTypeId = getid.RegisteredUserTypeId,
+                            EnrolmentDate = getid.EnrolmentDate,
+                            CreatedBy = getid.CreatedBy,
+                            Email = registeredUser.Email,
+                            FirstName = registeredUser.FirstName,
+                            OtherNames = registeredUser.OtherNames,
+                            LastName = registeredUser.LastName,
+                            FullName = registeredUser.FirstName + " " + registeredUser.OtherNames + " " + registeredUser.LastName,
+                            TitleId = registeredUser.TitleId,
+                            LastLogOn = getid.LastLogOn,
+                            PrimarySchoolUserRoleId = getid.PrimarySchoolUserRoleId,
+                            SecondarySchoolUserRoleId = getid.SecondarySchoolUserRoleId,
+                            NurserySchoolUserRoleId = getid.NurserySchoolUserRoleId,
+                            RegistrationFlags = getid.RegistrationFlags
+                        };
+                        getid = reguser;
+                        db.Entry(getid).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    //If registered user is a teacher, update teacher details in Class Model.
+                    var teacher = db.Classes.Where(x => x.ClassTeacherId == registeredUser.RegisteredUserId).Select(x => x.ClassId).ToList();
+                    var listofteacher = new List<int>(teacher);
+                    if (listofteacher.Count > 0)
+                    {
+                        foreach (var te in teacher)
+                        {
+                            var getteacher = db.Classes.AsNoTracking().Where(x => x.ClassId == te).FirstOrDefault();
+                            var regteacher = new Class
+                            {
+                                ClassId = getteacher.ClassId,
+                                ClassName = getteacher.ClassName,
+                                ClassIsActive = getteacher.ClassIsActive,
+                                OrgId = getteacher.OrgId,
+                                ClassRefNumb = getteacher.ClassRefNumb,
+                                ClassTeacherId = getteacher.ClassTeacherId,
+                                ClassTeacherFullName = registeredUser.FirstName + " " + registeredUser.LastName,
+                                Students_Count = getteacher.Students_Count,
+                                Female_Students_Count = getteacher.Female_Students_Count,
+                                Male_Students_Count = getteacher.Male_Students_Count,
+                                TitleId = registeredUser.TitleId
+                            };
+                            getteacher = regteacher;
+                            db.Entry(getteacher).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    };
+
+                    //////If registered user is a student - update class object
+                    if (registeredUser.StudentRegFormId != null)
+                    {
+                        var updateclasses = UpdateClassProfile();
+                    }
+
+                    //If registered user is a guardian, update guardian details in studentGuardian table
+                    var locateGuard = db.StudentGuardians.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(x => x.StudentGuardianId).ToList();
+                    var listofguardian = new List<int>(locateGuard);
+                    if (listofguardian.Count > 0)
+                    {
+                        foreach (var pg in locateGuard)
+                        {
+                            var getguardian = db.StudentGuardians.AsNoTracking().Where(x => x.StudentGuardianId == pg).FirstOrDefault();
+                            var parentgd = new StudentGuardian
+                            {
+                                StudentGuardianId = getguardian.StudentGuardianId,
+                                RegisteredUserId = getguardian.RegisteredUserId,
+                                GuardianFirstName = registeredUser.FirstName,
+                                GuardianLastName = registeredUser.LastName,
+                                GuardianFullName = registeredUser.FullName,
+                                GuardianEmailAddress = registeredUser.Email,
+                                DateAdded = getguardian.DateAdded,
+                                StudentId = getguardian.StudentId,
+                                StudentFullName = getguardian.StudentFullName,
+                                OrgId = getguardian.OrgId,
+                                TitleId = registeredUser.TitleId,
+                                RelationshipId = getguardian.RelationshipId,
+                                Telephone = registeredUser.Telephone,
+                                Stu_class_Org_Grp_id = getguardian.Stu_class_Org_Grp_id,
+                                IsRegistered = getguardian.IsRegistered,
+                            };
+                            getguardian = parentgd;
+                            db.Entry(getguardian).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                    };
+
+                }
+                TempData["Message"] = "Client Details Edited Successfully";
+                return RedirectToAction("AccountInfo", "RegisteredUsers", new { id = registeredUser.RegisteredUserId });
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+        }
+
 
         [ChildActionOnly]
         public ActionResult AddGuardian()
@@ -499,7 +693,7 @@ namespace Dertrix.Controllers
                 .Include(x => x.Title)
                 .Include(x => x.PrimarySchoolUserRole)
                 .Include(x => x.SecondarySchoolUserRole)
-                .Include(x => x.NurserySchoolUserRole);               
+                .Include(x => x.NurserySchoolUserRole);
                 ViewBag.RegisteredUserOrganisation = stud;
                 return PartialView("_StaffDetails");
             }
@@ -512,7 +706,7 @@ namespace Dertrix.Controllers
         }
 
 
-        public ActionResult GenerateGuardianInviteKey(int Id)  
+        public ActionResult GenerateGuardianInviteKey(int Id)
         {
             try
             {
@@ -2100,6 +2294,7 @@ namespace Dertrix.Controllers
                     {
                         RegisteredUserId = locatestud.RegisteredUserId,
                         RegisteredUserTypeId = locatestud.RegisteredUserTypeId,
+                        TitleId = registeredUser.TitleId,
                         FirstName = registeredUser.FirstName,
                         OtherNames = registeredUser.OtherNames,
                         LastName = registeredUser.LastName,
@@ -2265,13 +2460,13 @@ namespace Dertrix.Controllers
                 var chkifSsStaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.SecondarySchoolUserRoleId).FirstOrDefault();
                 var chkifNsStaff = db.RegisteredUserOrganisations.Where(x => x.RegisteredUserId == id).Select(x => x.NurserySchoolUserRoleId).FirstOrDefault();
 
-                if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifPsStaff == 6 || 
-                    chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4 || chkifSsStaff == 6  ||
+                if (chkifPsStaff == 1 || chkifPsStaff == 2 || chkifPsStaff == 3 || chkifPsStaff == 4 || chkifPsStaff == 6 ||
+                    chkifSsStaff == 1 || chkifSsStaff == 2 || chkifSsStaff == 3 || chkifSsStaff == 4 || chkifSsStaff == 6 ||
                     chkifNsStaff == 1 || chkifNsStaff == 2 || chkifNsStaff == 3 || chkifNsStaff == 4 || chkifNsStaff == 6)
                 {
                     var staforgcount = db.RegisteredUserOrganisations
                         .Where(x => x.RegisteredUserId == id)
-                        .Select(x => x.RegisteredUserId) 
+                        .Select(x => x.RegisteredUserId)
                         .Count();
 
                     // IF COUNT OF ORG IS 1 - WE GO INTO THIS CONDITION - WE DELETE USER FROM REGUSER TABLE / LOG EVENT AND MOVE ON.
@@ -2311,7 +2506,7 @@ namespace Dertrix.Controllers
                             .Where(x => x.SubjectOrgId == i)
                             .Count();
 
-                        if(assignedclasscount > 0)
+                        if (assignedclasscount > 0)
                         {
                             var assignedclasses = db.Classes
                                 .Where(x => x.ClassTeacherId == id)
@@ -2322,7 +2517,7 @@ namespace Dertrix.Controllers
 
                             foreach (var cl in classlist)
                             {
-                               var currentclass = db.Classes.AsNoTracking().Where(x => x.ClassId == cl && x.OrgId == i).FirstOrDefault();
+                                var currentclass = db.Classes.AsNoTracking().Where(x => x.ClassId == cl && x.OrgId == i).FirstOrDefault();
 
                                 var updaterecrds = new Class
                                 {
@@ -2384,33 +2579,33 @@ namespace Dertrix.Controllers
 
                         // SOFT DELETE USER
                         var remvdstaff = new RemovedRegisteredUser
-                            {
-                                RegisteredUserId = staffdataRu.RegisteredUserId,
-                                CreationDate = DateTime.Now,
-                                FirstName = staffdataRu.FirstName,
-                                LastName = staffdataRu.LastName,
-                                FullName = staffdataRu.FullName,
-                                Email = staffdataRu.Email,
-                                Telephone = staffdataRu.Telephone,
-                                RegisteredUserType = staffdataRu.RegisteredUserTypeId,
-                                PrimarySchoolUserRole = staffdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
-                                SecondarySchoolUserRole = staffdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
-                                NurserySchoolUserRole = staffdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
-                                OrgId = staffdataRug.OrgId,
-                                ClassId = staffdataRu.ClassId.GetValueOrDefault(),
-                                ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
-                                GenderId = staffdataRu.GenderId.GetValueOrDefault(),
-                                ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
-                                RelationshipId = staffdataRu.RelationshipId,
-                                StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
-                                IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
-                                DateOfBirth = staffdataRu.DateOfBirth,
-                                EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
-                                LastLogOn = staffdataRug.LastLogOn,
-                                EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
-                            };
-                            db.RemovedRegisteredUsers.Add(remvdstaff);
-                            db.SaveChanges();
+                        {
+                            RegisteredUserId = staffdataRu.RegisteredUserId,
+                            CreationDate = DateTime.Now,
+                            FirstName = staffdataRu.FirstName,
+                            LastName = staffdataRu.LastName,
+                            FullName = staffdataRu.FullName,
+                            Email = staffdataRu.Email,
+                            Telephone = staffdataRu.Telephone,
+                            RegisteredUserType = staffdataRu.RegisteredUserTypeId,
+                            PrimarySchoolUserRole = staffdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                            SecondarySchoolUserRole = staffdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                            NurserySchoolUserRole = staffdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                            OrgId = staffdataRug.OrgId,
+                            ClassId = staffdataRu.ClassId.GetValueOrDefault(),
+                            ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
+                            GenderId = staffdataRu.GenderId.GetValueOrDefault(),
+                            ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
+                            RelationshipId = staffdataRu.RelationshipId,
+                            StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
+                            IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
+                            DateOfBirth = staffdataRu.DateOfBirth,
+                            EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
+                            LastLogOn = staffdataRug.LastLogOn,
+                            EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
+                        };
+                        db.RemovedRegisteredUsers.Add(remvdstaff);
+                        db.SaveChanges();
 
 
                         RegisteredUser removestaff = db.RegisteredUsers.Find(id);
@@ -2525,34 +2720,34 @@ namespace Dertrix.Controllers
 
                                 // SOFT DELETE USER
                                 var remvdstaff = new RemovedRegisteredUser
-                                    {
-                                        RegisteredUserId = staffdataRu.RegisteredUserId,
-                                        CreationDate = DateTime.Now,
-                                        FirstName = staffdataRu.FirstName,
-                                        LastName = staffdataRu.LastName,
-                                        FullName = staffdataRu.FullName,
-                                        Email = staffdataRu.Email,
-                                        Telephone = staffdataRu.Telephone,
-                                        RegisteredUserType = staffdataRu.RegisteredUserTypeId,
-                                        PrimarySchoolUserRole = staffdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
-                                        SecondarySchoolUserRole = staffdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
-                                        NurserySchoolUserRole = staffdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
-                                        OrgId = staffdataRug.OrgId,
-                                        ClassId = staffdataRu.ClassId.GetValueOrDefault(),
-                                        ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
-                                        GenderId = staffdataRu.GenderId.GetValueOrDefault(),
-                                        ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
-                                        StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
-                                        RelationshipId = staffdataRu.RelationshipId.GetValueOrDefault(),
-                                        IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
-                                        DateOfBirth = staffdataRu.DateOfBirth,
-                                        LastLogOn = staffdataRug.LastLogOn,
-                                        EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
-                                        EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
-                                    };
-                                    db.RemovedRegisteredUsers.Add(remvdstaff);
-                                    staffdataRu.DateOfBirth = null;
-                                    db.SaveChanges();
+                                {
+                                    RegisteredUserId = staffdataRu.RegisteredUserId,
+                                    CreationDate = DateTime.Now,
+                                    FirstName = staffdataRu.FirstName,
+                                    LastName = staffdataRu.LastName,
+                                    FullName = staffdataRu.FullName,
+                                    Email = staffdataRu.Email,
+                                    Telephone = staffdataRu.Telephone,
+                                    RegisteredUserType = staffdataRu.RegisteredUserTypeId,
+                                    PrimarySchoolUserRole = staffdataRug.PrimarySchoolUserRoleId.GetValueOrDefault(),
+                                    SecondarySchoolUserRole = staffdataRug.SecondarySchoolUserRoleId.GetValueOrDefault(),
+                                    NurserySchoolUserRole = staffdataRug.NurserySchoolUserRoleId.GetValueOrDefault(),
+                                    OrgId = staffdataRug.OrgId,
+                                    ClassId = staffdataRu.ClassId.GetValueOrDefault(),
+                                    ClassRef = staffdataRu.ClassRef.GetValueOrDefault(),
+                                    GenderId = staffdataRu.GenderId.GetValueOrDefault(),
+                                    ReligionId = staffdataRu.ReligionId.GetValueOrDefault(),
+                                    StudentRegFormId = staffdataRu.StudentRegFormId.GetValueOrDefault(),
+                                    RelationshipId = staffdataRu.RelationshipId.GetValueOrDefault(),
+                                    IsTester = (bool)staffdataRu.IsTester.GetValueOrDefault(),
+                                    DateOfBirth = staffdataRu.DateOfBirth,
+                                    LastLogOn = staffdataRug.LastLogOn,
+                                    EnrolmentDate = staffdataRug.EnrolmentDate.GetValueOrDefault(),
+                                    EnrolledBy = Convert.ToInt32(staffdataRug.CreatedBy)
+                                };
+                                db.RemovedRegisteredUsers.Add(remvdstaff);
+                                staffdataRu.DateOfBirth = null;
+                                db.SaveChanges();
 
 
                                 RegisteredUserOrganisation removestaff = db.RegisteredUserOrganisations.Find(getstaff);
@@ -2695,13 +2890,13 @@ namespace Dertrix.Controllers
 
                                             // SOFT DELETE USER
                                             // GET USER'S DATA
-                                            var gddataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gdreguserid).FirstOrDefault(); 
-                                            var gddataRug = db.RegisteredUserOrganisations 
+                                            var gddataRu = db.RegisteredUsers.Where(x => x.RegisteredUserId == gdreguserid).FirstOrDefault();
+                                            var gddataRug = db.RegisteredUserOrganisations
                                                 .Where(x => x.RegisteredUserId == gdreguserid)
                                                 .Where(x => x.OrgId == i)
                                                 .FirstOrDefault();
 
-                                            var remvgd1 = new RemovedRegisteredUser 
+                                            var remvgd1 = new RemovedRegisteredUser
                                             {
                                                 RegisteredUserId = gddataRu.RegisteredUserId,
                                                 CreationDate = DateTime.Now,
