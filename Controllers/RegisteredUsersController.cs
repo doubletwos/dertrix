@@ -186,7 +186,7 @@ namespace Dertrix.Controllers
                 {
                     var user = db.RegisteredUsers.Where(j => j.RegisteredUserId == id).FirstOrDefault();
 
-                    ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName");
+                    ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName" ,user.TitleId);
                     ViewBag.Password = user.Password;
                     ViewBag.ConfirmPassword = user.Password;
 
@@ -243,6 +243,7 @@ namespace Dertrix.Controllers
                         CountOfInvite = locateuser.CountOfInvite,
                         IsRegistered = locateuser.IsRegistered,
                         RegisteredDate = locateuser.RegisteredDate,
+                        IsTester = locateuser.IsTester,
                     };
                     locateuser = studs;
                     db.Entry(locateuser).State = EntityState.Modified;
@@ -348,7 +349,7 @@ namespace Dertrix.Controllers
                     };
 
                 }
-                TempData["Message"] = "Client Details Edited Successfully";
+                TempData["Message"] = "Your details have been updated successfully";
                 return RedirectToAction("AccountInfo", "RegisteredUsers", new { id = registeredUser.RegisteredUserId });
 
             }
