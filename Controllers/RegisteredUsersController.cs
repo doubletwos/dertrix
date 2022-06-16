@@ -15,12 +15,14 @@ using System.IO;
 using OfficeOpenXml;
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class RegisteredUsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
 
         //     GET: RegisteredUsers/AllStudents/
+        [Route("TestAllStudents")]
         public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
@@ -165,6 +167,7 @@ namespace Dertrix.Controllers
 
         }
 
+        [Route("TestAccountInfo")]
         public ActionResult AccountInfo(int? id)
         {
             try
@@ -311,6 +314,7 @@ namespace Dertrix.Controllers
                     };
 
                     //////If registered user is a student - update class object
+                    ///// In this method - the code below will never be hit - because students are not expected to updated their account.
                     if (registeredUser.StudentRegFormId != null)
                     {
                         var updateclasses = UpdateClassProfile();

@@ -13,6 +13,9 @@ namespace Dertrix
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Turning on attribute based routing 
+            routes.MapMvcAttributeRoutes();
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
