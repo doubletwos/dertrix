@@ -207,7 +207,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -274,7 +274,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
@@ -351,7 +351,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);
@@ -447,7 +447,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);
@@ -539,7 +539,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);

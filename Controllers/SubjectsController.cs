@@ -10,11 +10,13 @@ using Dertrix.Models;
 
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class SubjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Subjects
+        [Route("AllSubjects")]
         public ActionResult Index()
         {
             try
@@ -25,7 +27,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -148,7 +150,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if (ModelState.IsValid)
                 {
@@ -254,7 +256,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if (ModelState.IsValid)
                 {
@@ -319,7 +321,6 @@ namespace Dertrix.Controllers
                         Creator_Id = edtsubject.Creator_Id,
 
                     };
-
                     ViewBag.ClassTeacherId = new SelectList(db.RegisteredUserOrganisations
                         .Where(x => x.OrgId == i)
                         .Where(j => (j.SecondarySchoolUserRoleId == 3) || (j.PrimarySchoolUserRoleId == 4) || (j.NurserySchoolUserRoleId == 3)), "RegisteredUserId", "FullName", edtsubject1.ClassTeacherId);
@@ -349,7 +350,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if (ModelState.IsValid)
                 {
@@ -404,10 +405,6 @@ namespace Dertrix.Controllers
                         return RedirectToAction("Index");
 
                     }
-
-
-
-
                 }
             }
             catch (Exception e)
@@ -439,7 +436,7 @@ namespace Dertrix.Controllers
         //{
         //    if (Session["OrgId"] == null)
         //    {
-        //        return RedirectToAction("Signin", "Access");
+        //        return RedirectToRoute(new { controller = "Access",  action = "Signin", });
         //    }
 
         //    Subject subject = db.Subjects.Find(id);

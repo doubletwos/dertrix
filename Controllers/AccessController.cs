@@ -11,6 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using Dertrix.Models;
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class AccessController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -22,7 +23,7 @@ namespace Dertrix.Controllers
                 if (id == null)
                 {
                     Session.Abandon();
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 else
                 {
@@ -43,7 +44,8 @@ namespace Dertrix.Controllers
                     db.SaveChanges();
                     Session.Abandon();
                     Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
+
                 }
             }
             catch (Exception e)
@@ -57,13 +59,14 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/Logs
+        [Route("Logs")]
         public ActionResult Logs()
         {
             try
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -79,6 +82,7 @@ namespace Dertrix.Controllers
         }
 
         // GET: Access/KeyCheck
+        [Route("KeyCheck")]
         public ActionResult KeyCheck()
         {
             return View();
@@ -87,7 +91,7 @@ namespace Dertrix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult KeyCheck(RegisteredUser registeredUser)
+        public ActionResult CheckKey(RegisteredUser registeredUser)
         {
             try
             {
@@ -112,7 +116,7 @@ namespace Dertrix.Controllers
                 }
                 if (registeredUser.InviteKey == locateuser.InviteKey)
                 {
-                    return RedirectToAction("InitialSettings", "Access", new { id = locateuser.RegisteredUserId });
+                    return RedirectToRoute(new { controller = "Access", action = "InitialSettings", id = locateuser.RegisteredUserId }); 
                 }
 
             }
@@ -126,6 +130,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/InitialSettings
+        [Route("InitialSettings")]
         public ActionResult InitialSettings(int Id)
         {
             try
@@ -186,7 +191,7 @@ namespace Dertrix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InitialSettings(RegisteredUser registeredUser)
+        public ActionResult ConfirmInitialSettings(RegisteredUser registeredUser)
         {
             try
             {
@@ -261,7 +266,8 @@ namespace Dertrix.Controllers
                 db.Entry(locateGD).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Signin", "Access");
+                return RedirectToRoute(new { controller = "Access", action = "Signin", });
+
 
             }
             catch (Exception ex)
@@ -276,6 +282,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/Signin
+        [Route("Signin")]
         public ActionResult Signin()
         {
             return View();
@@ -283,7 +290,7 @@ namespace Dertrix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Signin(RegisteredUser registeredUser)
+        public ActionResult LogIn(RegisteredUser registeredUser) 
         {
             try
             {
@@ -358,7 +365,7 @@ namespace Dertrix.Controllers
 
                 if (orgredirect == 23)
                 {
-                    return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
+                    return RedirectToAction("SystemAdminIndex", "Orgs");
                 }
 
                 if (Session["IsParent/Guardian"] != null)
@@ -425,11 +432,7 @@ namespace Dertrix.Controllers
             return View();
         }
 
-        // GET: Access/Register
-        public ActionResult Register()
-        {
-            return View();
-        }
+
 
         protected override void Dispose(bool disposing)
         {

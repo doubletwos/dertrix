@@ -11,28 +11,30 @@ using System.Web.Mvc;
 using Dertrix.Models;
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class OrgsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Orgs
+        [Route("Home")]
         public ActionResult Index(int? id)
         {
             try
             {
+                Org org = db.Orgs.Find(id);
                 if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
                 {
                     return RedirectToAction("WrongDevice", "Orgs");
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                Org org = db.Orgs.Find(id);
                 if (org == null)
                 {
                     return HttpNotFound();
@@ -72,15 +74,16 @@ namespace Dertrix.Controllers
         }
 
 
+        [Route("StaffSchCentre")]
         public ActionResult StaffSchCentre1(int? Id)
         {
             try
             {
+                Org org = db.Orgs.Find(Id);
                 if (Id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                Org org = db.Orgs.Find(Id);
                 if (org == null)
                 {
                     return HttpNotFound();
@@ -91,7 +94,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
 
                 var isTester = Convert.ToInt32(Session["IsTester"]);
@@ -125,6 +128,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Orgs/Home/5
+        [Route("SchCentre1")]
         public ActionResult PGSchCentre1(int? Id)
         {
             try
@@ -174,6 +178,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Orgs/Home/5
+        [Route("SchCentre")]
         public ActionResult PGSchCentre(int? id)
         {
             try
@@ -330,7 +335,6 @@ namespace Dertrix.Controllers
                         db.OrgGroups.Add(orggroup);
                         db.SaveChanges();
                     }
-                    //return RedirectToAction("SystemAdminIndex", "Orgs", new { id = orgredirect });
                     return RedirectToAction("SystemAdminIndex");
 
 
@@ -421,6 +425,8 @@ namespace Dertrix.Controllers
            
         }
 
+
+        [Route("SysAdminHome")]
         public ActionResult SystemAdminIndex()
         {
             try
@@ -447,7 +453,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -464,6 +470,7 @@ namespace Dertrix.Controllers
         }
 
 
+        [Route("NotCompatible")]
         public ActionResult WrongDevice()
         {
             return View();

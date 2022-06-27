@@ -10,11 +10,13 @@ using Dertrix.Models;
 
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class NurserySchoolUserRolesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: NurserySchoolUserRoles
+        [Route("NurserySchoolUserRoles")]
         public ActionResult Index()
         {
             try
@@ -25,7 +27,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {

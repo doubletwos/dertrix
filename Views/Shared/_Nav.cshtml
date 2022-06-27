@@ -9,14 +9,9 @@
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Session["FullName"]<span class="caret"></span></a>
 			<ul class="dropdown-menu">
 				<li>
-					@*@Html.ActionLink("Hello " + @Session["FullName"] + "!", "Index", "Posts", routeValues: null, htmlAttributes: new { title = "Manage" })*@
-					@*@Html.ActionLink("Settings & Account Info", "AccountInfo", "RegisteredUserOrganisations", routeValues: null, htmlAttributes: new { title = "Settings" })*@
-					@Html.ActionLink("Settings & Account Info", "AccountInfo", "RegisteredUsers", routeValues: new {id = userid}, htmlAttributes: new { title = "Settings" })
-
-
+					@Html.ActionLink("Settings & Account Info", "AccountInfo", "RegisteredUsers", null,  htmlAttributes: new { title = "Settings" })
 				</li>
 				<li>
-					@*@Html.ActionLink("LogOff", "LogOut", "Access", new { id = @currentsession }, htmlAttributes: new { @class = "navbar-right" })*@
 					@Html.ActionLink("Sign Out", "LogOut", "Access", new { id = @currentsession }, htmlAttributes: new { title = "Sign Out" })
 
 				</li>
@@ -28,7 +23,6 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
         <li>@Html.ActionLink("Log in", "Signin", "Access", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Dertrix.Models.User_Change_Events_Log>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RegUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChangedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Old_Value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.New_Value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User_Change_Event_Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User_Change_Events_Types)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChangedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Old_Value)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.New_Value)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrgId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User_Change_Event_Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User_Change_Events_Types)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.User_Change_Events_LogId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.User_Change_Events_LogId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.User_Change_Events_LogId })
+        </td>
+    </tr>
+}
+
+</table>

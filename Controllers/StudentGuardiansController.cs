@@ -13,11 +13,13 @@ using System.Text;
 
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class StudentGuardiansController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: StudentGuardians
+        [Route("AllGuardians")]
         public ActionResult Index()
         {
             try
@@ -25,11 +27,10 @@ namespace Dertrix.Controllers
                 if (Request.Browser.IsMobileDevice == true)
                 {
                     return RedirectToAction("WrongDevice", "Orgs");
-
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if (Request.Browser.IsMobileDevice == true)
                 {
@@ -284,12 +285,9 @@ namespace Dertrix.Controllers
                     bool result2 = false;
                     result2 = SendEmail(guardianid.Email, subject, Body);
                     return Json(result2, JsonRequestBehavior.AllowGet);
-
-
                 }
                 else
                 {
-
                     var updtguardian = new RegisteredUser
                     {
                         RegisteredUserId = guardianid.RegisteredUserId,
@@ -318,7 +316,6 @@ namespace Dertrix.Controllers
                         IsRegistered = guardianid.IsRegistered,
                         RegisteredDate = guardianid.RegisteredDate,
                         InviteSentDate = DateTime.Now
-
                     };
                     guardianid = updtguardian;
                     db.Entry(guardianid).State = EntityState.Modified;
@@ -333,9 +330,7 @@ namespace Dertrix.Controllers
                     bool result2 = false;
                     result2 = SendEmail(guardianid.Email, subject, Body);
                     return Json(result2, JsonRequestBehavior.AllowGet);
-
                 }
-
             }
             catch (Exception e)
             {
@@ -403,7 +398,6 @@ namespace Dertrix.Controllers
                         Org_Event_Time = DateTime.Now,
                         OrgId = Session["OrgId"].ToString(),
                         Org_Events_Types = Org_Events_Types.Deregistered_Guardian
-
                     };
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
@@ -844,8 +838,6 @@ namespace Dertrix.Controllers
 
                             }
                         }
-
-
                     };
                 };
             }

@@ -6,8 +6,10 @@ using System.Web;
 using System.Web.Mvc;
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class HomeController : Controller
     {
+        [Route("SysAdminSetUp")]
         public ActionResult SysAdminSetUp()
         {
             try
@@ -18,7 +20,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -37,6 +39,7 @@ namespace Dertrix.Controllers
             return new HttpStatusCodeResult(204);
         }
 
+        [Route("SysSetUp")]
         public ActionResult SysSetUp()
         {
             try
@@ -47,7 +50,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 else
                 {
@@ -61,6 +64,7 @@ namespace Dertrix.Controllers
             }
         }
 
+        [Route("AppFeatures")]
         public ActionResult AppFeatures()
         {
             try
@@ -71,7 +75,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {

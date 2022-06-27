@@ -17,11 +17,13 @@ using Spire.Pdf.HtmlConverter;
 
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
+        [Route("AllPosts")]
         public ActionResult AllPosts()
         {
             try
@@ -32,7 +34,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
 
                 var rr = Session["OrgId"].ToString();
@@ -56,7 +58,7 @@ namespace Dertrix.Controllers
                     }
                     if (Session["OrgId"] == null)
                     {
-                        return RedirectToAction("Signin", "Access");
+                        return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                     }
                     if (Session["IsParent/Guardian"] != null)
                     {
@@ -87,7 +89,7 @@ namespace Dertrix.Controllers
         }
 
 
-
+        [Route("ArchivedPosts")]
         public ActionResult ArchivedPosts()
         {
             try
@@ -98,7 +100,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
@@ -127,12 +129,12 @@ namespace Dertrix.Controllers
         }
 
 
-
+        [Route("PostsTable")]
         public ActionResult PostsTable()
         {
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Signin", "Access");
+                return RedirectToRoute(new { controller = "Access",  action = "Signin", });
             }
             var rr = Session["OrgId"].ToString();
             int i = Convert.ToInt32(rr);
@@ -163,7 +165,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);
@@ -572,7 +574,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 var sess = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(sess);

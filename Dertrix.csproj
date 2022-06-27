@@ -236,6 +236,7 @@
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Controllers\TitlesController.cs" />
     <Compile Include="Controllers\TribesController.cs" />
+    <Compile Include="Controllers\User_Change_Events_LogController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -619,6 +620,10 @@
     <Compile Include="Migrations\202205250758567_Sprint2022.05.05.designer.cs">
       <DependentUpon>202205250758567_Sprint2022.05.05.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202206190853429_Sprint2022.06.00.cs" />
+    <Compile Include="Migrations\202206190853429_Sprint2022.06.00.designer.cs">
+      <DependentUpon>202206190853429_Sprint2022.06.00.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -665,6 +670,8 @@
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Title.cs" />
     <Compile Include="Models\Tribe.cs" />
+    <Compile Include="Models\User_Change_Events_Log.cs" />
+    <Compile Include="Models\User_Change_Events_Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddNewOrgSchCalViewModel.cs" />
@@ -875,7 +882,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -1056,6 +1062,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_AssignSubjectTeacher.cshtml" />
     <Content Include="Views\Posts\ArchivedPosts.cshtml" />
     <Content Include="Views\RegisteredUsers\AccountInfo.cshtml" />
+    <Content Include="Views\User_Change_Events_Log\Index.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1369,6 +1376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205250758567_Sprint2022.05.05.resx">
       <DependentUpon>202205250758567_Sprint2022.05.05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206190853429_Sprint2022.06.00.resx">
+      <DependentUpon>202206190853429_Sprint2022.06.00.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

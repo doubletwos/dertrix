@@ -9,10 +9,12 @@ using System.Web.Mvc;
 using Dertrix.Models;
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class TribesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Tribes
+        [Route("AllTribes")]
         public ActionResult Index()
         {
             try
@@ -23,7 +25,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {

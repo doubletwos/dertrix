@@ -14,12 +14,7 @@ namespace Dertrix.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Students_Grades_Log
-        //public ActionResult Index()
-        //{
-        //    var students_Grades_Logs = db.Students_Grades_Logs.Include(s => s.Class).Include(s => s.RegisteredUser).Include(s => s.Subject);
-        //    return View(students_Grades_Logs.ToList());
-        //}
+
 
         // GET: Students_Grades_Log/Details/5
         public ActionResult Details(int? id)

@@ -10,11 +10,13 @@ using Dertrix.Models;
 
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class OrgGroupsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: OrgGroups
+        [Route("AllGroups")]
         public ActionResult Index()
         {
             var rr = Session["OrgId"].ToString();
@@ -185,7 +187,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 OrgGroup orgGroup = db.OrgGroups.Find(id);
                 db.OrgGroups.Remove(orgGroup);

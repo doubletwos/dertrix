@@ -22,8 +22,8 @@ namespace Dertrix.Controllers
 
 
         //     GET: RegisteredUsers/AllStudents/
-        [Route("TestAllStudents")]
-        public ActionResult AllStudents(int? id, int? ij, string searchname, string searchid)
+        [Route("Students")]
+        public ActionResult AllStudents(string searchname, string searchid)
         {
             if (Request.Browser.IsMobileDevice == true && Session["IsTester"] == null)
             {
@@ -31,7 +31,7 @@ namespace Dertrix.Controllers
             }
             if (Session["OrgId"] == null)
             {
-                return RedirectToAction("Signin", "Access");
+                return RedirectToRoute(new { controller = "Access", action = "Signin", });
             }
             var orgid = (int)Session["OrgId"];
             // returns students of org if fullname is provided
@@ -50,6 +50,8 @@ namespace Dertrix.Controllers
            .ToList();
             return View(students);
         }
+
+
 
 
 
@@ -167,29 +169,21 @@ namespace Dertrix.Controllers
 
         }
 
-        [Route("TestAccountInfo")]
-        public ActionResult AccountInfo(int? id)
+        [Route("YourInformation")]
+        public ActionResult AccountInfo()
         {
             try
             {
                 var RegisteredUserId = Convert.ToInt32(Session["RegisteredUserId"]);
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
-                }
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                if (RegisteredUserId != id)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
                 }
                 else
                 {
-                    var user = db.RegisteredUsers.Where(j => j.RegisteredUserId == id).FirstOrDefault();
+                    var user = db.RegisteredUsers.Where(j => j.RegisteredUserId == RegisteredUserId).FirstOrDefault();
 
-                    ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName" ,user.TitleId);
+                    ViewBag.TitleId = new SelectList(db.Titles, "TitleId", "TitleName", user.TitleId);
                     ViewBag.Password = user.Password;
                     ViewBag.ConfirmPassword = user.Password;
 
@@ -215,7 +209,135 @@ namespace Dertrix.Controllers
                 {
                     var rr = Session["OrgId"].ToString();
                     int i = Convert.ToInt32(rr);
+
                     var locateuser = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
+
+                    // Title
+                    if (registeredUser.TitleId != locateuser.TitleId)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = locateuser.TitleId.ToString(),
+                            New_Value = registeredUser.TitleId.ToString(),
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.Title,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
+                    // FirstName
+                    if (registeredUser.FirstName != locateuser.FirstName)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = locateuser.FirstName,
+                            New_Value = registeredUser.FirstName,
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.FirstName,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
+                    // OtherNames
+                    if (registeredUser.OtherNames != locateuser.OtherNames)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = locateuser.OtherNames,
+                            New_Value = registeredUser.OtherNames,
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.OtherNames,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
+                    // LastName
+                    if (registeredUser.LastName != locateuser.LastName)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = locateuser.LastName,
+                            New_Value = registeredUser.LastName,
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.LastName,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
+                    // Email Address
+                    if (registeredUser.Email != locateuser.Email)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = locateuser.Email,
+                            New_Value = registeredUser.Email,
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.EmailAddress,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
+                    // Password
+                    if (registeredUser.Password != locateuser.Password)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = null,
+                            New_Value = null,
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.Password,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
+                    // Telephone
+                    if (registeredUser.Telephone != locateuser.Telephone)
+                    {
+                        // LOG USER CHANGE
+                        var userchangelog = new User_Change_Events_Log()
+                        {
+                            RegUserId = registeredUser.RegisteredUserId,
+                            ChangedBy = registeredUser.RegisteredUserId,
+                            Old_Value = locateuser.Telephone,
+                            New_Value = registeredUser.Telephone,
+                            OrgId = rr,
+                            User_Change_Event_Time = DateTime.Now,
+                            User_Change_Events_Types = User_Change_Events_Types.TelephoneNumber,
+                        };
+                        db.User_Change_Events_Logs.Add(userchangelog);
+                        db.SaveChanges();
+                    }
+
                     var studs = new RegisteredUser
                     {
                         RegisteredUserId = locateuser.RegisteredUserId,
@@ -313,12 +435,6 @@ namespace Dertrix.Controllers
                         }
                     };
 
-                    //////If registered user is a student - update class object
-                    ///// In this method - the code below will never be hit - because students are not expected to updated their account.
-                    if (registeredUser.StudentRegFormId != null)
-                    {
-                        var updateclasses = UpdateClassProfile();
-                    }
 
                     //If registered user is a guardian, update guardian details in studentGuardian table
                     var locateGuard = db.StudentGuardians.Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).Select(x => x.StudentGuardianId).ToList();
@@ -466,7 +582,7 @@ namespace Dertrix.Controllers
 
 
         [HttpPost]
-        public ActionResult Uploader(HttpPostedFileBase postedFile, int? classid)
+        public ActionResult Uploader(HttpPostedFileBase postedFile, int classid)
         {
             try
             {
@@ -542,7 +658,7 @@ namespace Dertrix.Controllers
                         data = workSheet.Cells[startRow, startColumn].Value; //column No
                         continue;
                     }
-                    if (data != null)
+                    if (!String.IsNullOrEmpty(data.ToString()))
                     {
                         var isSuccess = SaveStudent(firstName.ToString(),
                         lastName.ToString(),
@@ -554,23 +670,25 @@ namespace Dertrix.Controllers
                     }
                     if (data != null)
                     {
-                        var col1 = workSheet.Cells[startRow, startColumn].Value = "";
-                        var col2 = workSheet.Cells[startRow, startColumn + 1].Value = "";
-                        var col3 = workSheet.Cells[startRow, startColumn + 2].Value = "";
-                        var col4 = workSheet.Cells[startRow, startColumn + 3].Value = "";
-                        var col5 = workSheet.Cells[startRow, startColumn + 4].Value = "";
-                        var col6 = workSheet.Cells[startRow, startColumn + 5].Value = "";
-                        var col7 = workSheet.Cells[startRow, startColumn + 6].Value = "";
+                        var col1 = workSheet.Cells[startRow, startColumn].Value = string.Empty;
+                        var col2 = workSheet.Cells[startRow, startColumn + 1].Value = string.Empty;
+                        var col3 = workSheet.Cells[startRow, startColumn + 2].Value = string.Empty;
+                        var col4 = workSheet.Cells[startRow, startColumn + 3].Value = string.Empty;
+                        var col5 = workSheet.Cells[startRow, startColumn + 4].Value = string.Empty;
+                        var col6 = workSheet.Cells[startRow, startColumn + 5].Value = string.Empty;
+                        var col7 = workSheet.Cells[startRow, startColumn + 6].Value = string.Empty;
                         package.Save();
                     }
                     startRow++;
                     successfulupload++;
                 }
-                while (data != null);
+                while (!String.IsNullOrEmpty(data.ToString()));
+
                 //////If registered user is a student - update class object
-                if (data == null)
+                if (String.IsNullOrEmpty(data.ToString()))
                 {
-                    var updateclasses = UpdateClassProfile();
+                    var cid = classid;
+                    var updateclasses = UpdateClassProfile(cid);
                 }
             }
             catch (Exception e)
@@ -661,6 +779,7 @@ namespace Dertrix.Controllers
 
 
         }
+
 
 
         public ActionResult MyRegProfile(int id)
@@ -1041,6 +1160,7 @@ namespace Dertrix.Controllers
         }
 
         // GET: RegisteredUsers/Staffs/
+        [Route("SchStaffs")]
         public ActionResult Staffs(int? id)
         {
             try
@@ -1051,7 +1171,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
                 }
                 if (Session["OrgId"] != null)
                 {
@@ -1081,6 +1201,7 @@ namespace Dertrix.Controllers
 
         }
         // GET: RegisteredUsers/SysAdmins/
+        [Route("SysAdmins")]
         public ActionResult SysAdmins(int? id)
         {
             try
@@ -1091,7 +1212,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
                 }
                 if (Session["OrgId"] != null)
                 {
@@ -1113,13 +1234,14 @@ namespace Dertrix.Controllers
 
 
         // GET: RegisteredUsers/ClassStudents/
+        [Route("ClassStudents")]
         public ActionResult ClassStudents(int? id)
         {
             try
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
                 }
                 var orgid = (int)Session["OrgId"];
                 var classref = db.Classes.Where(x => x.ClassId == id).Select(x => x.ClassRefNumb).FirstOrDefault();
@@ -1923,7 +2045,8 @@ namespace Dertrix.Controllers
             }
             return View(registeredUser);
         }
-        // POST: RegisteredUsers/UpdateStudentsClass/5
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangeStaffRole(RegisteredUserOrganisation registeredUserOrganisation)
@@ -2393,7 +2516,8 @@ namespace Dertrix.Controllers
                     //////If registered user is a student - update class object
                     if (registeredUser.StudentRegFormId != null)
                     {
-                        var updateclasses = UpdateClassProfile();
+                        var cid = locatestud.ClassId;
+                        var updateclasses = UpdateClassProfile((int)cid);
                     }
                     return RedirectToAction("AllStudents", "RegisteredUsers");
                 }
@@ -2408,39 +2532,65 @@ namespace Dertrix.Controllers
 
 
         //Update Class profile.
-        public ActionResult UpdateClassProfile()
+        public ActionResult UpdateClassProfile(int cid)
         {
             try
             {
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
+
                 //Number of classes in org.
-                var numbofclasses = db.Classes.Where(x => x.OrgId == i).Select(p => p.ClassId).ToList();
-                var classestolist = new List<int>(numbofclasses);
-                foreach (var cl in numbofclasses)
+                //var numbofclasses = db.Classes.Where(x => x.OrgId == i).Select(p => p.ClassId).ToList();
+
+
+                //var classestolist = new List<int>(numbofclasses);
+                //foreach (var cl in numbofclasses)
+                //{
+                //    var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cl).FirstOrDefault();
+                //    var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.SelectedOrg == i).Count();
+                //    var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 2 && x.SelectedOrg == i).Count();
+                //    var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 1 && x.SelectedOrg == i).Count();
+                //    var updateclass = new Class
+                //    {
+                //        ClassId = classid.ClassId,
+                //        ClassName = classid.ClassName,
+                //        ClassIsActive = classid.ClassIsActive,
+                //        OrgId = classid.OrgId,
+                //        ClassRefNumb = classid.ClassRefNumb,
+                //        ClassTeacherId = classid.ClassTeacherId,
+                //        ClassTeacherFullName = classid.ClassTeacherFullName,
+                //        Students_Count = studentcount,
+                //        Female_Students_Count = FemStuCount,
+                //        Male_Students_Count = MaleStudCount,
+                //        TitleId = classid.TitleId
+                //    };
+                //    classid = updateclass;
+                //    db.Entry(classid).State = EntityState.Modified;
+                //    db.SaveChanges();
+                //};
+
+                var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cid).FirstOrDefault();
+                var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cid && x.SelectedOrg == i).Count();
+                var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cid && x.GenderId == 2 && x.SelectedOrg == i).Count();
+                var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cid && x.GenderId == 1 && x.SelectedOrg == i).Count();
+                var updateclass = new Class
                 {
-                    var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cl).FirstOrDefault();
-                    var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.SelectedOrg == i).Count();
-                    var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 2 && x.SelectedOrg == i).Count();
-                    var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 1 && x.SelectedOrg == i).Count();
-                    var updateclass = new Class
-                    {
-                        ClassId = classid.ClassId,
-                        ClassName = classid.ClassName,
-                        ClassIsActive = classid.ClassIsActive,
-                        OrgId = classid.OrgId,
-                        ClassRefNumb = classid.ClassRefNumb,
-                        ClassTeacherId = classid.ClassTeacherId,
-                        ClassTeacherFullName = classid.ClassTeacherFullName,
-                        Students_Count = studentcount,
-                        Female_Students_Count = FemStuCount,
-                        Male_Students_Count = MaleStudCount,
-                        TitleId = classid.TitleId
-                    };
-                    classid = updateclass;
-                    db.Entry(classid).State = EntityState.Modified;
-                    db.SaveChanges();
+                    ClassId = classid.ClassId,
+                    ClassName = classid.ClassName,
+                    ClassIsActive = classid.ClassIsActive,
+                    OrgId = classid.OrgId,
+                    ClassRefNumb = classid.ClassRefNumb,
+                    ClassTeacherId = classid.ClassTeacherId,
+                    ClassTeacherFullName = classid.ClassTeacherFullName,
+                    Students_Count = studentcount,
+                    Female_Students_Count = FemStuCount,
+                    Male_Students_Count = MaleStudCount,
+                    TitleId = classid.TitleId
                 };
+                classid = updateclass;
+                db.Entry(classid).State = EntityState.Modified;
+                db.SaveChanges();
+
             }
             catch (Exception e)
             {
@@ -2781,6 +2931,7 @@ namespace Dertrix.Controllers
                 // CHECK IF USER TO BE DELETED IS A STUDENT - IF YES - WE GO INTO THIS CONDITION.  
                 // IF USER BEING DELETED IS A STUDENT - WE NEED TO LOCATE STUD'S GUARDIANS.
                 var chkifstud = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
+
                 if (chkifstud != null)
                 {
                     //LIST NUMBER OF GUARDIANS LINKED TO STUDENT.
@@ -3110,21 +3261,19 @@ namespace Dertrix.Controllers
                 db.RemovedRegisteredUsers.Add(remvuser);
                 db.SaveChanges();
 
-
-                // IF USER BEING DELETED IS NOT A STUDENT - WE COME HERE STRAIGHT AND REMOVE USER.
-                RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
-                db.RegisteredUsers.Remove(registeredUser);
-                db.SaveChanges();
-
-                // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT. 
+                // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT AND UPDATE CLASS PROFILE
                 var chkifstud1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
-                var studfullname = db.RegisteredUsers.Where(x => x.RelationshipId == id).Select(x => x.FullName).FirstOrDefault();
                 if (chkifstud != null)
                 {
+                    var locateclassid = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).FirstOrDefault();
+
+                    //GET CLASSID OF STUDENT
+                    var cid = locateclassid.ClassId;
+
                     var orgeventlog = new Org_Events_Log()
                     {
                         Org_Event_SubjectId = id.ToString(),
-                        Org_Event_SubjectName = registeredUser.FullName,
+                        Org_Event_SubjectName = userdataRu.FullName,
                         Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
                         Org_Event_TriggeredbyName = Session["FullName"].ToString(),
                         Org_Event_Time = DateTime.Now,
@@ -3134,9 +3283,16 @@ namespace Dertrix.Controllers
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
 
-                    var updateclasses = UpdateClassProfile();
-                    return RedirectToAction("AllStudents");
+                    var updateclasses = UpdateClassProfile((int)cid);
                 }
+
+
+                // IF USER BEING DELETED IS NOT A STUDENT - WE COME HERE STRAIGHT AND REMOVE USER.
+                RegisteredUser registeredUser = db.RegisteredUsers.Find(id);
+                db.RegisteredUsers.Remove(registeredUser);
+                db.SaveChanges();
+
+
                 return RedirectToAction("AllStudents");
             }
             catch (Exception e)
@@ -3154,36 +3310,6 @@ namespace Dertrix.Controllers
             }
             base.Dispose(disposing);
         }
-
-
-
-
-
-
-        // Method not in use
-        //// GET: RegisteredUsers/Staffs/
-        //public ActionResult Guardians(int? id, string searchname, string searchid)
-        //{
-        //    /* Redirect back to Log in Page if session == null*/
-        //    if (Session["OrgId"] == null)
-        //    {
-        //        return RedirectToAction("Signin", "Access");
-        //    }
-        //    if (Session["OrgId"] != null)
-        //    {
-        //        var rr = Session["OrgId"].ToString();
-        //        int i = Convert.ToInt32(rr);
-        //        id = i;
-        //    }
-        //    if (Session["OrgId"] != null)
-        //    {
-        //        return View(db.RegisteredUsers.Where(j => j.SecondarySchoolUserRoleId == 5 && j.PrimarySchoolUserRoleId == 5).Where(x => x.SelectedOrg == id).Include(g => g.SecondarySchoolUserRole).Include(o => o.PrimarySchoolUserRole).ToList());
-        //        //.Include(t => t.RegisteredUserType).Include(s => s.SecondarySchoolUserRole).Include(s => s.PrimarySchoolUserRole)
-        //        //.ToList());
-        //    }
-        //    return View(db.RegisteredUsers.Where(s => s.RegisteredUserTypeId == 2).Where(p => p.ClassId == id).Include(c => c.Class).ToList());
-        //}
-
 
     }
 }

@@ -10,6 +10,7 @@ using Dertrix.Models;
 
 namespace Dertrix.Controllers
 {
+    [RoutePrefix("")]
     public class ClassController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -129,7 +130,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -302,6 +303,7 @@ namespace Dertrix.Controllers
 
         // GET: Class/Index
         //School admins to manage class
+        [Route("AllClasses")]
         public ActionResult Index(int? id)
         {
             try
@@ -312,7 +314,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -382,6 +384,7 @@ namespace Dertrix.Controllers
 
         // GET: Class/SystemAdminIndex
         //Sys admin to manager classes
+        [Route("SysAdminClassTable")]
         public ActionResult SystemAdminIndex(int? id)
         {
             try
@@ -392,7 +395,7 @@ namespace Dertrix.Controllers
                 }
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToAction("Signin", "Access");
+                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
