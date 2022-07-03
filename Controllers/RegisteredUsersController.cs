@@ -349,7 +349,7 @@ namespace Dertrix.Controllers
                         Password = registeredUser.Password,
                         ConfirmPassword = registeredUser.ConfirmPassword,
                         Telephone = registeredUser.Telephone,
-                        Email = locateuser.Email,
+                        Email = registeredUser.Email,
                         SelectedOrg = locateuser.SelectedOrg,
                         ClassId = locateuser.ClassId,
                         GenderId = registeredUser.GenderId,
