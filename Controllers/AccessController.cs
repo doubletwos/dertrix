@@ -282,7 +282,8 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/Signin
-        [Route("Signin")]
+        //[Route("LogIn")]
+        [HttpGet]
         public ActionResult Signin()
         {
             return View();
@@ -290,7 +291,7 @@ namespace Dertrix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogIn(RegisteredUser registeredUser) 
+        public ActionResult Signin(RegisteredUser registeredUser)  
         {
             try
             {
