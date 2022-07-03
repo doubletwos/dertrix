@@ -11,7 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using Dertrix.Models;
 namespace Dertrix.Controllers
 {
-    //[RoutePrefix("")]
+    [RoutePrefix("")]
     public class AccessController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -59,7 +59,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/Logs
-        //[Route("Logs")]
+        [Route("Logs")]
         public ActionResult Logs()
         {
             try
@@ -130,7 +130,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/InitialSettings
-        //[Route("InitialSettings")]
+        [Route("InitialSettings")]
         public ActionResult InitialSettings(int Id)
         {
             try
@@ -282,7 +282,7 @@ namespace Dertrix.Controllers
 
 
         // GET: Access/Signin
-        //[Route("LogIn")]
+        [Route("LogIn")]
         [HttpGet]
         public ActionResult Signin()
         {
@@ -291,7 +291,7 @@ namespace Dertrix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Signin(RegisteredUser registeredUser)  
+        public ActionResult LogIn(RegisteredUser registeredUser)  
         {
             try
             {
