@@ -2539,36 +2539,6 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-                //Number of classes in org.
-                //var numbofclasses = db.Classes.Where(x => x.OrgId == i).Select(p => p.ClassId).ToList();
-
-
-                //var classestolist = new List<int>(numbofclasses);
-                //foreach (var cl in numbofclasses)
-                //{
-                //    var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cl).FirstOrDefault();
-                //    var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.SelectedOrg == i).Count();
-                //    var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 2 && x.SelectedOrg == i).Count();
-                //    var MaleStudCount = db.RegisteredUsers.Where(x => x.ClassId == cl && x.GenderId == 1 && x.SelectedOrg == i).Count();
-                //    var updateclass = new Class
-                //    {
-                //        ClassId = classid.ClassId,
-                //        ClassName = classid.ClassName,
-                //        ClassIsActive = classid.ClassIsActive,
-                //        OrgId = classid.OrgId,
-                //        ClassRefNumb = classid.ClassRefNumb,
-                //        ClassTeacherId = classid.ClassTeacherId,
-                //        ClassTeacherFullName = classid.ClassTeacherFullName,
-                //        Students_Count = studentcount,
-                //        Female_Students_Count = FemStuCount,
-                //        Male_Students_Count = MaleStudCount,
-                //        TitleId = classid.TitleId
-                //    };
-                //    classid = updateclass;
-                //    db.Entry(classid).State = EntityState.Modified;
-                //    db.SaveChanges();
-                //};
-
                 var classid = db.Classes.AsNoTracking().Where(x => x.OrgId == i && x.ClassId == cid).FirstOrDefault();
                 var studentcount = db.RegisteredUsers.Where(x => x.ClassId == cid && x.SelectedOrg == i).Count();
                 var FemStuCount = db.RegisteredUsers.Where(x => x.ClassId == cid && x.GenderId == 2 && x.SelectedOrg == i).Count();
@@ -3261,7 +3231,7 @@ namespace Dertrix.Controllers
                 db.RemovedRegisteredUsers.Add(remvuser);
                 db.SaveChanges();
 
-                // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT AND UPDATE CLASS PROFILE
+                // CHECK IF USER BEING DELETED IS A STUDENT = IF YES - LOG EVENT AND UPDATE CLASS PROFILE - DELETE STUDENT
                 var chkifstud1 = db.RegisteredUsers.Where(x => x.RegisteredUserId == id).Select(x => x.StudentRegFormId).FirstOrDefault();
                 if (chkifstud != null)
                 {
@@ -3283,7 +3253,14 @@ namespace Dertrix.Controllers
                     db.Org_Events_Logs.Add(orgeventlog);
                     db.SaveChanges();
 
+
+                    // IF USER BEING DELETED IS A STUDENT - 
+                    RegisteredUser regUser = db.RegisteredUsers.Find(id);
+                    db.RegisteredUsers.Remove(regUser);
+                    db.SaveChanges();
+
                     var updateclasses = UpdateClassProfile((int)cid);
+                    return RedirectToAction("AllStudents");
                 }
 
 
