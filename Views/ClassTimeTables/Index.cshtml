@@ -1,0 +1,83 @@
+﻿@*@model IEnumerable<Dertrix.Models.ClassTimeTable>
+<head>
+	@{
+		ViewBag.Title = "Timetable";
+		var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
+	}
+	<style>
+		.der-body-content{
+            border-color: @regUserOrgNavBar;
+            border-style: double;
+         }
+	</style>
+	<link href="~/Main/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<div>
+	<hr />
+	<div>
+		@if (Session["IsAdmin"] != null || Session["IsTester"] != null)
+		{
+			Html.RenderAction("AddSubjectSlot", "ClassTimeTables");
+		}
+	</div>
+	<hr />
+</div>
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.OrgSchDay.Day)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Class.ClassName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Subject.SubjectName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.StartTime)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.FinishTime)
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.OrgSchDay.Day)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Class.ClassName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Subject.SubjectName)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.StartTime)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.FinishTime)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.ClassTimeTableId }) |
+				@Html.ActionLink("Details", "Details", new { id = item.ClassTimeTableId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.ClassTimeTableId })
+			</td>
+		</tr>
+	}
+
+</table>
+
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/custom-validator")
+	<script src="~/Scripts/timepicker/timepicker.min.js"></script>
+	<link href="~/Content/timepicker/timepicker.min.css" rel="stylesheet" />
+}*@

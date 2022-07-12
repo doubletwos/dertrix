@@ -17,22 +17,18 @@
     @Html.Partial("_Widget_SchStaff_Dashboard")
     <div>
         <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <p>
-                    @{
-                        Html.RenderAction("StudentUpdateSubject", "StudentSubjectGrade");
-                    }
-                </p>
-            </div>
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4">
-
-            </div>
-
-        </div>
+		<div class="row">
+			<div class="col-md-6">
+				<p>@Html.ActionLink("Timetable", "ClassTimetables", "OrgClassPeriods", null, htmlAttributes: new { @class = "RegUserOrgButtonColour" })</p>
+			</div>
+			<div class="col-md-6">
+				<p>
+					@{
+						Html.RenderAction("PopulateOrgPeriods", "OrgClassPeriods");
+					}
+				</p>
+			</div>
+		</div>
     </div>
     <hr />
     <br />
@@ -43,7 +39,7 @@
 	@section Scripts {
 		@Scripts.Render("~/bundles/jqueryval")
 	}
-	<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery-3.6.0.js"></script>
 	<script>
 		$("#stusubup").click(function () {
 			var data = $("#updatesubjects").serialize();
@@ -60,3 +56,25 @@
 			})
 		})
 	</script>
+
+	<script>
+        $("#btnSubmit44").click(function () {
+                var data = $("#PopulateClassPeroiod").serialize();
+                $.ajax({
+					type: "POST",
+					url: "/OrgClassPeriods/ProcessOrgPeriods",
+                    @*url: '@Url.Action("ProcessOrgPeriods", "OrgClassPeriods")',*@
+                    data: data,
+                    success: function (response) {
+                        alert("Update in progress");
+                        $("#myUpdateModal").modal("hide");
+                        $("#PopulateClassPeroiod")[0].reset();
+                        window.location.reload();
+                    }
+                })
+        })
+	</script>
+
+
+
+

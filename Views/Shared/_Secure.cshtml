@@ -14,7 +14,7 @@
 			var isTester = Convert.ToInt32(Session["IsTester"]);
 			if (isTester == 1 && ((int)Session["OrgId"] != 23))
 			{
-				@Html.ActionLink("BACK TO DERTRIX", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "@*RegUserActionButtonColour*@" })
+				@Html.ActionLink("BACK TO DERTRIX", "SystemAdminIndex", "Orgs", new { id = 23 }, htmlAttributes: new { @class = "@*RegUserActionButtonColour" })
 
 			}
 			else

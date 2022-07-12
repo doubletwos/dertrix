@@ -1,0 +1,93 @@
+﻿@model Dertrix.ViewModels.DisplayClassTimetableViewModel
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<table class="table table-bordered table-striped" style="width:100%">
+	<thead>
+		<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:11px; background-color:white; border-style: groove; border-left: none; border-right:none; ">
+			<th>Day</th>
+			<th>1st Period</th>
+			<th>2nd Period</th>
+			<th>3rd Period</th>
+			<th>4th Period</th>
+			<th>5th Period</th>
+			<th>6th Period</th>
+			<th>7th Period</th>
+			<th>8th Period</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.OrgClassPeriod.Count; i++)
+		{
+			<tr>
+				@Html.HiddenFor(model => model.OrgClassPeriod[i].OrgClassPeriodId)
+				@Html.HiddenFor(model => model.OrgClassPeriod[i].ClassId)
+				@Html.HiddenFor(model => model.OrgClassPeriod[i].ClassRef)
+				@Html.HiddenFor(model => model.OrgClassPeriod[i].OrgId)
+				@Html.HiddenFor(model => model.OrgClassPeriod[i].Updater_Id)
+				@Html.HiddenFor(model => model.OrgClassPeriod[i].Last_updated_date)
+				<td>
+					<strong>
+						@Html.DisplayFor(model => model.OrgClassPeriod[i].OrgSchDay.Day, new { htmlAttributes = new { @style = "" } })
+					</strong>
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_1, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_2, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_3, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_4, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_5, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_6, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_7, new { htmlAttributes = new { @style = "" } })
+				</td>
+				<td>
+					@Html.DisplayFor(model => model.OrgClassPeriod[i].Period_8, new { htmlAttributes = new { @style = "" } })
+				</td>
+			</tr>
+		}
+
+	</tbody>
+</table>
+<hr />
+<div class="container">
+	@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
+	{
+		<div class="container">
+			@{
+				var classid = Model.Class.ClassId;
+			}
+		</div>
+		<input type="button" value="Edit Timetable" class="RegUserOrgButtonColour" id="btnSubmit" onclick="UpdateTimeTable(@classid)" />
+
+	}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

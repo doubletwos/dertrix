@@ -1,0 +1,43 @@
+﻿@model Dertrix.Models.RegisteredUser
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<a href="#" class="RegUserOrgButtonColour" data-toggle="modal" data-target="#myUpdateModal">
+	<i class="" aria-hidden="true"></i>
+	Populate class periods
+</a>
+<div class="modal fade" id="myUpdateModal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-body">
+			<form id="PopulateClassPeroiod">
+				@Html.AntiForgeryToken()
+				@{
+					HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+				}
+				@using (Html.BeginForm("ProcessOrgPeriods", "OrgClassPeriods", FormMethod.Post, new { enctype = "multipart/form-data" }))
+				{
+					<div class="form-horizontal">
+						<div class="panel panel-body" style="height:330px; min-width:56px; color:black;">
+							<div class="form-group">
+								<div class="col-md-10">
+									@Html.LabelFor(model => model.ClassId, "Class", htmlAttributes: new { @class = "control-label col-md-2" })
+									@Html.DropDownList("ClassId", null, "Please Select ", htmlAttributes: new { @class = "form-control", @name = "classid", @id = "id" })
+									@Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+								</div>
+							</div>
+							<br />
+							<div class="modal-footer">
+								<input type="button" value="Submit" class="RegUserOrgButtonColour" id="btnSubmit44" /> &nbsp;
+								<a href="#" class="RegUserOrgButtonColour" data-dismiss="modal">Cancel</a>
+							</div>
+						</div>
+					</div>
+				}
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+

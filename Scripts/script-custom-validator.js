@@ -279,9 +279,6 @@ $(document).ready(function () {
 			'ClassId': {
 				required: true,
 			},
-			//'ClassTeacherId': {
-			//	required: true,
-			//},
 			'First_Term_Test_MaxGrade': {
 				required: true,
 				maxlength: 3
@@ -1048,7 +1045,9 @@ $(document).ready(function () {
 			}
 			
 		});
-    });
+	});
+
+
 
 
 

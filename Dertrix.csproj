@@ -213,6 +213,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NurserySchoolUserRolesController.cs" />
     <Compile Include="Controllers\OrgBrandsController.cs" />
+    <Compile Include="Controllers\OrgClassPeriodsController.cs" />
     <Compile Include="Controllers\OrgGroupsController.cs" />
     <Compile Include="Controllers\OrgOrgTypesController.cs" />
     <Compile Include="Controllers\OrgSchCalendarsController.cs" />
@@ -624,6 +625,74 @@
     <Compile Include="Migrations\202206190853429_Sprint2022.06.00.designer.cs">
       <DependentUpon>202206190853429_Sprint2022.06.00.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202207061552504_Sprint2022.07.00.cs" />
+    <Compile Include="Migrations\202207061552504_Sprint2022.07.00.designer.cs">
+      <DependentUpon>202207061552504_Sprint2022.07.00.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207061557225_Sprint2022.07.01.cs" />
+    <Compile Include="Migrations\202207061557225_Sprint2022.07.01.designer.cs">
+      <DependentUpon>202207061557225_Sprint2022.07.01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207061616334_Sprint2022.07.02.cs" />
+    <Compile Include="Migrations\202207061616334_Sprint2022.07.02.designer.cs">
+      <DependentUpon>202207061616334_Sprint2022.07.02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207061655342_Sprint2022.07.03.cs" />
+    <Compile Include="Migrations\202207061655342_Sprint2022.07.03.designer.cs">
+      <DependentUpon>202207061655342_Sprint2022.07.03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207061806085_Sprint2022.07.04.cs" />
+    <Compile Include="Migrations\202207061806085_Sprint2022.07.04.designer.cs">
+      <DependentUpon>202207061806085_Sprint2022.07.04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207090708569_Sprint2022.07.05.cs" />
+    <Compile Include="Migrations\202207090708569_Sprint2022.07.05.designer.cs">
+      <DependentUpon>202207090708569_Sprint2022.07.05.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207090846364_Sprint2022.07.06.cs" />
+    <Compile Include="Migrations\202207090846364_Sprint2022.07.06.designer.cs">
+      <DependentUpon>202207090846364_Sprint2022.07.06.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207090940318_Sprint2022.07.07.cs" />
+    <Compile Include="Migrations\202207090940318_Sprint2022.07.07.designer.cs">
+      <DependentUpon>202207090940318_Sprint2022.07.07.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091017404_Sprint2022.07.08.cs" />
+    <Compile Include="Migrations\202207091017404_Sprint2022.07.08.designer.cs">
+      <DependentUpon>202207091017404_Sprint2022.07.08.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091028220_Sprint2022.07.09.cs" />
+    <Compile Include="Migrations\202207091028220_Sprint2022.07.09.designer.cs">
+      <DependentUpon>202207091028220_Sprint2022.07.09.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091035479_Sprint2022.07.10.cs" />
+    <Compile Include="Migrations\202207091035479_Sprint2022.07.10.designer.cs">
+      <DependentUpon>202207091035479_Sprint2022.07.10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091159516_Sprint2022.07.11.cs" />
+    <Compile Include="Migrations\202207091159516_Sprint2022.07.11.designer.cs">
+      <DependentUpon>202207091159516_Sprint2022.07.11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091757081_Sprint2022.07.12.cs" />
+    <Compile Include="Migrations\202207091757081_Sprint2022.07.12.designer.cs">
+      <DependentUpon>202207091757081_Sprint2022.07.12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207091801593_Sprint2022.07.13.cs" />
+    <Compile Include="Migrations\202207091801593_Sprint2022.07.13.designer.cs">
+      <DependentUpon>202207091801593_Sprint2022.07.13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207092249066_Sprint2022.07.14.cs" />
+    <Compile Include="Migrations\202207092249066_Sprint2022.07.14.designer.cs">
+      <DependentUpon>202207092249066_Sprint2022.07.14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207110457106_Sprint2022.07.15.cs" />
+    <Compile Include="Migrations\202207110457106_Sprint2022.07.15.designer.cs">
+      <DependentUpon>202207110457106_Sprint2022.07.15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207111322238_Sprint2022.07.16.cs" />
+    <Compile Include="Migrations\202207111322238_Sprint2022.07.16.designer.cs">
+      <DependentUpon>202207111322238_Sprint2022.07.16.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CalendarCategory.cs" />
@@ -641,10 +710,12 @@
     <Compile Include="Models\NurserySchoolUserRole.cs" />
     <Compile Include="Models\Org.cs" />
     <Compile Include="Models\OrgBrand.cs" />
+    <Compile Include="Models\OrgClassPeriod.cs" />
     <Compile Include="Models\OrgGroup.cs" />
     <Compile Include="Models\OrgOrgType.cs" />
     <Compile Include="Models\OrgSchCalendar.cs" />
     <Compile Include="Models\OrgSchCalndrGrp.cs" />
+    <Compile Include="Models\OrgSchDay.cs" />
     <Compile Include="Models\OrgSchPostGrp.cs" />
     <Compile Include="Models\OrgType.cs" />
     <Compile Include="Models\Org_Events_Log.cs" />
@@ -674,8 +745,10 @@
     <Compile Include="Models\User_Change_Events_Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AddClassTimetableSlotViewModel.cs" />
     <Compile Include="ViewModels\AddNewOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\AddNewPostViewModel.cs" />
+    <Compile Include="ViewModels\DisplayClassTimetableViewModel.cs" />
     <Compile Include="ViewModels\DisplayStudentGradesViewModel.cs" />
     <Compile Include="ViewModels\EditOrgSchCalViewModel.cs" />
     <Compile Include="ViewModels\EditPostViewModel.cs" />
@@ -832,16 +905,18 @@
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Properties\PublishProfiles\LiveDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\LiveRelease.pubxml" />
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.6.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.6.0.js" />
+    <Content Include="Scripts\jquery-3.6.0.min.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.6.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.13.1.js" />
+    <Content Include="Scripts\jquery-ui-1.13.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1063,6 +1138,14 @@
     <Content Include="Views\Posts\ArchivedPosts.cshtml" />
     <Content Include="Views\RegisteredUsers\AccountInfo.cshtml" />
     <Content Include="Views\User_Change_Events_Log\Index.cshtml" />
+    <Content Include="Views\ClassTimeTables\Delete.cshtml" />
+    <Content Include="Views\ClassTimeTables\Details.cshtml" />
+    <Content Include="Views\ClassTimeTables\Edit.cshtml" />
+    <Content Include="Views\ClassTimeTables\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayViews\_DisplayClassTimeTable.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_AddClassTimetableSlot.cshtml" />
+    <Content Include="Views\Shared\PartialViewsForms\_PopulateOrgPeriods.cshtml" />
+    <Content Include="Views\OrgClassPeriods\ClassTimetables.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1084,8 +1167,6 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -1379,6 +1460,57 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206190853429_Sprint2022.06.00.resx">
       <DependentUpon>202206190853429_Sprint2022.06.00.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207061552504_Sprint2022.07.00.resx">
+      <DependentUpon>202207061552504_Sprint2022.07.00.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207061557225_Sprint2022.07.01.resx">
+      <DependentUpon>202207061557225_Sprint2022.07.01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207061616334_Sprint2022.07.02.resx">
+      <DependentUpon>202207061616334_Sprint2022.07.02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207061655342_Sprint2022.07.03.resx">
+      <DependentUpon>202207061655342_Sprint2022.07.03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207061806085_Sprint2022.07.04.resx">
+      <DependentUpon>202207061806085_Sprint2022.07.04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207090708569_Sprint2022.07.05.resx">
+      <DependentUpon>202207090708569_Sprint2022.07.05.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207090846364_Sprint2022.07.06.resx">
+      <DependentUpon>202207090846364_Sprint2022.07.06.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207090940318_Sprint2022.07.07.resx">
+      <DependentUpon>202207090940318_Sprint2022.07.07.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091017404_Sprint2022.07.08.resx">
+      <DependentUpon>202207091017404_Sprint2022.07.08.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091028220_Sprint2022.07.09.resx">
+      <DependentUpon>202207091028220_Sprint2022.07.09.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091035479_Sprint2022.07.10.resx">
+      <DependentUpon>202207091035479_Sprint2022.07.10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091159516_Sprint2022.07.11.resx">
+      <DependentUpon>202207091159516_Sprint2022.07.11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091757081_Sprint2022.07.12.resx">
+      <DependentUpon>202207091757081_Sprint2022.07.12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207091801593_Sprint2022.07.13.resx">
+      <DependentUpon>202207091801593_Sprint2022.07.13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207092249066_Sprint2022.07.14.resx">
+      <DependentUpon>202207092249066_Sprint2022.07.14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207110457106_Sprint2022.07.15.resx">
+      <DependentUpon>202207110457106_Sprint2022.07.15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207111322238_Sprint2022.07.16.resx">
+      <DependentUpon>202207111322238_Sprint2022.07.16.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

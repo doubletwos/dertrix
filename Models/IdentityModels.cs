@@ -58,7 +58,16 @@ namespace Dertrix.Models
         public DbSet<Students_Grades_Log> Students_Grades_Logs { get; set; }
         public DbSet<OrgSchPostGrp> OrgSchPostGrps { get; set; }
         public DbSet<RemovedRegisteredUser> RemovedRegisteredUsers { get; set; }
-        public DbSet<User_Change_Events_Log> User_Change_Events_Logs { get; set; } 
+        public DbSet<User_Change_Events_Log> User_Change_Events_Logs { get; set; }
+        public DbSet<OrgSchDay> OrgSchDays { get; set; }
+        public DbSet<OrgClassPeriod> OrgClassPeriods { get; set; } 
+
+
+
+
+        
+
+
 
 
         public ApplicationDbContext()

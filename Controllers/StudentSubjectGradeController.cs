@@ -234,7 +234,7 @@ namespace Dertrix.Controllers
         }
 
 
-        //Update students Grades
+        //Display students Grades
         public ActionResult DisplayStudentGrades(int? id) 
         {
             try
@@ -332,6 +332,7 @@ namespace Dertrix.Controllers
                     .Where(x => x.RegisteredUserId == id)
                     .Include(x => x.Subject)
                     .ToList();
+
                 var registereduser = db.RegisteredUsers.Find(id);
 
                 var subject = new Subject();
@@ -359,8 +360,6 @@ namespace Dertrix.Controllers
                         ClassRef = x.ClassRef,
                         ClassId = x.ClassId,
                         Updater_Id = x.Updater_Id,
-
-
                     }).ToList(),
 
                     RegisteredUser = registereduser,
@@ -512,7 +511,7 @@ namespace Dertrix.Controllers
                         Last_updated_date = DateTime.Now,
                         Created_date = grade.Created_date,
                         SubjectName = grade.SubjectName,
-                        Updater_Id = RegisteredUserId
+                        Updater_Id = RegisteredUserId                       
                     };
 
                     grade_id = updategrade;

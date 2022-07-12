@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Dertrix.Models.OrgClassPeriod>
+@{
+	ViewBag.Title = "ClassTimetables";
+}
+
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<p>
+	@using (Html.BeginForm("SystemAdminIndex", "Orgs", FormMethod.Get))
+	{
+		<div class="form-inline">
+			@*id: &nbsp;&nbsp; <input type="text" name="searchid" class="" placeholder="" id="searchid" />&nbsp;&nbsp;
+				<input type="hidden" id="hfId" name="searchid" />*@
+			Class Name: &nbsp;&nbsp; <input type="text" name="searchname" class="" placeholder="" id="searchname" />
+			<input type="hidden" id="hfName" name="searchname" />
+			&nbsp;&nbsp;
+			<button class="RegUserOrgButtonColour">Filter</button>
+		</div>
+	}
+</p>
+<hr />
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.OrgSchDay.Day)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Subject.SubjectName)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.ClassId)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.ClassRef)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.OrgId)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_1)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_2)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_3)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_4)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_5)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_6)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_7)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Period_8)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Updater_Id)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Last_updated_date)
+		</th>
+		<th></th>
+	</tr>
+
+
+
+</table>
+
+
+<script type="text/javascript">
+	$(function () {
+		$("#searchname").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: '/OrgClassPeriods/AutoCompleteClasses/',
+					data: " {'prefix' : '" + request.term + "'}",
+					dataType: "json",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					success: function (data) {
+						response($.map(data, function (item) {
+							return item;
+						}))
+					},
+					error: function (response) {
+						alert(response.responseText);
+					},
+					failure: function (response) {
+						alert(response.responseText);
+					}
+				});
+			},
+			select: function (e, i) {
+				$("#hfName").val(i.item.val);
+			},
+			minLength: 0
+		});
+	});
+</script>
+
+@section Scripts {
+		@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery-ui-1.13.1.min.js"></script>
+	}

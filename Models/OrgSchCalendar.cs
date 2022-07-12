@@ -40,7 +40,6 @@ namespace Dertrix.Models
 
         [Display(Name = "Time")]
         [DisplayFormat(DataFormatString = "{0: H:mm tt}", ApplyFormatInEditMode = true)]
-
         public DateTime? EventTime { get; set; }
 
         [Display(Name = "Created")]

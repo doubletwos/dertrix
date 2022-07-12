@@ -4,117 +4,85 @@
         ViewBag.Title = "Class students";
         var regUserOrgNavBar = Session["regOrgBrandButtonColour"].ToString();
     }
-    </head>
-
+ </head>
     <form id="GradeEditForm">
-
         @Html.AntiForgeryToken()
         @{
             HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
         }
-
         <div class="form-horizontal">
-            <div class="table-responsive">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+			<div class="table-responsive">
+				@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+				<div class="form-group">
+					<div class="col-md-10">
+						<strong> @Html.DisplayFor(model => model.RegisteredUser.FullName)</strong>
+					</div>
+				</div>
+				<table class="table table-bordered">
+					<thead>
+						<tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:10px; background-color:white; border-style: double; border-left: none; border-right:none; border-color:@regUserOrgNavBar; ">
+							<th style="width: 50px;">Subject </th>
+							<th style="width: 50px;"> 1st Term<br>Test </th>
+							<th style="width: 50px;">1st Exam<br>Exam</th>
+							<th style="width: 50px;"> 2nd Term<br>Test </th>
+							<th style="width: 50px;"> 2nd Term<br>Exam</th>
+							<th style="width: 50px"> 3rd Term<br>Test </th>
+							<th style="width: 50px;">3rd Term<br>Exam</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (int i = 0; i < Model.StudentSubjectGrades.Count; i++)
+						{
+							<tr>
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].StudentSubjectGradeId)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].RegisteredUserId)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassId)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassRef)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].OrgId)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].Created_date)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].Last_updated_date)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectId)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectName)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].Subject_Min_Passmark)
+								@Html.HiddenFor(model => model.StudentSubjectGrades[i].Subject_Max_Passmark)
+
+								<td>
+									@Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName,new { htmlAttributes = new { @style = "font:size:10px" } })
+								</td>
+
+								<td>
+									@Html.EditorFor(model => model.StudentSubjectGrades[i].FirstTerm_TestGrade, new { htmlAttributes = new { @style = "width: 60px" } })
+								</td>
+								<td>
+									@Html.EditorFor(model => model.StudentSubjectGrades[i].FirstTerm_ExamGrade, new { htmlAttributes = new { @style = "width: 60px" } })
+								</td>
 
 
-                <div class="form-group">
-                    <div class="col-md-10">
-                        <strong> @Html.DisplayFor(model => model.RegisteredUser.FullName)</strong>
-                    </div>
-                </div>
+								<td>
+									@Html.EditorFor(model => model.StudentSubjectGrades[i].SecondTerm_TestGrade, new { htmlAttributes = new { @style = "width: 60px" } })
+								</td>
+								<td>
+									@Html.EditorFor(model => model.StudentSubjectGrades[i].SecondTerm_ExamGrade, new { htmlAttributes = new { @style = "width: 60px" } })
+								</td>
 
 
-                <table class="table table-bordered">
-                    <thead>
-                        <tr style="font-family:Trebuchet MS, Tahoma, Arial; color:#666; font-size:10px; background-color:white; border-style: double; border-left: none; border-right:none; border-color:@regUserOrgNavBar; ">
-                            <th style="width: 50px;">Subject </th>
-                            <th style="width: 50px;"> 1st Term<br>Test </th>
-                            <th style="width: 50px;">1st Exam<br>Exam</th>
+								<td>
+									@Html.EditorFor(model => model.StudentSubjectGrades[i].ThirdTerm_TestGrade, new { htmlAttributes = new { @style = "width: 60px" } })
+								</td>
+								<td>
+									@Html.EditorFor(model => model.StudentSubjectGrades[i].ThirdTerm_ExamGrade, new { htmlAttributes = new { @style = "width: 60px" } })
+								</td>
 
-                            <th style="width: 50px;"> 2nd Term<br>Test </th>
-                            <th style="width: 50px;"> 2nd Term<br>Exam</th>
-
-                            <th style="width: 50px"> 3rd Term<br>Test </th>
-                            <th style="width: 50px;">3rd Term<br>Exam</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.StudentSubjectGrades.Count; i++)
-                        {
-                        <tr>
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].StudentSubjectGradeId)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].RegisteredUserId)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassId)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].ClassRef)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].OrgId)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].Created_date)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].Last_updated_date)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectId)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].SubjectName)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].Subject_Min_Passmark)
-                            @Html.HiddenFor(model => model.StudentSubjectGrades[i].Subject_Max_Passmark)
-
-                            <td>
-                                @Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName, new { htmlAttributes = new { @style = "font:size:10px" } })
-
-                            </td>
-
-                            <td>
-                                @Html.EditorFor(model => model.StudentSubjectGrades[i].FirstTerm_TestGrade, new { htmlAttributes = new { @style = "width: 60px" } })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.StudentSubjectGrades[i].FirstTerm_ExamGrade, new { htmlAttributes = new { @style = "width: 60px" } })
-                            </td>
-
-
-                            <td>
-                                @Html.EditorFor(model => model.StudentSubjectGrades[i].SecondTerm_TestGrade, new { htmlAttributes = new { @style = "width: 60px" } })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.StudentSubjectGrades[i].SecondTerm_ExamGrade, new { htmlAttributes = new { @style = "width: 60px" } })
-                            </td>
-
-
-                            <td>
-                                @Html.EditorFor(model => model.StudentSubjectGrades[i].ThirdTerm_TestGrade, new { htmlAttributes = new { @style = "width: 60px" } })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.StudentSubjectGrades[i].ThirdTerm_ExamGrade, new { htmlAttributes = new { @style = "width: 60px" } })
-                            </td>
-
-                        </tr>
-                        }
-
-                    </tbody>
-                </table>
-            </div>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
         </div>
-
-        <div class="modal-footer">
-            <input type="button" value="Update" class="RegUserOrgButtonColour" id="updateGrade" />
-            <input type="reset" value="Cancel" class="RegUserOrgButtonColour" data-dismiss="modal" />
-        </div>
-
     </form>
 
 
-    <script>
-        $("#updateGrade").click(function () {
-            var data = $("#GradeEditForm").serialize();
-            $.ajax({
-                type: "POST",
-                url: "/StudentSubjectGrade/Edit",
-                data: data,
-                success: function (response) {
-                    alert("Grade Updated");
-                    $("#myModalUpdateSubject").modal("hide");
-                    $("#GradeEditForm")[0].reset();
-                    window.location.reload();
-                }
-            })
-        })
-    </script>
+
 
 
 

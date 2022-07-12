@@ -29,7 +29,6 @@
             </td>
             <td>
                 @Html.DisplayFor(model => model.StudentSubjectGrades[i].SubjectName, new { htmlAttributes = new { @style = "" } })
-
             </td>
             @foreach (var sub in Model.Subject.Where(x => x.SubjectId == @Model.StudentSubjectGrades[i].SubjectId))
             {
