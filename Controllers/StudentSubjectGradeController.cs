@@ -200,6 +200,8 @@ namespace Dertrix.Controllers
                 var students = db.RegisteredUsers
                     .Where(x => x.StudentRegFormId != null && x.SelectedOrg == orgid && x.ClassRef == classref && x.ClassId == id)
                     .ToList();
+
+                TempData["classid"] = id;
                 return View(students);
             }
             catch (Exception e)

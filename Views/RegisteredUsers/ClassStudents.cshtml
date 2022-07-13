@@ -38,24 +38,8 @@
 			</div>
 		</div>
 		<hr />
-
-
-
-
-
-
 		<div class="container">
 			<div class="row">
-				@*<div class="col-lg-6">
-						@if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-						{
-							<div>
-								@{
-									Html.RenderAction("AddClassTimeTableSlot", "OrgClassPeriods");
-								}
-							</div>
-						}
-					</div>*@
 				<div class="col-lg-6">
 					@{
 						var tempval = TempData["classid"];

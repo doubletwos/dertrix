@@ -15,8 +15,6 @@ namespace Dertrix.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-
-
         // POST: OrgClassPeriods/Timetable
         [HttpGet]
         //[ValidateAntiForgeryToken]
