@@ -105,8 +105,7 @@ namespace Dertrix.Controllers
                 var rr = Session["OrgId"].ToString();
                 int i = Convert.ToInt32(rr);
 
-                if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
-                {
+
                     var usersposts = (from psts in db.Posts
                                       where psts.OrgId == i
                                       where psts.Isarchived == true
@@ -114,12 +113,6 @@ namespace Dertrix.Controllers
                                       .Distinct()
                                       .ToList();
                     return View(usersposts);
-                }
-                else
-                {
-                    return Redirect("~/ErrorHandler.html");
-                }
-
             }
             catch (Exception e)
             {
@@ -278,6 +271,56 @@ namespace Dertrix.Controllers
                     Org_Event_Time = DateTime.Now,
                     OrgId = Session["OrgId"].ToString(),
                     Org_Events_Types = Org_Events_Types.Archived_Post
+                };
+                db.Org_Events_Logs.Add(orgeventlog);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
+            return RedirectToAction("AllPosts", "Posts");
+        }
+
+        public ActionResult UnArchivePost(int? id)
+        {
+            try
+            {
+                var rr = Session["OrgId"].ToString();
+                int i = Convert.ToInt32(rr);
+
+                var locatepost = db.Posts.AsNoTracking().Where(x => x.PostId == id).Where(x => x.OrgId == i).FirstOrDefault();
+
+                var updt = new Post
+                {
+                    PostId = locatepost.PostId,
+                    PostTopicId = locatepost.PostTopicId,
+                    OrgId = locatepost.OrgId,
+                    PostSubject = locatepost.PostSubject,
+                    PostCreatorId = locatepost.PostCreatorId,
+                    CreatorFullName = locatepost.CreatorFullName,
+                    PostCreationDate = locatepost.PostCreationDate,
+                    PostExpirtyDate = locatepost.PostExpirtyDate,
+                    PostContent = locatepost.PostContent,
+                    SendAsEmail = locatepost.SendAsEmail,
+                    Isarchived = false
+                };
+                locatepost = updt;
+                db.Entry(locatepost).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                // UPON ARCHIVING POST - LOG THE EVENT 
+                var orgeventlog = new Org_Events_Log()
+                {
+                    Org_Event_SubjectId = locatepost.PostId.ToString(),
+                    Org_Event_SubjectName = locatepost.PostSubject,
+                    Org_Event_TriggeredbyId = Session["RegisteredUserId"].ToString(),
+                    Org_Event_TriggeredbyName = Session["FullName"].ToString(),
+                    Org_Event_Time = DateTime.Now,
+                    OrgId = Session["OrgId"].ToString(),
+                    Org_Events_Types = Org_Events_Types.UnArchived_Post
                 };
                 db.Org_Events_Logs.Add(orgeventlog);
                 db.SaveChanges();

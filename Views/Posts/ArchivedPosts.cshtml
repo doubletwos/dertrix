@@ -40,7 +40,6 @@
         @Scripts.Render("~/bundles/custom-validator")
         <link href="~/Content/wysiwyg-editor-bootstrap/dist/css/wysiwyg.css" rel="stylesheet" />
         <link href="~/Content/wysiwyg-editor-bootstrap/dist/css/highlight.min.css" rel="stylesheet" />
-        @*<script src="~/Content/wysiwyg-editor-bootstrap/dist/js/highlight.min.js"></script>*@
         <script src="~/Content/wysiwyg-editor-bootstrap/src/js/wysiwyg.js"></script>
 		<script src="~/Scripts/jquery-ui-1.13.1.min.js"></script>
         <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
@@ -76,8 +75,7 @@
                                     </li>
                                     @if ((int)Session["IsAdmin"] == 1 || Session["IsTester"] != null)
                                     {
-                                        @*<li><a href="#" onclick="EditPost(@item.PostId)">Edit Post</a></li>*@
-                                        @*<li><a href="#" onclick="ArchivePost(@item.PostId)">Archive Post</a></li>*@
+                                        <li><a href="#" onclick="UnarchivePost(@item.PostId)">Unarchive Post</a></li>
                                         <li><a href="#" onclick="ConfirmDelete(@item.PostId)">Delete Post</a></li>
                                     }
                                 </ul>
@@ -94,14 +92,7 @@
     </div>
 
 </div>
-
-
-
-
-
 <input type="hidden" id="hiddenPostId" />
-
-
 
 @*Delete confirmation Modal*@
 <div class="modal fade" id="PostDeleteModal">
@@ -171,16 +162,13 @@
             }
         })
     }
-    $(function () {
-        $("#cancel").on("click", function () {
-        })
-    })
+
 </script>
 <script>
-    var ArchivePost = function (Id) {
+    var UnarchivePost = function (Id) {
         $.ajax({
             type: "POST",
-            url: "/Posts/ArchivePost",
+            url: "/Posts/UnarchivePost",
             data: { Id: Id },
             success: function (response) {
                 toastr.options.onHidden = function () {
@@ -192,7 +180,7 @@
                 toastr.options.extendedTimeOut = 0;
                 toastr.options.fadeOut = 500;
                 toastr.options.tapToDismiss = false;
-                toastr.success("Post archived successfully");
+                toastr.success("Post unarchived successfully");
             },
             error: function (response) {
                 toastr.options.positionClass = "toast-bottom-full-width";
@@ -206,10 +194,7 @@
 
         })
     }
-    $(function () {
-        $("#cancel").on("click", function () {
-        })
-    })
+
 </script>
 
 

@@ -1146,6 +1146,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_AddClassTimetableSlot.cshtml" />
     <Content Include="Views\Shared\PartialViewsForms\_PopulateOrgPeriods.cshtml" />
     <Content Include="Views\OrgClassPeriods\ClassTimetables.cshtml" />
+    <Content Include="Views\Access\ForgottenPassword.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

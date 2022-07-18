@@ -427,6 +427,36 @@ namespace Dertrix.Controllers
             }
         }
 
+
+        // GET: Access/ForgottenPassword
+        [Route("ForgottenPassword")]
+        [HttpGet]
+        public ActionResult ForgottenPassword()
+        {
+            return View();
+        }
+
+
+        // GET: Access/PasswordReset
+        [HttpPost]
+        public ActionResult PasswordReset(string email) 
+        {
+            try
+            {
+                var Chkifemailexist = db.RegisteredUsers.Where(x => x.Email == email).FirstOrDefault();
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View(email);
+            }
+            return View();
+        }
+
+
+
         // GET: Access/Welcome
         public ActionResult Welcome()
         {
