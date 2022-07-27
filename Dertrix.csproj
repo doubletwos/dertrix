@@ -948,6 +948,7 @@
     <Content Include="Views\EmailTemplates\HtmlPage.html" />
     <Content Include="Views\EmailTemplates\ExistingGuardianInvitationEmail.html" />
     <Content Include="Views\EmailTemplates\NewGuardianInvitationEmail.html" />
+    <Content Include="Views\EmailTemplates\PasswordResetInstructions.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1147,6 +1148,7 @@
     <Content Include="Views\Shared\PartialViewsForms\_PopulateOrgPeriods.cshtml" />
     <Content Include="Views\OrgClassPeriods\ClassTimetables.cshtml" />
     <Content Include="Views\Access\ForgottenPassword.cshtml" />
+    <Content Include="Views\Access\ChangePassword.cshtml" />
     <None Include="Web.Live.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

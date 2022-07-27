@@ -314,7 +314,7 @@ namespace Dertrix.Controllers
                             New_Value = null,
                             OrgId = rr,
                             User_Change_Event_Time = DateTime.Now,
-                            User_Change_Events_Types = User_Change_Events_Types.Password,
+                            User_Change_Events_Types = User_Change_Events_Types.UserSettingsPassword,
                         };
                         db.User_Change_Events_Logs.Add(userchangelog);
                         db.SaveChanges();

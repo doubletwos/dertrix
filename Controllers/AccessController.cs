@@ -9,6 +9,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.WebParts;
 using Dertrix.Models;
+using System.Net.Mail;
+using System.Text;
+
 namespace Dertrix.Controllers
 {
     [RoutePrefix("")]
@@ -23,7 +26,7 @@ namespace Dertrix.Controllers
                 if (id == null)
                 {
                     Session.Abandon();
-                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
                 }
                 else
                 {
@@ -44,7 +47,7 @@ namespace Dertrix.Controllers
                     db.SaveChanges();
                     Session.Abandon();
                     Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
-                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
 
                 }
             }
@@ -66,7 +69,7 @@ namespace Dertrix.Controllers
             {
                 if (Session["OrgId"] == null)
                 {
-                    return RedirectToRoute(new { controller = "Access",  action = "Signin", });
+                    return RedirectToRoute(new { controller = "Access", action = "Signin", });
                 }
                 if ((int)Session["OrgId"] != 23)
                 {
@@ -116,7 +119,7 @@ namespace Dertrix.Controllers
                 }
                 if (registeredUser.InviteKey == locateuser.InviteKey)
                 {
-                    return RedirectToRoute(new { controller = "Access", action = "InitialSettings", id = locateuser.RegisteredUserId }); 
+                    return RedirectToRoute(new { controller = "Access", action = "InitialSettings", id = locateuser.RegisteredUserId });
                 }
 
             }
@@ -173,7 +176,7 @@ namespace Dertrix.Controllers
                         InviteSentDate = newuser.InviteSentDate,
                         CountOfInvite = newuser.CountOfInvite,
                         IsRegistered = newuser.IsRegistered,
-                        RegisteredDate = newuser.RegisteredDate,                        
+                        RegisteredDate = newuser.RegisteredDate,
                     };
                     return View(usr);
                 }
@@ -291,7 +294,7 @@ namespace Dertrix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LogIn(RegisteredUser registeredUser)  
+        public ActionResult LogIn(RegisteredUser registeredUser)
         {
             try
             {
@@ -439,21 +442,241 @@ namespace Dertrix.Controllers
 
         // GET: Access/PasswordReset
         [HttpPost]
-        public ActionResult PasswordReset(string email) 
+        public ActionResult PasswordReset(string email)
         {
             try
             {
                 var Chkifemailexist = db.RegisteredUsers.Where(x => x.Email == email).FirstOrDefault();
 
+                // Check if email exist, if no, Log attempt and exit
+                if (Chkifemailexist == null)
+                {
+                    return View(email);
+                }
 
+                // Check if email is registered, if no - log and exit
+                if (Chkifemailexist.IsRegistered == null)
+                {                 
+                    return View(email);
+                }
+                else
+                {
+                    //Email exists and registered? Log record & Send Email 
+                    var triggeremail = SendPasswordResetEmail(Chkifemailexist.RegisteredUserId, Chkifemailexist.Email);
+                    return View(email);
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return View(email);
             }
+        }
+
+
+        public JsonResult SendPasswordResetEmail(int id, string email)
+        {
+            try
+            {
+
+                //Encrypt ID
+                var decrptedid = Encode(Convert.ToInt32(id).ToString());
+
+
+                string Body = System.IO.File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/PasswordResetInstructions.html"));
+                //Body = Body.Replace("#OrganisationName#", Session["OrgName"].ToString());
+                //Body = Body.Replace("var(--white)", Session["regOrgBrandButtonColour"].ToString());
+                //var orgName = Session["OrgName"].ToString();
+                Body = Body.Replace("#DECRYPTEDKEY#", decrptedid.ToString());
+                var subject = "Change Password";
+                //var subject = "Change Password" + " " + orgName;
+
+                bool result2 = false;
+                result2 = SendEmailpw(email, subject, Body);
+                return Json(result2, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Json("~/ErrorHandler.html");
+            }
+
+        }
+
+        public bool SendEmailpw(string toEmail, string subject, string Body)
+        {
+            try
+            {
+                string senderEmail = System.Configuration.ConfigurationManager.AppSettings["SenderEmail"].ToString();
+                string senderPassword = System.Configuration.ConfigurationManager.AppSettings["SenderPassword"].ToString();
+                SmtpClient client = new SmtpClient("smtp.ionos.co.uk", 587);
+                client.EnableSsl = true;
+                client.Timeout = 100000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(senderEmail, senderPassword);
+                MailMessage mailMessage = new MailMessage(senderEmail, toEmail, subject, Body);
+                mailMessage.IsBodyHtml = true;
+                mailMessage.BodyEncoding = UTF8Encoding.UTF8;
+                client.Send(mailMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+
+
+
+        public string Encode(string encodeMe)
+        {
+            byte[] encoded = System.Text.Encoding.UTF8.GetBytes(encodeMe);
+            return Convert.ToBase64String(encoded);
+        }
+
+        public static string Decode(string decodeMe)
+        {
+            byte[] encoded = Convert.FromBase64String(decodeMe);
+            return System.Text.Encoding.UTF8.GetString(encoded);
+        }
+
+
+        public ActionResult ChangePassword(string id)
+        {
+            try
+            {
+                //Decrypt ID
+                var decrptedid = Decode(id);
+                var newid = Convert.ToInt32(decrptedid);
+
+                var Id = (int)newid;
+
+                if (Id != 0)
+                {
+                    var newuser = db.RegisteredUsers.Where(x => x.RegisteredUserId == Id).FirstOrDefault();
+
+                    var usr = new RegisteredUser
+                    {
+                        RegisteredUserId = newuser.RegisteredUserId,
+                        RegisteredUserType = newuser.RegisteredUserType,
+                        FirstName = newuser.FirstName,
+                        LastName = newuser.LastName,
+                        Email = newuser.Email,
+                        Password = newuser.Password,
+                        ConfirmPassword = newuser.ConfirmPassword,
+                        Telephone = newuser.Telephone,
+                        SelectedOrg = newuser.SelectedOrg,
+                        ClassId = newuser.ClassId,
+                        GenderId = newuser.GenderId,
+                        TribeId = newuser.TribeId,
+                        DateOfBirth = newuser.DateOfBirth,
+                        EnrolmentDate = newuser.EnrolmentDate,
+                        ReligionId = newuser.ReligionId,
+                        PrimarySchoolUserRoleId = newuser.PrimarySchoolUserRoleId,
+                        SecondarySchoolUserRoleId = newuser.SecondarySchoolUserRoleId,
+                        StudentRegFormId = newuser.StudentRegFormId,
+                        CreatedBy = newuser.CreatedBy,
+                        RegUserOrgBrand = newuser.RegUserOrgBrand,
+                        FullName = newuser.FullName,
+                        IsTester = newuser.IsTester,
+                        ClassRef = newuser.ClassRef,
+                        TempIntHolder = newuser.TempIntHolder,
+                        TitleId = newuser.TitleId,
+                        RelationshipId = newuser.RelationshipId,
+                        PgCount = newuser.PgCount,
+                        NurserySchoolUserRoleId = newuser.NurserySchoolUserRoleId,
+                        InviteKey = newuser.InviteKey,
+                        InviteSentDate = newuser.InviteSentDate,
+                        CountOfInvite = newuser.CountOfInvite,
+                        IsRegistered = newuser.IsRegistered,
+                        RegisteredDate = newuser.RegisteredDate,
+                    };
+                    return View(usr);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Redirect("~/ErrorHandler.html");
+            }
             return View();
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveNewPassword(RegisteredUser registeredUser)
+        {
+            try
+            {
+                var locateuser = db.RegisteredUsers.AsNoTracking().Where(x => x.RegisteredUserId == registeredUser.RegisteredUserId).FirstOrDefault();
+
+                // Set Usr password 
+                var usr = new RegisteredUser
+                {
+                    RegisteredUserId = locateuser.RegisteredUserId,
+                    RegisteredUserTypeId = locateuser.RegisteredUserTypeId,
+                    FirstName = locateuser.FirstName,
+                    LastName = locateuser.LastName,
+                    Email = locateuser.Email,
+                    Password = registeredUser.Password,
+                    ConfirmPassword = registeredUser.ConfirmPassword,
+                    Telephone = locateuser.Telephone,
+                    SelectedOrg = locateuser.SelectedOrg,
+                    ClassId = locateuser.ClassId,
+                    GenderId = locateuser.GenderId,
+                    TribeId = locateuser.TribeId,
+                    DateOfBirth = locateuser.DateOfBirth,
+                    EnrolmentDate = locateuser.EnrolmentDate,
+                    ReligionId = locateuser.ReligionId,
+                    PrimarySchoolUserRoleId = locateuser.PrimarySchoolUserRoleId,
+                    SecondarySchoolUserRoleId = locateuser.SecondarySchoolUserRoleId,
+                    StudentRegFormId = locateuser.StudentRegFormId,
+                    CreatedBy = locateuser.CreatedBy,
+                    RegUserOrgBrand = locateuser.RegUserOrgBrand,
+                    FullName = locateuser.FullName,
+                    IsTester = locateuser.IsTester,
+                    ClassRef = locateuser.ClassRef,
+                    TempIntHolder = locateuser.TempIntHolder,
+                    TitleId = locateuser.TitleId,
+                    RelationshipId = locateuser.RelationshipId,
+                    PgCount = locateuser.PgCount,
+                    NurserySchoolUserRoleId = locateuser.NurserySchoolUserRoleId,
+                    InviteKey = locateuser.InviteKey,
+                    InviteSentDate = locateuser.InviteSentDate,
+                    CountOfInvite = locateuser.CountOfInvite,
+                    IsRegistered = locateuser.IsRegistered,
+                    RegisteredDate = locateuser.RegisteredDate
+                };
+                locateuser = usr;
+                db.Entry(locateuser).State = EntityState.Modified;
+                db.SaveChanges();
+
+                var userchangelog = new User_Change_Events_Log()
+                {
+                    RegUserId = registeredUser.RegisteredUserId,
+                    ChangedBy = registeredUser.RegisteredUserId,
+                    Old_Value = null,
+                    New_Value = null,
+                    OrgId = null,
+                    User_Change_Event_Time = DateTime.Now,
+                    User_Change_Events_Types = User_Change_Events_Types.ForgottenPassword,
+                };
+                db.User_Change_Events_Logs.Add(userchangelog);
+                db.SaveChanges();
+
+                return RedirectToRoute(new { controller = "Access", action = "Signin", });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Redirect("~/ErrorHandler.html");
+            }
+        }
+
+
 
 
 

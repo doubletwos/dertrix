@@ -12,7 +12,8 @@ namespace Dertrix.Models
         OtherNames = 3,
         LastName = 4,
         EmailAddress = 5,
-        Password = 6,
+        UserSettingsPassword = 6,
         TelephoneNumber = 7,
+        ForgottenPassword = 8
     }
 }
