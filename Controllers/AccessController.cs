@@ -463,7 +463,7 @@ namespace Dertrix.Controllers
                 {
                     //Email exists and registered? Log record & Send Email 
                     var triggeremail = SendPasswordResetEmail(Chkifemailexist.RegisteredUserId, Chkifemailexist.Email);
-                    return View(email);
+                    return new HttpStatusCodeResult(204);
                 }
             }
             catch (Exception e)
